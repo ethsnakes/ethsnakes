@@ -1,0 +1,32 @@
+{
+  "name": "eth-snakesandladders",
+  "version": "0.1.0",
+  "description": "Public, descentralized and opensource Snakes and Ladders game.",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "openzeppelin-solidity": "2.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atik-lab/ethsnakesandladders.git"
+  },
+  "keywords": [
+    "snakesandladders",
+    "ethereum",
+    "dapp",
+    "exchange"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/atik-lab/ethsnakesandladders/issues"
+  },
+  "homepage": "https://github.com/atik-lab/ethsnakeandladders#readme"
+}
