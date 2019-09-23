@@ -35,6 +35,7 @@ window.onload = () => {
 
     window.focus();
     resize();
+    
     window.addEventListener("resize", resize, false);
     window.addEventListener("orientationchange", checkOriention, false);
 };

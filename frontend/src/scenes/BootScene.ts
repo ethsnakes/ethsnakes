@@ -15,8 +15,6 @@ export class BootScene extends Phaser.Scene {
         BootScene.currentInstance = this;
         GameManager.setCurrentScene(this);
 
-        GameVars.scaleX = 1;
-
         GameManager.init();
     }
 }

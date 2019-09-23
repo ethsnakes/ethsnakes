@@ -5,6 +5,20 @@ export class GameManager {
 
     public static init(): void {  
 
+
+        if (GameVars.currentScene.sys.game.device.os.desktop) {
+
+            GameVars.scaleX = 1;
+
+        } else {
+
+            GameVars.currentScene.game.scale.displaySize = GameVars.currentScene.game.scale.parentSize;
+            GameVars.currentScene.game.scale.refresh();
+
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            GameVars.scaleX = (GameConstants.GAME_WIDTH / GameConstants.GAME_HEIGHT) / aspectRatio;
+        }
+
         GameManager.readGameData();
     }
 

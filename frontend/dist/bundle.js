@@ -152,8 +152,8 @@ var GameConstants = /** @class */ (function () {
     GameConstants.DEVELOPMENT = false;
     GameConstants.DEBUG_MODE = false;
     GameConstants.VERBOSE = false;
-    GameConstants.GAME_WIDTH = 768;
-    GameConstants.GAME_HEIGHT = 1024;
+    GameConstants.GAME_WIDTH = 1024;
+    GameConstants.GAME_HEIGHT = 768;
     GameConstants.DIFFICULTY_EASY = "easy";
     GameConstants.DIFFICULTY_MEDIUM = "medium";
     GameConstants.DIFFICULTY_HARD = "hard";
@@ -351,10 +351,9 @@ window.onload = function () {
         version: GameConstants_1.GameConstants.VERSION,
         type: Phaser.AUTO,
         backgroundColor: "#000000",
-        width: GameConstants_1.GameConstants.GAME_WIDTH,
-        height: GameConstants_1.GameConstants.GAME_HEIGHT,
         scale: {
             mode: Phaser.Scale.FIT,
+            parent: "content",
             width: GameConstants_1.GameConstants.GAME_WIDTH,
             height: GameConstants_1.GameConstants.GAME_HEIGHT
         },
@@ -370,6 +369,7 @@ window.onload = function () {
     window.focus();
     resize();
     window.addEventListener("resize", resize, false);
+    window.addEventListener("orientationchange", checkOriention, false);
 };
 function resize() {
     var canvas = document.querySelector("canvas");
@@ -386,6 +386,11 @@ function resize() {
     else {
         canvas.style.width = (windowHeight * gameRatio) + "px";
         canvas.style.height = windowHeight + "px";
+    }
+}
+function checkOriention() {
+    if (Game_1.Game.currentInstance.device.os.desktop) {
+        return;
     }
 }
 
@@ -425,7 +430,7 @@ var BootScene = /** @class */ (function (_super) {
     BootScene.prototype.create = function () {
         BootScene.currentInstance = this;
         GameManager_1.GameManager.setCurrentScene(this);
-        GameVars_1.GameVars.scaleY = 1;
+        GameVars_1.GameVars.scaleX = 1;
         GameManager_1.GameManager.init();
     };
     return BootScene;
@@ -647,31 +652,7 @@ var BoardManager = /** @class */ (function () {
         }
     };
     BoardManager.start = function (p) {
-        BoardManager.gameStarted = true;
-        var mineArray = GameVars_1.GameVars.minesweeper.generateMineArray({
-            rows: GameConstants_1.GameConstants.ROWS,
-            cols: GameConstants_1.GameConstants.COLS,
-            mines: GameVars_1.GameVars.mines
-        });
-        // para asegurarnos de que el primer click nunca se hace sobre una mina
-        while (mineArray[p.r][p.c] === 1) {
-            mineArray = GameVars_1.GameVars.minesweeper.generateMineArray({
-                rows: GameConstants_1.GameConstants.ROWS,
-                cols: GameConstants_1.GameConstants.COLS,
-                mines: GameVars_1.GameVars.mines
-            });
-        }
-        GameVars_1.GameVars.board = new GameVars_1.GameVars.minesweeper.Board(mineArray);
-        GameVars_1.GameVars.grid = GameVars_1.GameVars.board.grid();
-        BoardContainer_1.BoardContainer.currentInstance.start();
-        BoardManager.scene.time.addEvent({ delay: 1000, callback: BoardManager.onSecondPassed, callbackScope: BoardManager, repeat: -1 });
-    };
-    BoardManager.onSecondPassed = function () {
-        if (GameVars_1.GameVars.matchOver) {
-            return;
-        }
-        GameVars_1.GameVars.time++;
-        BoardScene_1.BoardScene.currentInstance.hud.updateTimer();
+        //
     };
     BoardManager.matchOver = function (won, p) {
         GameVars_1.GameVars.matchOver = true;
