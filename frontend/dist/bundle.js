@@ -188,6 +188,15 @@ var GameManager = /** @class */ (function () {
     function GameManager() {
     }
     GameManager.init = function () {
+        if (GameVars_1.GameVars.currentScene.sys.game.device.os.desktop) {
+            GameVars_1.GameVars.scaleX = 1;
+        }
+        else {
+            GameVars_1.GameVars.currentScene.game.scale.displaySize = GameVars_1.GameVars.currentScene.game.scale.parentSize;
+            GameVars_1.GameVars.currentScene.game.scale.refresh();
+            var aspectRatio = window.innerWidth / window.innerHeight;
+            GameVars_1.GameVars.scaleX = (GameConstants_1.GameConstants.GAME_WIDTH / GameConstants_1.GameConstants.GAME_HEIGHT) / aspectRatio;
+        }
         GameManager.readGameData();
     };
     GameManager.readGameData = function () {
@@ -420,7 +429,6 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var GameVars_1 = __webpack_require__(/*! ../GameVars */ "./src/GameVars.ts");
 var GameManager_1 = __webpack_require__(/*! ../GameManager */ "./src/GameManager.ts");
 var BootScene = /** @class */ (function (_super) {
     __extends(BootScene, _super);
@@ -430,7 +438,6 @@ var BootScene = /** @class */ (function (_super) {
     BootScene.prototype.create = function () {
         BootScene.currentInstance = this;
         GameManager_1.GameManager.setCurrentScene(this);
-        GameVars_1.GameVars.scaleX = 1;
         GameManager_1.GameManager.init();
     };
     return BootScene;
@@ -516,6 +523,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/GameConstants.ts");
+var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
 var BoardContainer = /** @class */ (function (_super) {
     __extends(BoardContainer, _super);
     function BoardContainer(scene) {
@@ -524,6 +532,7 @@ var BoardContainer = /** @class */ (function (_super) {
         _this.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
         _this.y = GameConstants_1.GameConstants.GAME_HEIGHT / 2;
         var boardBackground = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "board");
+        boardBackground.scaleX = GameVars_1.GameVars.scaleX;
         _this.add(boardBackground);
         return _this;
     }

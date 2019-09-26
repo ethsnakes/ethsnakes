@@ -4,16 +4,11 @@ export class GameVars {
     
     public static gameData: GameData;
     public static currentScene: Phaser.Scene;
-    public static minesweeper: any;
     public static time: number;
     public static matchOver: boolean;
-    public static flaggedCells: number;
     public static mines: number;
-    public static maxTime: number; 
     public static board: any;
-    public static grid: CellData[][];
     public static paused: boolean;
-    public static ad: any;
 
     public static padNumberToString(numberAsString: string): string {
 

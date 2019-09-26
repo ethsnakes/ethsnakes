@@ -5,7 +5,6 @@ import { GameConstants } from "../../GameConstants";
 import { BoardContainer } from "./BoardContainer";
 import { BoardManager } from "./BoardManager";
 import { SettingsLayer } from "./SettingsLayer";
-import { GameVars } from "../../GameVars";
 import { OutcomeLayer } from "./OutcomeLayer";
 
 export class BoardScene extends Phaser.Scene {
@@ -33,12 +32,22 @@ export class BoardScene extends Phaser.Scene {
 
         BoardManager.init(this);
 
+        this.addDiceAnimations();
+
         const background = this.add.graphics();
         background.fillStyle(0xAAAAAA);
         background.fillRect(0, 0, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
 
         this.boardContainer = new BoardContainer(this);
         this.add.existing(this.boardContainer);
+
+        this.boardContainer.visible = false;
+
+       
+
+        const dice = this.add.sprite(GameConstants.GAME_WIDTH / 2, GameConstants.GAME_HEIGHT / 2, "dice2");
+       
+        dice.play("roll2");
 
         this.hud = new HUD(this);
         this.add.existing(this.hud);
@@ -72,7 +81,18 @@ export class BoardScene extends Phaser.Scene {
             this.boardContainer.revealMinedCells(p);
             this.boardContainer.hideFlags();
         }
+    }
 
-        this.gui.matchOver(won);
+    private addDiceAnimations(): void {
+
+        for (let i = 1; i <= 6; i ++) {
+            const config = {
+                key: "roll" + i,
+                frames: this.anims.generateFrameNumbers("dice" + i, {}),
+                frameRate: 24
+            };
+    
+            this.anims.create(config);
+        }
     }
 }

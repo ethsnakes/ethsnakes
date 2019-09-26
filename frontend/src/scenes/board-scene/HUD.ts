@@ -54,9 +54,4 @@ export class HUD extends Phaser.GameObjects.Container {
             this.timeLabel.text = GameVars.formatNumber(GameVars.time);
         }
     }
-
-    public updateMines(): void {
-
-        this.minesLabel.text = GameVars.formatNumber(GameVars.mines - GameVars.flaggedCells); 
-    }   
 }

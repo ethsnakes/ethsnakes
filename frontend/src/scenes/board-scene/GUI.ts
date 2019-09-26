@@ -1,20 +1,21 @@
 import { GameConstants } from "../../GameConstants";
-import { GameManager } from "../../GameManager";
+import { Button } from "../../utils/Utils";
 import { GameVars } from "../../GameVars";
-import { BoardManager } from "./BoardManager";
 
 export class GUI extends Phaser.GameObjects.Container {
+
+    private diceButton: Button;
 
     constructor(scene: Phaser.Scene) {
 
         super(scene);
 
-        this.x = GameConstants.GAME_WIDTH / 2;
-        this.y = 18;
+        this.diceButton = new Button(this.scene, GameConstants.GAME_WIDTH - 70 * GameVars.scaleX, GameConstants.GAME_HEIGHT - 70, "texture_atlas_1", "btn_dice_off", "btn_dice_on");
+        this.diceButton.onUp(this.onClickDiceButton, this);
+        this.add(this.diceButton);
     }
 
-    public matchOver(won: boolean): void {
-
+    public onClickDiceButton(): void {
        //
     }
 }

@@ -4,8 +4,8 @@
 			"image": "texture_atlas_1.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 756,
-				"h": 786
+				"w": 858,
+				"h": 756
 			},
 			"scale": 1,
 			"frames": [
@@ -31,6 +31,69 @@
 					}
 				},
 				{
+					"filename": "btn_dice_off",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 100,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 100,
+						"h": 104
+					},
+					"frame": {
+						"x": 757,
+						"y": 1,
+						"w": 100,
+						"h": 104
+					}
+				},
+				{
+					"filename": "btn_dice_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 100,
+						"h": 104
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 100,
+						"h": 104
+					},
+					"frame": {
+						"x": 757,
+						"y": 107,
+						"w": 100,
+						"h": 104
+					}
+				},
+				{
+					"filename": "but_settings",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 60,
+						"h": 62
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 60,
+						"h": 62
+					},
+					"frame": {
+						"x": 757,
+						"y": 213,
+						"w": 60,
+						"h": 62
+					}
+				},
+				{
 					"filename": "btn_settings_off",
 					"rotated": false,
 					"trimmed": false,
@@ -45,8 +108,8 @@
 						"h": 28
 					},
 					"frame": {
-						"x": 1,
-						"y": 757,
+						"x": 757,
+						"y": 277,
 						"w": 28,
 						"h": 28
 					}
@@ -57,6 +120,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:491452d97cc4dfdef3b0c629e118d77e:ac2c208b5b6d3ccdb781093c52614547:1bd3fbbbdaf54e41cf80e3e904578de4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:f7a387535261c9282bd1907da9264309:8b7ad2ea11b1dbf23a4ace999ced6ad0:1bd3fbbbdaf54e41cf80e3e904578de4$"
 	}
 }
