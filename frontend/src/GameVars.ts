@@ -10,6 +10,7 @@ export class GameVars {
     public static board: any;
     public static paused: boolean;
     public static balance: number;
+    public static turn: string;
 
     public static padNumberToString(numberAsString: string): string {
 
