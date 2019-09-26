@@ -491,6 +491,13 @@ var PreloadScene = /** @class */ (function (_super) {
     PreloadScene.prototype.loadAssets = function () {
         this.load.atlas("texture_atlas_1", "assets/texture_atlas_1.png", "assets/texture_atlas_1.json");
         this.load.bitmapFont("russo-one-red", "assets/fonts/russo-one.png", "assets/fonts/russo-one.xml");
+        // los dados
+        this.load.spritesheet("dice1", "assets/dice_1.png", { frameWidth: 150, frameHeight: 410 });
+        this.load.spritesheet("dice2", "assets/dice_2.png", { frameWidth: 150, frameHeight: 410 });
+        this.load.spritesheet("dice3", "assets/dice_3.png", { frameWidth: 150, frameHeight: 410 });
+        this.load.spritesheet("dice4", "assets/dice_4.png", { frameWidth: 150, frameHeight: 410 });
+        this.load.spritesheet("dice5", "assets/dice_5.png", { frameWidth: 150, frameHeight: 410 });
+        this.load.spritesheet("dice6", "assets/dice_6.png", { frameWidth: 150, frameHeight: 410 });
     };
     return PreloadScene;
 }(Phaser.Scene));
@@ -581,9 +588,7 @@ exports.BoardContainer = BoardContainer;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
-var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/GameConstants.ts");
 var BoardScene_1 = __webpack_require__(/*! ./BoardScene */ "./src/scenes/board-scene/BoardScene.ts");
-var BoardContainer_1 = __webpack_require__(/*! ./BoardContainer */ "./src/scenes/board-scene/BoardContainer.ts");
 var GameManager_1 = __webpack_require__(/*! ../../GameManager */ "./src/GameManager.ts");
 var BoardManager = /** @class */ (function () {
     function BoardManager() {
@@ -592,9 +597,10 @@ var BoardManager = /** @class */ (function () {
         BoardManager.scene = scene;
         BoardManager.gameStarted = false;
         GameVars_1.GameVars.paused = false;
-        GameVars_1.GameVars.time = 0;
-        GameVars_1.GameVars.matchOver = false;
-        GameVars_1.GameVars.flaggedCells = 0;
+    };
+    BoardManager.rollDice = function () {
+        var i = Math.floor(Math.random() * 6 + 1);
+        BoardScene_1.BoardScene.currentInstance.rollDice(i);
     };
     BoardManager.showSettingsLayer = function () {
         GameVars_1.GameVars.paused = true;
@@ -603,62 +609,6 @@ var BoardManager = /** @class */ (function () {
     BoardManager.hideSettingsLayer = function () {
         GameVars_1.GameVars.paused = false;
         BoardScene_1.BoardScene.currentInstance.showSettingsLayer();
-    };
-    BoardManager.onCellUp = function (p, deltaTime, rightMouse) {
-        if (!BoardManager.gameStarted) {
-            BoardManager.start(p);
-        }
-        if (deltaTime > 500 || rightMouse) {
-            GameVars_1.GameVars.board.cycleCellFlag(p.c, p.r);
-            GameVars_1.GameVars.grid = GameVars_1.GameVars.board.grid();
-            // HACEMOS ESTO PORQUE ESTA LIBRERIA TIENE 3 ESTADOS PARA EL FLAG EN LUGAR DE 2
-            if (GameVars_1.GameVars.grid[p.r][p.c].flag === 2) {
-                GameVars_1.GameVars.board.cycleCellFlag(p.c, p.r);
-                GameVars_1.GameVars.grid = GameVars_1.GameVars.board.grid();
-            }
-            if (GameVars_1.GameVars.grid[p.r][p.c].flag === 1) {
-                BoardContainer_1.BoardContainer.currentInstance.flagCell(p);
-                GameVars_1.GameVars.flaggedCells++;
-                if (GameVars_1.GameVars.flaggedCells === GameVars_1.GameVars.mines) {
-                    var state = GameVars_1.GameVars.board.state();
-                    if (state === GameConstants_1.GameConstants.BOARD_STATE_LOST || state === GameConstants_1.GameConstants.BOARD_STATE_WON) {
-                        BoardManager.matchOver(state === GameConstants_1.GameConstants.BOARD_STATE_WON, p);
-                    }
-                }
-            }
-            else {
-                BoardContainer_1.BoardContainer.currentInstance.unFlagCell(p);
-                GameVars_1.GameVars.flaggedCells--;
-            }
-            BoardScene_1.BoardScene.currentInstance.hud.updateMines();
-        }
-        else {
-            GameVars_1.GameVars.board.openCell(p.c, p.r);
-            GameVars_1.GameVars.grid = GameVars_1.GameVars.board.grid();
-            BoardContainer_1.BoardContainer.currentInstance.revealOpenedCells();
-            var state = GameVars_1.GameVars.board.state();
-            if (state === GameConstants_1.GameConstants.BOARD_STATE_LOST) {
-                BoardManager.matchOver(false, p);
-            }
-            else {
-                // MIRAR EL NUMERO DE CELDAS QUE QUEDAN SIN ABRIR
-                // con state 0
-                var unopenedCells = 0;
-                for (var r = 0; r < GameConstants_1.GameConstants.ROWS; r++) {
-                    for (var c = 0; c < GameConstants_1.GameConstants.COLS; c++) {
-                        if (GameVars_1.GameVars.grid[r][c].state === 0) {
-                            unopenedCells++;
-                        }
-                    }
-                }
-                if (unopenedCells === GameVars_1.GameVars.mines) {
-                    state = GameConstants_1.GameConstants.BOARD_STATE_WON;
-                }
-                if (state === GameConstants_1.GameConstants.BOARD_STATE_LOST || state === GameConstants_1.GameConstants.BOARD_STATE_WON) {
-                    BoardManager.matchOver(state === GameConstants_1.GameConstants.BOARD_STATE_WON, p);
-                }
-            }
-        }
     };
     BoardManager.start = function (p) {
         //
@@ -708,6 +658,7 @@ var BoardContainer_1 = __webpack_require__(/*! ./BoardContainer */ "./src/scenes
 var BoardManager_1 = __webpack_require__(/*! ./BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
 var SettingsLayer_1 = __webpack_require__(/*! ./SettingsLayer */ "./src/scenes/board-scene/SettingsLayer.ts");
 var OutcomeLayer_1 = __webpack_require__(/*! ./OutcomeLayer */ "./src/scenes/board-scene/OutcomeLayer.ts");
+var DiceContainer_1 = __webpack_require__(/*! ./DiceContainer */ "./src/scenes/board-scene/DiceContainer.ts");
 var BoardScene = /** @class */ (function (_super) {
     __extends(BoardScene, _super);
     function BoardScene() {
@@ -718,15 +669,21 @@ var BoardScene = /** @class */ (function (_super) {
         BoardScene.currentInstance = this;
         GameManager_1.GameManager.setCurrentScene(this);
         BoardManager_1.BoardManager.init(this);
+        this.addDiceAnimations();
         var background = this.add.graphics();
         background.fillStyle(0xAAAAAA);
         background.fillRect(0, 0, GameConstants_1.GameConstants.GAME_WIDTH, GameConstants_1.GameConstants.GAME_HEIGHT);
         this.boardContainer = new BoardContainer_1.BoardContainer(this);
         this.add.existing(this.boardContainer);
+        this.dice = new DiceContainer_1.DiceContainer(this);
+        this.add.existing(this.dice);
         this.hud = new HUD_1.HUD(this);
         this.add.existing(this.hud);
         this.gui = new GUI_1.GUI(this);
         this.add.existing(this.gui);
+    };
+    BoardScene.prototype.rollDice = function (i) {
+        this.dice.roll(i);
     };
     BoardScene.prototype.showSettingsLayer = function () {
         this.settingsLayer = new SettingsLayer_1.SettingsLayer(this);
@@ -745,11 +702,67 @@ var BoardScene = /** @class */ (function (_super) {
             this.boardContainer.revealMinedCells(p);
             this.boardContainer.hideFlags();
         }
-        this.gui.matchOver(won);
+    };
+    BoardScene.prototype.addDiceAnimations = function () {
+        for (var i = 1; i <= 6; i++) {
+            var config = {
+                key: "roll" + i,
+                frames: this.anims.generateFrameNumbers("dice" + i, {}),
+                frameRate: 24
+            };
+            this.anims.create(config);
+        }
     };
     return BoardScene;
 }(Phaser.Scene));
 exports.BoardScene = BoardScene;
+
+
+/***/ }),
+
+/***/ "./src/scenes/board-scene/DiceContainer.ts":
+/*!*************************************************!*\
+  !*** ./src/scenes/board-scene/DiceContainer.ts ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/GameConstants.ts");
+var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
+var BoardScene_1 = __webpack_require__(/*! ./BoardScene */ "./src/scenes/board-scene/BoardScene.ts");
+var DiceContainer = /** @class */ (function (_super) {
+    __extends(DiceContainer, _super);
+    function DiceContainer(scene) {
+        var _this = _super.call(this, scene) || this;
+        _this.dice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 100 * GameVars_1.GameVars.scaleX, GameConstants_1.GameConstants.GAME_HEIGHT / 2, "dice2");
+        BoardScene_1.BoardScene.currentInstance.add.existing(_this.dice);
+        _this.dice.visible = false;
+        _this.add(_this.dice);
+        return _this;
+    }
+    DiceContainer.prototype.roll = function (i) {
+        this.dice.visible = true;
+        this.dice.play("roll" + i);
+    };
+    return DiceContainer;
+}(Phaser.GameObjects.Container));
+exports.DiceContainer = DiceContainer;
 
 
 /***/ }),
@@ -778,16 +791,20 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/GameConstants.ts");
+var Utils_1 = __webpack_require__(/*! ../../utils/Utils */ "./src/utils/Utils.ts");
+var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
+var BoardManager_1 = __webpack_require__(/*! ./BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
 var GUI = /** @class */ (function (_super) {
     __extends(GUI, _super);
     function GUI(scene) {
         var _this = _super.call(this, scene) || this;
-        _this.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
-        _this.y = 18;
+        _this.diceButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 70 * GameVars_1.GameVars.scaleX, GameConstants_1.GameConstants.GAME_HEIGHT - 70, "texture_atlas_1", "btn_dice_off", "btn_dice_on");
+        _this.diceButton.onUp(_this.onClickDiceButton, _this);
+        _this.add(_this.diceButton);
         return _this;
     }
-    GUI.prototype.matchOver = function (won) {
-        //
+    GUI.prototype.onClickDiceButton = function () {
+        BoardManager_1.BoardManager.rollDice();
     };
     return GUI;
 }(Phaser.GameObjects.Container));
@@ -819,52 +836,11 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/GameConstants.ts");
-var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
 var HUD = /** @class */ (function (_super) {
     __extends(HUD, _super);
     function HUD(scene) {
-        var _this = _super.call(this, scene) || this;
-        _this.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
-        _this.y = 20;
-        var capsuleWidth = 58;
-        var capsuleHeight = 24;
-        var minesCapsule = new Phaser.GameObjects.Graphics(_this.scene);
-        minesCapsule.x = -86;
-        minesCapsule.y = -2;
-        minesCapsule.fillStyle(0x000000);
-        minesCapsule.fillRect(-capsuleWidth / 2, -capsuleHeight / 2, capsuleWidth, capsuleHeight);
-        _this.add(minesCapsule);
-        _this.minesLabel = new Phaser.GameObjects.BitmapText(_this.scene, minesCapsule.x - 1, minesCapsule.y + 1, "russo-one-red", "", 24);
-        _this.minesLabel.setOrigin(.5);
-        _this.minesLabel.visible = false;
-        _this.add(_this.minesLabel);
-        var timeCapsule = new Phaser.GameObjects.Graphics(_this.scene);
-        timeCapsule.x = 86;
-        timeCapsule.y = -2;
-        timeCapsule.fillStyle(0x000000);
-        timeCapsule.fillRect(-capsuleWidth / 2, -capsuleHeight / 2, capsuleWidth, capsuleHeight);
-        _this.add(timeCapsule);
-        _this.timeLabel = new Phaser.GameObjects.BitmapText(_this.scene, timeCapsule.x - 1, timeCapsule.y + 1, "russo-one-red", "", 24);
-        _this.timeLabel.setOrigin(.5);
-        _this.timeLabel.visible = false;
-        _this.add(_this.timeLabel);
-        _this.scene.time.addEvent({ delay: 200, callback: function () {
-                this.minesLabel.visible = true;
-                this.minesLabel.text = GameVars_1.GameVars.formatNumber(GameVars_1.GameVars.mines);
-                this.timeLabel.visible = true;
-                this.timeLabel.text = "000";
-            }, callbackScope: _this });
-        return _this;
+        return _super.call(this, scene) || this;
     }
-    HUD.prototype.updateTimer = function () {
-        if (GameVars_1.GameVars.time < 999) {
-            this.timeLabel.text = GameVars_1.GameVars.formatNumber(GameVars_1.GameVars.time);
-        }
-    };
-    HUD.prototype.updateMines = function () {
-        this.minesLabel.text = GameVars_1.GameVars.formatNumber(GameVars_1.GameVars.mines - GameVars_1.GameVars.flaggedCells);
-    };
     return HUD;
 }(Phaser.GameObjects.Container));
 exports.HUD = HUD;
@@ -973,6 +949,132 @@ var SettingsLayer = /** @class */ (function (_super) {
     return SettingsLayer;
 }(Phaser.GameObjects.Container));
 exports.SettingsLayer = SettingsLayer;
+
+
+/***/ }),
+
+/***/ "./src/utils/Utils.ts":
+/*!****************************!*\
+  !*** ./src/utils/Utils.ts ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Button = /** @class */ (function (_super) {
+    __extends(Button, _super);
+    function Button(scene, x, y, textureAtlas, frameNameOff, frameNameOn, pixelPerfect) {
+        if (frameNameOn === void 0) { frameNameOn = frameNameOff; }
+        var _this = _super.call(this, scene, x, y, textureAtlas, frameNameOff) || this;
+        if (pixelPerfect) {
+            _this.setInteractive(_this.scene.input.makePixelPerfect(20));
+            _this.setInteractive({ pixelPerfect: true });
+        }
+        else {
+            _this.setInteractive();
+        }
+        if (frameNameOff !== frameNameOn) {
+            _this.on("pointerover", function () {
+                _this.setFrame(frameNameOn);
+            }, _this);
+            _this.on("pointerout", function () {
+                _this.setFrame(frameNameOff);
+            }, _this);
+            _this.on("pointerdown", function () {
+                _this.setFrame(frameNameOff);
+            }, _this);
+            _this.on("pointerup", function () {
+                _this.setFrame(frameNameOn);
+            }, _this);
+        }
+        return _this;
+    }
+    Button.prototype.setInflationTween = function (ratio, defaultScaleX, defaultScaleY, tween, tweenData) {
+        var _this = this;
+        if (defaultScaleX === void 0) { defaultScaleX = this.scaleX; }
+        if (defaultScaleY === void 0) { defaultScaleY = this.scaleY; }
+        this.setScale(defaultScaleX, defaultScaleY);
+        this.defaultScale = { x: defaultScaleX, y: defaultScaleY };
+        if (tween) {
+            if (!tweenData) {
+                tweenData = { ease: Phaser.Math.Easing.Cubic.Out, duration: 200 };
+            }
+        }
+        this.on("pointerover", function () {
+            if (tween) {
+                _this.scene.tweens.add({
+                    targets: [_this],
+                    scaleX: _this.defaultScale.x * ratio,
+                    scaleY: _this.defaultScale.y * ratio,
+                    ease: tweenData.ease,
+                    duration: tweenData.duration,
+                });
+            }
+            else {
+                _this.setScale(_this.defaultScale.x * ratio, _this.defaultScale.y * ratio);
+            }
+        }, this);
+        this.on("pointerout", function () {
+            if (tween) {
+                _this.scene.tweens.add({
+                    targets: [_this],
+                    scaleX: _this.defaultScale.x,
+                    scaleY: _this.defaultScale.y,
+                    ease: tweenData.ease,
+                    duration: tweenData.duration,
+                });
+            }
+            else {
+                _this.setScale(_this.defaultScale.x, _this.defaultScale.y);
+            }
+        }, this);
+        this.on("pointerdown", function () {
+            if (_this.scene.game.device.os.desktop) {
+                _this.setScale(_this.defaultScale.x, _this.defaultScale.y);
+            }
+            else {
+                _this.setScale(_this.defaultScale.x * ratio, _this.defaultScale.y * ratio);
+            }
+        }, this);
+        this.on("pointerup", function () {
+            if (_this.scene.game.device.os.desktop) {
+                _this.setScale(_this.defaultScale.x * ratio, _this.defaultScale.y * ratio);
+            }
+            else {
+                _this.setScale(_this.defaultScale.x, _this.defaultScale.y);
+            }
+        }, this);
+    };
+    Button.prototype.onUp = function (f, context) {
+        this.on("pointerup", f, context);
+    };
+    Button.prototype.onDown = function (f, context) {
+        this.on("pointerdown", f, context);
+    };
+    Button.prototype.onOver = function (f, context) {
+        this.on("pointerover", f, context);
+    };
+    Button.prototype.onOut = function (f, context) {
+        this.on("pointerout", f, context);
+    };
+    return Button;
+}(Phaser.GameObjects.Image));
+exports.Button = Button;
 
 
 /***/ })

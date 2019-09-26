@@ -9,6 +9,7 @@ export class GameVars {
     public static mines: number;
     public static board: any;
     public static paused: boolean;
+    public static balance: number;
 
     public static padNumberToString(numberAsString: string): string {
 

@@ -1,6 +1,7 @@
 import { GameConstants } from "../../GameConstants";
 import { Button } from "../../utils/Utils";
 import { GameVars } from "../../GameVars";
+import { BoardManager } from "./BoardManager";
 
 export class GUI extends Phaser.GameObjects.Container {
 
@@ -16,6 +17,7 @@ export class GUI extends Phaser.GameObjects.Container {
     }
 
     public onClickDiceButton(): void {
-       //
+       
+        BoardManager.rollDice();
     }
 }

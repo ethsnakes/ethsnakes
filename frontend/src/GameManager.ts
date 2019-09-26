@@ -5,6 +5,8 @@ export class GameManager {
 
     public static init(): void {  
 
+        GameVars.balance = 0.001;
+
 
         if (GameVars.currentScene.sys.game.device.os.desktop) {
 

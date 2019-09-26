@@ -16,6 +16,13 @@ export class BoardManager {
 
         GameVars.paused = false;
     }
+
+    public static rollDice(): void {
+
+        let i = Math.floor(Math.random() * 6 + 1);
+
+        BoardScene.currentInstance.rollDice(i);
+    }
     
     public static showSettingsLayer(): void {
         
