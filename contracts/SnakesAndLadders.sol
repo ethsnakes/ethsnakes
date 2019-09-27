@@ -11,14 +11,18 @@ contract SnakesAndLadders is Ownable {
     mapping(address => uint) public balances;
 
     // Log movement
-    event LogMove(uint sender, uint turn, bool player, uint move);
-    event LogGame(uint sender, bool result);
+    event LogMove(address sender, uint turn, bool player, int move);
+    event LogGame(address sender, bool result);
+    event LogFund(address sender, uint amount);
+    event LogWithdraw(address sender, uint amount);
+    event LogAddBalance(address sender, uint amount);
+    event LogRemoveBalance(address sender, uint amount);
 
     // Game composition
-    mapping(uint8 => uint8) private ladders;
-    uint8 private tiles = 99;  // 1 + 99
+    mapping(int8 => int8) private ladders;
+    int8 private tiles = 99;  // 1 + 99
 
-    function _constructor() {
+    constructor() public {
         ladders[1] = 37;
         ladders[3] = 11;
         ladders[9] = 22;
@@ -33,23 +37,31 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
+     * Avoid sending money directly to the contract
+     */
+    function() external payable {
+        revert("Use addBalance to send money.");
+    }
+
+    /**
      * Plays the game
      */
-    function play() public payable {
-        require(msg.value > 0, "You must send something to bet");
-        require(msg.value*10 < address(this).balance, "You cannot bet more than 1/10 of this contract balance");
+    function play(uint amount) public {
+        require(amount > 0, "You must send something to bet");
+        require(amount <= balances[msg.sender], "You don't have enough balance");
+        require(amount*10 < address(this).balance, "You cannot bet more than 1/10 of this contract balance");
         uint turn = 0;
         bool player = true;  // true if next move is for player, false if for computer
-        uint player1 = 0;
-        uint player2 = 0;
+        int8 player1 = 0;
+        int8 player2 = 0;
         // let's decide who starts
-        uint startDice = random(-1);
+        int8 startDice = random(0);
         if (startDice == 5 || startDice == 6) {
             player = false;
         }
         // make all the moves and emit the results
         while (player1 < tiles && player2 < tiles) {
-            move = random(turn);
+            int8 move = random(turn);
             if (player) {
                 player1 = player1 + move;
                 player1 = player1 + ladders[player1];
@@ -64,27 +76,29 @@ contract SnakesAndLadders is Ownable {
         if (player2 >= tiles) {
             emit LogGame(msg.sender, false);
         } else {
-            balances[msg.sender] += msg.value*2;
+            balances[msg.sender] += amount*2;
             emit LogGame(msg.sender, true);
         }
     }
 
     /**
      * Returns a random number from 1 to 6
+     * TODO better use oraclize
      */
-    function random(uint turn) public view returns(uint8) {
-        return uint8(uint256(keccak256(block.timestamp, block.difficulty, turn))%6);
-        /*
-        bytes32 rngId = oraclize_query(
-            "nested",
-            "[URL] ['json(https://api.random.org/json-rpc/1/invoke).result.random[\"serialNumber\",\"data\"]', '\\n{\"jsonrpc\":\"2.0\",\"method\":\"generateSignedIntegers\",\"params\":{\"apiKey\":${[decrypt] BKg3TCs7lkzNr1kR6pxjPCM2SOejcFojUPMTOsBkC/47HHPf1sP2oxVLTjNBu+slR9SgZyqDtjVOV5Yzg12iUkbubp0DpcjCEdeJTHnGwC6gD729GUVoGvo96huxwRoZlCjYO80rWq2WGYoR/LC3WampDuvv2Bo=},\"n\":1,\"min\":1,\"max\":100,\"replacement\":true,\"base\":10${[identity] \"}\"},\"id\":1${[identity] \"}\"}']",
-            gasForOraclize
-        );
-        */
+    function random(uint turn) public view returns(int8) {
+        return int8(uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty, turn)))%6);
     }
 
     /**
-     * Withdraw the funds
+     * Add funds to balance
+     */
+    function fund() public payable {
+        emit LogFund(msg.sender, msg.value);
+        balances[msg.sender] += msg.value;
+    }
+
+    /**
+     * Withdraw all funds
      */
     function withdraw() public {
         uint toWithdraw = balances[msg.sender];
@@ -92,6 +106,22 @@ contract SnakesAndLadders is Ownable {
         emit LogWithdraw(msg.sender, toWithdraw);
         balances[msg.sender] = 0;
         msg.sender.transfer(toWithdraw);
+    }
+
+    /**
+     * Add balance to the contract
+     */
+    function addBalance() public payable onlyOwner {
+        emit LogAddBalance(msg.sender, msg.value);
+    }
+
+    /**
+     * Allow owner to withdraw funds
+     */
+    function removeBalance() public onlyOwner {
+        require(address(this).balance > 0, "There is no balance to withdraw");
+        emit LogRemoveBalance(msg.sender, address(this).balance);
+        msg.sender.transfer(address(this).balance);
     }
 }
 
