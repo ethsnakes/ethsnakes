@@ -6,6 +6,7 @@ import { BoardContainer } from "./BoardContainer";
 import { BoardManager } from "./BoardManager";
 import { SettingsLayer } from "./SettingsLayer";
 import { OutcomeLayer } from "./OutcomeLayer";
+import { DiceContainer } from "./DiceContainer";
 
 export class BoardScene extends Phaser.Scene {
 
@@ -16,6 +17,7 @@ export class BoardScene extends Phaser.Scene {
     public gui: GUI;
     
     private settingsLayer: SettingsLayer;
+    private dice: DiceContainer;
     
     constructor() {
 
@@ -41,19 +43,19 @@ export class BoardScene extends Phaser.Scene {
         this.boardContainer = new BoardContainer(this);
         this.add.existing(this.boardContainer);
 
-        this.boardContainer.visible = false;
-
-       
-
-        const dice = this.add.sprite(GameConstants.GAME_WIDTH / 2, GameConstants.GAME_HEIGHT / 2, "dice2");
-       
-        dice.play("roll2");
+        this.dice = new DiceContainer(this);
+        this.add.existing(this.dice);
 
         this.hud = new HUD(this);
         this.add.existing(this.hud);
 
         this.gui = new GUI(this);
         this.add.existing(this.gui);
+    }
+
+    public rollDice(i: number): void {
+
+        this.dice.roll(i);
     }
 
     public showSettingsLayer(): void {

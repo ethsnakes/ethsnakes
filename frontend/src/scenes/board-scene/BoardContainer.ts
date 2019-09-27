@@ -12,7 +12,7 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         BoardContainer.currentInstance = this;
 
         this.x = GameConstants.GAME_WIDTH / 2;
-        this.y = GameConstants.GAME_HEIGHT / 2;
+        this.y = 420;
 
         const boardBackground = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "board");
         boardBackground.scaleX = GameVars.scaleX;
