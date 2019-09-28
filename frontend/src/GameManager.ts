@@ -67,6 +67,16 @@ export class GameManager {
         //
     }
 
+    public static addFunds(): void {
+        
+        console.log("add funds");
+    }
+
+    public static retrieveFunds(): void {
+
+        console.log("retrieve funds");
+    }
+
     public static writeGameData(): void {
 
         GameManager.setGameStorageData(

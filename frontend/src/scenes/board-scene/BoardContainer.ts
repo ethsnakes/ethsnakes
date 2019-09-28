@@ -1,9 +1,15 @@
 import { GameConstants } from "../../GameConstants";
 import { GameVars } from "../../GameVars";
+import { Chip } from "./Chip";
 
 export class BoardContainer extends Phaser.GameObjects.Container {
 
+    public static readonly CELL_SIZE = 63.5;
+
     public static currentInstance: BoardContainer;
+
+    private playerChip: Chip;
+    private botChip: Chip;
 
     constructor(scene: Phaser.Scene) {
 
@@ -13,9 +19,9 @@ export class BoardContainer extends Phaser.GameObjects.Container {
 
         this.x = GameConstants.GAME_WIDTH / 2;
         this.y = 420;
+        this.scaleX = GameVars.scaleX;;
 
         const boardBackground = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "board");
-        boardBackground.scaleX = GameVars.scaleX;
         this.add(boardBackground);
     }
 
@@ -23,38 +29,4 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         //
     }
 
-    public flagCell(p: { r: number, c: number }): void {
-
-        //
-    }
-
-    public unFlagCell(p: { r: number, c: number }): void {
-       //
-    }
-
-    public revealOpenedCells(): void {
-        //
-    }
-
-    public isCellOpen(p: {r: number, c: number}): boolean {
-
-        return true;
-    }
-
-    public isCellFlagged(p: {r: number, c: number}): boolean {
-
-        return true;
-    }
-
-    public revealMinedCells(p: {r: number, c: number}): void {
-        //
-    }
-
-    public hideFlags(): void {
-        //
-    }
-
-    public showFlags(): void {
-        //
-    }
 }
