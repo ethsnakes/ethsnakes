@@ -4,14 +4,31 @@ export class Chip extends Phaser.GameObjects.Container {
 
     private shadow: Phaser.GameObjects.Image;
     private chip: Phaser.GameObjects.Image;
+    private isPlayer: boolean;
 
-    constructor(scene: Phaser.Scene, color: number, player: string) {
+    constructor(scene: Phaser.Scene, color: number, isPlayer: boolean) {
 
         super(scene);
+
+        this.isPlayer = isPlayer;
+
+        this.shadow = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "player_shadow");
+        this.add(this.shadow);
+
+        this.chip = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "chip_player");
+        this.chip.setOrigin(.5, .85);
+        this.add(this.chip);
     }
 
     public moveToCell(i:  number): void {
-        //
+        
+        const p = this.getCellPosition(i);
+
+        this.chip.x = p.x;
+        this.chip.y = p.y;
+
+        this.shadow.x = this.chip.x;
+        this.shadow.y = this.chip.y + 10;
     }
 
     private getCellPosition(i: number): {x: number, y: number} {

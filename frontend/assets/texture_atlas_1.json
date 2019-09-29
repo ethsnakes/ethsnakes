@@ -4,8 +4,8 @@
 			"image": "texture_atlas_1.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 652,
-				"h": 809
+				"w": 754,
+				"h": 652
 			},
 			"scale": 1,
 			"frames": [
@@ -31,27 +31,6 @@
 					}
 				},
 				{
-					"filename": "tokens",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 312,
-						"h": 155
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 312,
-						"h": 155
-					},
-					"frame": {
-						"x": 1,
-						"y": 653,
-						"w": 312,
-						"h": 155
-					}
-				},
-				{
 					"filename": "btn_dice_off",
 					"rotated": false,
 					"trimmed": false,
@@ -66,52 +45,10 @@
 						"h": 104
 					},
 					"frame": {
-						"x": 315,
-						"y": 653,
+						"x": 653,
+						"y": 1,
 						"w": 100,
 						"h": 104
-					}
-				},
-				{
-					"filename": "arrow",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 35,
-						"h": 27
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 35,
-						"h": 27
-					},
-					"frame": {
-						"x": 315,
-						"y": 759,
-						"w": 35,
-						"h": 27
-					}
-				},
-				{
-					"filename": "player_shadow",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 33,
-						"h": 17
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 33,
-						"h": 17
-					},
-					"frame": {
-						"x": 315,
-						"y": 788,
-						"w": 33,
-						"h": 17
 					}
 				},
 				{
@@ -129,10 +66,52 @@
 						"h": 104
 					},
 					"frame": {
-						"x": 417,
-						"y": 653,
+						"x": 653,
+						"y": 107,
 						"w": 100,
 						"h": 104
+					}
+				},
+				{
+					"filename": "chip_bot",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 30,
+						"h": 90
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 30,
+						"h": 90
+					},
+					"frame": {
+						"x": 653,
+						"y": 213,
+						"w": 30,
+						"h": 90
+					}
+				},
+				{
+					"filename": "chip_player",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 30,
+						"h": 90
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 30,
+						"h": 90
+					},
+					"frame": {
+						"x": 653,
+						"y": 305,
+						"w": 30,
+						"h": 90
 					}
 				},
 				{
@@ -150,8 +129,8 @@
 						"h": 62
 					},
 					"frame": {
-						"x": 519,
-						"y": 653,
+						"x": 653,
+						"y": 397,
 						"w": 60,
 						"h": 62
 					}
@@ -171,10 +150,52 @@
 						"h": 62
 					},
 					"frame": {
-						"x": 581,
-						"y": 653,
+						"x": 685,
+						"y": 213,
 						"w": 60,
 						"h": 62
+					}
+				},
+				{
+					"filename": "arrow",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 35,
+						"h": 27
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 35,
+						"h": 27
+					},
+					"frame": {
+						"x": 685,
+						"y": 277,
+						"w": 35,
+						"h": 27
+					}
+				},
+				{
+					"filename": "player_shadow",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 20
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 1,
+						"w": 30,
+						"h": 15
+					},
+					"frame": {
+						"x": 685,
+						"y": 306,
+						"w": 30,
+						"h": 15
 					}
 				}
 			]
@@ -183,6 +204,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:d687822e4ab491bd87291be2e72fedd3:584a45454d74575849bd4c64deb1a169:1bd3fbbbdaf54e41cf80e3e904578de4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:73c37a1c7e14d12f3d8056814c005855:6ec56badfcf61c09d542db1049658e71:1bd3fbbbdaf54e41cf80e3e904578de4$"
 	}
 }

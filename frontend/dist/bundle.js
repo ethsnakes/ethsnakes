@@ -220,6 +220,12 @@ var GameManager = /** @class */ (function () {
     GameManager.matchOver = function () {
         //
     };
+    GameManager.addFunds = function () {
+        console.log("add funds");
+    };
+    GameManager.retrieveFunds = function () {
+        console.log("retrieve funds");
+    };
     GameManager.writeGameData = function () {
         GameManager.setGameStorageData(GameConstants_1.GameConstants.SAVED_GAME_DATA_KEY, GameVars_1.GameVars.gameData, function () {
             GameManager.log("game data successfully saved");
@@ -524,6 +530,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/GameConstants.ts");
 var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
+var Chip_1 = __webpack_require__(/*! ./Chip */ "./src/scenes/board-scene/Chip.ts");
 var BoardContainer = /** @class */ (function (_super) {
     __extends(BoardContainer, _super);
     function BoardContainer(scene) {
@@ -531,38 +538,18 @@ var BoardContainer = /** @class */ (function (_super) {
         BoardContainer.currentInstance = _this;
         _this.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
         _this.y = 420;
+        _this.scaleX = GameVars_1.GameVars.scaleX;
         var boardBackground = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "board");
-        boardBackground.scaleX = GameVars_1.GameVars.scaleX;
         _this.add(boardBackground);
+        _this.playerChip = new Chip_1.Chip(_this.scene, 1, true);
+        _this.add(_this.playerChip);
+        _this.playerChip.moveToCell(17);
         return _this;
     }
     BoardContainer.prototype.start = function () {
         //
     };
-    BoardContainer.prototype.flagCell = function (p) {
-        //
-    };
-    BoardContainer.prototype.unFlagCell = function (p) {
-        //
-    };
-    BoardContainer.prototype.revealOpenedCells = function () {
-        //
-    };
-    BoardContainer.prototype.isCellOpen = function (p) {
-        return true;
-    };
-    BoardContainer.prototype.isCellFlagged = function (p) {
-        return true;
-    };
-    BoardContainer.prototype.revealMinedCells = function (p) {
-        //
-    };
-    BoardContainer.prototype.hideFlags = function () {
-        //
-    };
-    BoardContainer.prototype.showFlags = function () {
-        //
-    };
+    BoardContainer.CELL_SIZE = 63.5;
     return BoardContainer;
 }(Phaser.GameObjects.Container));
 exports.BoardContainer = BoardContainer;
@@ -653,7 +640,6 @@ var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/Game
 var BoardContainer_1 = __webpack_require__(/*! ./BoardContainer */ "./src/scenes/board-scene/BoardContainer.ts");
 var BoardManager_1 = __webpack_require__(/*! ./BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
 var SettingsLayer_1 = __webpack_require__(/*! ./SettingsLayer */ "./src/scenes/board-scene/SettingsLayer.ts");
-var OutcomeLayer_1 = __webpack_require__(/*! ./OutcomeLayer */ "./src/scenes/board-scene/OutcomeLayer.ts");
 var DiceContainer_1 = __webpack_require__(/*! ./DiceContainer */ "./src/scenes/board-scene/DiceContainer.ts");
 var BoardScene = /** @class */ (function (_super) {
     __extends(BoardScene, _super);
@@ -689,15 +675,7 @@ var BoardScene = /** @class */ (function (_super) {
         this.settingsLayer.destroy();
     };
     BoardScene.prototype.matchOver = function (won, p) {
-        if (won) {
-            this.boardContainer.showFlags();
-            var outcomeLayer = new OutcomeLayer_1.OutcomeLayer(this);
-            this.add.existing(outcomeLayer);
-        }
-        else {
-            this.boardContainer.revealMinedCells(p);
-            this.boardContainer.hideFlags();
-        }
+        //
     };
     BoardScene.prototype.addDiceAnimations = function () {
         for (var i = 1; i <= 6; i++) {
@@ -712,6 +690,63 @@ var BoardScene = /** @class */ (function (_super) {
     return BoardScene;
 }(Phaser.Scene));
 exports.BoardScene = BoardScene;
+
+
+/***/ }),
+
+/***/ "./src/scenes/board-scene/Chip.ts":
+/*!****************************************!*\
+  !*** ./src/scenes/board-scene/Chip.ts ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var BoardContainer_1 = __webpack_require__(/*! ./BoardContainer */ "./src/scenes/board-scene/BoardContainer.ts");
+var Chip = /** @class */ (function (_super) {
+    __extends(Chip, _super);
+    function Chip(scene, color, isPlayer) {
+        var _this = _super.call(this, scene) || this;
+        _this.isPlayer = isPlayer;
+        _this.chip = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "chip_player");
+        _this.chip.setOrigin(.5, .85);
+        _this.add(_this.chip);
+        return _this;
+    }
+    Chip.prototype.moveToCell = function (i) {
+        var p = this.getCellPosition(i);
+        this.chip.x = p.x;
+        this.chip.y = p.y;
+    };
+    Chip.prototype.getCellPosition = function (i) {
+        var x;
+        if (Math.floor((i - 1) / 10) % 2 === 0) {
+            x = (((i - 1) % 10) - 4.5) * BoardContainer_1.BoardContainer.CELL_SIZE;
+        }
+        else {
+            x = (4.5 - ((i - 1) % 10)) * BoardContainer_1.BoardContainer.CELL_SIZE;
+        }
+        var y = (4.5 - Math.floor((i - 1) / 10)) * BoardContainer_1.BoardContainer.CELL_SIZE + BoardContainer_1.BoardContainer.CELL_SIZE * .2;
+        return { x: x, y: y };
+    };
+    return Chip;
+}(Phaser.GameObjects.Container));
+exports.Chip = Chip;
 
 
 /***/ }),
@@ -747,6 +782,7 @@ var DiceContainer = /** @class */ (function (_super) {
     function DiceContainer(scene) {
         var _this = _super.call(this, scene) || this;
         _this.dice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 100 * GameVars_1.GameVars.scaleX, 550, "dice2");
+        _this.dice.scaleX = GameVars_1.GameVars.scaleX;
         BoardScene_1.BoardScene.currentInstance.add.existing(_this.dice);
         _this.dice.visible = false;
         _this.add(_this.dice);
@@ -790,18 +826,35 @@ var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/Game
 var Utils_1 = __webpack_require__(/*! ../../utils/Utils */ "./src/utils/Utils.ts");
 var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
 var BoardManager_1 = __webpack_require__(/*! ./BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
+var GameManager_1 = __webpack_require__(/*! ../../GameManager */ "./src/GameManager.ts");
 var GUI = /** @class */ (function (_super) {
     __extends(GUI, _super);
     function GUI(scene) {
         var _this = _super.call(this, scene) || this;
+        _this.addFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - -280 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_settings_off", "btn_settings_on");
+        _this.addFundsButton.scaleX = GameVars_1.GameVars.scaleX;
+        _this.addFundsButton.onUp(_this.onClickAddFunds, _this);
+        _this.add(_this.addFundsButton);
+        _this.retrieveFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 180 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_settings_off", "btn_settings_on");
+        _this.retrieveFundsButton.scaleX = GameVars_1.GameVars.scaleX;
+        _this.retrieveFundsButton.onUp(_this.onClickRetrieveFunds, _this);
+        _this.add(_this.retrieveFundsButton);
         _this.settingsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 40 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_settings_off", "btn_settings_on");
+        _this.settingsButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.settingsButton.onUp(_this.onClickSettings, _this);
         _this.add(_this.settingsButton);
         _this.diceButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 70 * GameVars_1.GameVars.scaleX, GameConstants_1.GameConstants.GAME_HEIGHT - 70, "texture_atlas_1", "btn_dice_off", "btn_dice_on");
+        _this.diceButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.diceButton.onUp(_this.onClickDiceButton, _this);
         _this.add(_this.diceButton);
         return _this;
     }
+    GUI.prototype.onClickAddFunds = function () {
+        GameManager_1.GameManager.addFunds();
+    };
+    GUI.prototype.onClickRetrieveFunds = function () {
+        GameManager_1.GameManager.retrieveFunds();
+    };
     GUI.prototype.onClickSettings = function () {
         BoardManager_1.BoardManager.onClickSettings();
     };
@@ -849,78 +902,16 @@ var HUD = /** @class */ (function (_super) {
         background.fillRect(0, 0, GameConstants_1.GameConstants.GAME_WIDTH, 75);
         _this.add(background);
         var yourBalanceLabel = new Phaser.GameObjects.Text(_this.scene, 10, 5, "YOUR BALANCE:", { fontFamily: "RussoOne", fontSize: "40px", color: "#000000" });
+        yourBalanceLabel.scaleX = GameVars_1.GameVars.scaleX;
         _this.add(yourBalanceLabel);
-        _this.balanceLabel = new Phaser.GameObjects.Text(_this.scene, yourBalanceLabel.x + yourBalanceLabel.width + 20, 5, GameVars_1.GameVars.balance + " ETH", { fontFamily: "RussoOne", fontSize: "40px", color: "#000000" });
+        _this.balanceLabel = new Phaser.GameObjects.Text(_this.scene, (yourBalanceLabel.x + yourBalanceLabel.width + 20) * GameVars_1.GameVars.scaleX, 5, GameVars_1.GameVars.balance + " ETH", { fontFamily: "RussoOne", fontSize: "40px", color: "#000000" });
+        _this.balanceLabel.scaleX = GameVars_1.GameVars.scaleX;
         _this.add(_this.balanceLabel);
         return _this;
     }
     return HUD;
 }(Phaser.GameObjects.Container));
 exports.HUD = HUD;
-
-
-/***/ }),
-
-/***/ "./src/scenes/board-scene/OutcomeLayer.ts":
-/*!************************************************!*\
-  !*** ./src/scenes/board-scene/OutcomeLayer.ts ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/GameConstants.ts");
-var OutcomeLayer = /** @class */ (function (_super) {
-    __extends(OutcomeLayer, _super);
-    function OutcomeLayer(scene) {
-        var _this = _super.call(this, scene) || this;
-        var w = 210;
-        var h = 100;
-        _this.f = 0;
-        _this.visible = false;
-        var background = new Phaser.GameObjects.Graphics(_this.scene);
-        background.fillStyle(0xFFFFFF, .8);
-        background.fillRect(0, 0, w, h);
-        _this.add(background);
-        background.x = GameConstants_1.GameConstants.GAME_WIDTH / 2 - w / 2;
-        background.y = GameConstants_1.GameConstants.GAME_HEIGHT / 2 - h / 2;
-        _this.container1 = new Phaser.GameObjects.Container(_this.scene);
-        _this.container1.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
-        _this.container1.y = 180 - 3;
-        _this.add(_this.container1);
-        _this.container2 = new Phaser.GameObjects.Container(_this.scene);
-        _this.container2.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
-        _this.container2.y = 180 + 3;
-        _this.add(_this.container2);
-        var label = new Phaser.GameObjects.Text(_this.scene, 0, -45, "Y   U   W  N", { fontFamily: "RussoOne", fontSize: "35px", color: "#080893" });
-        label.setOrigin(.5);
-        _this.container1.add(label);
-        label = new Phaser.GameObjects.Text(_this.scene, -58, -45, "O", { fontFamily: "RussoOne", fontSize: "35px", color: "#080893" });
-        label.setOrigin(.5);
-        _this.container2.add(label);
-        label = new Phaser.GameObjects.Text(_this.scene, 62, -45, "I", { fontFamily: "RussoOne", fontSize: "35px", color: "#080893" });
-        label.setOrigin(.5);
-        _this.container2.add(label);
-        return _this;
-    }
-    return OutcomeLayer;
-}(Phaser.GameObjects.Container));
-exports.OutcomeLayer = OutcomeLayer;
 
 
 /***/ }),

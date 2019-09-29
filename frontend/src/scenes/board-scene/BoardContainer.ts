@@ -19,10 +19,17 @@ export class BoardContainer extends Phaser.GameObjects.Container {
 
         this.x = GameConstants.GAME_WIDTH / 2;
         this.y = 420;
-        this.scaleX = GameVars.scaleX;;
+        this.scaleX = GameVars.scaleX;
+
 
         const boardBackground = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "board");
         this.add(boardBackground);
+
+
+        this.playerChip = new Chip(this.scene, 1, true);
+        this.add(this.playerChip);
+
+        this.playerChip.moveToCell(53);
     }
 
     public start(): void {

@@ -247,6 +247,20 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">texture_atlas_1/chip_bot.png</key>
+            <key type="filename">texture_atlas_1/chip_player.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>13,39,26,77</rect>
+                <key>scale9Paddings</key>
+                <rect>13,39,26,77</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">texture_atlas_1/player_shadow.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -257,19 +271,6 @@
                 <rect>8,4,17,9</rect>
                 <key>scale9Paddings</key>
                 <rect>8,4,17,9</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">texture_atlas_1/tokens.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>78,39,156,77</rect>
-                <key>scale9Paddings</key>
-                <rect>78,39,156,77</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

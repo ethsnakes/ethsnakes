@@ -70,19 +70,7 @@ export class BoardScene extends Phaser.Scene {
     }
 
     public matchOver(won: boolean, p: {r: number, c: number}): void {
-
-        if (won) {
-            
-            this.boardContainer.showFlags();
-
-            const outcomeLayer = new OutcomeLayer(this);
-            this.add.existing(outcomeLayer);
-
-        } else {
-            
-            this.boardContainer.revealMinedCells(p);
-            this.boardContainer.hideFlags();
-        }
+        //
     }
 
     private addDiceAnimations(): void {
