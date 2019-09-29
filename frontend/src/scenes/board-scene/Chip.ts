@@ -6,34 +6,77 @@ export class Chip extends Phaser.GameObjects.Container {
     private chip: Phaser.GameObjects.Image;
     private isPlayer: boolean;
     private i: number;
+    private goalCell: number;
+    private origY: number;
 
     constructor(scene: Phaser.Scene, color: number, isPlayer: boolean) {
 
         super(scene);
 
-        this.i = -1;
+        this.i = 0;
 
         this.isPlayer = isPlayer;
+        this.origY = .85;
 
-        this.shadow = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "player_shadow");
+        const p = this.getCellPosition(this.i + 1);
+
+        this.shadow = new Phaser.GameObjects.Image(this.scene, p.x - BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", "player_shadow");
+        this.shadow.setOrigin(.5, -.2);
         this.add(this.shadow);
 
-        this.chip = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "chip_player");
-        this.chip.setOrigin(.5, .85);
+        this.chip = new Phaser.GameObjects.Image(this.scene, p.x - BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", "chip_player");
         this.add(this.chip);
+
+        // HAY Q HACER ESTO PQ EL METODO UPDATE NO SE UTILIZA DE MANERA AUTOMATICA
+        this.scene.sys.updateList.add(this);
     }
 
-    public moveToCell(i:  number): void {
+    public preUpdate(time: number, delta: number): void {
 
-        this.i = i;
+        this.chip.setOrigin(.5, this.origY);
+    }
+
+    public moveToCell(i: number): void {
+
+        this.goalCell = i;
+
+        this.i ++;
+ 
+        const p = this.getCellPosition(this.i);
+        this.applyTween(p);
+    }
+
+    private applyTween(p: {x: number, y: number}): void {
         
-        const p = this.getCellPosition(i);
+        this.scene.tweens.add({
+            targets: [this.chip, this.shadow],
+            x: p.x,
+            y: p.y,
+            ease: Phaser.Math.Easing.Cubic.InOut,
+            duration: 400,
+            onComplete: this.onTweeenComplete,
+            onCompleteScope: this
+        });
 
-        this.chip.x = p.x;
-        this.chip.y = p.y;
+        this.scene.tweens.add({
+            targets: this,
+            origY: 1.15,
+            ease: Phaser.Math.Easing.Cubic.InOut,
+            duration: 200, 
+            yoyo: true
+        });
+    }
 
-        this.shadow.x = this.chip.x;
-        this.shadow.y = this.chip.y + 10;
+    private onTweeenComplete(): void {
+
+        if (this.i < this.goalCell) {
+            this.i ++;
+            const p = this.getCellPosition(this.i);
+            this.applyTween(p);
+        } else {
+
+            console.log("ficha ha llegado");
+        }
     }
 
     private getCellPosition(i: number): {x: number, y: number} {
@@ -46,7 +89,7 @@ export class Chip extends Phaser.GameObjects.Container {
             x = (4.5 - ((i - 1) % 10)) * BoardContainer.CELL_SIZE;
         }
 
-        const y = (4.5 - Math.floor((i - 1) / 10)) * BoardContainer.CELL_SIZE + BoardContainer.CELL_SIZE * .2;
+        const y = (4.5 - Math.floor((i - 1) / 10)) * BoardContainer.CELL_SIZE;
 
         return {x: x, y: y};
     }
