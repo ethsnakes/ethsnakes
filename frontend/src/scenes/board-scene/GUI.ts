@@ -9,18 +9,24 @@ export class GUI extends Phaser.GameObjects.Container {
     private settingsButton: Button;
     private diceButton: Button;
     private addFundsButton: Button;
-    private retrieveFundsButton;
+    private retrieveFundsButton: Button;
+    private playButton: Button;
 
     constructor(scene: Phaser.Scene) {
 
         super(scene);
 
-        this.addFundsButton = new Button(this.scene, GameConstants.GAME_WIDTH - 280 * GameVars.scaleX, 40, "texture_atlas_1", "btn_settings_off", "btn_settings_on");
+        this.playButton = new Button(this.scene, 90 * GameVars.scaleX, 170, "texture_atlas_1", "btn_play_off", "btn_play_on");
+        this.playButton.scaleX = GameVars.scaleX;
+        this.playButton.onUp(this.onClickPlay, this);
+        this.add(this.playButton);
+
+        this.addFundsButton = new Button(this.scene, GameConstants.GAME_WIDTH - 340 * GameVars.scaleX, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
         this.addFundsButton.scaleX = GameVars.scaleX;
         this.addFundsButton.onUp(this.onClickAddFunds, this);
         this.add(this.addFundsButton);
 
-        this.retrieveFundsButton = new Button(this.scene, GameConstants.GAME_WIDTH - 180 * GameVars.scaleX, 40, "texture_atlas_1", "btn_settings_off", "btn_settings_on");
+        this.retrieveFundsButton = new Button(this.scene, GameConstants.GAME_WIDTH - 170 * GameVars.scaleX, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
         this.retrieveFundsButton.scaleX = GameVars.scaleX;
         this.retrieveFundsButton.onUp(this.onClickRetrieveFunds, this);
         this.add(this.retrieveFundsButton);
@@ -34,6 +40,11 @@ export class GUI extends Phaser.GameObjects.Container {
         this.diceButton.scaleX = GameVars.scaleX;
         this.diceButton.onUp(this.onClickDiceButton, this);
         this.add(this.diceButton);
+    }
+
+    private onClickPlay(): void {
+        
+        GameManager.play();
     }
 
     private onClickAddFunds(): void {

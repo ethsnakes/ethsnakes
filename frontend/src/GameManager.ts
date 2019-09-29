@@ -63,6 +63,11 @@ export class GameManager {
         GameVars.currentScene.scene.start("BoardScene");
     }
 
+    public static play(): void {
+        
+        console.log("play");
+    }
+
     public static matchOver(): void {
         //
     }

@@ -5,10 +5,13 @@ export class Chip extends Phaser.GameObjects.Container {
     private shadow: Phaser.GameObjects.Image;
     private chip: Phaser.GameObjects.Image;
     private isPlayer: boolean;
+    private i: number;
 
     constructor(scene: Phaser.Scene, color: number, isPlayer: boolean) {
 
         super(scene);
+
+        this.i = -1;
 
         this.isPlayer = isPlayer;
 
@@ -21,6 +24,8 @@ export class Chip extends Phaser.GameObjects.Container {
     }
 
     public moveToCell(i:  number): void {
+
+        this.i = i;
         
         const p = this.getCellPosition(i);
 

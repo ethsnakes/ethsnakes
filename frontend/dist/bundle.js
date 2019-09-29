@@ -543,7 +543,7 @@ var BoardContainer = /** @class */ (function (_super) {
         _this.add(boardBackground);
         _this.playerChip = new Chip_1.Chip(_this.scene, 1, true);
         _this.add(_this.playerChip);
-        _this.playerChip.moveToCell(17);
+        _this.playerChip.moveToCell(53);
         return _this;
     }
     BoardContainer.prototype.start = function () {
@@ -722,16 +722,22 @@ var Chip = /** @class */ (function (_super) {
     __extends(Chip, _super);
     function Chip(scene, color, isPlayer) {
         var _this = _super.call(this, scene) || this;
+        _this.i = -1;
         _this.isPlayer = isPlayer;
+        _this.shadow = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "player_shadow");
+        _this.add(_this.shadow);
         _this.chip = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "chip_player");
         _this.chip.setOrigin(.5, .85);
         _this.add(_this.chip);
         return _this;
     }
     Chip.prototype.moveToCell = function (i) {
+        this.i = i;
         var p = this.getCellPosition(i);
         this.chip.x = p.x;
         this.chip.y = p.y;
+        this.shadow.x = this.chip.x;
+        this.shadow.y = this.chip.y + 10;
     };
     Chip.prototype.getCellPosition = function (i) {
         var x;
@@ -831,11 +837,11 @@ var GUI = /** @class */ (function (_super) {
     __extends(GUI, _super);
     function GUI(scene) {
         var _this = _super.call(this, scene) || this;
-        _this.addFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - -280 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_settings_off", "btn_settings_on");
+        _this.addFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 280 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
         _this.addFundsButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.addFundsButton.onUp(_this.onClickAddFunds, _this);
         _this.add(_this.addFundsButton);
-        _this.retrieveFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 180 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_settings_off", "btn_settings_on");
+        _this.retrieveFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 180 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
         _this.retrieveFundsButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.retrieveFundsButton.onUp(_this.onClickRetrieveFunds, _this);
         _this.add(_this.retrieveFundsButton);

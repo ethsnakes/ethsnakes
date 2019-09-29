@@ -4,8 +4,8 @@
 			"image": "texture_atlas_1.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 754,
-				"h": 652
+				"w": 652,
+				"h": 849
 			},
 			"scale": 1,
 			"frames": [
@@ -31,6 +31,132 @@
 					}
 				},
 				{
+					"filename": "btn_play_off",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 158,
+						"h": 97
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 158,
+						"h": 97
+					},
+					"frame": {
+						"x": 1,
+						"y": 653,
+						"w": 158,
+						"h": 97
+					}
+				},
+				{
+					"filename": "btn_add_funds_off",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 158,
+						"h": 47
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 158,
+						"h": 47
+					},
+					"frame": {
+						"x": 1,
+						"y": 752,
+						"w": 158,
+						"h": 47
+					}
+				},
+				{
+					"filename": "btn_add_funds_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 158,
+						"h": 47
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 158,
+						"h": 47
+					},
+					"frame": {
+						"x": 1,
+						"y": 801,
+						"w": 158,
+						"h": 47
+					}
+				},
+				{
+					"filename": "btn_play_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 158,
+						"h": 97
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 158,
+						"h": 97
+					},
+					"frame": {
+						"x": 161,
+						"y": 653,
+						"w": 158,
+						"h": 97
+					}
+				},
+				{
+					"filename": "btn_retrieve_funds_off",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 158,
+						"h": 47
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 158,
+						"h": 47
+					},
+					"frame": {
+						"x": 161,
+						"y": 752,
+						"w": 158,
+						"h": 47
+					}
+				},
+				{
+					"filename": "btn_retrieve_funds_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 158,
+						"h": 47
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 158,
+						"h": 47
+					},
+					"frame": {
+						"x": 161,
+						"y": 801,
+						"w": 158,
+						"h": 47
+					}
+				},
+				{
 					"filename": "btn_dice_off",
 					"rotated": false,
 					"trimmed": false,
@@ -45,10 +171,73 @@
 						"h": 104
 					},
 					"frame": {
-						"x": 653,
-						"y": 1,
+						"x": 321,
+						"y": 653,
 						"w": 100,
 						"h": 104
+					}
+				},
+				{
+					"filename": "btn_settings_off",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 60,
+						"h": 62
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 60,
+						"h": 62
+					},
+					"frame": {
+						"x": 321,
+						"y": 759,
+						"w": 60,
+						"h": 62
+					}
+				},
+				{
+					"filename": "player_shadow",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 20
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 1,
+						"w": 30,
+						"h": 15
+					},
+					"frame": {
+						"x": 321,
+						"y": 823,
+						"w": 30,
+						"h": 15
+					}
+				},
+				{
+					"filename": "btn_settings_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 60,
+						"h": 62
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 60,
+						"h": 62
+					},
+					"frame": {
+						"x": 383,
+						"y": 759,
+						"w": 60,
+						"h": 62
 					}
 				},
 				{
@@ -66,10 +255,31 @@
 						"h": 104
 					},
 					"frame": {
-						"x": 653,
-						"y": 107,
+						"x": 423,
+						"y": 653,
 						"w": 100,
 						"h": 104
+					}
+				},
+				{
+					"filename": "arrow",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 35,
+						"h": 27
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 35,
+						"h": 27
+					},
+					"frame": {
+						"x": 445,
+						"y": 759,
+						"w": 35,
+						"h": 27
 					}
 				},
 				{
@@ -87,8 +297,8 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 653,
-						"y": 213,
+						"x": 525,
+						"y": 653,
 						"w": 30,
 						"h": 90
 					}
@@ -108,94 +318,10 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 653,
-						"y": 305,
+						"x": 525,
+						"y": 745,
 						"w": 30,
 						"h": 90
-					}
-				},
-				{
-					"filename": "btn_settings_off",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 60,
-						"h": 62
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 60,
-						"h": 62
-					},
-					"frame": {
-						"x": 653,
-						"y": 397,
-						"w": 60,
-						"h": 62
-					}
-				},
-				{
-					"filename": "btn_settings_on",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 60,
-						"h": 62
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 60,
-						"h": 62
-					},
-					"frame": {
-						"x": 685,
-						"y": 213,
-						"w": 60,
-						"h": 62
-					}
-				},
-				{
-					"filename": "arrow",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 35,
-						"h": 27
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 35,
-						"h": 27
-					},
-					"frame": {
-						"x": 685,
-						"y": 277,
-						"w": 35,
-						"h": 27
-					}
-				},
-				{
-					"filename": "player_shadow",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 38,
-						"h": 20
-					},
-					"spriteSourceSize": {
-						"x": 4,
-						"y": 1,
-						"w": 30,
-						"h": 15
-					},
-					"frame": {
-						"x": 685,
-						"y": 306,
-						"w": 30,
-						"h": 15
 					}
 				}
 			]
@@ -204,6 +330,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:73c37a1c7e14d12f3d8056814c005855:6ec56badfcf61c09d542db1049658e71:1bd3fbbbdaf54e41cf80e3e904578de4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:f9b0efa78cb149851f34d18071e8493f:d6b9e2e7fe3a4080d4caa9f4fdd3e9c1:1bd3fbbbdaf54e41cf80e3e904578de4$"
 	}
 }
