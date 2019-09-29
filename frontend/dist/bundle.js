@@ -217,6 +217,9 @@ var GameManager = /** @class */ (function () {
     GameManager.reset = function () {
         GameVars_1.GameVars.currentScene.scene.start("BoardScene");
     };
+    GameManager.play = function () {
+        console.log("play");
+    };
     GameManager.matchOver = function () {
         //
     };
@@ -543,7 +546,7 @@ var BoardContainer = /** @class */ (function (_super) {
         _this.add(boardBackground);
         _this.playerChip = new Chip_1.Chip(_this.scene, 1, true);
         _this.add(_this.playerChip);
-        _this.playerChip.moveToCell(53);
+        _this.playerChip.moveToCell(99);
         return _this;
     }
     BoardContainer.prototype.start = function () {
@@ -722,22 +725,55 @@ var Chip = /** @class */ (function (_super) {
     __extends(Chip, _super);
     function Chip(scene, color, isPlayer) {
         var _this = _super.call(this, scene) || this;
-        _this.i = -1;
+        _this.i = 0;
         _this.isPlayer = isPlayer;
-        _this.shadow = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "player_shadow");
+        _this.origY = .85;
+        var p = _this.getCellPosition(_this.i + 1);
+        _this.shadow = new Phaser.GameObjects.Image(_this.scene, p.x - BoardContainer_1.BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", "player_shadow");
+        _this.shadow.setOrigin(.5, -.2);
         _this.add(_this.shadow);
-        _this.chip = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "chip_player");
-        _this.chip.setOrigin(.5, .85);
+        _this.chip = new Phaser.GameObjects.Image(_this.scene, p.x - BoardContainer_1.BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", "chip_player");
         _this.add(_this.chip);
+        // HAY Q HACER ESTO PQ EL METODO UPDATE NO SE UTILIZA DE MANERA AUTOMATICA
+        _this.scene.sys.updateList.add(_this);
         return _this;
     }
+    Chip.prototype.preUpdate = function (time, delta) {
+        this.chip.setOrigin(.5, this.origY);
+    };
     Chip.prototype.moveToCell = function (i) {
-        this.i = i;
-        var p = this.getCellPosition(i);
-        this.chip.x = p.x;
-        this.chip.y = p.y;
-        this.shadow.x = this.chip.x;
-        this.shadow.y = this.chip.y + 10;
+        this.goalCell = i;
+        this.i++;
+        var p = this.getCellPosition(this.i);
+        this.applyTween(p);
+    };
+    Chip.prototype.applyTween = function (p) {
+        this.scene.tweens.add({
+            targets: [this.chip, this.shadow],
+            x: p.x,
+            y: p.y,
+            ease: Phaser.Math.Easing.Cubic.InOut,
+            duration: 400,
+            onComplete: this.onTweeenComplete,
+            onCompleteScope: this
+        });
+        this.scene.tweens.add({
+            targets: this,
+            origY: 1.15,
+            ease: Phaser.Math.Easing.Cubic.InOut,
+            duration: 200,
+            yoyo: true
+        });
+    };
+    Chip.prototype.onTweeenComplete = function () {
+        if (this.i < this.goalCell) {
+            this.i++;
+            var p = this.getCellPosition(this.i);
+            this.applyTween(p);
+        }
+        else {
+            console.log("ficha ha llegado");
+        }
     };
     Chip.prototype.getCellPosition = function (i) {
         var x;
@@ -747,7 +783,7 @@ var Chip = /** @class */ (function (_super) {
         else {
             x = (4.5 - ((i - 1) % 10)) * BoardContainer_1.BoardContainer.CELL_SIZE;
         }
-        var y = (4.5 - Math.floor((i - 1) / 10)) * BoardContainer_1.BoardContainer.CELL_SIZE + BoardContainer_1.BoardContainer.CELL_SIZE * .2;
+        var y = (4.5 - Math.floor((i - 1) / 10)) * BoardContainer_1.BoardContainer.CELL_SIZE;
         return { x: x, y: y };
     };
     return Chip;
@@ -837,11 +873,15 @@ var GUI = /** @class */ (function (_super) {
     __extends(GUI, _super);
     function GUI(scene) {
         var _this = _super.call(this, scene) || this;
-        _this.addFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 280 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
+        _this.playButton = new Utils_1.Button(_this.scene, 90 * GameVars_1.GameVars.scaleX, 170, "texture_atlas_1", "btn_play_off", "btn_play_on");
+        _this.playButton.scaleX = GameVars_1.GameVars.scaleX;
+        _this.playButton.onUp(_this.onClickPlay, _this);
+        _this.add(_this.playButton);
+        _this.addFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 340 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
         _this.addFundsButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.addFundsButton.onUp(_this.onClickAddFunds, _this);
         _this.add(_this.addFundsButton);
-        _this.retrieveFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 180 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
+        _this.retrieveFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 170 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
         _this.retrieveFundsButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.retrieveFundsButton.onUp(_this.onClickRetrieveFunds, _this);
         _this.add(_this.retrieveFundsButton);
@@ -855,6 +895,9 @@ var GUI = /** @class */ (function (_super) {
         _this.add(_this.diceButton);
         return _this;
     }
+    GUI.prototype.onClickPlay = function () {
+        GameManager_1.GameManager.play();
+    };
     GUI.prototype.onClickAddFunds = function () {
         GameManager_1.GameManager.addFunds();
     };
@@ -907,10 +950,10 @@ var HUD = /** @class */ (function (_super) {
         background.fillStyle(0xFFFF00, .65);
         background.fillRect(0, 0, GameConstants_1.GameConstants.GAME_WIDTH, 75);
         _this.add(background);
-        var yourBalanceLabel = new Phaser.GameObjects.Text(_this.scene, 10, 5, "YOUR BALANCE:", { fontFamily: "RussoOne", fontSize: "40px", color: "#000000" });
+        var yourBalanceLabel = new Phaser.GameObjects.Text(_this.scene, 10, 15, "YOUR BALANCE:", { fontFamily: "RussoOne", fontSize: "40px", color: "#000000" });
         yourBalanceLabel.scaleX = GameVars_1.GameVars.scaleX;
         _this.add(yourBalanceLabel);
-        _this.balanceLabel = new Phaser.GameObjects.Text(_this.scene, (yourBalanceLabel.x + yourBalanceLabel.width + 20) * GameVars_1.GameVars.scaleX, 5, GameVars_1.GameVars.balance + " ETH", { fontFamily: "RussoOne", fontSize: "40px", color: "#000000" });
+        _this.balanceLabel = new Phaser.GameObjects.Text(_this.scene, (yourBalanceLabel.x + yourBalanceLabel.width + 20) * GameVars_1.GameVars.scaleX, yourBalanceLabel.y, GameVars_1.GameVars.balance + " ETH", { fontFamily: "RussoOne", fontSize: "40px", color: "#000000" });
         _this.balanceLabel.scaleX = GameVars_1.GameVars.scaleX;
         _this.add(_this.balanceLabel);
         return _this;

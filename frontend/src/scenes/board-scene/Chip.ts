@@ -53,7 +53,7 @@ export class Chip extends Phaser.GameObjects.Container {
             x: p.x,
             y: p.y,
             ease: Phaser.Math.Easing.Cubic.InOut,
-            duration: 400,
+            duration: 40,
             onComplete: this.onTweeenComplete,
             onCompleteScope: this
         });
@@ -62,7 +62,7 @@ export class Chip extends Phaser.GameObjects.Container {
             targets: this,
             origY: 1.15,
             ease: Phaser.Math.Easing.Cubic.InOut,
-            duration: 200, 
+            duration: 20, 
             yoyo: true
         });
     }

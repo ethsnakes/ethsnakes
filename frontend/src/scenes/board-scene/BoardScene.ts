@@ -40,14 +40,14 @@ export class BoardScene extends Phaser.Scene {
         background.fillStyle(0xAAAAAA);
         background.fillRect(0, 0, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
 
+        this.hud = new HUD(this);
+        this.add.existing(this.hud);
+
         this.boardContainer = new BoardContainer(this);
         this.add.existing(this.boardContainer);
 
         this.dice = new DiceContainer(this);
         this.add.existing(this.dice);
-
-        this.hud = new HUD(this);
-        this.add.existing(this.hud);
 
         this.gui = new GUI(this);
         this.add.existing(this.gui);
