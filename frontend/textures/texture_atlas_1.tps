@@ -207,6 +207,22 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">texture_atlas_1/btn_add_funds_off.png</key>
+            <key type="filename">texture_atlas_1/btn_add_funds_on.png</key>
+            <key type="filename">texture_atlas_1/btn_retrieve_funds_off.png</key>
+            <key type="filename">texture_atlas_1/btn_retrieve_funds_on.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>40,12,79,23</rect>
+                <key>scale9Paddings</key>
+                <rect>40,12,79,23</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">texture_atlas_1/btn_dice_off.png</key>
             <key type="filename">texture_atlas_1/btn_dice_on.png</key>
             <struct type="IndividualSpriteSettings">
@@ -218,6 +234,20 @@
                 <rect>21,22,42,43</rect>
                 <key>scale9Paddings</key>
                 <rect>21,22,42,43</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/btn_play_off.png</key>
+            <key type="filename">texture_atlas_1/btn_play_on.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>40,24,79,49</rect>
+                <key>scale9Paddings</key>
+                <rect>40,24,79,49</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

@@ -658,14 +658,14 @@ var BoardScene = /** @class */ (function (_super) {
         var background = this.add.graphics();
         background.fillStyle(0xAAAAAA);
         background.fillRect(0, 0, GameConstants_1.GameConstants.GAME_WIDTH, GameConstants_1.GameConstants.GAME_HEIGHT);
-        this.boardContainer = new BoardContainer_1.BoardContainer(this);
-        this.add.existing(this.boardContainer);
         this.dice = new DiceContainer_1.DiceContainer(this);
         this.add.existing(this.dice);
         this.hud = new HUD_1.HUD(this);
         this.add.existing(this.hud);
         this.gui = new GUI_1.GUI(this);
         this.add.existing(this.gui);
+        this.boardContainer = new BoardContainer_1.BoardContainer(this);
+        this.add.existing(this.boardContainer);
     };
     BoardScene.prototype.rollDice = function (i) {
         this.dice.roll(i);
@@ -753,7 +753,7 @@ var Chip = /** @class */ (function (_super) {
             x: p.x,
             y: p.y,
             ease: Phaser.Math.Easing.Cubic.InOut,
-            duration: 400,
+            duration: 300,
             onComplete: this.onTweeenComplete,
             onCompleteScope: this
         });
@@ -761,7 +761,7 @@ var Chip = /** @class */ (function (_super) {
             targets: this,
             origY: 1.15,
             ease: Phaser.Math.Easing.Cubic.InOut,
-            duration: 200,
+            duration: 150,
             yoyo: true
         });
     };
