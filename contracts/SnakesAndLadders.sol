@@ -8,7 +8,7 @@ contract SnakesAndLadders is Ownable {
     using SafeMath for uint8;
 
     // All balances
-    mapping(address => uint) public balances;
+    mapping(address => uint) private balances;
 
     // Log movement
     event LogMove(address sender, uint turn, bool player, int move);
@@ -90,17 +90,17 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
-     * Add funds to balance
+     * Add to balance
      */
-    function fund() public payable {
+    function addBalance() public payable {
         emit LogFund(msg.sender, msg.value);
         balances[msg.sender] += msg.value;
     }
 
     /**
-     * Withdraw all funds
+     * Withdraw all balance
      */
-    function withdraw() public {
+    function withdrawBalance() public {
         uint toWithdraw = balances[msg.sender];
         require(toWithdraw > 0, "There is no balance to withdraw");
         emit LogWithdraw(msg.sender, toWithdraw);
@@ -109,16 +109,23 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
-     * Add balance to the contract
+     * Get the balance of an user
      */
-    function addBalance() public payable onlyOwner {
+    function getBalance() public view returns(uint) {
+        return balances[msg.sender];
+    }
+
+    /**
+     * Add funds to the contract by the owner
+     */
+    function addFunds() public payable onlyOwner {
         emit LogAddBalance(msg.sender, msg.value);
     }
 
     /**
-     * Allow owner to withdraw funds
+     * Remove funds from the contract by the owner
      */
-    function removeBalance() public onlyOwner {
+    function withdrawFunds() public onlyOwner {
         require(address(this).balance > 0, "There is no balance to withdraw");
         emit LogRemoveBalance(msg.sender, address(this).balance);
         msg.sender.transfer(address(this).balance);
