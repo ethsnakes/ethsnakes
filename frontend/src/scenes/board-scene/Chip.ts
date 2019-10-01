@@ -2,10 +2,11 @@ import { BoardContainer } from "./BoardContainer";
 
 export class Chip extends Phaser.GameObjects.Container {
 
+    public i: number;
+
     private shadow: Phaser.GameObjects.Image;
     private chip: Phaser.GameObjects.Image;
-    private isPlayer: boolean;
-    private i: number;
+    private isPlayer: boolean; 
     private goalCell: number;
     private origY: number;
 
@@ -36,7 +37,7 @@ export class Chip extends Phaser.GameObjects.Container {
         this.chip.setOrigin(.5, this.origY);
     }
 
-    public moveToCell(i: number): void {
+    public move(i: number): void {
 
         this.goalCell = i;
 
@@ -74,7 +75,6 @@ export class Chip extends Phaser.GameObjects.Container {
             const p = this.getCellPosition(this.i);
             this.applyTween(p);
         } else {
-
             console.log("ficha ha llegado");
         }
     }
@@ -92,7 +92,10 @@ export class Chip extends Phaser.GameObjects.Container {
 
         y = (4.5 - Math.floor((i - 1) / 10)) * BoardContainer.CELL_SIZE;
 
-        if (!this.isPlayer) {
+        if (this.isPlayer) {
+            x += 5;
+        } else {
+            x -= 5;
             y -= 25;
         }
 

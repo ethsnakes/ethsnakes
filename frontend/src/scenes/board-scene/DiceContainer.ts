@@ -1,6 +1,7 @@
 import { GameConstants } from "../../GameConstants";
 import { GameVars } from "../../GameVars";
 import { BoardScene } from "./BoardScene";
+import { BoardManager } from "./BoardManager";
 
 export class DiceContainer extends Phaser.GameObjects.Container {
 
@@ -15,11 +16,18 @@ export class DiceContainer extends Phaser.GameObjects.Container {
         BoardScene.currentInstance.add.existing(this.dice);
         this.dice.visible = false;
         this.add(this.dice);
+
+        this.dice.on("animationcomplete", this.onAnimationComplete, this);
     }
 
     public roll(i: number): void {
        
         this.dice.visible = true;
         this.dice.play("roll" + i);
+    }
+
+    private onAnimationComplete(): void {
+
+        BoardManager.onDiceResultAvailable();
     }
 }

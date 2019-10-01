@@ -7,6 +7,7 @@ import { BoardManager } from "./BoardManager";
 import { SettingsLayer } from "./SettingsLayer";
 import { OutcomeLayer } from "./OutcomeLayer";
 import { DiceContainer } from "./DiceContainer";
+import { GameVars } from "../../GameVars";
 
 export class BoardScene extends Phaser.Scene {
 
@@ -53,9 +54,14 @@ export class BoardScene extends Phaser.Scene {
         this.add.existing(this.boardContainer);        
     }
 
-    public rollDice(i: number): void {
+    public rollDice(): void {
 
-        this.dice.roll(i);
+        this.dice.roll(GameVars.diceResult);
+    }
+
+    public moveChip(): void {
+        
+        this.boardContainer.moveChip();
     }
 
     public showSettingsLayer(): void {

@@ -11,6 +11,7 @@ export class GameVars {
     public static paused: boolean;
     public static balance: number;
     public static turn: string;
+    public static diceResult: number;
 
     public static padNumberToString(numberAsString: string): string {
 

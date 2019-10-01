@@ -35,4 +35,19 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         //
     }
 
+    public moveChip(): void {
+
+        // TODO: EL ORDEN ZETA DE LAS FICHAS EN FUNCION DE LA Y
+
+        let i: number;
+
+        if (GameVars.turn === GameConstants.PLAYER) {
+
+            i = this.playerChip.i + GameVars.diceResult;
+            this.playerChip.move(i);
+        } else {
+            i = this.botChip.i + GameVars.diceResult;
+            this.botChip.move(i);
+        }
+    }
 }

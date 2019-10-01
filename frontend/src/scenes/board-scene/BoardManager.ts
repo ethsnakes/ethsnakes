@@ -1,7 +1,6 @@
 import { GameVars } from "../../GameVars";
 import { GameConstants } from "../../GameConstants";
 import { BoardScene } from "./BoardScene";
-import { BoardContainer } from "./BoardContainer";
 import { GameManager } from "../../GameManager";
 
 export class BoardManager {
@@ -14,6 +13,8 @@ export class BoardManager {
         BoardManager.scene = scene;
         BoardManager.gameStarted = false;
 
+        GameVars.turn = GameConstants.PLAYER;
+
         GameVars.paused = false;
     }
 
@@ -23,9 +24,17 @@ export class BoardManager {
 
     public static rollDice(): void {
 
-        let i = Math.floor(Math.random() * 6 + 1);
+        GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
 
-        BoardScene.currentInstance.rollDice(i);
+        BoardScene.currentInstance.rollDice();
+    }
+
+    public static onDiceResultAvailable(): void {
+
+        BoardScene.currentInstance.moveChip();
+
+        // cambiamos el turno
+        GameVars.turn = GameVars.turn === GameConstants.PLAYER ? GameConstants.BOT : GameConstants.PLAYER;
     }
     
     public static showSettingsLayer(): void {
