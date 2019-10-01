@@ -237,6 +237,22 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">texture_atlas_1/btn_force_lose_off.png</key>
+            <key type="filename">texture_atlas_1/btn_force_lose_on.png</key>
+            <key type="filename">texture_atlas_1/btn_force_win_off.png</key>
+            <key type="filename">texture_atlas_1/btn_force_win_on.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>13,11,25,23</rect>
+                <key>scale9Paddings</key>
+                <rect>13,11,25,23</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">texture_atlas_1/btn_play_off.png</key>
             <key type="filename">texture_atlas_1/btn_play_on.png</key>
             <struct type="IndividualSpriteSettings">

@@ -3,6 +3,7 @@ import { Button } from "../../utils/Utils";
 import { GameVars } from "../../GameVars";
 import { BoardManager } from "./BoardManager";
 import { GameManager } from "../../GameManager";
+import { DevelopmentMenu } from "./DevelopmentMenu";
 
 export class GUI extends Phaser.GameObjects.Container {
 
@@ -40,6 +41,11 @@ export class GUI extends Phaser.GameObjects.Container {
         this.diceButton.scaleX = GameVars.scaleX;
         this.diceButton.onUp(this.onClickDiceButton, this);
         this.add(this.diceButton);
+
+        if (GameConstants.DEVELOPMENT) {
+            const developmentMenu = new DevelopmentMenu(this.scene);
+            this.add(developmentMenu);
+        }
     }
 
     private onClickPlay(): void {

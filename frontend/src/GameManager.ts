@@ -82,6 +82,16 @@ export class GameManager {
         console.log("retrieve funds");
     }
 
+    public static onGameWon(): void {
+
+        console.log("on game won");
+    }
+
+    public static onGameLost(): void {
+        
+        console.log("on game lost");
+    }
+
     public static writeGameData(): void {
 
         GameManager.setGameStorageData(

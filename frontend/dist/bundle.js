@@ -149,7 +149,7 @@ var GameConstants = /** @class */ (function () {
     function GameConstants() {
     }
     GameConstants.VERSION = "0.0";
-    GameConstants.DEVELOPMENT = false;
+    GameConstants.DEVELOPMENT = true;
     GameConstants.DEBUG_MODE = false;
     GameConstants.VERBOSE = false;
     GameConstants.GAME_WIDTH = 1024;
@@ -544,9 +544,10 @@ var BoardContainer = /** @class */ (function (_super) {
         _this.scaleX = GameVars_1.GameVars.scaleX;
         var boardBackground = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "board");
         _this.add(boardBackground);
+        _this.botChip = new Chip_1.Chip(_this.scene, 1, false);
+        _this.add(_this.botChip);
         _this.playerChip = new Chip_1.Chip(_this.scene, 1, true);
         _this.add(_this.playerChip);
-        _this.playerChip.moveToCell(99);
         return _this;
     }
     BoardContainer.prototype.start = function () {
@@ -730,9 +731,9 @@ var Chip = /** @class */ (function (_super) {
         _this.origY = .85;
         var p = _this.getCellPosition(_this.i + 1);
         _this.shadow = new Phaser.GameObjects.Image(_this.scene, p.x - BoardContainer_1.BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", "player_shadow");
-        _this.shadow.setOrigin(.5, -.2);
+        _this.shadow.setOrigin(.5, 0);
         _this.add(_this.shadow);
-        _this.chip = new Phaser.GameObjects.Image(_this.scene, p.x - BoardContainer_1.BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", "chip_player");
+        _this.chip = new Phaser.GameObjects.Image(_this.scene, p.x - BoardContainer_1.BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", _this.isPlayer ? "chip_player" : "chip_bot");
         _this.add(_this.chip);
         // HAY Q HACER ESTO PQ EL METODO UPDATE NO SE UTILIZA DE MANERA AUTOMATICA
         _this.scene.sys.updateList.add(_this);
@@ -777,18 +778,66 @@ var Chip = /** @class */ (function (_super) {
     };
     Chip.prototype.getCellPosition = function (i) {
         var x;
+        var y;
         if (Math.floor((i - 1) / 10) % 2 === 0) {
             x = (((i - 1) % 10) - 4.5) * BoardContainer_1.BoardContainer.CELL_SIZE;
         }
         else {
             x = (4.5 - ((i - 1) % 10)) * BoardContainer_1.BoardContainer.CELL_SIZE;
         }
-        var y = (4.5 - Math.floor((i - 1) / 10)) * BoardContainer_1.BoardContainer.CELL_SIZE;
+        y = (4.5 - Math.floor((i - 1) / 10)) * BoardContainer_1.BoardContainer.CELL_SIZE;
+        if (!this.isPlayer) {
+            y -= 25;
+        }
         return { x: x, y: y };
     };
     return Chip;
 }(Phaser.GameObjects.Container));
 exports.Chip = Chip;
+
+
+/***/ }),
+
+/***/ "./src/scenes/board-scene/DevelopmentMenu.ts":
+/*!***************************************************!*\
+  !*** ./src/scenes/board-scene/DevelopmentMenu.ts ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var DevelopmentMenu = /** @class */ (function (_super) {
+    __extends(DevelopmentMenu, _super);
+    function DevelopmentMenu(scene) {
+        var _this = _super.call(this, scene) || this;
+        _this.x = 100;
+        _this.y = 300;
+        var w = 100;
+        var h = 50;
+        var background = new Phaser.GameObjects.Graphics(_this.scene);
+        background.fillStyle(0xFFFFFF);
+        background.fillRect(-w / 2, -h / 2, w, h);
+        _this.add(background);
+        return _this;
+    }
+    return DevelopmentMenu;
+}(Phaser.GameObjects.Container));
+exports.DevelopmentMenu = DevelopmentMenu;
 
 
 /***/ }),
@@ -869,6 +918,7 @@ var Utils_1 = __webpack_require__(/*! ../../utils/Utils */ "./src/utils/Utils.ts
 var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
 var BoardManager_1 = __webpack_require__(/*! ./BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
 var GameManager_1 = __webpack_require__(/*! ../../GameManager */ "./src/GameManager.ts");
+var DevelopmentMenu_1 = __webpack_require__(/*! ./DevelopmentMenu */ "./src/scenes/board-scene/DevelopmentMenu.ts");
 var GUI = /** @class */ (function (_super) {
     __extends(GUI, _super);
     function GUI(scene) {
@@ -893,6 +943,10 @@ var GUI = /** @class */ (function (_super) {
         _this.diceButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.diceButton.onUp(_this.onClickDiceButton, _this);
         _this.add(_this.diceButton);
+        if (GameConstants_1.GameConstants.DEVELOPMENT) {
+            var developmentMenu = new DevelopmentMenu_1.DevelopmentMenu(_this.scene);
+            _this.add(developmentMenu);
+        }
         return _this;
     }
     GUI.prototype.onClickPlay = function () {

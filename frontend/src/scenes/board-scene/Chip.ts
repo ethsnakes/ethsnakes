@@ -21,10 +21,10 @@ export class Chip extends Phaser.GameObjects.Container {
         const p = this.getCellPosition(this.i + 1);
 
         this.shadow = new Phaser.GameObjects.Image(this.scene, p.x - BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", "player_shadow");
-        this.shadow.setOrigin(.5, -.2);
+        this.shadow.setOrigin(.5, 0);
         this.add(this.shadow);
 
-        this.chip = new Phaser.GameObjects.Image(this.scene, p.x - BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", "chip_player");
+        this.chip = new Phaser.GameObjects.Image(this.scene, p.x - BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", this.isPlayer ? "chip_player" : "chip_bot");
         this.add(this.chip);
 
         // HAY Q HACER ESTO PQ EL METODO UPDATE NO SE UTILIZA DE MANERA AUTOMATICA
@@ -82,6 +82,7 @@ export class Chip extends Phaser.GameObjects.Container {
     private getCellPosition(i: number): {x: number, y: number} {
 
         let x: number;
+        let y: number;
 
         if (Math.floor((i - 1) / 10) % 2 === 0) {
             x = (((i - 1) % 10) - 4.5) * BoardContainer.CELL_SIZE;
@@ -89,7 +90,11 @@ export class Chip extends Phaser.GameObjects.Container {
             x = (4.5 - ((i - 1) % 10)) * BoardContainer.CELL_SIZE;
         }
 
-        const y = (4.5 - Math.floor((i - 1) / 10)) * BoardContainer.CELL_SIZE;
+        y = (4.5 - Math.floor((i - 1) / 10)) * BoardContainer.CELL_SIZE;
+
+        if (!this.isPlayer) {
+            y -= 25;
+        }
 
         return {x: x, y: y};
     }
