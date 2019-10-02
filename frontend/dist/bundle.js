@@ -229,6 +229,12 @@ var GameManager = /** @class */ (function () {
     GameManager.retrieveFunds = function () {
         console.log("retrieve funds");
     };
+    GameManager.onGameWon = function () {
+        console.log("on game won");
+    };
+    GameManager.onGameLost = function () {
+        console.log("on game lost");
+    };
     GameManager.writeGameData = function () {
         GameManager.setGameStorageData(GameConstants_1.GameConstants.SAVED_GAME_DATA_KEY, GameVars_1.GameVars.gameData, function () {
             GameManager.log("game data successfully saved");
@@ -553,6 +559,18 @@ var BoardContainer = /** @class */ (function (_super) {
     BoardContainer.prototype.start = function () {
         //
     };
+    BoardContainer.prototype.moveChip = function () {
+        // TODO: EL ORDEN ZETA DE LAS FICHAS EN FUNCION DE LA Y
+        var i;
+        if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER) {
+            i = this.playerChip.i + GameVars_1.GameVars.diceResult;
+            this.playerChip.move(i);
+        }
+        else {
+            i = this.botChip.i + GameVars_1.GameVars.diceResult;
+            this.botChip.move(i);
+        }
+    };
     BoardContainer.CELL_SIZE = 63.5;
     return BoardContainer;
 }(Phaser.GameObjects.Container));
@@ -572,6 +590,7 @@ exports.BoardContainer = BoardContainer;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
+var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/GameConstants.ts");
 var BoardScene_1 = __webpack_require__(/*! ./BoardScene */ "./src/scenes/board-scene/BoardScene.ts");
 var GameManager_1 = __webpack_require__(/*! ../../GameManager */ "./src/GameManager.ts");
 var BoardManager = /** @class */ (function () {
@@ -580,14 +599,20 @@ var BoardManager = /** @class */ (function () {
     BoardManager.init = function (scene) {
         BoardManager.scene = scene;
         BoardManager.gameStarted = false;
+        GameVars_1.GameVars.turn = GameConstants_1.GameConstants.PLAYER;
         GameVars_1.GameVars.paused = false;
     };
     BoardManager.onClickSettings = function () {
         //
     };
     BoardManager.rollDice = function () {
-        var i = Math.floor(Math.random() * 6 + 1);
-        BoardScene_1.BoardScene.currentInstance.rollDice(i);
+        GameVars_1.GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
+        BoardScene_1.BoardScene.currentInstance.rollDice();
+    };
+    BoardManager.onDiceResultAvailable = function () {
+        BoardScene_1.BoardScene.currentInstance.moveChip();
+        // cambiamos el turno
+        GameVars_1.GameVars.turn = GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER ? GameConstants_1.GameConstants.BOT : GameConstants_1.GameConstants.PLAYER;
     };
     BoardManager.showSettingsLayer = function () {
         GameVars_1.GameVars.paused = true;
@@ -645,6 +670,7 @@ var BoardContainer_1 = __webpack_require__(/*! ./BoardContainer */ "./src/scenes
 var BoardManager_1 = __webpack_require__(/*! ./BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
 var SettingsLayer_1 = __webpack_require__(/*! ./SettingsLayer */ "./src/scenes/board-scene/SettingsLayer.ts");
 var DiceContainer_1 = __webpack_require__(/*! ./DiceContainer */ "./src/scenes/board-scene/DiceContainer.ts");
+var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
 var BoardScene = /** @class */ (function (_super) {
     __extends(BoardScene, _super);
     function BoardScene() {
@@ -668,8 +694,11 @@ var BoardScene = /** @class */ (function (_super) {
         this.boardContainer = new BoardContainer_1.BoardContainer(this);
         this.add.existing(this.boardContainer);
     };
-    BoardScene.prototype.rollDice = function (i) {
-        this.dice.roll(i);
+    BoardScene.prototype.rollDice = function () {
+        this.dice.roll(GameVars_1.GameVars.diceResult);
+    };
+    BoardScene.prototype.moveChip = function () {
+        this.boardContainer.moveChip();
     };
     BoardScene.prototype.showSettingsLayer = function () {
         this.settingsLayer = new SettingsLayer_1.SettingsLayer(this);
@@ -742,7 +771,7 @@ var Chip = /** @class */ (function (_super) {
     Chip.prototype.preUpdate = function (time, delta) {
         this.chip.setOrigin(.5, this.origY);
     };
-    Chip.prototype.moveToCell = function (i) {
+    Chip.prototype.move = function (i) {
         this.goalCell = i;
         this.i++;
         var p = this.getCellPosition(this.i);
@@ -786,7 +815,11 @@ var Chip = /** @class */ (function (_super) {
             x = (4.5 - ((i - 1) % 10)) * BoardContainer_1.BoardContainer.CELL_SIZE;
         }
         y = (4.5 - Math.floor((i - 1) / 10)) * BoardContainer_1.BoardContainer.CELL_SIZE;
-        if (!this.isPlayer) {
+        if (this.isPlayer) {
+            x += 5;
+        }
+        else {
+            x -= 5;
             y -= 25;
         }
         return { x: x, y: y };
@@ -821,20 +854,39 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
+var Utils_1 = __webpack_require__(/*! ../../utils/Utils */ "./src/utils/Utils.ts");
+var GameManager_1 = __webpack_require__(/*! ../../GameManager */ "./src/GameManager.ts");
 var DevelopmentMenu = /** @class */ (function (_super) {
     __extends(DevelopmentMenu, _super);
     function DevelopmentMenu(scene) {
         var _this = _super.call(this, scene) || this;
-        _this.x = 100;
-        _this.y = 300;
-        var w = 100;
-        var h = 50;
+        _this.x = 90 * GameVars_1.GameVars.scaleX;
+        _this.y = 270;
+        _this.scaleX = GameVars_1.GameVars.scaleX;
+        var w = 150;
+        var h = 75;
         var background = new Phaser.GameObjects.Graphics(_this.scene);
         background.fillStyle(0xFFFFFF);
         background.fillRect(-w / 2, -h / 2, w, h);
         _this.add(background);
+        var developmentLabel = new Phaser.GameObjects.Text(_this.scene, 0, -25, "development menu", { fontFamily: "Arial", fontSize: "15px", color: "#FF0000" });
+        developmentLabel.setOrigin(.5);
+        _this.add(developmentLabel);
+        var winButton = new Utils_1.Button(_this.scene, -35, 10, "texture_atlas_1", "btn_force_win_off", "btn_force_win_on");
+        winButton.onUp(_this.onClickWin, _this);
+        _this.add(winButton);
+        var loseButton = new Utils_1.Button(_this.scene, 35, 10, "texture_atlas_1", "btn_force_lose_off", "btn_force_lose_on");
+        loseButton.onUp(_this.onClickLose, _this);
+        _this.add(loseButton);
         return _this;
     }
+    DevelopmentMenu.prototype.onClickWin = function () {
+        GameManager_1.GameManager.onGameWon();
+    };
+    DevelopmentMenu.prototype.onClickLose = function () {
+        GameManager_1.GameManager.onGameLost();
+    };
     return DevelopmentMenu;
 }(Phaser.GameObjects.Container));
 exports.DevelopmentMenu = DevelopmentMenu;
@@ -868,6 +920,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/GameConstants.ts");
 var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
 var BoardScene_1 = __webpack_require__(/*! ./BoardScene */ "./src/scenes/board-scene/BoardScene.ts");
+var BoardManager_1 = __webpack_require__(/*! ./BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
 var DiceContainer = /** @class */ (function (_super) {
     __extends(DiceContainer, _super);
     function DiceContainer(scene) {
@@ -877,11 +930,15 @@ var DiceContainer = /** @class */ (function (_super) {
         BoardScene_1.BoardScene.currentInstance.add.existing(_this.dice);
         _this.dice.visible = false;
         _this.add(_this.dice);
+        _this.dice.on("animationcomplete", _this.onAnimationComplete, _this);
         return _this;
     }
     DiceContainer.prototype.roll = function (i) {
         this.dice.visible = true;
         this.dice.play("roll" + i);
+    };
+    DiceContainer.prototype.onAnimationComplete = function () {
+        BoardManager_1.BoardManager.onDiceResultAvailable();
     };
     return DiceContainer;
 }(Phaser.GameObjects.Container));
