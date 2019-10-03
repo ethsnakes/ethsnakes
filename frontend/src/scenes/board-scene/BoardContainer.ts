@@ -29,6 +29,17 @@ export class BoardContainer extends Phaser.GameObjects.Container {
 
         this.playerChip = new Chip(this.scene, 1, true);
         this.add(this.playerChip);
+
+        this.scene.sys.updateList.add(this);
+    }
+
+    public preUpdate(time: number, delta: number): void {
+
+        if (this.botChip.y > this.playerChip.y) {
+            this.bringToTop(this.botChip);
+        } else {
+            this.bringToTop(this.playerChip);
+        }
     }
 
     public start(): void {
@@ -36,8 +47,6 @@ export class BoardContainer extends Phaser.GameObjects.Container {
     }
 
     public moveChip(): void {
-
-        // TODO: EL ORDEN ZETA DE LAS FICHAS EN FUNCION DE LA Y
 
         let i: number;
 

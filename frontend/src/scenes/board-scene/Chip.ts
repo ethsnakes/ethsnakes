@@ -15,17 +15,20 @@ export class Chip extends Phaser.GameObjects.Container {
         super(scene);
 
         this.i = 0;
-
         this.isPlayer = isPlayer;
-        this.origY = .85;
 
         const p = this.getCellPosition(this.i + 1);
 
-        this.shadow = new Phaser.GameObjects.Image(this.scene, p.x - BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", "player_shadow");
+        this.x = p.x - BoardContainer.CELL_SIZE;
+        this.y = p.y;
+ 
+        this.origY = .85;
+
+        this.shadow = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "player_shadow");
         this.shadow.setOrigin(.5, 0);
         this.add(this.shadow);
 
-        this.chip = new Phaser.GameObjects.Image(this.scene, p.x - BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", this.isPlayer ? "chip_player" : "chip_bot");
+        this.chip = new Phaser.GameObjects.Image(this.scene, 0, 0,  "texture_atlas_1", this.isPlayer ? "chip_player" : "chip_bot");
         this.add(this.chip);
 
         // HAY Q HACER ESTO PQ EL METODO UPDATE NO SE UTILIZA DE MANERA AUTOMATICA
@@ -50,7 +53,7 @@ export class Chip extends Phaser.GameObjects.Container {
     private applyTween(p: {x: number, y: number}): void {
         
         this.scene.tweens.add({
-            targets: [this.chip, this.shadow],
+            targets: this,
             x: p.x,
             y: p.y,
             ease: Phaser.Math.Easing.Cubic.InOut,

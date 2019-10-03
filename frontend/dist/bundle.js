@@ -554,8 +554,13 @@ var BoardContainer = /** @class */ (function (_super) {
         _this.add(_this.botChip);
         _this.playerChip = new Chip_1.Chip(_this.scene, 1, true);
         _this.add(_this.playerChip);
+        _this.scene.sys.updateList.add(_this);
         return _this;
     }
+    BoardContainer.prototype.preUpdate = function (time, delta) {
+        this.botChip.depth = this.botChip.y;
+        this.playerChip.depth = this.botChip.y;
+    };
     BoardContainer.prototype.start = function () {
         //
     };
