@@ -5,7 +5,6 @@ import { GameConstants } from "../../GameConstants";
 import { BoardContainer } from "./BoardContainer";
 import { BoardManager } from "./BoardManager";
 import { SettingsLayer } from "./SettingsLayer";
-import { OutcomeLayer } from "./OutcomeLayer";
 import { DiceContainer } from "./DiceContainer";
 import { GameVars } from "../../GameVars";
 

@@ -1,6 +1,10 @@
 import { BoardContainer } from "./BoardContainer";
+import { BoardManager } from "./BoardManager";
+import { start } from "repl";
 
 export class Chip extends Phaser.GameObjects.Container {
+
+    private static readonly LADDER_SPEED = .25;
 
     public i: number;
 
@@ -40,6 +44,64 @@ export class Chip extends Phaser.GameObjects.Container {
         this.chip.setOrigin(.5, this.origY);
     }
 
+    public moveInLadder(i: number): void {
+        
+        const startPosition = this.getCellPosition(this.i);
+
+        this.i = i;
+
+        const endPosition = this.getCellPosition(this.i);
+
+        const d = Math.sqrt((startPosition.x - endPosition.x) * (startPosition.x - endPosition.x) + (startPosition.y - endPosition.y) * (startPosition.y - endPosition.y));
+
+        const t = d / Chip.LADDER_SPEED;
+
+        this.scene.tweens.add({
+            targets: this,
+            x: endPosition.x,
+            y: endPosition.y,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: t
+        });
+    }
+
+    public moveInSnake(i: number): void {
+        
+        this.i = i;
+
+        this.scene.tweens.add({
+            targets: this,
+            scaleY: 0,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 300,
+            onComplete: function(): void {
+
+                const endPosition = this.getCellPosition(this.i);
+                this.x = endPosition.x;
+                this.y = endPosition.y;
+
+                this.scene.tweens.add({
+                    targets: this,
+                    scaleY: 1,
+                    ease: Phaser.Math.Easing.Cubic.Out,
+                    duration: 300,
+                    delay: 600
+                });
+
+            },
+            onCompleteScope: this
+        });
+    }
+
+    public forcePosition(i: number): void {
+
+        this.i = i;
+
+        const p = this.getCellPosition(this.i);
+        this.x = p.x;
+        this.y = p.y;
+    
+    }
     public move(i: number): void {
 
         this.goalCell = i;
@@ -78,7 +140,7 @@ export class Chip extends Phaser.GameObjects.Container {
             const p = this.getCellPosition(this.i);
             this.applyTween(p);
         } else {
-            console.log("ficha ha llegado");
+            BoardManager.chipArrivedToItsPosition(this);
         }
     }
 

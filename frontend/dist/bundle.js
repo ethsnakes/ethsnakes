@@ -156,6 +156,27 @@ var GameConstants = /** @class */ (function () {
     GameConstants.GAME_HEIGHT = 768;
     GameConstants.BOT = "bot";
     GameConstants.PLAYER = "player";
+    GameConstants.BOARD_ELEMENTS = [
+        // ESCALERAS
+        { in: 4, out: 14 },
+        { in: 8, out: 32 },
+        { in: 20, out: 38 },
+        { in: 28, out: 84 },
+        { in: 40, out: 59 },
+        { in: 58, out: 83 },
+        { in: 72, out: 93 },
+        // serpientes
+        { in: 15, out: 3 },
+        { in: 31, out: 9 },
+        { in: 44, out: 26 },
+        { in: 62, out: 19 },
+        { in: 64, out: 42 },
+        { in: 74, out: 70 },
+        { in: 85, out: 33 },
+        { in: 91, out: 71 },
+        { in: 96, out: 75 },
+        { in: 98, out: 80 }
+    ];
     GameConstants.SAVED_GAME_DATA_KEY = "snake-and-ladders-data";
     return GameConstants;
 }());
@@ -558,14 +579,17 @@ var BoardContainer = /** @class */ (function (_super) {
         return _this;
     }
     BoardContainer.prototype.preUpdate = function (time, delta) {
-        this.botChip.depth = this.botChip.y;
-        this.playerChip.depth = this.botChip.y;
+        if (this.botChip.y > this.playerChip.y) {
+            this.bringToTop(this.botChip);
+        }
+        else {
+            this.bringToTop(this.playerChip);
+        }
     };
     BoardContainer.prototype.start = function () {
         //
     };
     BoardContainer.prototype.moveChip = function () {
-        // TODO: EL ORDEN ZETA DE LAS FICHAS EN FUNCION DE LA Y
         var i;
         if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER) {
             i = this.playerChip.i + GameVars_1.GameVars.diceResult;
@@ -609,6 +633,24 @@ var BoardManager = /** @class */ (function () {
     };
     BoardManager.onClickSettings = function () {
         //
+    };
+    BoardManager.chipArrivedToItsPosition = function (chip) {
+        console.log("pieza ha llegado:", chip.i);
+        var outCell = null;
+        for (var i = 0; i < GameConstants_1.GameConstants.BOARD_ELEMENTS.length; i++) {
+            if (GameConstants_1.GameConstants.BOARD_ELEMENTS[i].in === chip.i) {
+                outCell = GameConstants_1.GameConstants.BOARD_ELEMENTS[i].out;
+                break;
+            }
+        }
+        if (outCell !== null) {
+            if (outCell > chip.i) {
+                chip.moveInLadder(outCell);
+            }
+            else {
+                chip.moveInSnake(outCell);
+            }
+        }
     };
     BoardManager.rollDice = function () {
         GameVars_1.GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
@@ -756,18 +798,21 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var BoardContainer_1 = __webpack_require__(/*! ./BoardContainer */ "./src/scenes/board-scene/BoardContainer.ts");
+var BoardManager_1 = __webpack_require__(/*! ./BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
 var Chip = /** @class */ (function (_super) {
     __extends(Chip, _super);
     function Chip(scene, color, isPlayer) {
         var _this = _super.call(this, scene) || this;
         _this.i = 0;
         _this.isPlayer = isPlayer;
-        _this.origY = .85;
         var p = _this.getCellPosition(_this.i + 1);
-        _this.shadow = new Phaser.GameObjects.Image(_this.scene, p.x - BoardContainer_1.BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", "player_shadow");
+        _this.x = p.x - BoardContainer_1.BoardContainer.CELL_SIZE;
+        _this.y = p.y;
+        _this.origY = .85;
+        _this.shadow = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "player_shadow");
         _this.shadow.setOrigin(.5, 0);
         _this.add(_this.shadow);
-        _this.chip = new Phaser.GameObjects.Image(_this.scene, p.x - BoardContainer_1.BoardContainer.CELL_SIZE, p.y, "texture_atlas_1", _this.isPlayer ? "chip_player" : "chip_bot");
+        _this.chip = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", _this.isPlayer ? "chip_player" : "chip_bot");
         _this.add(_this.chip);
         // HAY Q HACER ESTO PQ EL METODO UPDATE NO SE UTILIZA DE MANERA AUTOMATICA
         _this.scene.sys.updateList.add(_this);
@@ -775,6 +820,28 @@ var Chip = /** @class */ (function (_super) {
     }
     Chip.prototype.preUpdate = function (time, delta) {
         this.chip.setOrigin(.5, this.origY);
+    };
+    Chip.prototype.moveInLadder = function (i) {
+        this.i = i;
+        var p = this.getCellPosition(this.i);
+        // TODO: HACER Q SE MUEVA CON VELOCIDAD CONSTANTE
+        // CALCULAR LA DISTANCIA
+        this.scene.tweens.add({
+            targets: this,
+            x: p.x,
+            y: p.y,
+            ease: Phaser.Math.Easing.Cubic.InOut,
+            duration: 300
+        });
+    };
+    Chip.prototype.moveInSnake = function (i) {
+        //
+    };
+    Chip.prototype.forcePosition = function (i) {
+        this.i = i;
+        var p = this.getCellPosition(this.i);
+        this.x = p.x;
+        this.y = p.y;
     };
     Chip.prototype.move = function (i) {
         this.goalCell = i;
@@ -784,7 +851,7 @@ var Chip = /** @class */ (function (_super) {
     };
     Chip.prototype.applyTween = function (p) {
         this.scene.tweens.add({
-            targets: [this.chip, this.shadow],
+            targets: this,
             x: p.x,
             y: p.y,
             ease: Phaser.Math.Easing.Cubic.InOut,
@@ -807,7 +874,7 @@ var Chip = /** @class */ (function (_super) {
             this.applyTween(p);
         }
         else {
-            console.log("ficha ha llegado");
+            BoardManager_1.BoardManager.chipArrivedToItsPosition(this);
         }
     };
     Chip.prototype.getCellPosition = function (i) {

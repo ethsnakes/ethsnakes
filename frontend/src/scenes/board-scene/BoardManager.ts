@@ -2,6 +2,7 @@ import { GameVars } from "../../GameVars";
 import { GameConstants } from "../../GameConstants";
 import { BoardScene } from "./BoardScene";
 import { GameManager } from "../../GameManager";
+import { Chip } from "./Chip";
 
 export class BoardManager {
 
@@ -20,6 +21,26 @@ export class BoardManager {
 
     public static onClickSettings(): void {
         //
+    }
+
+    public static chipArrivedToItsPosition(chip: Chip): void {
+        
+        let outCell = null;
+
+        for (let i = 0; i < GameConstants.BOARD_ELEMENTS.length; i ++) {
+            if (GameConstants.BOARD_ELEMENTS[i].in === chip.i) {
+                outCell = GameConstants.BOARD_ELEMENTS[i].out;
+                break;
+            }
+        }
+
+        if (outCell !== null) {
+            if (outCell > chip.i) {
+                chip.moveInLadder(outCell);
+            } else {
+                chip.moveInSnake(outCell);
+            }
+        }
     }
 
     public static rollDice(): void {
