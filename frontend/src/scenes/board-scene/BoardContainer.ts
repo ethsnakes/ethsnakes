@@ -52,10 +52,10 @@ export class BoardContainer extends Phaser.GameObjects.Container {
 
         if (GameVars.turn === GameConstants.PLAYER) {
 
-            i = this.playerChip.i + GameVars.diceResult;
+            i = this.playerChip.cellIndex + GameVars.diceResult;
             this.playerChip.move(i);
         } else {
-            i = this.botChip.i + GameVars.diceResult;
+            i = this.botChip.cellIndex + GameVars.diceResult;
             this.botChip.move(i);
         }
     }

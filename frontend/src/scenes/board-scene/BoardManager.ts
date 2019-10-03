@@ -15,7 +15,7 @@ export class BoardManager {
         BoardManager.gameStarted = false;
 
         GameVars.turn = GameConstants.PLAYER;
-
+        GameVars.matchOver = false;
         GameVars.paused = false;
     }
 
@@ -24,21 +24,25 @@ export class BoardManager {
     }
 
     public static chipArrivedToItsPosition(chip: Chip): void {
-        
-        let outCell = null;
 
-        for (let i = 0; i < GameConstants.BOARD_ELEMENTS.length; i ++) {
-            if (GameConstants.BOARD_ELEMENTS[i].in === chip.i) {
-                outCell = GameConstants.BOARD_ELEMENTS[i].out;
-                break;
+        if (chip.cellIndex === 100) {
+            BoardManager.matchOver(chip.isPlayer);
+        } else {
+            let outCell = null;
+
+            for (let i = 0; i < GameConstants.BOARD_ELEMENTS.length; i ++) {
+                if (GameConstants.BOARD_ELEMENTS[i].in === chip.cellIndex) {
+                    outCell = GameConstants.BOARD_ELEMENTS[i].out;
+                    break;
+                }
             }
-        }
 
-        if (outCell !== null) {
-            if (outCell > chip.i) {
-                chip.moveInLadder(outCell);
-            } else {
-                chip.moveInSnake(outCell);
+            if (outCell !== null) {
+                if (outCell > chip.cellIndex) {
+                    chip.moveInLadder(outCell);
+                } else {
+                    chip.moveInSnake(outCell);
+                }
             }
         }
     }
@@ -76,14 +80,12 @@ export class BoardManager {
         //
     }
 
-    private static matchOver(won: boolean, p: {r: number, c: number}): void {
+    private static matchOver(hasPlayerWon: boolean): void {
+
+        console.log("PARTIDA TERMINADA HA GANADO:", hasPlayerWon ? "el jugador" : "el bot");
 
         GameVars.matchOver = true;
 
-        if (won) {
-            GameManager.matchOver();
-        }
-
-        BoardScene.currentInstance.matchOver(won, p);
+        BoardScene.currentInstance.matchOver();
     }
 }

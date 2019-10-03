@@ -26,6 +26,16 @@ export class DiceContainer extends Phaser.GameObjects.Container {
         this.dice.play("roll" + i);
     }
 
+    public matchOver(): void {
+
+        this.scene.tweens.add({
+            targets: this,
+            alpha: 0,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 300
+        });
+    }
+
     private onAnimationComplete(): void {
 
         BoardManager.onDiceResultAvailable();

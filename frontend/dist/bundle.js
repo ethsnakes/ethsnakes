@@ -635,7 +635,6 @@ var BoardManager = /** @class */ (function () {
         //
     };
     BoardManager.chipArrivedToItsPosition = function (chip) {
-        console.log("pieza ha llegado:", chip.i);
         var outCell = null;
         for (var i = 0; i < GameConstants_1.GameConstants.BOARD_ELEMENTS.length; i++) {
             if (GameConstants_1.GameConstants.BOARD_ELEMENTS[i].in === chip.i) {
@@ -822,20 +821,40 @@ var Chip = /** @class */ (function (_super) {
         this.chip.setOrigin(.5, this.origY);
     };
     Chip.prototype.moveInLadder = function (i) {
+        var startPosition = this.getCellPosition(this.i);
         this.i = i;
-        var p = this.getCellPosition(this.i);
-        // TODO: HACER Q SE MUEVA CON VELOCIDAD CONSTANTE
-        // CALCULAR LA DISTANCIA
+        var endPosition = this.getCellPosition(this.i);
+        var d = Math.sqrt((startPosition.x - endPosition.x) * (startPosition.x - endPosition.x) + (startPosition.y - endPosition.y) * (startPosition.y - endPosition.y));
+        var t = d / Chip.LADDER_SPEED;
         this.scene.tweens.add({
             targets: this,
-            x: p.x,
-            y: p.y,
-            ease: Phaser.Math.Easing.Cubic.InOut,
-            duration: 300
+            x: endPosition.x,
+            y: endPosition.y,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: t
         });
     };
     Chip.prototype.moveInSnake = function (i) {
-        //
+        this.i = i;
+        this.scene.tweens.add({
+            targets: this,
+            scaleY: 0,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 300,
+            onComplete: function () {
+                var endPosition = this.getCellPosition(this.i);
+                this.x = endPosition.x;
+                this.y = endPosition.y;
+                this.scene.tweens.add({
+                    targets: this,
+                    scaleY: 1,
+                    ease: Phaser.Math.Easing.Cubic.Out,
+                    duration: 300,
+                    delay: 600
+                });
+            },
+            onCompleteScope: this
+        });
     };
     Chip.prototype.forcePosition = function (i) {
         this.i = i;
@@ -896,6 +915,7 @@ var Chip = /** @class */ (function (_super) {
         }
         return { x: x, y: y };
     };
+    Chip.LADDER_SPEED = .25;
     return Chip;
 }(Phaser.GameObjects.Container));
 exports.Chip = Chip;

@@ -48,6 +48,22 @@ export class GUI extends Phaser.GameObjects.Container {
         }
     }
 
+    public matchOver(): void {
+
+        this.diceButton.disableInteractive();
+
+        this.scene.tweens.add({
+            targets: this.diceButton,
+            alpha: 0,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 300, 
+            onComplete: function(): void {
+                this.diceButton.visible = false;
+            },
+            onCompleteScope: this
+        });
+    }
+
     private onClickPlay(): void {
         
         GameManager.play();

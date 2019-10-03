@@ -6,22 +6,25 @@ export class Chip extends Phaser.GameObjects.Container {
 
     private static readonly LADDER_SPEED = .25;
 
-    public i: number;
+    public cellIndex: number;
+    public isPlayer: boolean; 
 
     private shadow: Phaser.GameObjects.Image;
     private chip: Phaser.GameObjects.Image;
-    private isPlayer: boolean; 
-    private goalCell: number;
-    private origY: number;
+    private origY: number; // por q no funciona setear el originY
+    private i: number;
+    private movementCells: number [];
 
     constructor(scene: Phaser.Scene, color: number, isPlayer: boolean) {
 
         super(scene);
 
-        this.i = 0;
+        this.cellIndex = 0;
         this.isPlayer = isPlayer;
+        this.i = 0;
+        this.movementCells = [];
 
-        const p = this.getCellPosition(this.i + 1);
+        const p = this.getCellPosition(this.cellIndex + 1);
 
         this.x = p.x - BoardContainer.CELL_SIZE;
         this.y = p.y;
@@ -44,13 +47,13 @@ export class Chip extends Phaser.GameObjects.Container {
         this.chip.setOrigin(.5, this.origY);
     }
 
-    public moveInLadder(i: number): void {
+    public moveInLadder(goalCellIndex: number): void {
         
-        const startPosition = this.getCellPosition(this.i);
+        const startPosition = this.getCellPosition(this.cellIndex);
 
-        this.i = i;
+        this.cellIndex = goalCellIndex;
 
-        const endPosition = this.getCellPosition(this.i);
+        const endPosition = this.getCellPosition(this.cellIndex);
 
         const d = Math.sqrt((startPosition.x - endPosition.x) * (startPosition.x - endPosition.x) + (startPosition.y - endPosition.y) * (startPosition.y - endPosition.y));
 
@@ -65,9 +68,9 @@ export class Chip extends Phaser.GameObjects.Container {
         });
     }
 
-    public moveInSnake(i: number): void {
+    public moveInSnake(goalCellIndex: number): void {
         
-        this.i = i;
+        this.cellIndex = goalCellIndex;
 
         this.scene.tweens.add({
             targets: this,
@@ -76,7 +79,7 @@ export class Chip extends Phaser.GameObjects.Container {
             duration: 300,
             onComplete: function(): void {
 
-                const endPosition = this.getCellPosition(this.i);
+                const endPosition = this.getCellPosition(this.cellIndex);
                 this.x = endPosition.x;
                 this.y = endPosition.y;
 
@@ -93,22 +96,35 @@ export class Chip extends Phaser.GameObjects.Container {
         });
     }
 
-    public forcePosition(i: number): void {
+    public forcePosition(goalCellIndex: number): void {
 
-        this.i = i;
+        this.cellIndex = goalCellIndex;
 
-        const p = this.getCellPosition(this.i);
+        const p = this.getCellPosition(this.cellIndex);
         this.x = p.x;
         this.y = p.y;
     
     }
-    public move(i: number): void {
+    public move(goalCellIndex: number): void {
 
-        this.goalCell = i;
+        // mirar si la casilla es mayor que 100, en tal caso descomponer 
+        // en 2 movimientos
 
-        this.i ++;
- 
-        const p = this.getCellPosition(this.i);
+        this.movementCells.length = 0;
+
+        for (let i = this.cellIndex + 1; i <= goalCellIndex; i++) {
+
+            if (i <= 100) {
+                this.movementCells.push(i);
+            } else {
+                this.movementCells.push(200 - i);
+            }  
+        }
+
+        this.cellIndex = goalCellIndex <= 100 ? goalCellIndex : 200 - goalCellIndex;
+        this.i = 0;
+
+        const p = this.getCellPosition(this.movementCells[this.i]);
         this.applyTween(p);
     }
 
@@ -135,9 +151,9 @@ export class Chip extends Phaser.GameObjects.Container {
 
     private onTweeenComplete(): void {
 
-        if (this.i < this.goalCell) {
+        if (this.i < this.movementCells.length - 1) {
             this.i ++;
-            const p = this.getCellPosition(this.i);
+            const p = this.getCellPosition(this.movementCells[this.i]);
             this.applyTween(p);
         } else {
             BoardManager.chipArrivedToItsPosition(this);

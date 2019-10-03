@@ -74,8 +74,10 @@ export class BoardScene extends Phaser.Scene {
         this.settingsLayer.destroy();
     }
 
-    public matchOver(won: boolean, p: {r: number, c: number}): void {
-        //
+    public matchOver(): void {
+        
+        this.dice.matchOver();
+        this.gui.matchOver();
     }
 
     private addDiceAnimations(): void {
