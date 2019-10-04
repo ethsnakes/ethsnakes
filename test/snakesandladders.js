@@ -1,4 +1,4 @@
-const SnakesAndLadders = artifacts.require("SnakesAndLadders.sol");
+const SnakesAndLadders = artifacts.require("SnakesAndLaddersMock.sol");
 const expectedExceptionPromise = require("../util/expected-exception-promise.js");
 const getTransactionCost = require("../util/get-transaction-cost.js");
 const { toWei, toBN, fromAscii } = web3.utils;
@@ -55,13 +55,21 @@ contract('SnakesAndLadders', (accounts) => {
             await instance.addBalance({from: alice, value: qty});
         });
 
-        it("testing a normal game", async function () {
+        it("testing the mock default game", async function () {
             let txObj = await instance.play(qty/100, {from: alice});
             // Check event
             assert.strictEqual(txObj.logs.length > 1, true, "More than one event expected");
-            for (let i = 0; i < txObj.logs.length(); i++) {
-                let args = txObj.logs[0].args;
-                console.log(args);
+            for (let i = 0; i < txObj.logs.length; i++) {
+                let ev = txObj.logs[i];
+                //console.log(ev.args);
+                if (ev.event === "LogMove") {
+                    assert.strictEqual(parseInt(ev.args["move"].toString()) >= 1, true, "Dice was less than 1");
+                    assert.strictEqual(parseInt(ev.args["move"].toString()) <= 6, true, "Dice was more than 6");
+                }
+                if (ev.event === "LogGame") {
+                    assert.strictEqual(ev.args["result"], false, "IA should had won");
+                    assert.strictEqual(parseInt(ev.args["balancediff"].toString()), -qty/100, "Removed the wrong amount of balance");
+                }
             }
         });
     });
@@ -104,13 +112,12 @@ contract('SnakesAndLadders', (accounts) => {
 
         it("should not let alice remove balance", async function () {
             return await expectedExceptionPromise(function () {
-                return instance.withdrawFunds({from: alice});
+                return instance.withdrawFunds(qty, {from: alice});
             });
         });
 
         it("should let the owner remove balance", async function () {
-            let txObj = await instance.withdrawFunds({from: owner});
-            // Check event
+            let txObj = await instance.withdrawFunds(qty, {from: owner});
             assert.strictEqual(txObj.logs.length, 1, "Only one event is expected");
             let args = txObj.logs[0].args;
             assert.strictEqual(args['sender'], owner, "Log sender is not correct");

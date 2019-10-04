@@ -8,11 +8,13 @@ contract SnakesAndLadders is Ownable {
     using SafeMath for uint8;
 
     // All balances
-    mapping(address => uint) private balances;
+    mapping(address => uint) public balances;
 
-    // Log movement
+    // Player: is true if it's the user, otherwise is the AI
+    // Turn: turn of the game starting from 0
+    // Move: The dice move from 1 to 6
     event LogMove(address sender, uint turn, bool player, int move);
-    event LogGame(address sender, bool result);
+    event LogGame(address sender, bool result, int balancediff);
     event LogFund(address sender, uint amount);
     event LogWithdraw(address sender, uint amount);
     event LogAddBalance(address sender, uint amount);
@@ -20,20 +22,28 @@ contract SnakesAndLadders is Ownable {
 
     // Game composition
     mapping(int8 => int8) private ladders;
-    int8 private tiles = 99;  // 1 + 99
+    int8 private tiles = 100;  // 1 + 99
 
     constructor() public {
-        ladders[1] = 37;
-        ladders[3] = 11;
-        ladders[9] = 22;
-        ladders[32] = 53;
-        ladders[50] = -39;
-        ladders[51] = 37;
-        ladders[55] = -40;
-        ladders[61] = -4;
-        ladders[79] = 20;
-        ladders[91] = -38;
-        ladders[98] = -90;
+        // ladders
+        ladders[4] = 14;
+        ladders[8] = 32;
+        ladders[20] = 38;
+        ladders[28] = 84;
+        ladders[40] = 59;
+        ladders[58] = 83;
+        ladders[72] = 93;
+        // snakes
+        ladders[15] = 3;
+        ladders[31] = 9;
+        ladders[44] = 26;
+        ladders[62] = 19;
+        ladders[64] = 42;
+        ladders[74] = 70;
+        ladders[85] = 33;
+        ladders[91] = 71;
+        ladders[96] = 75;
+        ladders[98] = 80;
     }
 
     /**
@@ -51,33 +61,44 @@ contract SnakesAndLadders is Ownable {
         require(amount <= balances[msg.sender], "You don't have enough balance");
         require(amount*10 < address(this).balance, "You cannot bet more than 1/10 of this contract balance");
         uint turn = 0;
-        bool player = true;  // true if next move is for player, false if for computer
-        int8 player1 = 0;
-        int8 player2 = 0;
+        bool player = false;  // true if next move is for player, false if for computer
+        int8 playerUser = 0;
+        int8 playerAI = 0;
         // let's decide who starts
         int8 startDice = random(0);
-        if (startDice == 5 || startDice == 6) {
-            player = false;
+        if (startDice == 1 || startDice == 2) {
+            player = true;
         }
         // make all the moves and emit the results
-        while (player1 < tiles && player2 < tiles) {
+        while (playerUser != tiles && playerAI != tiles) {
             int8 move = random(turn);
             if (player) {
-                player1 = player1 + move;
-                player1 = player1 + ladders[player1];
+                playerUser = playerUser + move;
+                if (ladders[playerUser] != 0) {
+                    playerUser = ladders[playerUser];
+                }
+                if (playerUser > 100) {
+                    playerUser = 100 - (playerUser - 100);
+                }
             } else {
-                player2 = player2 + move;
-                player2 = player2 + ladders[player2];
+                playerAI = playerAI + move;
+                if (ladders[playerAI] != 0) {
+                    playerAI = ladders[playerAI];
+                }
+                if (playerAI > 100) {
+                    playerAI = 100 - (playerAI - 100);
+                }
             }
             emit LogMove(msg.sender, turn, player, move);
             player = !player;
             turn++;
         }
-        if (player2 >= tiles) {
-            emit LogGame(msg.sender, false);
+        if (playerUser == tiles) {
+            balances[msg.sender] += amount;
+            emit LogGame(msg.sender, true, int(amount));
         } else {
-            balances[msg.sender] += amount*2;
-            emit LogGame(msg.sender, true);
+            balances[msg.sender] -= amount;
+            emit LogGame(msg.sender, false, -int(amount));
         }
     }
 
@@ -86,7 +107,14 @@ contract SnakesAndLadders is Ownable {
      * TODO better use oraclize
      */
     function random(uint turn) public view returns(int8) {
-        return int8(uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty, turn)))%6);
+        return int8(uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty, turn)))%6) + 1;
+    }
+
+    /**
+     * Get the balance of an user
+     */
+    function getBalance() public view returns(uint) {
+        return balances[msg.sender];
     }
 
     /**
@@ -109,13 +137,6 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
-     * Get the balance of an user
-     */
-    function getBalance() public view returns(uint) {
-        return balances[msg.sender];
-    }
-
-    /**
      * Add funds to the contract by the owner
      */
     function addFunds() public payable onlyOwner {
@@ -125,10 +146,10 @@ contract SnakesAndLadders is Ownable {
     /**
      * Remove funds from the contract by the owner
      */
-    function withdrawFunds() public onlyOwner {
+    function withdrawFunds(uint amount) public onlyOwner {
         require(address(this).balance > 0, "There is no balance to withdraw");
+        require(address(this).balance >= amount, "There is not enough balance to withdraw");
         emit LogRemoveBalance(msg.sender, address(this).balance);
-        msg.sender.transfer(address(this).balance);
+        msg.sender.transfer(amount);
     }
 }
-
