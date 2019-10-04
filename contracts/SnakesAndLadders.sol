@@ -111,13 +111,6 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
-     * Get the balance of an user
-     */
-    function getBalance() public view returns(uint) {
-        return balances[msg.sender];
-    }
-
-    /**
      * Add to balance
      */
     function addBalance() public payable {

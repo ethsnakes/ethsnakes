@@ -6,7 +6,7 @@ contract('SnakesAndLadders Simulation', (accounts) => {
     let instance;
     const qty = toWei('0.01', 'ether');
     const qtyBN = toBN(qty);
-    const simulations = 1000;
+    const simulations = 10;
 
     before("running check if the setup is correct to pass the tests", async function() {
         let aliceBalanceBN = toBN(await web3.eth.getBalance(alice));
