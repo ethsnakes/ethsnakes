@@ -1,6 +1,5 @@
 import { BoardContainer } from "./BoardContainer";
 import { BoardManager } from "./BoardManager";
-import { start } from "repl";
 
 export class Chip extends Phaser.GameObjects.Container {
 

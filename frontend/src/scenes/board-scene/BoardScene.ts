@@ -7,6 +7,8 @@ import { BoardManager } from "./BoardManager";
 import { SettingsLayer } from "./SettingsLayer";
 import { DiceContainer } from "./DiceContainer";
 import { GameVars } from "../../GameVars";
+import { SelectBetLayer } from "./layers/SelectBetLayer";
+import { WaitingLayer } from "./layers/WaitingLayer";
 
 export class BoardScene extends Phaser.Scene {
 
@@ -18,6 +20,8 @@ export class BoardScene extends Phaser.Scene {
     
     private settingsLayer: SettingsLayer;
     private dice: DiceContainer;
+    private selectBetLayer: SelectBetLayer;
+    private waitingLayer: WaitingLayer;
     
     constructor() {
 
@@ -51,6 +55,30 @@ export class BoardScene extends Phaser.Scene {
 
         this.boardContainer = new BoardContainer(this);
         this.add.existing(this.boardContainer);        
+    }
+
+    public showSelectBetLayer(): void {
+
+        this.gui.disableButtons();
+
+        this.selectBetLayer = new SelectBetLayer(this);
+        this.add.existing(this.selectBetLayer);
+    }
+
+    public showWaitingLayer(): void {
+
+        this.selectBetLayer.destroy();
+
+        this.waitingLayer = new WaitingLayer(this);
+        this.add.existing(this.waitingLayer);
+    }
+
+    public removeWaitingLayer(): void {
+
+        this.waitingLayer.destroy();
+
+        this.gui.enableButtons();
+        this.gui.startGame();
     }
 
     public rollDice(): void {

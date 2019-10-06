@@ -40,12 +40,36 @@ export class GUI extends Phaser.GameObjects.Container {
         this.diceButton = new Button(this.scene, GameConstants.GAME_WIDTH - 70 * GameVars.scaleX, GameConstants.GAME_HEIGHT - 70, "texture_atlas_1", "btn_dice_off", "btn_dice_on");
         this.diceButton.scaleX = GameVars.scaleX;
         this.diceButton.onUp(this.onClickDiceButton, this);
+        this.diceButton.visible = false;
         this.add(this.diceButton);
 
         if (GameConstants.DEVELOPMENT) {
             const developmentMenu = new DevelopmentMenu(this.scene);
             this.add(developmentMenu);
         }
+    }
+
+    public startGame(): void {
+
+        this.diceButton.visible = true;
+    }
+
+    public disableButtons(): void {
+
+        this.playButton.disableInteractive();
+        this.addFundsButton.disableInteractive();
+        this.retrieveFundsButton.disableInteractive();
+        this.settingsButton.disableInteractive();
+        this.diceButton.disableInteractive();
+    }
+
+    public enableButtons(): void {
+
+        this.playButton.setInteractive();
+        this.addFundsButton.setInteractive();
+        this.retrieveFundsButton.disableInteractive();
+        this.settingsButton.setInteractive();
+        this.diceButton.setInteractive();
     }
 
     public matchOver(): void {

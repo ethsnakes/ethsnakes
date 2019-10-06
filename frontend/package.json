@@ -1,7 +1,7 @@
 {
     "name": "snake-and-ladders",
     "version": "0.0.1",
-    "description": "snake and ladders using cryptocurrency",
+    "description": "snake and ladders using ethereum",
     "devDependencies": {
         "expose-loader": "0.7.5",
         "ts-loader": "6.1.2",
