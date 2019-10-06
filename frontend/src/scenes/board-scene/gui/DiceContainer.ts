@@ -1,7 +1,7 @@
-import { GameConstants } from "../../GameConstants";
-import { GameVars } from "../../GameVars";
-import { BoardScene } from "./BoardScene";
-import { BoardManager } from "./BoardManager";
+import { GameConstants } from "../../../GameConstants";
+import { GameVars } from "../../../GameVars";
+import { BoardScene } from "../BoardScene";
+import { BoardManager } from "../BoardManager";
 
 export class DiceContainer extends Phaser.GameObjects.Container {
 

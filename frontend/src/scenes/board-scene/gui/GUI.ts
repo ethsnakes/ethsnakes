@@ -1,8 +1,8 @@
-import { GameConstants } from "../../GameConstants";
-import { Button } from "../../utils/Utils";
-import { GameVars } from "../../GameVars";
-import { BoardManager } from "./BoardManager";
-import { GameManager } from "../../GameManager";
+import { GameConstants } from "../../../GameConstants";
+import { Button } from "../../../utils/Utils";
+import { GameVars } from "../../../GameVars";
+import { BoardManager } from "../BoardManager";
+import { GameManager } from "../../../GameManager";
 import { DevelopmentMenu } from "./DevelopmentMenu";
 
 export class GUI extends Phaser.GameObjects.Container {
@@ -51,7 +51,14 @@ export class GUI extends Phaser.GameObjects.Container {
 
     public startGame(): void {
 
+        this.playButton.visible = false;
         this.diceButton.visible = true;
+
+        this.addFundsButton.alpha = .5;
+        this.addFundsButton.disableInteractive();
+
+        this.retrieveFundsButton.alpha = .5;
+        this.retrieveFundsButton.disableInteractive();
     }
 
     public disableButtons(): void {
@@ -73,6 +80,14 @@ export class GUI extends Phaser.GameObjects.Container {
     }
 
     public matchOver(): void {
+
+        this.playButton.visible = true;
+
+        this.addFundsButton.alpha = 1;
+        this.addFundsButton.setInteractive();
+        
+        this.retrieveFundsButton.alpha = 1;
+        this.retrieveFundsButton.setInteractive();
 
         this.diceButton.disableInteractive();
 
@@ -109,6 +124,10 @@ export class GUI extends Phaser.GameObjects.Container {
     }
 
     private onClickDiceButton(): void {
+
+        if (GameVars.diceBlocked) {
+            return;
+        }
        
         BoardManager.rollDice();
     }

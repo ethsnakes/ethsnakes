@@ -1,6 +1,7 @@
 import { GameConstants } from "./GameConstants";
 import { GameVars } from "./GameVars";
 import { BoardScene } from "./scenes/board-scene/BoardScene";
+import { BoardManager } from "./scenes/board-scene/BoardManager";
 
 export class GameManager {
 
@@ -64,6 +65,8 @@ export class GameManager {
     }
 
     public static play(): void {
+
+        BoardManager.resetBoard();
     
         BoardScene.currentInstance.showSelectBetLayer();
     }
@@ -90,16 +93,6 @@ export class GameManager {
     public static retrieveFunds(): void {
 
         console.log("retrieve funds");
-    }
-
-    public static onGameWon(): void {
-
-        console.log("on game won");
-    }
-
-    public static onGameLost(): void {
-        
-        console.log("on game lost");
     }
 
     public static writeGameData(): void {

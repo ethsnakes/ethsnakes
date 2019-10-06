@@ -14,9 +14,14 @@ export class BoardManager {
         BoardManager.scene = scene;
         BoardManager.gameStarted = false;
 
+        GameVars.diceBlocked = false;
         GameVars.turn = GameConstants.PLAYER;
         GameVars.matchOver = false;
         GameVars.paused = false;
+    }
+
+    public static resetBoard(): void {
+        //
     }
 
     public static onClickSettings(): void {
@@ -28,6 +33,7 @@ export class BoardManager {
         if (chip.cellIndex === 100) {
             BoardManager.matchOver(chip.isPlayer);
         } else {
+
             let outCell = null;
 
             for (let i = 0; i < GameConstants.BOARD_ELEMENTS.length; i ++) {
@@ -37,7 +43,9 @@ export class BoardManager {
                 }
             }
 
-            if (outCell !== null) {
+            if (outCell === null) {
+                BoardManager.changeTurn();
+            } else {
                 if (outCell > chip.cellIndex) {
                     chip.moveInLadder(outCell);
                 } else {
@@ -47,7 +55,14 @@ export class BoardManager {
         }
     }
 
+    public static chipArrivedToItsFinalPosition(): void {
+
+        BoardManager.changeTurn();
+    }
+
     public static rollDice(): void {
+
+        GameVars.diceBlocked = true;
 
         GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
 
@@ -57,9 +72,6 @@ export class BoardManager {
     public static onDiceResultAvailable(): void {
 
         BoardScene.currentInstance.moveChip();
-
-        // cambiamos el turno
-        GameVars.turn = GameVars.turn === GameConstants.PLAYER ? GameConstants.BOT : GameConstants.PLAYER;
     }
     
     public static showSettingsLayer(): void {
@@ -76,16 +88,23 @@ export class BoardManager {
         BoardScene.currentInstance.showSettingsLayer();
     }
 
-    private static start(p: { r: number, c: number }): void {
-        //
-    }
-
-    private static matchOver(hasPlayerWon: boolean): void {
+    public static matchOver(hasPlayerWon: boolean): void {
 
         console.log("PARTIDA TERMINADA HA GANADO:", hasPlayerWon ? "el jugador" : "el bot");
 
         GameVars.matchOver = true;
 
         BoardScene.currentInstance.matchOver();
+    }
+
+    private static changeTurn(): void {
+
+        GameVars.turn = GameVars.turn === GameConstants.PLAYER ? GameConstants.BOT : GameConstants.PLAYER;
+
+        if (GameVars.turn === GameConstants.BOT) {
+            BoardManager.rollDice();
+        } else {
+            GameVars.diceBlocked = false;
+        }
     }
 }

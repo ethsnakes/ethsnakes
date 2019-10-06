@@ -154,6 +154,7 @@ var GameConstants = /** @class */ (function () {
     GameConstants.VERBOSE = false;
     GameConstants.GAME_WIDTH = 1024;
     GameConstants.GAME_HEIGHT = 768;
+    GameConstants.CONTRACT_ADDRESS = "0x18572FD0f44B51F67zf16c5f1dc3c6653C554963";
     GameConstants.BOT = "bot";
     GameConstants.PLAYER = "player";
     GameConstants.BOARD_ELEMENTS = [
@@ -198,6 +199,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var GameConstants_1 = __webpack_require__(/*! ./GameConstants */ "./src/GameConstants.ts");
 var GameVars_1 = __webpack_require__(/*! ./GameVars */ "./src/GameVars.ts");
 var BoardScene_1 = __webpack_require__(/*! ./scenes/board-scene/BoardScene */ "./src/scenes/board-scene/BoardScene.ts");
+var BoardManager_1 = __webpack_require__(/*! ./scenes/board-scene/BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
 var GameManager = /** @class */ (function () {
     function GameManager() {
     }
@@ -240,10 +242,14 @@ var GameManager = /** @class */ (function () {
         GameVars_1.GameVars.currentScene.scene.start("BoardScene");
     };
     GameManager.play = function () {
+        BoardManager_1.BoardManager.resetBoard();
         BoardScene_1.BoardScene.currentInstance.showSelectBetLayer();
     };
     GameManager.connectToEthereum = function () {
         BoardScene_1.BoardScene.currentInstance.showWaitingLayer();
+    };
+    GameManager.onConnection = function () {
+        BoardScene_1.BoardScene.currentInstance.removeWaitingLayer();
     };
     GameManager.matchOver = function () {
         //
@@ -253,12 +259,6 @@ var GameManager = /** @class */ (function () {
     };
     GameManager.retrieveFunds = function () {
         console.log("retrieve funds");
-    };
-    GameManager.onGameWon = function () {
-        console.log("on game won");
-    };
-    GameManager.onGameLost = function () {
-        console.log("on game lost");
     };
     GameManager.writeGameData = function () {
         GameManager.setGameStorageData(GameConstants_1.GameConstants.SAVED_GAME_DATA_KEY, GameVars_1.GameVars.gameData, function () {
@@ -631,9 +631,13 @@ var BoardManager = /** @class */ (function () {
     BoardManager.init = function (scene) {
         BoardManager.scene = scene;
         BoardManager.gameStarted = false;
+        GameVars_1.GameVars.diceBlocked = false;
         GameVars_1.GameVars.turn = GameConstants_1.GameConstants.PLAYER;
         GameVars_1.GameVars.matchOver = false;
         GameVars_1.GameVars.paused = false;
+    };
+    BoardManager.resetBoard = function () {
+        //
     };
     BoardManager.onClickSettings = function () {
         //
@@ -650,7 +654,10 @@ var BoardManager = /** @class */ (function () {
                     break;
                 }
             }
-            if (outCell !== null) {
+            if (outCell === null) {
+                BoardManager.changeTurn();
+            }
+            else {
                 if (outCell > chip.cellIndex) {
                     chip.moveInLadder(outCell);
                 }
@@ -660,14 +667,16 @@ var BoardManager = /** @class */ (function () {
             }
         }
     };
+    BoardManager.chipArrivedToItsFinalPosition = function () {
+        BoardManager.changeTurn();
+    };
     BoardManager.rollDice = function () {
+        GameVars_1.GameVars.diceBlocked = true;
         GameVars_1.GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
         BoardScene_1.BoardScene.currentInstance.rollDice();
     };
     BoardManager.onDiceResultAvailable = function () {
         BoardScene_1.BoardScene.currentInstance.moveChip();
-        // cambiamos el turno
-        GameVars_1.GameVars.turn = GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER ? GameConstants_1.GameConstants.BOT : GameConstants_1.GameConstants.PLAYER;
     };
     BoardManager.showSettingsLayer = function () {
         GameVars_1.GameVars.paused = true;
@@ -677,13 +686,19 @@ var BoardManager = /** @class */ (function () {
         GameVars_1.GameVars.paused = false;
         BoardScene_1.BoardScene.currentInstance.showSettingsLayer();
     };
-    BoardManager.start = function (p) {
-        //
-    };
     BoardManager.matchOver = function (hasPlayerWon) {
         console.log("PARTIDA TERMINADA HA GANADO:", hasPlayerWon ? "el jugador" : "el bot");
         GameVars_1.GameVars.matchOver = true;
         BoardScene_1.BoardScene.currentInstance.matchOver();
+    };
+    BoardManager.changeTurn = function () {
+        GameVars_1.GameVars.turn = GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER ? GameConstants_1.GameConstants.BOT : GameConstants_1.GameConstants.PLAYER;
+        if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.BOT) {
+            BoardManager.rollDice();
+        }
+        else {
+            GameVars_1.GameVars.diceBlocked = false;
+        }
     };
     return BoardManager;
 }());
@@ -716,13 +731,13 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameManager_1 = __webpack_require__(/*! ../../GameManager */ "./src/GameManager.ts");
-var GUI_1 = __webpack_require__(/*! ./GUI */ "./src/scenes/board-scene/GUI.ts");
+var GUI_1 = __webpack_require__(/*! ./gui/GUI */ "./src/scenes/board-scene/gui/GUI.ts");
 var HUD_1 = __webpack_require__(/*! ./HUD */ "./src/scenes/board-scene/HUD.ts");
 var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/GameConstants.ts");
 var BoardContainer_1 = __webpack_require__(/*! ./BoardContainer */ "./src/scenes/board-scene/BoardContainer.ts");
 var BoardManager_1 = __webpack_require__(/*! ./BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
 var SettingsLayer_1 = __webpack_require__(/*! ./SettingsLayer */ "./src/scenes/board-scene/SettingsLayer.ts");
-var DiceContainer_1 = __webpack_require__(/*! ./DiceContainer */ "./src/scenes/board-scene/DiceContainer.ts");
+var DiceContainer_1 = __webpack_require__(/*! ./gui/DiceContainer */ "./src/scenes/board-scene/gui/DiceContainer.ts");
 var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
 var SelectBetLayer_1 = __webpack_require__(/*! ./layers/SelectBetLayer */ "./src/scenes/board-scene/layers/SelectBetLayer.ts");
 var WaitingLayer_1 = __webpack_require__(/*! ./layers/WaitingLayer */ "./src/scenes/board-scene/layers/WaitingLayer.ts");
@@ -758,6 +773,11 @@ var BoardScene = /** @class */ (function (_super) {
         this.selectBetLayer.destroy();
         this.waitingLayer = new WaitingLayer_1.WaitingLayer(this);
         this.add.existing(this.waitingLayer);
+    };
+    BoardScene.prototype.removeWaitingLayer = function () {
+        this.waitingLayer.destroy();
+        this.gui.enableButtons();
+        this.gui.startGame();
     };
     BoardScene.prototype.rollDice = function () {
         this.dice.roll(GameVars_1.GameVars.diceResult);
@@ -852,8 +872,10 @@ var Chip = /** @class */ (function (_super) {
             targets: this,
             x: endPosition.x,
             y: endPosition.y,
-            ease: Phaser.Math.Easing.Cubic.Out,
-            duration: t
+            ease: Phaser.Math.Easing.Cubic.InOut,
+            duration: t,
+            onComplete: BoardManager_1.BoardManager.chipArrivedToItsFinalPosition,
+            onCompleteScope: BoardManager_1.BoardManager
         });
     };
     Chip.prototype.moveInSnake = function (goalCellIndex) {
@@ -872,7 +894,9 @@ var Chip = /** @class */ (function (_super) {
                     scaleY: 1,
                     ease: Phaser.Math.Easing.Cubic.Out,
                     duration: 300,
-                    delay: 600
+                    delay: 600,
+                    onComplete: BoardManager_1.BoardManager.chipArrivedToItsFinalPosition,
+                    onCompleteScope: BoardManager_1.BoardManager
                 });
             },
             onCompleteScope: this
@@ -907,7 +931,7 @@ var Chip = /** @class */ (function (_super) {
             x: p.x,
             y: p.y,
             ease: Phaser.Math.Easing.Cubic.InOut,
-            duration: 300,
+            duration: 250,
             onComplete: this.onTweeenComplete,
             onCompleteScope: this
         });
@@ -915,7 +939,7 @@ var Chip = /** @class */ (function (_super) {
             targets: this,
             origY: 1.15,
             ease: Phaser.Math.Easing.Cubic.InOut,
-            duration: 150,
+            duration: 125,
             yoyo: true
         });
     };
@@ -948,242 +972,10 @@ var Chip = /** @class */ (function (_super) {
         }
         return { x: x, y: y };
     };
-    Chip.LADDER_SPEED = .25;
+    Chip.LADDER_SPEED = .275;
     return Chip;
 }(Phaser.GameObjects.Container));
 exports.Chip = Chip;
-
-
-/***/ }),
-
-/***/ "./src/scenes/board-scene/DevelopmentMenu.ts":
-/*!***************************************************!*\
-  !*** ./src/scenes/board-scene/DevelopmentMenu.ts ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
-var Utils_1 = __webpack_require__(/*! ../../utils/Utils */ "./src/utils/Utils.ts");
-var GameManager_1 = __webpack_require__(/*! ../../GameManager */ "./src/GameManager.ts");
-var DevelopmentMenu = /** @class */ (function (_super) {
-    __extends(DevelopmentMenu, _super);
-    function DevelopmentMenu(scene) {
-        var _this = _super.call(this, scene) || this;
-        _this.x = 90 * GameVars_1.GameVars.scaleX;
-        _this.y = 270;
-        _this.scaleX = GameVars_1.GameVars.scaleX;
-        var w = 150;
-        var h = 75;
-        var background = new Phaser.GameObjects.Graphics(_this.scene);
-        background.fillStyle(0xFFFFFF);
-        background.fillRect(-w / 2, -h / 2, w, h);
-        _this.add(background);
-        var developmentLabel = new Phaser.GameObjects.Text(_this.scene, 0, -25, "development menu", { fontFamily: "Arial", fontSize: "15px", color: "#FF0000" });
-        developmentLabel.setOrigin(.5);
-        _this.add(developmentLabel);
-        var winButton = new Utils_1.Button(_this.scene, -35, 10, "texture_atlas_1", "btn_force_win_off", "btn_force_win_on");
-        winButton.onUp(_this.onClickWin, _this);
-        _this.add(winButton);
-        var loseButton = new Utils_1.Button(_this.scene, 35, 10, "texture_atlas_1", "btn_force_lose_off", "btn_force_lose_on");
-        loseButton.onUp(_this.onClickLose, _this);
-        _this.add(loseButton);
-        return _this;
-    }
-    DevelopmentMenu.prototype.onClickWin = function () {
-        GameManager_1.GameManager.onGameWon();
-    };
-    DevelopmentMenu.prototype.onClickLose = function () {
-        GameManager_1.GameManager.onGameLost();
-    };
-    return DevelopmentMenu;
-}(Phaser.GameObjects.Container));
-exports.DevelopmentMenu = DevelopmentMenu;
-
-
-/***/ }),
-
-/***/ "./src/scenes/board-scene/DiceContainer.ts":
-/*!*************************************************!*\
-  !*** ./src/scenes/board-scene/DiceContainer.ts ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/GameConstants.ts");
-var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
-var BoardScene_1 = __webpack_require__(/*! ./BoardScene */ "./src/scenes/board-scene/BoardScene.ts");
-var BoardManager_1 = __webpack_require__(/*! ./BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
-var DiceContainer = /** @class */ (function (_super) {
-    __extends(DiceContainer, _super);
-    function DiceContainer(scene) {
-        var _this = _super.call(this, scene) || this;
-        _this.dice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 100 * GameVars_1.GameVars.scaleX, 550, "dice2");
-        _this.dice.scaleX = GameVars_1.GameVars.scaleX;
-        BoardScene_1.BoardScene.currentInstance.add.existing(_this.dice);
-        _this.dice.visible = false;
-        _this.add(_this.dice);
-        _this.dice.on("animationcomplete", _this.onAnimationComplete, _this);
-        return _this;
-    }
-    DiceContainer.prototype.roll = function (i) {
-        this.dice.visible = true;
-        this.dice.play("roll" + i);
-    };
-    DiceContainer.prototype.matchOver = function () {
-        this.scene.tweens.add({
-            targets: this,
-            alpha: 0,
-            ease: Phaser.Math.Easing.Cubic.Out,
-            duration: 300
-        });
-    };
-    DiceContainer.prototype.onAnimationComplete = function () {
-        BoardManager_1.BoardManager.onDiceResultAvailable();
-    };
-    return DiceContainer;
-}(Phaser.GameObjects.Container));
-exports.DiceContainer = DiceContainer;
-
-
-/***/ }),
-
-/***/ "./src/scenes/board-scene/GUI.ts":
-/*!***************************************!*\
-  !*** ./src/scenes/board-scene/GUI.ts ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./src/GameConstants.ts");
-var Utils_1 = __webpack_require__(/*! ../../utils/Utils */ "./src/utils/Utils.ts");
-var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./src/GameVars.ts");
-var BoardManager_1 = __webpack_require__(/*! ./BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
-var GameManager_1 = __webpack_require__(/*! ../../GameManager */ "./src/GameManager.ts");
-var DevelopmentMenu_1 = __webpack_require__(/*! ./DevelopmentMenu */ "./src/scenes/board-scene/DevelopmentMenu.ts");
-var GUI = /** @class */ (function (_super) {
-    __extends(GUI, _super);
-    function GUI(scene) {
-        var _this = _super.call(this, scene) || this;
-        _this.playButton = new Utils_1.Button(_this.scene, 90 * GameVars_1.GameVars.scaleX, 170, "texture_atlas_1", "btn_play_off", "btn_play_on");
-        _this.playButton.scaleX = GameVars_1.GameVars.scaleX;
-        _this.playButton.onUp(_this.onClickPlay, _this);
-        _this.add(_this.playButton);
-        _this.addFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 340 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
-        _this.addFundsButton.scaleX = GameVars_1.GameVars.scaleX;
-        _this.addFundsButton.onUp(_this.onClickAddFunds, _this);
-        _this.add(_this.addFundsButton);
-        _this.retrieveFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 170 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
-        _this.retrieveFundsButton.scaleX = GameVars_1.GameVars.scaleX;
-        _this.retrieveFundsButton.onUp(_this.onClickRetrieveFunds, _this);
-        _this.add(_this.retrieveFundsButton);
-        _this.settingsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 40 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_settings_off", "btn_settings_on");
-        _this.settingsButton.scaleX = GameVars_1.GameVars.scaleX;
-        _this.settingsButton.onUp(_this.onClickSettings, _this);
-        _this.add(_this.settingsButton);
-        _this.diceButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 70 * GameVars_1.GameVars.scaleX, GameConstants_1.GameConstants.GAME_HEIGHT - 70, "texture_atlas_1", "btn_dice_off", "btn_dice_on");
-        _this.diceButton.scaleX = GameVars_1.GameVars.scaleX;
-        _this.diceButton.onUp(_this.onClickDiceButton, _this);
-        _this.add(_this.diceButton);
-        if (GameConstants_1.GameConstants.DEVELOPMENT) {
-            var developmentMenu = new DevelopmentMenu_1.DevelopmentMenu(_this.scene);
-            _this.add(developmentMenu);
-        }
-        return _this;
-    }
-    GUI.prototype.disableButtons = function () {
-        this.playButton.disableInteractive();
-        this.addFundsButton.disableInteractive();
-        this.retrieveFundsButton.disableInteractive();
-        this.settingsButton.disableInteractive();
-        this.diceButton.disableInteractive();
-    };
-    GUI.prototype.enableButtons = function () {
-        this.playButton.setInteractive();
-        this.addFundsButton.setInteractive();
-        this.retrieveFundsButton.disableInteractive();
-        this.settingsButton.setInteractive();
-        this.diceButton.setInteractive();
-    };
-    GUI.prototype.matchOver = function () {
-        this.diceButton.disableInteractive();
-        this.scene.tweens.add({
-            targets: this.diceButton,
-            alpha: 0,
-            ease: Phaser.Math.Easing.Cubic.Out,
-            duration: 300,
-            onComplete: function () {
-                this.diceButton.visible = false;
-            },
-            onCompleteScope: this
-        });
-    };
-    GUI.prototype.onClickPlay = function () {
-        GameManager_1.GameManager.play();
-    };
-    GUI.prototype.onClickAddFunds = function () {
-        GameManager_1.GameManager.addFunds();
-    };
-    GUI.prototype.onClickRetrieveFunds = function () {
-        GameManager_1.GameManager.retrieveFunds();
-    };
-    GUI.prototype.onClickSettings = function () {
-        BoardManager_1.BoardManager.onClickSettings();
-    };
-    GUI.prototype.onClickDiceButton = function () {
-        BoardManager_1.BoardManager.rollDice();
-    };
-    return GUI;
-}(Phaser.GameObjects.Container));
-exports.GUI = GUI;
 
 
 /***/ }),
@@ -1277,6 +1069,252 @@ exports.SettingsLayer = SettingsLayer;
 
 /***/ }),
 
+/***/ "./src/scenes/board-scene/gui/DevelopmentMenu.ts":
+/*!*******************************************************!*\
+  !*** ./src/scenes/board-scene/gui/DevelopmentMenu.ts ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameVars_1 = __webpack_require__(/*! ../../../GameVars */ "./src/GameVars.ts");
+var Utils_1 = __webpack_require__(/*! ../../../utils/Utils */ "./src/utils/Utils.ts");
+var BoardManager_1 = __webpack_require__(/*! ../BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
+var DevelopmentMenu = /** @class */ (function (_super) {
+    __extends(DevelopmentMenu, _super);
+    function DevelopmentMenu(scene) {
+        var _this = _super.call(this, scene) || this;
+        _this.x = 90 * GameVars_1.GameVars.scaleX;
+        _this.y = 270;
+        _this.scaleX = GameVars_1.GameVars.scaleX;
+        var w = 150;
+        var h = 75;
+        var background = new Phaser.GameObjects.Graphics(_this.scene);
+        background.fillStyle(0xFFFFFF);
+        background.fillRect(-w / 2, -h / 2, w, h);
+        _this.add(background);
+        var developmentLabel = new Phaser.GameObjects.Text(_this.scene, 0, -25, "development menu", { fontFamily: "Arial", fontSize: "15px", color: "#FF0000" });
+        developmentLabel.setOrigin(.5);
+        _this.add(developmentLabel);
+        var winButton = new Utils_1.Button(_this.scene, -35, 10, "texture_atlas_1", "btn_force_win_off", "btn_force_win_on");
+        winButton.onUp(_this.onClickWin, _this);
+        _this.add(winButton);
+        var loseButton = new Utils_1.Button(_this.scene, 35, 10, "texture_atlas_1", "btn_force_lose_off", "btn_force_lose_on");
+        loseButton.onUp(_this.onClickLose, _this);
+        _this.add(loseButton);
+        return _this;
+    }
+    DevelopmentMenu.prototype.onClickWin = function () {
+        BoardManager_1.BoardManager.matchOver(true);
+    };
+    DevelopmentMenu.prototype.onClickLose = function () {
+        BoardManager_1.BoardManager.matchOver(false);
+    };
+    return DevelopmentMenu;
+}(Phaser.GameObjects.Container));
+exports.DevelopmentMenu = DevelopmentMenu;
+
+
+/***/ }),
+
+/***/ "./src/scenes/board-scene/gui/DiceContainer.ts":
+/*!*****************************************************!*\
+  !*** ./src/scenes/board-scene/gui/DiceContainer.ts ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameConstants_1 = __webpack_require__(/*! ../../../GameConstants */ "./src/GameConstants.ts");
+var GameVars_1 = __webpack_require__(/*! ../../../GameVars */ "./src/GameVars.ts");
+var BoardScene_1 = __webpack_require__(/*! ../BoardScene */ "./src/scenes/board-scene/BoardScene.ts");
+var BoardManager_1 = __webpack_require__(/*! ../BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
+var DiceContainer = /** @class */ (function (_super) {
+    __extends(DiceContainer, _super);
+    function DiceContainer(scene) {
+        var _this = _super.call(this, scene) || this;
+        _this.dice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 100 * GameVars_1.GameVars.scaleX, 550, "dice2");
+        _this.dice.scaleX = GameVars_1.GameVars.scaleX;
+        BoardScene_1.BoardScene.currentInstance.add.existing(_this.dice);
+        _this.dice.visible = false;
+        _this.add(_this.dice);
+        _this.dice.on("animationcomplete", _this.onAnimationComplete, _this);
+        return _this;
+    }
+    DiceContainer.prototype.roll = function (i) {
+        this.dice.visible = true;
+        this.dice.play("roll" + i);
+    };
+    DiceContainer.prototype.matchOver = function () {
+        this.scene.tweens.add({
+            targets: this,
+            alpha: 0,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 300
+        });
+    };
+    DiceContainer.prototype.onAnimationComplete = function () {
+        BoardManager_1.BoardManager.onDiceResultAvailable();
+    };
+    return DiceContainer;
+}(Phaser.GameObjects.Container));
+exports.DiceContainer = DiceContainer;
+
+
+/***/ }),
+
+/***/ "./src/scenes/board-scene/gui/GUI.ts":
+/*!*******************************************!*\
+  !*** ./src/scenes/board-scene/gui/GUI.ts ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameConstants_1 = __webpack_require__(/*! ../../../GameConstants */ "./src/GameConstants.ts");
+var Utils_1 = __webpack_require__(/*! ../../../utils/Utils */ "./src/utils/Utils.ts");
+var GameVars_1 = __webpack_require__(/*! ../../../GameVars */ "./src/GameVars.ts");
+var BoardManager_1 = __webpack_require__(/*! ../BoardManager */ "./src/scenes/board-scene/BoardManager.ts");
+var GameManager_1 = __webpack_require__(/*! ../../../GameManager */ "./src/GameManager.ts");
+var DevelopmentMenu_1 = __webpack_require__(/*! ./DevelopmentMenu */ "./src/scenes/board-scene/gui/DevelopmentMenu.ts");
+var GUI = /** @class */ (function (_super) {
+    __extends(GUI, _super);
+    function GUI(scene) {
+        var _this = _super.call(this, scene) || this;
+        _this.playButton = new Utils_1.Button(_this.scene, 90 * GameVars_1.GameVars.scaleX, 170, "texture_atlas_1", "btn_play_off", "btn_play_on");
+        _this.playButton.scaleX = GameVars_1.GameVars.scaleX;
+        _this.playButton.onUp(_this.onClickPlay, _this);
+        _this.add(_this.playButton);
+        _this.addFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 340 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
+        _this.addFundsButton.scaleX = GameVars_1.GameVars.scaleX;
+        _this.addFundsButton.onUp(_this.onClickAddFunds, _this);
+        _this.add(_this.addFundsButton);
+        _this.retrieveFundsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 170 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
+        _this.retrieveFundsButton.scaleX = GameVars_1.GameVars.scaleX;
+        _this.retrieveFundsButton.onUp(_this.onClickRetrieveFunds, _this);
+        _this.add(_this.retrieveFundsButton);
+        _this.settingsButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 40 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_settings_off", "btn_settings_on");
+        _this.settingsButton.scaleX = GameVars_1.GameVars.scaleX;
+        _this.settingsButton.onUp(_this.onClickSettings, _this);
+        _this.add(_this.settingsButton);
+        _this.diceButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 70 * GameVars_1.GameVars.scaleX, GameConstants_1.GameConstants.GAME_HEIGHT - 70, "texture_atlas_1", "btn_dice_off", "btn_dice_on");
+        _this.diceButton.scaleX = GameVars_1.GameVars.scaleX;
+        _this.diceButton.onUp(_this.onClickDiceButton, _this);
+        _this.diceButton.visible = false;
+        _this.add(_this.diceButton);
+        if (GameConstants_1.GameConstants.DEVELOPMENT) {
+            var developmentMenu = new DevelopmentMenu_1.DevelopmentMenu(_this.scene);
+            _this.add(developmentMenu);
+        }
+        return _this;
+    }
+    GUI.prototype.startGame = function () {
+        this.playButton.visible = false;
+        this.diceButton.visible = true;
+        this.addFundsButton.alpha = .5;
+        this.addFundsButton.disableInteractive();
+        this.retrieveFundsButton.alpha = .5;
+        this.retrieveFundsButton.disableInteractive();
+    };
+    GUI.prototype.disableButtons = function () {
+        this.playButton.disableInteractive();
+        this.addFundsButton.disableInteractive();
+        this.retrieveFundsButton.disableInteractive();
+        this.settingsButton.disableInteractive();
+        this.diceButton.disableInteractive();
+    };
+    GUI.prototype.enableButtons = function () {
+        this.playButton.setInteractive();
+        this.addFundsButton.setInteractive();
+        this.retrieveFundsButton.disableInteractive();
+        this.settingsButton.setInteractive();
+        this.diceButton.setInteractive();
+    };
+    GUI.prototype.matchOver = function () {
+        this.playButton.visible = true;
+        this.addFundsButton.alpha = 1;
+        this.addFundsButton.setInteractive();
+        this.retrieveFundsButton.alpha = 1;
+        this.retrieveFundsButton.setInteractive();
+        this.diceButton.disableInteractive();
+        this.scene.tweens.add({
+            targets: this.diceButton,
+            alpha: 0,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 300,
+            onComplete: function () {
+                this.diceButton.visible = false;
+            },
+            onCompleteScope: this
+        });
+    };
+    GUI.prototype.onClickPlay = function () {
+        GameManager_1.GameManager.play();
+    };
+    GUI.prototype.onClickAddFunds = function () {
+        GameManager_1.GameManager.addFunds();
+    };
+    GUI.prototype.onClickRetrieveFunds = function () {
+        GameManager_1.GameManager.retrieveFunds();
+    };
+    GUI.prototype.onClickSettings = function () {
+        BoardManager_1.BoardManager.onClickSettings();
+    };
+    GUI.prototype.onClickDiceButton = function () {
+        BoardManager_1.BoardManager.rollDice();
+    };
+    return GUI;
+}(Phaser.GameObjects.Container));
+exports.GUI = GUI;
+
+
+/***/ }),
+
 /***/ "./src/scenes/board-scene/layers/SelectBetLayer.ts":
 /*!*********************************************************!*\
   !*** ./src/scenes/board-scene/layers/SelectBetLayer.ts ***!
@@ -1308,16 +1346,22 @@ var SelectBetLayer = /** @class */ (function (_super) {
     __extends(SelectBetLayer, _super);
     function SelectBetLayer(scene) {
         var _this = _super.call(this, scene) || this;
-        console.log("PONER EN LA PANTALLA DE ESPERA LA DIRECCION DEL SMART CONTRACT");
-        console.log("Y QUIZÁS LA DE SU CÓDIGO EN GITHUB");
         var transparentBackground = new Phaser.GameObjects.Graphics(_this.scene);
-        transparentBackground.fillStyle(0x000000, .6);
+        transparentBackground.fillStyle(0x000000, .8);
         transparentBackground.fillRect(0, 0, GameConstants_1.GameConstants.GAME_WIDTH, GameConstants_1.GameConstants.GAME_HEIGHT);
         _this.add(transparentBackground);
-        var playButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH / 2, GameConstants_1.GameConstants.GAME_HEIGHT / 2, "texture_atlas_1", "btn_play_off", "btn_play_on");
+        var scaledItemsContainer = new Phaser.GameObjects.Container(_this.scene);
+        scaledItemsContainer.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
+        scaledItemsContainer.scaleX = GameVars_1.GameVars.scaleX;
+        _this.add(scaledItemsContainer);
+        var infoLabelBet = new Phaser.GameObjects.Text(_this.scene, 0, 400, "Select your bet", { fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF" });
+        infoLabelBet.setOrigin(.5);
+        infoLabelBet.scaleX = GameVars_1.GameVars.scaleX;
+        scaledItemsContainer.add(infoLabelBet);
+        var playButton = new Utils_1.Button(_this.scene, 0, 550, "texture_atlas_1", "btn_play_off", "btn_play_on");
         playButton.scaleX = GameVars_1.GameVars.scaleX;
         playButton.onUp(_this.onClickPlay, _this);
-        _this.add(playButton);
+        scaledItemsContainer.add(playButton);
         return _this;
     }
     SelectBetLayer.prototype.onClickPlay = function () {
@@ -1354,18 +1398,49 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameConstants_1 = __webpack_require__(/*! ../../../GameConstants */ "./src/GameConstants.ts");
+var GameVars_1 = __webpack_require__(/*! ../../../GameVars */ "./src/GameVars.ts");
+var GameManager_1 = __webpack_require__(/*! ../../../GameManager */ "./src/GameManager.ts");
 var WaitingLayer = /** @class */ (function (_super) {
     __extends(WaitingLayer, _super);
     function WaitingLayer(scene) {
         var _this = _super.call(this, scene) || this;
-        console.log("PONER EN LA PANTALLA DE ESPERA LA DIRECCION DEL SMART CONTRACT");
-        console.log("Y QUIZÁS LA DE SU CÓDIGO EN GITHUB");
+        _this.f = 0;
         var transparentBackground = new Phaser.GameObjects.Graphics(_this.scene);
-        transparentBackground.fillStyle(0x000000, .6);
+        transparentBackground.fillStyle(0x000000, .8);
         transparentBackground.fillRect(0, 0, GameConstants_1.GameConstants.GAME_WIDTH, GameConstants_1.GameConstants.GAME_HEIGHT);
         _this.add(transparentBackground);
+        var scaledItemsContainer = new Phaser.GameObjects.Container(_this.scene);
+        scaledItemsContainer.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
+        scaledItemsContainer.scaleX = GameVars_1.GameVars.scaleX;
+        _this.add(scaledItemsContainer);
+        _this.connectingLabel = new Phaser.GameObjects.Text(_this.scene, 0, 450, "CONNECTING TO ETHEREUM", { fontFamily: "RussoOne", fontSize: "40px", color: "#FFFFFF" });
+        _this.connectingLabel.setOrigin(.5);
+        scaledItemsContainer.add(_this.connectingLabel);
+        var infoLabelSmartContract = new Phaser.GameObjects.Text(_this.scene, 0, 520, "Smart contract address", { fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF" });
+        infoLabelSmartContract.setOrigin(.5);
+        infoLabelSmartContract.scaleX = GameVars_1.GameVars.scaleX;
+        scaledItemsContainer.add(infoLabelSmartContract);
+        var smartContractLabel = new Phaser.GameObjects.Text(_this.scene, 0, 560, GameConstants_1.GameConstants.CONTRACT_ADDRESS, { fontFamily: "RussoOne", fontSize: "35px", color: "#FFFFFF" });
+        smartContractLabel.setOrigin(.5);
+        smartContractLabel.scaleX = GameVars_1.GameVars.scaleX;
+        scaledItemsContainer.add(smartContractLabel);
+        var infoLabelTime = new Phaser.GameObjects.Text(_this.scene, 0, 650, "This operation takes in average 15 seconds, please be patient.", { fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF" });
+        infoLabelTime.setOrigin(.5);
+        infoLabelTime.scaleX = GameVars_1.GameVars.scaleX;
+        scaledItemsContainer.add(infoLabelTime);
+        // HAY Q HACER ESTO PQ EL METODO UPDATE NO SE UTILIZA DE MANERA AUTOMATICA
+        _this.scene.sys.updateList.add(_this);
         return _this;
     }
+    WaitingLayer.prototype.preUpdate = function (time, delta) {
+        this.f++;
+        if (this.f % 25 === 0) {
+            this.connectingLabel.alpha = this.connectingLabel.alpha === 1 ? .5 : 1;
+        }
+        if (this.f === 300) {
+            GameManager_1.GameManager.onConnection();
+        }
+    };
     return WaitingLayer;
 }(Phaser.GameObjects.Container));
 exports.WaitingLayer = WaitingLayer;

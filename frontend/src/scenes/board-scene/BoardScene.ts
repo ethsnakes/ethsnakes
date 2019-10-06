@@ -1,11 +1,11 @@
 import { GameManager } from "../../GameManager";
-import { GUI } from "./GUI";
+import { GUI } from "./gui/GUI";
 import { HUD } from "./HUD";
 import { GameConstants } from "../../GameConstants";
 import { BoardContainer } from "./BoardContainer";
 import { BoardManager } from "./BoardManager";
 import { SettingsLayer } from "./SettingsLayer";
-import { DiceContainer } from "./DiceContainer";
+import { DiceContainer } from "./gui/DiceContainer";
 import { GameVars } from "../../GameVars";
 import { SelectBetLayer } from "./layers/SelectBetLayer";
 import { WaitingLayer } from "./layers/WaitingLayer";
