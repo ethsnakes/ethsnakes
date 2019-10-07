@@ -6,7 +6,7 @@ contract('SnakesAndLadders Simulation', (accounts) => {
     let instance;
     const qty = toWei('0.01', 'ether');
     const qtyBN = toBN(qty);
-    const simulations = 10;
+    const simulations = 10000;
 
     before("running check if the setup is correct to pass the tests", async function() {
         let aliceBalanceBN = toBN(await web3.eth.getBalance(alice));
@@ -18,6 +18,8 @@ contract('SnakesAndLadders Simulation', (accounts) => {
         instance = await SnakesAndLadders.new({from: owner});
     });
 
+    // Test 1 - (10.000):
+
     describe("simulate", function() {
 
         beforeEach("add some funds", async function() {
@@ -25,6 +27,7 @@ contract('SnakesAndLadders Simulation', (accounts) => {
         });
 
         it("simulate " + simulations + " games", async function () {
+            this.timeout(1000000000000);
             let winners = 0;
             let losers = 0;
             for (let i = 0; i < simulations; i++) {

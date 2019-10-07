@@ -54,6 +54,15 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
+     * Adds balance and plays a game
+     */
+    function addAndPlay(uint amount) public payable {
+        emit LogFund(msg.sender, msg.value);
+        balances[msg.sender] += msg.value;
+        play(amount);
+    }
+
+    /**
      * Plays the game
      */
     function play(uint amount) public {
