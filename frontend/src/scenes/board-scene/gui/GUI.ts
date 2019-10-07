@@ -1,8 +1,8 @@
-import { GameConstants } from "../../GameConstants";
-import { Button } from "../../utils/Utils";
-import { GameVars } from "../../GameVars";
-import { BoardManager } from "./BoardManager";
-import { GameManager } from "../../GameManager";
+import { GameConstants } from "../../../GameConstants";
+import { Button } from "../../../utils/Utils";
+import { GameVars } from "../../../GameVars";
+import { BoardManager } from "../BoardManager";
+import { GameManager } from "../../../GameManager";
 import { DevelopmentMenu } from "./DevelopmentMenu";
 
 export class GUI extends Phaser.GameObjects.Container {
@@ -40,6 +40,7 @@ export class GUI extends Phaser.GameObjects.Container {
         this.diceButton = new Button(this.scene, GameConstants.GAME_WIDTH - 70 * GameVars.scaleX, GameConstants.GAME_HEIGHT - 70, "texture_atlas_1", "btn_dice_off", "btn_dice_on");
         this.diceButton.scaleX = GameVars.scaleX;
         this.diceButton.onUp(this.onClickDiceButton, this);
+        this.diceButton.visible = false;
         this.add(this.diceButton);
 
         if (GameConstants.DEVELOPMENT) {
@@ -48,7 +49,45 @@ export class GUI extends Phaser.GameObjects.Container {
         }
     }
 
+    public startGame(): void {
+
+        this.playButton.visible = false;
+        this.diceButton.visible = true;
+
+        this.addFundsButton.alpha = .5;
+        this.addFundsButton.disableInteractive();
+
+        this.retrieveFundsButton.alpha = .5;
+        this.retrieveFundsButton.disableInteractive();
+    }
+
+    public disableButtons(): void {
+
+        this.playButton.disableInteractive();
+        this.addFundsButton.disableInteractive();
+        this.retrieveFundsButton.disableInteractive();
+        this.settingsButton.disableInteractive();
+        this.diceButton.disableInteractive();
+    }
+
+    public enableButtons(): void {
+
+        this.playButton.setInteractive();
+        this.addFundsButton.setInteractive();
+        this.retrieveFundsButton.disableInteractive();
+        this.settingsButton.setInteractive();
+        this.diceButton.setInteractive();
+    }
+
     public matchOver(): void {
+
+        this.playButton.visible = true;
+
+        this.addFundsButton.alpha = 1;
+        this.addFundsButton.setInteractive();
+        
+        this.retrieveFundsButton.alpha = 1;
+        this.retrieveFundsButton.setInteractive();
 
         this.diceButton.disableInteractive();
 
@@ -85,6 +124,10 @@ export class GUI extends Phaser.GameObjects.Container {
     }
 
     private onClickDiceButton(): void {
+
+        if (GameVars.diceBlocked) {
+            return;
+        }
        
         BoardManager.rollDice();
     }

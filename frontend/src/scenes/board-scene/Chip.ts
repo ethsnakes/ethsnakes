@@ -1,10 +1,9 @@
 import { BoardContainer } from "./BoardContainer";
 import { BoardManager } from "./BoardManager";
-import { start } from "repl";
 
 export class Chip extends Phaser.GameObjects.Container {
 
-    private static readonly LADDER_SPEED = .25;
+    private static readonly LADDER_SPEED = .275;
 
     public cellIndex: number;
     public isPlayer: boolean; 
@@ -63,8 +62,10 @@ export class Chip extends Phaser.GameObjects.Container {
             targets: this,
             x: endPosition.x,
             y: endPosition.y,
-            ease: Phaser.Math.Easing.Cubic.Out,
-            duration: t
+            ease: Phaser.Math.Easing.Cubic.InOut,
+            duration: t,
+            onComplete: BoardManager.chipArrivedToItsFinalPosition,
+            onCompleteScope: BoardManager
         });
     }
 
@@ -88,9 +89,10 @@ export class Chip extends Phaser.GameObjects.Container {
                     scaleY: 1,
                     ease: Phaser.Math.Easing.Cubic.Out,
                     duration: 300,
-                    delay: 600
+                    delay: 600,
+                    onComplete: BoardManager.chipArrivedToItsFinalPosition,
+                    onCompleteScope: BoardManager
                 });
-
             },
             onCompleteScope: this
         });
@@ -135,7 +137,7 @@ export class Chip extends Phaser.GameObjects.Container {
             x: p.x,
             y: p.y,
             ease: Phaser.Math.Easing.Cubic.InOut,
-            duration: 300,
+            duration: 250,
             onComplete: this.onTweeenComplete,
             onCompleteScope: this
         });
@@ -144,7 +146,7 @@ export class Chip extends Phaser.GameObjects.Container {
             targets: this,
             origY: 1.15,
             ease: Phaser.Math.Easing.Cubic.InOut,
-            duration: 150, 
+            duration: 125, 
             yoyo: true
         });
     }

@@ -10,6 +10,8 @@ export class GameConstants {
     public static readonly GAME_WIDTH = 1024;
     public static readonly GAME_HEIGHT = 768;
 
+    public static readonly CONTRACT_ADDRESS = "0x18572FD0f44B51F67zf16c5f1dc3c6653C554963";
+
     public static readonly BOT = "bot";
     public static readonly PLAYER = "player";
 

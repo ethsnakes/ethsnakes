@@ -1,12 +1,13 @@
 import { GameConstants } from "./GameConstants";
 import { GameVars } from "./GameVars";
+import { BoardScene } from "./scenes/board-scene/BoardScene";
+import { BoardManager } from "./scenes/board-scene/BoardManager";
 
 export class GameManager {
 
     public static init(): void {  
 
         GameVars.balance = 0.001;
-
 
         if (GameVars.currentScene.sys.game.device.os.desktop) {
 
@@ -64,8 +65,20 @@ export class GameManager {
     }
 
     public static play(): void {
-        
-        console.log("play");
+
+        BoardManager.resetBoard();
+    
+        BoardScene.currentInstance.showSelectBetLayer();
+    }
+
+    public static connectToEthereum(): void {
+
+        BoardScene.currentInstance.showWaitingLayer();
+    }
+
+    public static onConnection(): void {
+
+        BoardScene.currentInstance.removeWaitingLayer();
     }
 
     public static matchOver(): void {
@@ -80,16 +93,6 @@ export class GameManager {
     public static retrieveFunds(): void {
 
         console.log("retrieve funds");
-    }
-
-    public static onGameWon(): void {
-
-        console.log("on game won");
-    }
-
-    public static onGameLost(): void {
-        
-        console.log("on game lost");
     }
 
     public static writeGameData(): void {
