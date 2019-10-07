@@ -60,8 +60,8 @@ contract('SnakesAndLadders', (accounts) => {
                 let ev = txObj.logs[i];
                 //console.log(ev.args);
                 if (ev.event === "LogMove") {
-                    assert.strictEqual(parseInt(ev.args["move"].toString()) >= 1, true, "Dice was less than 1");
-                    assert.strictEqual(parseInt(ev.args["move"].toString()) <= 6, true, "Dice was more than 6");
+                    assert.strictEqual(parseInt(ev.args["move"].toString()) >= 1, true, "Dice was less than 1, was " + parseInt(ev.args["move"].toString()));
+                    assert.strictEqual(parseInt(ev.args["move"].toString()) <= 6, true, "Dice was more than 6, was " + parseInt(ev.args["move"].toString()));
                 }
                 if (ev.event === "LogGame") {
                     assert.strictEqual(ev.args["result"], false, "IA should had won");

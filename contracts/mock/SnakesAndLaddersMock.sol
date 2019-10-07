@@ -14,7 +14,7 @@ contract SnakesAndLaddersMock is SnakesAndLadders {
     /**
      * Returns a NOT a random number
      */
-    function random(uint turn) public view returns(int8) {
-        return int8(uint256(keccak256(abi.encodePacked(turn, nonce)))%6) + 1;
+    function random() public view returns(uint256) {
+        return uint256(keccak256(abi.encodePacked(nonce)));
     }
 }

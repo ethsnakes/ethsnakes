@@ -60,18 +60,19 @@ contract SnakesAndLadders is Ownable {
         require(amount > 0, "You must send something to bet");
         require(amount <= balances[msg.sender], "You don't have enough balance");
         require(amount*10 < address(this).balance, "You cannot bet more than 1/10 of this contract balance");
+        uint randomString = random();
         uint turn = 0;
         bool player = false;  // true if next move is for player, false if for computer
         int8 playerUser = 0;
         int8 playerAI = 0;
         // let's decide who starts
-        int8 startDice = random(0);
+        int8 startDice = randomDice(randomString, 255);
         if (startDice == 1 || startDice == 2) {
             player = true;
         }
         // make all the moves and emit the results
         while (playerUser != tiles && playerAI != tiles) {
-            int8 move = random(turn);
+            int8 move = randomDice(randomString, turn);
             if (player) {
                 playerUser = playerUser + move;
                 if (boardElements[playerUser] != 0) {
@@ -103,11 +104,19 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
-     * Returns a random number from 1 to 6
+     * Returns a random number from 1 to 6 based from a uint256 and turn
+     */
+    function randomDice(uint randomString, uint turn) public pure returns(int8) {
+        turn = turn%256;
+        return int8(uint8(randomString/2**turn)%6 + 1);
+    }
+
+    /**
+     * Returns a random uint256
      * TODO better use oraclize
      */
-    function random(uint turn) public view returns(int8) {
-        return int8(uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty, turn)))%6) + 1;
+    function random() public view returns(uint256) {
+        return uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, msg.sender)));
     }
 
     /**
