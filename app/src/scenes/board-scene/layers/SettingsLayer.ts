@@ -1,4 +1,4 @@
-import { GameConstants } from "../../GameConstants";
+import { GameConstants } from "../../../GameConstants";
 
 export class SettingsLayer extends Phaser.GameObjects.Container {
 

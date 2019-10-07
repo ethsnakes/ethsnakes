@@ -1,5 +1,5 @@
-import { GameVars } from "../../GameVars";
-import { GameConstants } from "../../GameConstants";
+import { GameVars } from "../../../GameVars";
+import { GameConstants } from "../../../GameConstants";
 
 export class OutcomeLayer extends Phaser.GameObjects.Container {
 

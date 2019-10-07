@@ -2,12 +2,17 @@ import { GameConstants } from "../../../GameConstants";
 import { GameVars } from "../../../GameVars";
 import { Button } from "../../../utils/Utils";
 import { GameManager } from "../../../GameManager";
+import { BetSelectionButtonsContaienr } from "./BetSelectionButtonsContainer";
 
 export class SelectBetLayer extends Phaser.GameObjects.Container {
+
+    private betSelectionButtonsContainer: BetSelectionButtonsContaienr;
 
     constructor(scene: Phaser.Scene) {
 
         super(scene);
+
+        console.log("hola hola");
 
         const transparentBackground = new Phaser.GameObjects.Graphics(this.scene);
         transparentBackground.fillStyle(0x000000, .8);
@@ -19,10 +24,8 @@ export class SelectBetLayer extends Phaser.GameObjects.Container {
         scaledItemsContainer.scaleX = GameVars.scaleX;
         this.add(scaledItemsContainer);
 
-        const infoLabelBet = new Phaser.GameObjects.Text(this.scene, 0, 400, "Select your bet", {fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF"});
-        infoLabelBet.setOrigin(.5);
-        infoLabelBet.scaleX = GameVars.scaleX;
-        scaledItemsContainer.add(infoLabelBet);
+        this.betSelectionButtonsContainer = new BetSelectionButtonsContaienr(this.scene);
+        scaledItemsContainer.add(this.betSelectionButtonsContainer);
 
         const playButton = new Button(this.scene, 0, 550, "texture_atlas_1", "btn_play_off", "btn_play_on");
         playButton.scaleX = GameVars.scaleX;

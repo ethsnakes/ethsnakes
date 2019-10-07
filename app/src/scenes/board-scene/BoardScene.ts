@@ -4,7 +4,7 @@ import { HUD } from "./HUD";
 import { GameConstants } from "../../GameConstants";
 import { BoardContainer } from "./BoardContainer";
 import { BoardManager } from "./BoardManager";
-import { SettingsLayer } from "./SettingsLayer";
+import { SettingsLayer } from "./layers/SettingsLayer";
 import { DiceContainer } from "./gui/DiceContainer";
 import { GameVars } from "../../GameVars";
 import { SelectBetLayer } from "./layers/SelectBetLayer";
@@ -54,7 +54,7 @@ export class BoardScene extends Phaser.Scene {
         this.add.existing(this.gui);
 
         this.boardContainer = new BoardContainer(this);
-        this.add.existing(this.boardContainer);        
+        this.add.existing(this.boardContainer);    
     }
 
     public showSelectBetLayer(): void {

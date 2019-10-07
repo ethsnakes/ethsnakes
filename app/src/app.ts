@@ -1,13 +1,10 @@
 import "phaser";
 
-
 import { Game } from "./Game";
 import { GameConstants } from "./GameConstants";
 import { BootScene } from "./scenes/BootScene";
 import { PreloadScene } from "./scenes/PreloadScene";
 import { BoardScene } from "./scenes/board-scene/BoardScene";
-import { default as Web3 } from "web3";
-
 let game: Game;
 
 window.onload = () => {
