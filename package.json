@@ -1,17 +1,35 @@
 {
   "name": "eth-snakesandladders",
-  "version": "0.1.0",
+  "version": "0.0.2",
   "description": "Public, descentralized and opensource Snakes and Ladders game.",
   "main": "truffle-config.js",
   "directories": {
     "test": "test"
   },
   "dependencies": {
-    "openzeppelin-solidity": "2.3.0"
+    "openzeppelin-solidity": "2.3.0",
+    "phaser": "3.19.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.26.1",
+    "expose-loader": "0.7.5",
+    "html-webpack-plugin": "^2.28.0",
+    "json-loader": "^0.5.4",
+    "style-loader": "^0.13.1",
+    "truffle": "5.0.8",
+    "truffle-contract": "^1.1.11",
+    "typescript": "3.6.3",
+    "ts-loader": "6.1.2",
+    "web3": "^1.0.0-beta.55",
+    "webpack": "4.40.2",
+    "webpack-cli": "3.3.9",
+    "webpack-dev-server": "3.8.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --mode development && webpack-dev-server --mode development",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
@@ -23,8 +41,6 @@
     "dapp",
     "exchange"
   ],
-  "author": "",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/atik-lab/ethsnakesandladders/issues"
   },

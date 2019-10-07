@@ -6,11 +6,12 @@ import { GameConstants } from "./GameConstants";
 import { BootScene } from "./scenes/BootScene";
 import { PreloadScene } from "./scenes/PreloadScene";
 import { BoardScene } from "./scenes/board-scene/BoardScene";
+import { default as Web3 } from "web3";
 
 let game: Game;
 
 window.onload = () => {
-    
+
     const gameConfig = {
 
         version: GameConstants.VERSION,
@@ -24,8 +25,8 @@ window.onload = () => {
         },
 
         scene:  [
-                    BootScene, 
-                    PreloadScene, 
+                    BootScene,
+                    PreloadScene,
                     BoardScene
                 ]
     };
@@ -36,7 +37,7 @@ window.onload = () => {
 
     window.focus();
     resize();
-    
+
     window.addEventListener("resize", resize, false);
     window.addEventListener("orientationchange", checkOriention, false);
 };
@@ -52,7 +53,7 @@ function resize(): void {
     const gameHeight: any = game.config.height;
 
     const gameRatio = gameWidth / gameHeight;
-    
+
     if (windowRatio < gameRatio) {
         canvas.style.width = windowWidth + "px";
         canvas.style.height = (windowWidth / gameRatio) + "px";

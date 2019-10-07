@@ -4,6 +4,7 @@
 
 # truffle
 build
+dist
 node_modules
 yarn-error.log
 
