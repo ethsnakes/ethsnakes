@@ -21,29 +21,29 @@ contract SnakesAndLadders is Ownable {
     event LogRemoveBalance(address sender, uint amount);
 
     // Game composition
-    mapping(int8 => int8) private ladders;
+    mapping(int8 => int8) private boardElements;
     int8 private tiles = 100;  // 1 + 99
 
     constructor() public {
         // ladders
-        ladders[4] = 14;
-        ladders[8] = 32;
-        ladders[20] = 38;
-        ladders[28] = 84;
-        ladders[40] = 59;
-        ladders[58] = 83;
-        ladders[72] = 93;
+        boardElements[4] = 14;
+        boardElements[8] = 32;
+        boardElements[20] = 38;
+        boardElements[28] = 84;
+        boardElements[40] = 59;
+        boardElements[58] = 83;
+        boardElements[72] = 93;
         // snakes
-        ladders[15] = 3;
-        ladders[31] = 9;
-        ladders[44] = 26;
-        ladders[62] = 19;
-        ladders[64] = 42;
-        ladders[74] = 70;
-        ladders[85] = 33;
-        ladders[91] = 71;
-        ladders[96] = 75;
-        ladders[98] = 80;
+        boardElements[15] = 3;
+        boardElements[31] = 9;
+        boardElements[44] = 26;
+        boardElements[62] = 19;
+        boardElements[64] = 42;
+        boardElements[74] = 70;
+        boardElements[85] = 33;
+        boardElements[91] = 71;
+        boardElements[96] = 75;
+        boardElements[98] = 80;
     }
 
     /**
@@ -74,16 +74,16 @@ contract SnakesAndLadders is Ownable {
             int8 move = random(turn);
             if (player) {
                 playerUser = playerUser + move;
-                if (ladders[playerUser] != 0) {
-                    playerUser = ladders[playerUser];
+                if (boardElements[playerUser] != 0) {
+                    playerUser = boardElements[playerUser];
                 }
                 if (playerUser > 100) {
                     playerUser = 100 - (playerUser - 100);
                 }
             } else {
                 playerAI = playerAI + move;
-                if (ladders[playerAI] != 0) {
-                    playerAI = ladders[playerAI];
+                if (boardElements[playerAI] != 0) {
+                    playerAI = boardElements[playerAI];
                 }
                 if (playerAI > 100) {
                     playerAI = 100 - (playerAI - 100);
