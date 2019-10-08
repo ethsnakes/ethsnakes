@@ -12,7 +12,7 @@ export class SelectBetLayer extends Phaser.GameObjects.Container {
 
         super(scene);
 
-        console.log("hola hola");
+        console.log("hola hola hola");
 
         const transparentBackground = new Phaser.GameObjects.Graphics(this.scene);
         transparentBackground.fillStyle(0x000000, .8);

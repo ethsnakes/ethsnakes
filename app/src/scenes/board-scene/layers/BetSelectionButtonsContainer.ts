@@ -9,8 +9,6 @@ export class BetSelectionButtonsContaienr extends Phaser.GameObjects.Container {
 
         super(scene);
 
-        console.log("jfjsdfjksdfjhksd");
-
         this.y = 300;
 
         const infoLabelBet = new Phaser.GameObjects.Text(this.scene, 0, -100, "Select your bet", {fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF"});
