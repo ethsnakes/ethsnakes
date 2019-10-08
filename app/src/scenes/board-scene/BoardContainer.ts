@@ -42,21 +42,31 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         }
     }
 
-    public start(): void {
-        //
+    public starGame(): void {
+        
+        if (GameVars.turn === GameConstants.PLAYER) {
+            this.playerChip.mark();
+        } else {
+            this.botChip.mark();
+        }
     }
 
     public moveChip(): void {
 
         let i: number;
+        let chip: Chip;
 
         if (GameVars.turn === GameConstants.PLAYER) {
-
-            i = this.playerChip.cellIndex + GameVars.diceResult;
-            this.playerChip.move(i);
+            chip = this.playerChip;
         } else {
-            i = this.botChip.cellIndex + GameVars.diceResult;
-            this.botChip.move(i);
+            chip = this.botChip;
         }
+
+        if (chip.marked) {
+            chip.unMark();
+        }
+
+        i = chip.cellIndex + GameVars.diceResult;
+        chip.move(i);
     }
 }

@@ -104,6 +104,8 @@ export class GUI extends Phaser.GameObjects.Container {
     }
 
     private onClickPlay(): void {
+
+        this.playButton.visible = false;
         
         GameManager.play();
     }

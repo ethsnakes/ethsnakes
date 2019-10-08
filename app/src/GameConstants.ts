@@ -37,5 +37,7 @@ export class GameConstants {
         {in: 98, out: 80}
     ];
 
+    public static readonly STAKES_IN_WEIS = [10, 100, 1000, 2000, 5000];
+
     public static readonly SAVED_GAME_DATA_KEY = "snake-and-ladders-data";
 }
