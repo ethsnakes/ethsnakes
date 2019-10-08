@@ -5,9 +5,10 @@ import { GameConstants } from "./GameConstants";
 import { BootScene } from "./scenes/BootScene";
 import { PreloadScene } from "./scenes/PreloadScene";
 import { BoardScene } from "./scenes/board-scene/BoardScene";
-import { Dapp } from "./Dapp.js";
+import { Dapp } from "./Dapp";
+
 let game: Game;
-let dapp: Dapp;
+
 
 window.onload = () => {
 
@@ -34,8 +35,7 @@ window.onload = () => {
     // Also make sure to delete all *.ts files in node_modules/trailz folder
     game = new Game(gameConfig);
 
-    dapp = new Dapp();
-    dapp.start();
+    Dapp.start();
 
     window.focus();
     resize();
