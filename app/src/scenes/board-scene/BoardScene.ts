@@ -79,6 +79,8 @@ export class BoardScene extends Phaser.Scene {
 
         this.gui.enableButtons();
         this.gui.startGame();
+
+        this.boardContainer.starGame();
     }
 
     public rollDice(): void {

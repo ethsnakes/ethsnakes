@@ -7,12 +7,14 @@ export class Chip extends Phaser.GameObjects.Container {
 
     public cellIndex: number;
     public isPlayer: boolean; 
+    public marked: boolean;
 
     private shadow: Phaser.GameObjects.Image;
     private chip: Phaser.GameObjects.Image;
     private origY: number; // por q no funciona setear el originY
     private i: number;
     private movementCells: number [];
+    private marker: Phaser.GameObjects.Image;
 
     constructor(scene: Phaser.Scene, color: number, isPlayer: boolean) {
 
@@ -22,6 +24,7 @@ export class Chip extends Phaser.GameObjects.Container {
         this.isPlayer = isPlayer;
         this.i = 0;
         this.movementCells = [];
+        this.marked = false;
 
         const p = this.getCellPosition(this.cellIndex + 1);
 
@@ -44,6 +47,30 @@ export class Chip extends Phaser.GameObjects.Container {
     public preUpdate(time: number, delta: number): void {
 
         this.chip.setOrigin(.5, this.origY);
+    }
+
+    public mark(): void {
+
+        this.marked = true;
+
+        this.marker = new Phaser.GameObjects.Image(this.scene, 0, -92, "texture_atlas_1", "arrow");
+        this.add(this.marker);
+
+        this.scene.tweens.add({
+            targets: this.marker,
+            y: -100,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 250,
+            yoyo: true,
+            repeat: -1
+        });
+    }
+
+    public unMark(): void {
+
+        this.marked = false;
+
+        this.marker.destroy();
     }
 
     public moveInLadder(goalCellIndex: number): void {
