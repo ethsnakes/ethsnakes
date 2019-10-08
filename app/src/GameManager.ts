@@ -2,12 +2,14 @@ import { GameConstants } from "./GameConstants";
 import { GameVars } from "./GameVars";
 import { BoardScene } from "./scenes/board-scene/BoardScene";
 import { BoardManager } from "./scenes/board-scene/BoardManager";
+import { SelectBetLayer } from "./scenes/board-scene/layers/SelectBetLayer";
 
 export class GameManager {
 
     public static init(): void {  
 
         GameVars.balance = 0.001;
+        GameVars.bet = 0;
 
         if (GameVars.currentScene.sys.game.device.os.desktop) {
 
@@ -88,6 +90,13 @@ export class GameManager {
     public static addFunds(): void {
         
         console.log("add funds");
+    }
+
+    public static onBetSelected(value: number): void {
+
+        GameVars.bet = value;
+
+        SelectBetLayer.currentInstance.betSelected(value);
     }
 
     public static retrieveFunds(): void {

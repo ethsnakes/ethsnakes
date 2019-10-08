@@ -54,7 +54,7 @@ export class BoardScene extends Phaser.Scene {
         this.add.existing(this.gui);
 
         this.boardContainer = new BoardContainer(this);
-        this.add.existing(this.boardContainer);    
+        this.add.existing(this.boardContainer);   
     }
 
     public showSelectBetLayer(): void {

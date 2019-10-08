@@ -1,9 +1,9 @@
 import { GameConstants } from "../../../GameConstants";
-import { GameVars } from "../../../GameVars";
-import { Button } from "../../../utils/Utils";
-import { GameManager } from "../../../GameManager";
+import { BetSelectionButton } from "./BetSelectionButton";
 
-export class BetSelectionButtonsContaienr extends Phaser.GameObjects.Container {
+export class BetSelectionButtonsContainer extends Phaser.GameObjects.Container {
+
+    private buttons: BetSelectionButton[];
 
     constructor(scene: Phaser.Scene) {
 
@@ -11,11 +11,29 @@ export class BetSelectionButtonsContaienr extends Phaser.GameObjects.Container {
 
         this.y = 300;
 
-        const infoLabelBet = new Phaser.GameObjects.Text(this.scene, 0, -100, "Select your bet", {fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF"});
+        this.buttons = [];
+
+        const infoLabelBet = new Phaser.GameObjects.Text(this.scene, 0, -100, "Select your bet", {fontFamily: "Arial", fontSize: "50px", color: "#FFFFFF"});
         infoLabelBet.setOrigin(.5);
         this.add(infoLabelBet);
 
-        const b = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "button-radio-green-off");
-        this.add(b);
+        const deltaButton = 180;
+
+        for (let i = 0; i < GameConstants.STAKES_IN_WEIS.length; i ++) {
+            const b = new BetSelectionButton(this.scene, GameConstants.STAKES_IN_WEIS[i]);
+            b.x = ((-GameConstants.STAKES_IN_WEIS.length * .5) + .5 + i) * deltaButton;
+            this.add(b);
+
+            this.buttons.push(b);
+        }
+    }
+
+    public betSelected(value: number): void {
+
+        for (let i = 0; i < this.buttons.length; i++) {
+            if (this.buttons[i].name !== value.toString()) {
+                this.buttons[i].disableButton();
+            } 
+        }
     }
 }
