@@ -4,13 +4,13 @@ const phaser = path.join(pathToPhaser, 'dist/phaser.min.js');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  entry: './app/src/app.ts',
-  devtool: 'source-map',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-  }, 
-  plugins: [
+    entry: './app/src/app.ts',
+    devtool: 'source-map',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js',
+    },
+    plugins: [
         // Copy our app"s index.html to the build folder.
         new CopyWebpackPlugin([
             {
@@ -20,31 +20,40 @@ module.exports = {
             {
                 from: "./app/assets",
                 to: "assets"
-            }
-            ,
+            },
             {
                 from: "./app/textures",
                 to: "assets"
             }
         ])
-  ],
-  module: {
-    rules: [
-      { test: /\.ts$/, loader: 'ts-loader', exclude: '/node_modules/' },
-      { test: /phaser\.js$/, loader: 'expose-loader?Phaser' }
-    ]
-  },
-  devServer: {
-    contentBase: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
-    host: '127.0.0.1',
-    port: 8080,
-    open: true
-  },
-  resolve: {
-    extensions: ['.ts', '.js'],
-    alias: {
-      phaser: phaser
+    ],
+    module: {
+        rules: [
+            {
+                test: /\.ts$/, loader: 'ts-loader',
+                exclude: '/node_modules/'
+            },
+            {
+                test: /phaser\.js$/,
+                loader: 'expose-loader?Phaser'
+            },
+            {
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"]
+            }
+        ]
+    },
+    devServer: {
+        contentBase: path.resolve(__dirname, './dist'),
+        publicPath: '/dist/',
+        host: '127.0.0.1',
+        port: 8080,
+        open: true
+    },
+    resolve: {
+        extensions: ['.ts', '.js'],
+        alias: {
+            phaser: phaser
+        }
     }
-  }
 };

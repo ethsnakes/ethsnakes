@@ -18,7 +18,7 @@ contract('SnakesAndLadders Simulation', (accounts) => {
         instance = await SnakesAndLadders.new({from: owner});
     });
 
-    // Test 1 - (10.000):
+    // Test 1 - (10.000): winners: 4971, losers: 5029
 
     describe("simulate", function() {
 
