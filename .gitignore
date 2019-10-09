@@ -4,7 +4,7 @@
 
 # truffle
 build
-nonproject
+ignore
 node_modules
 yarn-error.log
 

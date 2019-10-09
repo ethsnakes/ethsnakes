@@ -36,7 +36,6 @@ window.onload = () => {
     game = new Game(gameConfig);
     dapp = new Dapp();
     dapp.unlock();
-    dapp.getAccount();
 
     window.focus();
     resize();
