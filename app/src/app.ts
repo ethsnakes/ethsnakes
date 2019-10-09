@@ -8,7 +8,7 @@ import { BoardScene } from "./scenes/board-scene/BoardScene";
 import { Dapp } from "./Dapp";
 
 let game: Game;
-
+let dapp: Dapp;
 
 window.onload = () => {
 
@@ -34,8 +34,9 @@ window.onload = () => {
     // If compilation error here, compare Phaser definitions file of working copy (phaser.d.ts, line 48040 on 27-05-2019)
     // Also make sure to delete all *.ts files in node_modules/trailz folder
     game = new Game(gameConfig);
-
-    Dapp.start();
+    dapp = new Dapp();
+    dapp.unlock();
+    dapp.getAccount();
 
     window.focus();
     resize();
