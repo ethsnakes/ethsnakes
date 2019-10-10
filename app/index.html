@@ -17,7 +17,7 @@
             -ms-user-select: none;
             -khtml-user-select: none;
             margin: 0px 0px 1px 0px; /* the extra 1px allows the iOS inner/outer check to work */
-            background: rgb(0, 0, 0);
+            background: #fff;
         }
 
         #content {
@@ -42,6 +42,9 @@
             src: url("assets/fonts/Russo_One.ttf");
         }
 
+        #lateral {
+            float: right;
+        }
     </style>
 
 <script src="bundle.js"></script>
@@ -50,6 +53,9 @@
 <body>
     <div id="content"></div>
     <div id="orientation"></div>
-    <div id="lateral"></div>
+    <div id="lateral">
+        <span id="PlayGame">Click me to Play Game</span>
+        <table id="LateralTable"></table>
+    </div>
 </body>
 </html>

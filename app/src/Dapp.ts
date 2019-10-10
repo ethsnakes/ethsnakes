@@ -7,6 +7,7 @@ export class Dapp {
     contract: any;
 
     public async unlock() {
+        let self = this;
         // load web3 from metamask or new browser
         if (window.ethereum) {
             this.web3 = new Web3(window.ethereum);
@@ -33,6 +34,13 @@ export class Dapp {
         this.contract = new this.web3.eth.Contract(SnakesAndLaddersArtifact.abi, SnakesAndLaddersArtifact.networks[networkId].address);
 
         this.updateBalance();
+
+        this.startWatcher(0); // todo replace 0 for last block found
+
+        document.getElementById("PlayGame").onclick = function () {
+            alert("works");
+            self.addAndPlay(1);
+        };
     }
 
     public async loadAccount() {
@@ -47,9 +55,36 @@ export class Dapp {
                 console.error("Could not retrieve your balance");
                 console.log(e);
             } else {
-                console.log("I've got your balance");
-                console.log(r);
+                console.log("I've got your balance in the contract " + r);
             }
         });
+    }
+
+    public addAndPlay(amount) {
+        let self = this;
+        self.contract.methods.addAndPlay(amount).send({ from: self.account /*, gas: 15000000*/ })
+            .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
+            .on("confirmation", (confirmationNumber, receipt) => {
+                if (receipt.status === true && confirmationNumber === 1) {
+                    console.log("Transaction confirmed")
+                }
+            })
+            .on("error", error => console.error(error));
+    }
+
+    public startWatcher(fromBlock) {
+        let self = this;
+        self.contract.events.LogGame({ fromBlock: fromBlock })
+            .on("data", e => {
+                self.addNewResult(e.returnValues["sender"], e.returnValues["turn"], e.returnValues["player"], e.returnValues["move"]);
+            });
+    }
+
+    public addNewResult(sender, turn, player, move) {
+        document.getElementById("LateralTable").innerHTML += "<tr><td>" +
+            sender + "</td><td>" +
+            turn + "</td><td>" +
+            player + "</td><td>" +
+            move + "</td></tr>";
     }
 }
