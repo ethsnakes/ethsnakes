@@ -24,23 +24,17 @@ module.exports = {
             {
                 from: "./app/textures",
                 to: "assets"
+            },
+            {
+                from: "./app/css",
+                to: "css"
             }
         ])
     ],
     module: {
         rules: [
-            {
-                test: /\.ts$/, loader: 'ts-loader',
-                exclude: '/node_modules/'
-            },
-            {
-                test: /phaser\.js$/,
-                loader: 'expose-loader?Phaser'
-            },
-            {
-                test: /\.css$/,
-                use: ["style-loader", "css-loader"]
-            }
+            { test: /\.ts$/, loader: 'ts-loader', exclude: '/node_modules/' },
+            { test: /phaser\.js$/, loader: 'expose-loader?Phaser' }
         ]
     },
     devServer: {

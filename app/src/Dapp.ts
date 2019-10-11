@@ -1,4 +1,5 @@
 const Web3 = require("web3");
+// const Blockies = require("blockies");
 const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLaddersMock.json");  // TODO change from Mock to good one
 
 export class Dapp {
@@ -7,6 +8,7 @@ export class Dapp {
     contract: any;
 
     public async unlock() {
+
         let self = this;
         // load web3 from metamask or new browser
         if (window.ethereum) {
@@ -33,24 +35,26 @@ export class Dapp {
         let networkId = await this.web3.eth.net.getId();
         this.contract = new this.web3.eth.Contract(SnakesAndLaddersArtifact.abi, SnakesAndLaddersArtifact.networks[networkId].address);
 
+        // for testing
+        /*
         this.updateBalance();
-
         this.startWatcher(0); // todo replace 0 for last block found
-
-        document.getElementById("PlayGame").onclick = function () {
-            alert("works");
-            self.addAndPlay(1);
-        };
+        this.addAndPlay(1);
+        */
+        // document.getElementById("eth-blockie-0xaebf4defcaa03eebd1fa491aff1e357073a008c9").appendChild(Blockies.create({seed: '0xaebf4defcaa03eebd1fa491aff1e357073a008c9'}));
     }
 
     public async loadAccount() {
+
         let accounts = await this.web3.eth.getAccounts();
         this.account = accounts[0];
         console.log(this.account);
     }
 
     public updateBalance() {
+
         this.contract.methods.balances(this.account).call({ from: this.account }, (e, r) => {
+
             if (e) {
                 console.error("Could not retrieve your balance");
                 console.log(e);
@@ -61,6 +65,7 @@ export class Dapp {
     }
 
     public addAndPlay(amount) {
+
         let self = this;
         self.contract.methods.addAndPlay(amount).send({ from: self.account /*, gas: 15000000*/ })
             .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
@@ -73,6 +78,7 @@ export class Dapp {
     }
 
     public startWatcher(fromBlock) {
+
         let self = this;
         self.contract.events.LogGame({ fromBlock: fromBlock })
             .on("data", e => {
@@ -81,6 +87,7 @@ export class Dapp {
     }
 
     public addNewResult(sender, turn, player, move) {
+
         document.getElementById("LateralTable").innerHTML += "<tr><td>" +
             sender + "</td><td>" +
             turn + "</td><td>" +

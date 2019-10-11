@@ -1,0 +1,19 @@
+h1 {
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd; }
+
+h2 {
+  font-size: 32px; }
+
+input {
+  width: 100%; }
+
+#Actions {
+  padding: 30px 0;
+  margin-bottom: 50px;
+  border-bottom: 1px solid #ddd; }
+
+.row {
+  margin-bottom: 30px; }
+
+/*# sourceMappingURL=style.css.map */
