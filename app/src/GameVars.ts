@@ -6,7 +6,6 @@ export class GameVars {
     public static currentScene: Phaser.Scene;
     public static time: number;
     public static matchOver: boolean;
-    public static mines: number;
     public static board: any;
     public static paused: boolean;
     public static balance: number;
