@@ -1,5 +1,5 @@
 const Web3 = require("web3");
-// const Blockies = require("blockies");
+ const Blockies = require("ethereum-blockies");
 const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLaddersMock.json");  // TODO change from Mock to good one
 
 export class Dapp {
@@ -36,22 +36,22 @@ export class Dapp {
         this.contract = new this.web3.eth.Contract(SnakesAndLaddersArtifact.abi, SnakesAndLaddersArtifact.networks[networkId].address);
 
         // for testing
-        /*
-        this.updateBalance();
-        this.startWatcher(0); // todo replace 0 for last block found
-        this.addAndPlay(1);
-        */
-        // document.getElementById("eth-blockie-0xaebf4defcaa03eebd1fa491aff1e357073a008c9").appendChild(Blockies.create({seed: '0xaebf4defcaa03eebd1fa491aff1e357073a008c9'}));
+        this.logBalance();
+        this.startWatcher(0);
+        this.addAndPlay(20, 1);
+        let icon = Blockies.create({
+            seed: this.account
+        });
+        document.getElementById("eth-blockie-0xaebf4defcaa03eebd1fa491aff1e357073a008c9").appendChild(icon);
     }
 
     public async loadAccount() {
 
         let accounts = await this.web3.eth.getAccounts();
         this.account = accounts[0];
-        console.log(this.account);
     }
 
-    public updateBalance() {
+    public logBalance() {
 
         this.contract.methods.balances(this.account).call({ from: this.account }, (e, r) => {
 
@@ -59,15 +59,16 @@ export class Dapp {
                 console.error("Could not retrieve your balance");
                 console.log(e);
             } else {
-                console.log("I've got your balance in the contract " + r);
+                console.log("Your balance in Wei (" + this.account + "): " + r);
             }
         });
     }
 
-    public addAndPlay(amount) {
+
+    public addAndPlay(value, amount) {
 
         let self = this;
-        self.contract.methods.addAndPlay(amount).send({ from: self.account /*, gas: 15000000*/ })
+        self.contract.methods.addAndPlay(amount).send({ from: self.account, value: value, gas: 15000000 })
             .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
             .on("confirmation", (confirmationNumber, receipt) => {
                 if (receipt.status === true && confirmationNumber === 1) {
@@ -82,16 +83,17 @@ export class Dapp {
         let self = this;
         self.contract.events.LogGame({ fromBlock: fromBlock })
             .on("data", e => {
-                self.addNewResult(e.returnValues["sender"], e.returnValues["turn"], e.returnValues["player"], e.returnValues["move"]);
+                self.addNewGameResult(e.returnValues["sender"], e.returnValues["result"], e.returnValues["balancediff"]);
             });
     }
 
-    public addNewResult(sender, turn, player, move) {
+    public addNewGameResult(sender, result, balancediff) {
 
-        document.getElementById("LateralTable").innerHTML += "<tr><td>" +
-            sender + "</td><td>" +
-            turn + "</td><td>" +
-            player + "</td><td>" +
-            move + "</td></tr>";
+        document.getElementById("stream").innerHTML +=
+            '<div class="game-result result-' + result + '">' +
+                '<span class="eth-blockie" id="eth-blockie-' + sender + '"></span>' +
+                '<span class="eth-address">' + sender + '</span>' +
+                '<span class="eth-winloss">' + balancediff + '</span>' +
+            '</div>';
     }
 }

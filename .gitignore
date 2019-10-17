@@ -4,7 +4,6 @@
 
 # truffle
 build
-ignore
 node_modules
 yarn-error.log
 
