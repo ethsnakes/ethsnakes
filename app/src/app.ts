@@ -18,6 +18,7 @@ window.onload = () => {
         backgroundColor: "#000000",
         scale: {
             mode: Phaser.Scale.FIT,
+            autoCenter: Phaser.Scale.CENTER_BOTH,
             parent: "content",
             width: GameConstants.GAME_WIDTH,
             height: GameConstants.GAME_HEIGHT

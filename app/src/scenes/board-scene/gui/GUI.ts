@@ -17,17 +17,19 @@ export class GUI extends Phaser.GameObjects.Container {
 
         super(scene);
 
-        this.playButton = new Button(this.scene, 90 * GameVars.scaleX, 170, "texture_atlas_1", "btn_play_off", "btn_play_on");
+        const playButtonPosition = {x: GameConstants.GAME_WIDTH - 90 * GameVars.scaleX, y:  GameConstants.GAME_HEIGHT - 110};
+
+        this.playButton = new Button(this.scene, playButtonPosition.x, playButtonPosition.y, "texture_atlas_1", "btn_play_off", "btn_play_on");
         this.playButton.scaleX = GameVars.scaleX;
         this.playButton.onUp(this.onClickPlay, this);
         this.add(this.playButton);
 
-        this.addFundsButton = new Button(this.scene, GameConstants.GAME_WIDTH - 340 * GameVars.scaleX, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
+        this.addFundsButton = new Button(this.scene, 100 * GameVars.scaleX, GameConstants.GAME_HEIGHT - 180, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
         this.addFundsButton.scaleX = GameVars.scaleX;
         this.addFundsButton.onUp(this.onClickAddFunds, this);
         this.add(this.addFundsButton);
 
-        this.retrieveFundsButton = new Button(this.scene, GameConstants.GAME_WIDTH - 170 * GameVars.scaleX, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
+        this.retrieveFundsButton = new Button(this.scene, 100 * GameVars.scaleX, GameConstants.GAME_HEIGHT - 90, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
         this.retrieveFundsButton.scaleX = GameVars.scaleX;
         this.retrieveFundsButton.onUp(this.onClickRetrieveFunds, this);
         this.add(this.retrieveFundsButton);
@@ -37,7 +39,7 @@ export class GUI extends Phaser.GameObjects.Container {
         this.settingsButton.onUp(this.onClickSettings, this);
         this.add(this.settingsButton);
 
-        this.diceButton = new Button(this.scene, GameConstants.GAME_WIDTH - 70 * GameVars.scaleX, GameConstants.GAME_HEIGHT - 70, "texture_atlas_1", "btn_dice_off", "btn_dice_on");
+        this.diceButton = new Button(this.scene, playButtonPosition.x, playButtonPosition.y, "texture_atlas_1", "btn_dice_off", "btn_dice_on");
         this.diceButton.scaleX = GameVars.scaleX;
         this.diceButton.onUp(this.onClickDiceButton, this);
         this.diceButton.visible = false;
@@ -47,8 +49,6 @@ export class GUI extends Phaser.GameObjects.Container {
             const developmentMenu = new DevelopmentMenu(this.scene);
             this.add(developmentMenu);
         }
-
-        this.startGame();
     }
 
     public startGame(): void {
@@ -56,11 +56,8 @@ export class GUI extends Phaser.GameObjects.Container {
         this.playButton.visible = false;
         this.diceButton.visible = true;
 
-        this.addFundsButton.alpha = .5;
-        this.addFundsButton.disableInteractive();
-
-        this.retrieveFundsButton.alpha = .5;
-        this.retrieveFundsButton.disableInteractive();
+        this.addFundsButton.visible = false;
+        this.retrieveFundsButton.visible = false;
     }
 
     public disableButtons(): void {

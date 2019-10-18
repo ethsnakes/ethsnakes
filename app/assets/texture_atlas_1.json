@@ -52,24 +52,66 @@
 					}
 				},
 				{
-					"filename": "btn_play_off",
+					"filename": "btn_dice_off",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 158,
-						"h": 97
+						"w": 156,
+						"h": 118
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 158,
-						"h": 97
+						"w": 156,
+						"h": 118
 					},
 					"frame": {
 						"x": 1887,
 						"y": 1,
-						"w": 158,
-						"h": 97
+						"w": 156,
+						"h": 118
+					}
+				},
+				{
+					"filename": "btn_dice_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 156,
+						"h": 118
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 156,
+						"h": 118
+					},
+					"frame": {
+						"x": 1887,
+						"y": 121,
+						"w": 156,
+						"h": 118
+					}
+				},
+				{
+					"filename": "btn_play_off",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 156,
+						"h": 118
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 156,
+						"h": 118
+					},
+					"frame": {
+						"x": 1887,
+						"y": 241,
+						"w": 156,
+						"h": 118
 					}
 				},
 				{
@@ -77,125 +119,104 @@
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 158,
-						"h": 97
+						"w": 156,
+						"h": 118
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 158,
-						"h": 97
+						"w": 156,
+						"h": 118
 					},
 					"frame": {
 						"x": 1887,
-						"y": 100,
-						"w": 158,
-						"h": 97
+						"y": 361,
+						"w": 156,
+						"h": 118
 					}
 				},
 				{
-					"filename": "btn_add_funds_off",
+					"filename": "button-radio-green-on",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
-						"w": 158,
-						"h": 47
+						"w": 102,
+						"h": 80
 					},
 					"spriteSourceSize": {
-						"x": 0,
+						"x": 10,
 						"y": 0,
-						"w": 158,
-						"h": 47
+						"w": 92,
+						"h": 80
 					},
 					"frame": {
 						"x": 1887,
-						"y": 199,
-						"w": 158,
-						"h": 47
+						"y": 481,
+						"w": 92,
+						"h": 80
 					}
 				},
 				{
-					"filename": "btn_add_funds_on",
+					"filename": "btn_settings_off",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 158,
-						"h": 47
+						"w": 63,
+						"h": 64
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 158,
-						"h": 47
+						"w": 63,
+						"h": 64
 					},
 					"frame": {
-						"x": 1887,
-						"y": 248,
-						"w": 158,
-						"h": 47
+						"x": 1981,
+						"y": 481,
+						"w": 63,
+						"h": 64
 					}
 				},
 				{
-					"filename": "btn_retrieve_funds_off",
+					"filename": "btn_settings_on",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 158,
-						"h": 47
+						"w": 63,
+						"h": 64
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 158,
-						"h": 47
+						"w": 63,
+						"h": 64
 					},
 					"frame": {
-						"x": 1887,
-						"y": 297,
-						"w": 158,
-						"h": 47
+						"x": 1981,
+						"y": 547,
+						"w": 63,
+						"h": 64
 					}
 				},
 				{
-					"filename": "btn_retrieve_funds_on",
+					"filename": "button-radio-green-off",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 158,
-						"h": 47
+						"w": 80,
+						"h": 80
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 158,
-						"h": 47
+						"w": 80,
+						"h": 80
 					},
 					"frame": {
 						"x": 1887,
-						"y": 346,
-						"w": 158,
-						"h": 47
-					}
-				},
-				{
-					"filename": "btn_dice_off",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 100,
-						"h": 104
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 100,
-						"h": 104
-					},
-					"frame": {
-						"x": 1887,
-						"y": 395,
-						"w": 100,
-						"h": 104
+						"y": 563,
+						"w": 80,
+						"h": 80
 					}
 				},
 				{
@@ -213,8 +234,8 @@
 						"h": 45
 					},
 					"frame": {
-						"x": 1989,
-						"y": 395,
+						"x": 1969,
+						"y": 613,
 						"w": 51,
 						"h": 45
 					}
@@ -234,8 +255,8 @@
 						"h": 45
 					},
 					"frame": {
-						"x": 1989,
-						"y": 442,
+						"x": 1887,
+						"y": 645,
 						"w": 51,
 						"h": 45
 					}
@@ -255,31 +276,10 @@
 						"h": 45
 					},
 					"frame": {
-						"x": 1989,
-						"y": 489,
+						"x": 1940,
+						"y": 660,
 						"w": 51,
 						"h": 45
-					}
-				},
-				{
-					"filename": "btn_dice_on",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 100,
-						"h": 104
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 100,
-						"h": 104
-					},
-					"frame": {
-						"x": 1887,
-						"y": 501,
-						"w": 100,
-						"h": 104
 					}
 				},
 				{
@@ -297,94 +297,10 @@
 						"h": 45
 					},
 					"frame": {
-						"x": 1989,
-						"y": 536,
+						"x": 1993,
+						"y": 660,
 						"w": 51,
 						"h": 45
-					}
-				},
-				{
-					"filename": "arrow",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 35,
-						"h": 27
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 35,
-						"h": 27
-					},
-					"frame": {
-						"x": 1989,
-						"y": 583,
-						"w": 35,
-						"h": 27
-					}
-				},
-				{
-					"filename": "button-radio-green-on",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 102,
-						"h": 80
-					},
-					"spriteSourceSize": {
-						"x": 10,
-						"y": 0,
-						"w": 92,
-						"h": 80
-					},
-					"frame": {
-						"x": 1887,
-						"y": 607,
-						"w": 92,
-						"h": 80
-					}
-				},
-				{
-					"filename": "btn_settings_off",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 60,
-						"h": 62
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 60,
-						"h": 62
-					},
-					"frame": {
-						"x": 1981,
-						"y": 612,
-						"w": 60,
-						"h": 62
-					}
-				},
-				{
-					"filename": "btn_settings_on",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 60,
-						"h": 62
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 60,
-						"h": 62
-					},
-					"frame": {
-						"x": 1981,
-						"y": 676,
-						"w": 60,
-						"h": 62
 					}
 				},
 				{
@@ -409,24 +325,66 @@
 					}
 				},
 				{
-					"filename": "button-radio-green-off",
+					"filename": "top_bar",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 80,
-						"h": 80
+						"w": 1024,
+						"h": 88
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 80,
-						"h": 80
+						"w": 1024,
+						"h": 88
+					},
+					"frame": {
+						"x": 1,
+						"y": 1027,
+						"w": 1024,
+						"h": 88
+					}
+				},
+				{
+					"filename": "btn_add_funds_off",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 190,
+						"h": 84
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 190,
+						"h": 84
 					},
 					"frame": {
 						"x": 1671,
 						"y": 660,
-						"w": 80,
-						"h": 80
+						"w": 190,
+						"h": 84
+					}
+				},
+				{
+					"filename": "arrow",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 35,
+						"h": 27
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 35,
+						"h": 27
+					},
+					"frame": {
+						"x": 1863,
+						"y": 692,
+						"w": 35,
+						"h": 27
 					}
 				},
 				{
@@ -444,8 +402,8 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 1753,
-						"y": 660,
+						"x": 1900,
+						"y": 692,
 						"w": 30,
 						"h": 90
 					}
@@ -465,10 +423,31 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 1671,
-						"y": 742,
+						"x": 1863,
+						"y": 721,
 						"w": 30,
 						"h": 90
+					}
+				},
+				{
+					"filename": "btn_add_funds_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 190,
+						"h": 84
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 190,
+						"h": 84
+					},
+					"frame": {
+						"x": 1671,
+						"y": 746,
+						"w": 190,
+						"h": 84
 					}
 				},
 				{
@@ -486,10 +465,52 @@
 						"h": 15
 					},
 					"frame": {
-						"x": 1703,
-						"y": 742,
+						"x": 1932,
+						"y": 707,
 						"w": 30,
 						"h": 15
+					}
+				},
+				{
+					"filename": "btn_retrieve_funds_off",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 190,
+						"h": 84
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 190,
+						"h": 84
+					},
+					"frame": {
+						"x": 1671,
+						"y": 832,
+						"w": 190,
+						"h": 84
+					}
+				},
+				{
+					"filename": "btn_retrieve_funds_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 190,
+						"h": 84
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 190,
+						"h": 84
+					},
+					"frame": {
+						"x": 1671,
+						"y": 918,
+						"w": 190,
+						"h": 84
 					}
 				}
 			]
@@ -498,6 +519,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:624357fc7e8cb9ab3d5ec2673724227e:7565cd70a618491c8a13bf177e8ba8af:1bd3fbbbdaf54e41cf80e3e904578de4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:bb32d4124b6436b7531354b2e833c145:e6e3ae59d58d4ddf408891e94cecf484:1bd3fbbbdaf54e41cf80e3e904578de4$"
 	}
 }

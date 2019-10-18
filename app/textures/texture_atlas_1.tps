@@ -194,6 +194,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">texture_atlas_1/background.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>256,256,512,512</rect>
+                <key>scale9Paddings</key>
+                <rect>256,256,512,512</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">texture_atlas_1/board.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -356,6 +369,19 @@
                 <rect>163,163,325,325</rect>
                 <key>scale9Paddings</key>
                 <rect>163,163,325,325</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/top_bar.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>256,22,512,44</rect>
+                <key>scale9Paddings</key>
+                <rect>256,22,512,44</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

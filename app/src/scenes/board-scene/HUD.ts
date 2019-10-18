@@ -9,9 +9,8 @@ export class HUD extends Phaser.GameObjects.Container {
 
         super(scene);
 
-        const background = new Phaser.GameObjects.Graphics(this.scene);
-        background.fillStyle(0xFFFF00, .65);
-        background.fillRect(0, 0, GameConstants.GAME_WIDTH, 75);
+        const background = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "top_bar");
+        background.setOrigin(0);
         this.add(background);
 
         const yourBalanceLabel = new Phaser.GameObjects.Text(this.scene, 10, 15, "YOUR BALANCE:", {fontFamily: "RussoOne", fontSize: "40px", color: "#000000"});
