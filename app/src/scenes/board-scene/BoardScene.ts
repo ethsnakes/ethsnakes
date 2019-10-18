@@ -40,9 +40,7 @@ export class BoardScene extends Phaser.Scene {
 
         this.addDiceAnimations();
 
-        const background = this.add.graphics();
-        background.fillStyle(0xAAAAAA);
-        background.fillRect(0, 0, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
+        const background = this.add.image(GameConstants.GAME_WIDTH / 2, GameConstants.GAME_HEIGHT / 2, "texture_atlas_1", "background");
 
         this.dice = new DiceContainer(this);
         this.add.existing(this.dice);

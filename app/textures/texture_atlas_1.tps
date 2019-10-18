@@ -106,7 +106,7 @@
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
-            <enum type="AlgorithmSettings::SizeConstraints">AnySize</enum>
+            <enum type="AlgorithmSettings::SizeConstraints">POT</enum>
             <key>forceSquared</key>
             <false/>
             <key>maxRects</key>
@@ -293,6 +293,32 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">texture_atlas_1/button-radio-green-off.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>20,20,40,40</rect>
+                <key>scale9Paddings</key>
+                <rect>20,20,40,40</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/button-radio-green-on.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>26,20,51,40</rect>
+                <key>scale9Paddings</key>
+                <rect>26,20,51,40</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">texture_atlas_1/chip_bot.png</key>
             <key type="filename">texture_atlas_1/chip_player.png</key>
             <struct type="IndividualSpriteSettings">
@@ -317,6 +343,19 @@
                 <rect>8,4,17,9</rect>
                 <key>scale9Paddings</key>
                 <rect>8,4,17,9</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/snakes_ladders.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>163,163,325,325</rect>
+                <key>scale9Paddings</key>
+                <rect>163,163,325,325</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

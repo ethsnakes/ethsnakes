@@ -4,7 +4,7 @@ import { Chip } from "./Chip";
 
 export class BoardContainer extends Phaser.GameObjects.Container {
 
-    public static readonly CELL_SIZE = 63.5;
+    public static readonly CELL_SIZE = 59;
 
     public static currentInstance: BoardContainer;
 
@@ -23,6 +23,12 @@ export class BoardContainer extends Phaser.GameObjects.Container {
 
         const boardBackground = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "board");
         this.add(boardBackground);
+
+        const snakesAndLadders = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "snakes_ladders");
+        snakesAndLadders.setScale(.915);
+        this.add(snakesAndLadders);
+
+        console.log("cocfrut");
 
         this.botChip = new Chip(this.scene, 1, false);
         this.add(this.botChip);

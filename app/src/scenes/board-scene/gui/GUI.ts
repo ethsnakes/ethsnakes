@@ -47,6 +47,8 @@ export class GUI extends Phaser.GameObjects.Container {
             const developmentMenu = new DevelopmentMenu(this.scene);
             this.add(developmentMenu);
         }
+
+        this.startGame();
     }
 
     public startGame(): void {
