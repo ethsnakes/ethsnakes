@@ -35,8 +35,8 @@ window.onload = () => {
     // Also make sure to delete all *.ts files in node_modules/trailz folder
     game = new Game(gameConfig);
 
-    // let dapp = new Dapp();
-    // dapp.unlock();
+    let dapp = new Dapp();
+    //dapp.unlock();
 
     window.focus();
     resize();

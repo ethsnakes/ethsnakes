@@ -1,5 +1,6 @@
 const Web3 = require("web3");
- const Blockies = require("ethereum-blockies");
+// https://github.com/ethereum/blockies
+const Blockies = require("ethereum-blockies");
 const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLaddersMock.json");  // TODO change from Mock to good one
 
 export class Dapp {
@@ -35,14 +36,10 @@ export class Dapp {
         let networkId = await this.web3.eth.net.getId();
         this.contract = new this.web3.eth.Contract(SnakesAndLaddersArtifact.abi, SnakesAndLaddersArtifact.networks[networkId].address);
 
-        // for testing
-        this.logBalance();
         this.startWatcher(0);
+
+        // for testing
         this.addAndPlay(20, 1);
-        let icon = Blockies.create({
-            seed: this.account
-        });
-        document.getElementById("eth-blockie-0xaebf4defcaa03eebd1fa491aff1e357073a008c9").appendChild(icon);
     }
 
     public async loadAccount() {
@@ -68,7 +65,7 @@ export class Dapp {
     public addAndPlay(value, amount) {
 
         let self = this;
-        self.contract.methods.addAndPlay(amount).send({ from: self.account, value: value, gas: 15000000 })
+        self.contract.methods.addAndPlay(amount).send({ from: self.account, value: value, gas: 100000 })
             .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
             .on("confirmation", (confirmationNumber, receipt) => {
                 if (receipt.status === true && confirmationNumber === 1) {
@@ -89,11 +86,21 @@ export class Dapp {
 
     public addNewGameResult(sender, result, balancediff) {
 
-        document.getElementById("stream").innerHTML +=
-            '<div class="game-result result-' + result + '">' +
-                '<span class="eth-blockie" id="eth-blockie-' + sender + '"></span>' +
-                '<span class="eth-address">' + sender + '</span>' +
-                '<span class="eth-winloss">' + balancediff + '</span>' +
-            '</div>';
+        let stream_msg = document.createElement("div");
+        let eth_blockie = document.createElement("span");
+        let eth_address = document.createElement("span");
+        let eth_balancediff = document.createElement("span");
+        let blockie = Blockies.create({ seed: this.account, color: "#dfe", bgcolor: "#a71" });
+        stream_msg.className = 'stream-msg result-' + result;
+        eth_blockie.className = 'eth-blockie';
+        eth_blockie.style.backgroundImage = 'url(' + blockie.toDataURL() + ')';
+        eth_address.className = 'eth-address';
+        eth_address.innerHTML = sender.toLowerCase();
+        eth_balancediff.innerHTML = balancediff;
+        eth_balancediff.className = 'eth-balancediff';
+        stream_msg.appendChild(eth_blockie);
+        stream_msg.appendChild(eth_address);
+        stream_msg.appendChild(eth_balancediff);
+        document.getElementById("stream").appendChild(stream_msg);
     }
 }
