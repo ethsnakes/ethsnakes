@@ -65,7 +65,7 @@ export class Dapp {
     public addAndPlay(value, amount) {
 
         let self = this;
-        self.contract.methods.addAndPlay(amount).send({ from: self.account, value: value, gas: 100000 })
+        self.contract.methods.addAndPlay(amount).send({ from: self.account, value: value, gas: 1000000 })
             .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
             .on("confirmation", (confirmationNumber, receipt) => {
                 if (receipt.status === true && confirmationNumber === 1) {

@@ -28,16 +28,23 @@ input {
   float: left; }
 
 #stream {
-  float: right; }
-  #stream .game-result {
+  float: right;
+  padding: 10px; }
+  #stream .stream-msg {
     width: 100%;
     margin-bottom: 10px;
     padding: 10px;
     border: 1px solid #000;
     border-radius: 3px;
     overflow: hidden; }
-    #stream .game-result .eth-blockie {
+    #stream .stream-msg.result-true {
+      background: #619816; }
+    #stream .stream-msg.result-false {
+      background: #c7753f; }
+    #stream .stream-msg .eth-blockie {
       display: block;
-      float: left; }
+      float: left;
+      height: 32px;
+      width: 32px; }
 
 /*# sourceMappingURL=style.css.map */
