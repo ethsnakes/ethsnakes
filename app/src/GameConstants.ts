@@ -29,11 +29,9 @@ export class GameConstants {
         {in: 31, out: 9},
         {in: 44, out: 26},
         {in: 62, out: 19},
-        {in: 64, out: 42},
         {in: 74, out: 70},
         {in: 85, out: 33},
         {in: 91, out: 71},
-        {in: 96, out: 75},
         {in: 98, out: 80}
     ];
 
