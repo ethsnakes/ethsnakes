@@ -90,13 +90,13 @@ export class Dapp {
         let eth_blockie = document.createElement("span");
         let eth_address = document.createElement("span");
         let eth_balancediff = document.createElement("span");
-        let blockie = Blockies.create({ seed: this.account, color: "#dfe", bgcolor: "#a71" });
+        let blockie = Blockies.create({ seed: this.account, color: "#dff064", bgcolor: "#009aa4", scale: 2 });
         stream_msg.className = 'stream-msg result-' + result;
         eth_blockie.className = 'eth-blockie';
         eth_blockie.style.backgroundImage = 'url(' + blockie.toDataURL() + ')';
         eth_address.className = 'eth-address';
         eth_address.innerHTML = sender.toLowerCase();
-        eth_balancediff.innerHTML = balancediff;
+        eth_balancediff.innerHTML = "Result: " + balancediff;
         eth_balancediff.className = 'eth-balancediff';
         stream_msg.appendChild(eth_blockie);
         stream_msg.appendChild(eth_address);

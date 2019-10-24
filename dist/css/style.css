@@ -4,7 +4,8 @@
 body {
   padding: 0;
   margin: 0;
-  border: 0; }
+  border: 0;
+  overflow: hidden; }
 
 h1 {
   padding: 20px 0;
@@ -24,12 +25,17 @@ input {
 .row {
   margin-bottom: 30px; }
 
+#wrapper {
+  margin: auto;
+  overflow: hidden; }
+
 #game {
   float: left; }
 
 #stream {
   float: right;
-  padding: 10px; }
+  padding: 5px;
+  min-width: 200px; }
   #stream .stream-msg {
     width: 100%;
     margin-bottom: 10px;
@@ -44,7 +50,17 @@ input {
     #stream .stream-msg .eth-blockie {
       display: block;
       float: left;
-      height: 32px;
-      width: 32px; }
+      height: 16px;
+      width: 16px; }
+    #stream .stream-msg .eth-address {
+      font-family: monospace;
+      margin: 0 0 0 10px;
+      font-size: 12px;
+      line-height: 16px;
+      display: inline-block;
+      vertical-align: super; }
+    #stream .stream-msg .eth-balancediff {
+      display: block;
+      text-align: center; }
 
 /*# sourceMappingURL=style.css.map */
