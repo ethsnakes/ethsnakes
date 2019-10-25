@@ -1,12 +1,12 @@
-* {
-  box-sizing: border-box; }
-
-body {
-  padding: 0;
+*, *:before, *:after {
+  box-sizing: border-box;
   margin: 0;
-  border: 0;
-  overflow: hidden; }
+  padding: 0;
+  vertical-align: top; }
 
+/**
+ * Tags
+ */
 h1 {
   padding: 20px 0;
   border-bottom: 1px solid #ddd; }
@@ -17,50 +17,51 @@ h2 {
 input {
   width: 100%; }
 
-#Actions {
-  padding: 30px 0;
-  margin-bottom: 50px;
-  border-bottom: 1px solid #ddd; }
-
-.row {
-  margin-bottom: 30px; }
-
+/**
+ * General design
+ */
 #wrapper {
-  margin: auto;
-  overflow: hidden; }
+  display: table;
+  table-layout: fixed; }
 
-#game {
-  float: left; }
+#game-wrapper {
+  display: table-cell;
+  width: 100%;
+  background-color: #48566f; }
 
 #stream {
-  float: right;
-  padding: 5px;
-  min-width: 200px; }
+  display: table-cell;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100%;
+  background-color: #48566f; }
   #stream .stream-msg {
-    width: 100%;
-    margin-bottom: 10px;
+    width: 390px;
     padding: 10px;
-    border: 1px solid #000;
-    border-radius: 3px;
-    overflow: hidden; }
+    margin: 5px;
+    overflow: hidden;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 24px;
+    border-radius: 3px; }
     #stream .stream-msg.result-true {
-      background: #619816; }
-    #stream .stream-msg.result-false {
-      background: #c7753f; }
+      background: #e2de64; }
+      #stream .stream-msg.result-true .eth-balancediff {
+        margin-left: 8px; }
     #stream .stream-msg .eth-blockie {
-      display: block;
-      float: left;
-      height: 16px;
-      width: 16px; }
-    #stream .stream-msg .eth-address {
-      font-family: monospace;
-      margin: 0 0 0 10px;
-      font-size: 12px;
-      line-height: 16px;
       display: inline-block;
-      vertical-align: super; }
+      height: 24px;
+      width: 24px;
+      margin-right: 10px; }
+    #stream .stream-msg .eth-address {
+      display: inline-block;
+      width: 100px; }
+    #stream .stream-msg .eth-msg {
+      display: inline-block;
+      width: 100px; }
     #stream .stream-msg .eth-balancediff {
-      display: block;
-      text-align: center; }
+      display: inline-block;
+      text-align: right; }
 
 /*# sourceMappingURL=style.css.map */

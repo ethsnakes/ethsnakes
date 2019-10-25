@@ -1,15 +1,14 @@
 module.exports = {
     networks: {
-        development: { // Ganache
+        test: {
             host: "localhost",
             port: 8545,
             network_id: "*"
         },
-        net42: {
+        dev: {
             host: "localhost",
             port: 8545,
-            network_id: 42,
-            gas: 500000
+            network_id: "*"
         },
         ropsten: {
             host: "127.0.0.1",

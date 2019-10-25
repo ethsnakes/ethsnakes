@@ -1,13 +1,13 @@
-* {
+*, *:before, *:after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  vertical-align: top;
 }
 
-body {
-  padding: 0;
-  margin: 0;
-  border: 0;
-  overflow: hidden;
-}
+/**
+ * Tags
+ */
 
 h1 {
   padding: 20px 0;
@@ -22,59 +22,65 @@ input {
   width: 100%;
 }
 
-#Actions {
-  padding: 30px 0;
-  margin-bottom: 50px;
-  border-bottom: 1px solid #ddd;
-}
-
-.row {
-  margin-bottom: 30px;
-}
+/**
+ * General design
+ */
 
 #wrapper {
-  margin: auto;
-  overflow: hidden;
+  display: table;
+  table-layout: fixed;
+}
+
+#game-wrapper {
+  display: table-cell;
+  width: 100%;
+  background-color: #48566f;
 }
 
 #game {
-  float: left;
 }
 
 #stream {
-  float: right;
-  padding: 5px;
-  min-width: 200px;
+  display: table-cell;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100%;
+  background-color: #48566f;
   .stream-msg {
-    width: 100%;
-    margin-bottom: 10px;
+    width: 400-10px;
     padding: 10px;
-    border: 1px solid #000;
-    border-radius: 3px;
+    margin: 5px;
     overflow: hidden;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 24px;
+    border-radius: 3px;
     &.result-true {
-      background: #619816;
+      background: #e2de64;
+      .eth-balancediff {
+        margin-left: 8px;
+      }
     }
     &.result-false {
-      background: #c7753f;
     }
     .eth-blockie {
-      display: block;
-      float: left;
-      height: 16px;
-      width: 16px;
+      display: inline-block;
+      height: 24px;
+      width: 24px;
+      margin-right: 10px;
     }
     .eth-address {
-      font-family: monospace;
-      margin: 0 0 0 10px;
-      font-size: 12px;
-      line-height: 16px;
       display: inline-block;
-      vertical-align: super;
+      width: 100px;
+    }
+    .eth-msg {
+      display: inline-block;
+      width: 100px;
     }
     .eth-balancediff {
-      display: block;
-      text-align: center;
+      display: inline-block;
+      text-align: right;
     }
   }
 }

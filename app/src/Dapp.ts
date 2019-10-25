@@ -1,7 +1,7 @@
 const Web3 = require("web3");
 // https://github.com/ethereum/blockies
 const Blockies = require("ethereum-blockies");
-const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLaddersMock.json");  // TODO change from Mock to good one
+const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLadders.json");  // TODO change from Mock to good one
 
 export class Dapp {
     web3: any;
@@ -39,7 +39,9 @@ export class Dapp {
         this.startWatcher(0);
 
         // for testing
-        this.addAndPlay(20, 1);
+        // let value = Web3.utils.toWei('1', 'ether');
+        // let amount = Web3.utils.toWei('0.01', 'ether');
+        // this.addAndPlay(value, amount);
     }
 
     public async loadAccount() {
@@ -65,7 +67,7 @@ export class Dapp {
     public addAndPlay(value, amount) {
 
         let self = this;
-        self.contract.methods.addAndPlay(amount).send({ from: self.account, value: value, gas: 1000000 })
+        self.contract.methods.addAndPlay(amount).send({ from: self.account, value: value, gas: 10000000 })
             .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
             .on("confirmation", (confirmationNumber, receipt) => {
                 if (receipt.status === true && confirmationNumber === 1) {
@@ -86,21 +88,26 @@ export class Dapp {
 
     public addNewGameResult(sender, result, balancediff) {
 
+        // TODO do not add in case that sender is account
         let stream_msg = document.createElement("div");
         let eth_blockie = document.createElement("span");
         let eth_address = document.createElement("span");
+        let eth_msg = document.createElement("span");
         let eth_balancediff = document.createElement("span");
-        let blockie = Blockies.create({ seed: this.account, color: "#dff064", bgcolor: "#009aa4", scale: 2 });
+        let blockie = Blockies.create({ seed: this.account, color: "#64f06e", bgcolor: "#009aa4", scale: 3 });
         stream_msg.className = 'stream-msg result-' + result;
         eth_blockie.className = 'eth-blockie';
         eth_blockie.style.backgroundImage = 'url(' + blockie.toDataURL() + ')';
         eth_address.className = 'eth-address';
-        eth_address.innerHTML = sender.toLowerCase();
-        eth_balancediff.innerHTML = "Result: " + balancediff;
+        eth_address.innerHTML = sender.toLowerCase().substr(sender.length - 6);
+        eth_msg.className = 'eth-msg';
+        eth_msg.innerHTML = result ? "Winner!" : "Loser";
         eth_balancediff.className = 'eth-balancediff';
+        eth_balancediff.innerHTML = Web3.utils.fromWei(balancediff, 'ether') + " ETH";
         stream_msg.appendChild(eth_blockie);
         stream_msg.appendChild(eth_address);
+        stream_msg.appendChild(eth_msg);
         stream_msg.appendChild(eth_balancediff);
-        document.getElementById("stream").appendChild(stream_msg);
+        document.getElementById("stream").insertBefore(stream_msg, document.getElementById("stream").firstChild);
     }
 }
