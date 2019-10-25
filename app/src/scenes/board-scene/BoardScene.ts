@@ -40,7 +40,7 @@ export class BoardScene extends Phaser.Scene {
 
         this.addDiceAnimations();
 
-        const background = this.add.image(GameConstants.GAME_WIDTH / 2, GameConstants.GAME_HEIGHT / 2, "texture_atlas_1", "background");
+        this.add.image(GameConstants.GAME_WIDTH / 2, GameConstants.GAME_HEIGHT / 2, "texture_atlas_1", "background");
 
         this.dice = new DiceContainer(this);
         this.add.existing(this.dice);
@@ -73,10 +73,14 @@ export class BoardScene extends Phaser.Scene {
 
     public removeWaitingLayer(): void {
 
-        this.waitingLayer.destroy();
+        if (this.waitingLayer) {
+            this.waitingLayer.destroy();
+        }
 
         this.gui.enableButtons();
         this.gui.startGame();
+
+        this.hud.startGame();
 
         this.boardContainer.starGame();
     }

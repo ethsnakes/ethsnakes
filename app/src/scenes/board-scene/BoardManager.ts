@@ -7,17 +7,23 @@ import { Chip } from "./Chip";
 export class BoardManager {
 
     private static scene: Phaser.Scene;
-    private static gameStarted: boolean;
-
+   
     public static init(scene: Phaser.Scene): void {
 
         BoardManager.scene = scene;
-        BoardManager.gameStarted = false;
-
+       
         GameVars.diceBlocked = false;
-        GameVars.turn = GameConstants.PLAYER;
+        GameVars.turn = Math.random() > .5 ? GameConstants.PLAYER : GameConstants.BOT;
         GameVars.matchOver = false;
         GameVars.paused = false;
+    }
+
+    public static startGame(): void {
+
+        if (GameVars.turn === GameConstants.BOT) {
+            GameVars.diceBlocked = false;
+            BoardManager.rollDice();
+        }
     }
 
     public static resetBoard(): void {
@@ -48,6 +54,10 @@ export class BoardManager {
             } else {
                 if (outCell > chip.cellIndex) {
                     chip.moveInLadder(outCell);
+
+                    if (chip.isPlayer) {
+                        BoardScene.currentInstance.hud.playerClimbsLadder();
+                    }
                 } else {
                     chip.moveInSnake(outCell);
                 }

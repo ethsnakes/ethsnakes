@@ -11,7 +11,7 @@ export class DiceContainer extends Phaser.GameObjects.Container {
 
         super(scene);
 
-        this.dice = new Phaser.GameObjects.Sprite(this.scene, GameConstants.GAME_WIDTH - 115 * GameVars.scaleX, 550, "dice2");
+        this.dice = new Phaser.GameObjects.Sprite(this.scene, GameConstants.GAME_WIDTH - 115 * GameVars.scaleX, 520, "dice2");
         this.dice.scaleX = GameVars.scaleX;
         BoardScene.currentInstance.add.existing(this.dice);
         this.dice.visible = false;
