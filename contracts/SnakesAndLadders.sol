@@ -38,11 +38,9 @@ contract SnakesAndLadders is Ownable {
         boardElements[31] = 9;
         boardElements[44] = 26;
         boardElements[62] = 19;
-        boardElements[64] = 42;
         boardElements[74] = 70;
         boardElements[85] = 33;
         boardElements[91] = 71;
-        boardElements[96] = 75;
         boardElements[98] = 80;
     }
 
