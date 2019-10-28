@@ -67,7 +67,8 @@ export class Dapp {
     public addAndPlay(value, amount) {
 
         let self = this;
-        self.contract.methods.addAndPlay(amount).send({ from: self.account, value: value, gas: 10000000 })
+        let gasPrice = Web3.utils.toWei('10', 'gwei');
+        self.contract.methods.addAndPlay(amount).send({ from: self.account, value: value, gas: 500000, gasPrice: gasPrice })
             .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
             .on("confirmation", (confirmationNumber, receipt) => {
                 if (receipt.status === true && confirmationNumber === 1) {
@@ -88,7 +89,10 @@ export class Dapp {
 
     public addNewGameResult(sender, result, balancediff) {
 
-        // TODO do not add in case that sender is account
+        // TODO uncomment
+        // if (sender == this.account) {
+        //     return;
+        // }
         let stream_msg = document.createElement("div");
         let eth_blockie = document.createElement("span");
         let eth_address = document.createElement("span");
@@ -108,6 +112,10 @@ export class Dapp {
         stream_msg.appendChild(eth_address);
         stream_msg.appendChild(eth_msg);
         stream_msg.appendChild(eth_balancediff);
-        document.getElementById("stream").insertBefore(stream_msg, document.getElementById("stream").firstChild);
+        // remove last elements
+        document.getElementById("stream-content").insertBefore(stream_msg, document.getElementById("stream-content").firstChild);
+        if (document.getElementById("stream-content").childElementCount > 20) {
+            document.getElementById("stream-content").removeChild(document.getElementById("stream-content").lastChild);
+        }
     }
 }

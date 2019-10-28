@@ -619,11 +619,16 @@ var BoardManager = /** @class */ (function () {
     }
     BoardManager.init = function (scene) {
         BoardManager.scene = scene;
-        BoardManager.gameStarted = false;
         GameVars_1.GameVars.diceBlocked = false;
-        GameVars_1.GameVars.turn = GameConstants_1.GameConstants.PLAYER;
+        GameVars_1.GameVars.turn = Math.random() > .5 ? GameConstants_1.GameConstants.PLAYER : GameConstants_1.GameConstants.BOT;
         GameVars_1.GameVars.matchOver = false;
         GameVars_1.GameVars.paused = false;
+    };
+    BoardManager.startGame = function () {
+        if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.BOT) {
+            GameVars_1.GameVars.diceBlocked = false;
+            BoardManager.rollDice();
+        }
     };
     BoardManager.resetBoard = function () {
         //
@@ -649,6 +654,9 @@ var BoardManager = /** @class */ (function () {
             else {
                 if (outCell > chip.cellIndex) {
                     chip.moveInLadder(outCell);
+                    if (chip.isPlayer) {
+                        BoardScene_1.BoardScene.currentInstance.hud.playerClimbsLadder();
+                    }
                 }
                 else {
                     chip.moveInSnake(outCell);
@@ -750,8 +758,6 @@ var BoardScene = /** @class */ (function (_super) {
         this.add.existing(this.boardContainer);
         this.gui = new GUI_1.GUI(this);
         this.add.existing(this.gui);
-        // TODO: BORRAR ESTO
-        this.removeWaitingLayer();
     };
     BoardScene.prototype.showSelectBetLayer = function () {
         this.gui.disableButtons();
@@ -1016,6 +1022,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./app/src/GameVars.ts");
 var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./app/src/GameConstants.ts");
+var BoardScene_1 = __webpack_require__(/*! ./BoardScene */ "./app/src/scenes/board-scene/BoardScene.ts");
+var BoardManager_1 = __webpack_require__(/*! ./BoardManager */ "./app/src/scenes/board-scene/BoardManager.ts");
 var HUD = /** @class */ (function (_super) {
     __extends(HUD, _super);
     function HUD(scene) {
@@ -1031,6 +1039,32 @@ var HUD = /** @class */ (function (_super) {
         _this.add(_this.balanceLabel);
         return _this;
     }
+    HUD.prototype.playerClimbsLadder = function () {
+        var superLabel = new Phaser.GameObjects.Text(this.scene, GameConstants_1.GameConstants.GAME_WIDTH * 3 / 2, GameConstants_1.GameConstants.GAME_HEIGHT / 2, "SUPER", { fontFamily: "RussoOne", fontSize: "75px", color: "#FFFFFF" });
+        superLabel.scaleX = GameVars_1.GameVars.scaleX;
+        superLabel.setOrigin(.5);
+        BoardScene_1.BoardScene.currentInstance.add.existing(superLabel);
+        this.scene.tweens.add({
+            targets: superLabel,
+            x: GameConstants_1.GameConstants.GAME_WIDTH / 2,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 500,
+            onComplete: function () {
+                this.scene.tweens.add({
+                    targets: superLabel,
+                    x: -GameConstants_1.GameConstants.GAME_WIDTH / 2,
+                    ease: Phaser.Math.Easing.Cubic.Out,
+                    delay: 750,
+                    duration: 500,
+                    onComplete: function () {
+                        superLabel.destroy();
+                    },
+                    onCompleteScope: this
+                });
+            },
+            onCompleteScope: this
+        });
+    };
     HUD.prototype.startGame = function () {
         var turnStr;
         if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER) {
@@ -1039,9 +1073,31 @@ var HUD = /** @class */ (function (_super) {
         else {
             turnStr = "ADVERSARY STARTS";
         }
-        var turnLabel = new Phaser.GameObjects.Text(this.scene, 0, 0, turnStr, { fontFamily: "RussoOne", fontSize: "40px", color: "#FFFFFF" });
+        var turnLabel = new Phaser.GameObjects.Text(this.scene, GameConstants_1.GameConstants.GAME_WIDTH * 3 / 2, GameConstants_1.GameConstants.GAME_HEIGHT / 2, turnStr, { fontFamily: "RussoOne", fontSize: "75px", color: "#FFFFFF" });
         turnLabel.scaleX = GameVars_1.GameVars.scaleX;
-        this.add(turnLabel);
+        turnLabel.setOrigin(.5);
+        BoardScene_1.BoardScene.currentInstance.add.existing(turnLabel);
+        this.scene.tweens.add({
+            targets: turnLabel,
+            x: GameConstants_1.GameConstants.GAME_WIDTH / 2,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 500,
+            onComplete: function () {
+                this.scene.tweens.add({
+                    targets: turnLabel,
+                    x: -GameConstants_1.GameConstants.GAME_WIDTH / 2,
+                    ease: Phaser.Math.Easing.Cubic.Out,
+                    delay: 1500,
+                    duration: 500,
+                    onComplete: function () {
+                        turnLabel.destroy();
+                        BoardManager_1.BoardManager.startGame();
+                    },
+                    onCompleteScope: this
+                });
+            },
+            onCompleteScope: this
+        });
     };
     return HUD;
 }(Phaser.GameObjects.Container));
