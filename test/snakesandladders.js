@@ -64,8 +64,8 @@ contract('SnakesAndLadders', (accounts) => {
                     assert.strictEqual(parseInt(ev.args["move"].toString()) <= 6, true, "Dice was more than 6, was " + parseInt(ev.args["move"].toString()));
                 }
                 if (ev.event === "LogGame") {
-                    assert.strictEqual(ev.args["result"], false, "IA should had won");
-                    assert.strictEqual(parseInt(ev.args["balancediff"].toString()), -qty/100, "Removed the wrong amount of balance");
+                    assert.strictEqual(ev.args["result"], true, "IA should had lose");
+                    assert.strictEqual(parseInt(ev.args["balancediff"].toString()), qty/100, "Removed the wrong amount of balance");
                 }
             }
         });
