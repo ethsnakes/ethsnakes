@@ -10,3 +10,7 @@ module.exports = async function getTransactionCost(txObj) {
     let gasPrice = web3.utils.toBN(tx.gasPrice);
     return gasPrice.mul(gasUsed);
 };
+
+module.exports = function getTransactionGasUsed(txObj) {
+    return txObj.receipt.gasUsed;
+};

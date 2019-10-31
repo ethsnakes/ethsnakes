@@ -1,7 +1,6 @@
 const SnakesAndLadders = artifacts.require("SnakesAndLaddersMock.sol");
 const expectedExceptionPromise = require("../util/expected-exception-promise.js");
-const getTransactionCost = require("../util/get-transaction-cost.js");
-const { toWei, toBN, fromAscii } = web3.utils;
+const { toWei, toBN } = web3.utils;
 
 contract('SnakesAndLadders', (accounts) => {
     const [ owner, alice, bob, carol ] = accounts;
@@ -58,7 +57,6 @@ contract('SnakesAndLadders', (accounts) => {
             assert.strictEqual(txObj.logs.length > 1, true, "More than one event expected");
             for (let i = 0; i < txObj.logs.length; i++) {
                 let ev = txObj.logs[i];
-                //console.log(ev.args);
                 if (ev.event === "LogMove") {
                     assert.strictEqual(parseInt(ev.args["move"].toString()) >= 1, true, "Dice was less than 1, was " + parseInt(ev.args["move"].toString()));
                     assert.strictEqual(parseInt(ev.args["move"].toString()) <= 6, true, "Dice was more than 6, was " + parseInt(ev.args["move"].toString()));

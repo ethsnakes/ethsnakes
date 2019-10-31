@@ -1,4 +1,5 @@
 const SnakesAndLadders = artifacts.require("SnakesAndLadders.sol");
+const getTransactionGasUsed = require("../util/get-transaction-cost.js");
 const { toWei, toBN, fromAscii } = web3.utils;
 
 contract('SnakesAndLadders Simulation', (accounts) => {
@@ -6,7 +7,7 @@ contract('SnakesAndLadders Simulation', (accounts) => {
     let instance;
     const qty = toWei('0.01', 'ether');
     const qtyBN = toBN(qty);
-    const simulations = 10;
+    const simulations = 1000;
 
     before("running check if the setup is correct to pass the tests", async function() {
         let aliceBalanceBN = toBN(await web3.eth.getBalance(alice));
@@ -30,8 +31,10 @@ contract('SnakesAndLadders Simulation', (accounts) => {
             this.timeout(1000000000000);
             let winners = 0;
             let losers = 0;
+            let totalGas = 0;
             for (let i = 0; i < simulations; i++) {
                 let txObj = await instance.play(qty/1000, {from: alice});
+                totalGas += getTransactionGasUsed(txObj);
                 let ev = txObj.logs[txObj.logs.length - 1];
                 if (ev.event === "LogGame") {
                     if (ev.args["result"]) {
@@ -42,6 +45,7 @@ contract('SnakesAndLadders Simulation', (accounts) => {
                 }
             }
             console.log("        winners: " + winners, "losers: " + losers);
+            console.log("        avg gas: " + totalGas/simulations)
         });
     });
 });

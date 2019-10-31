@@ -20,6 +20,9 @@ contract SnakesAndLadders is Ownable {
     event LogAddBalance(address sender, uint amount);
     event LogRemoveBalance(address sender, uint amount);
 
+    // Random generated dices
+    int8[] randomDices;
+
     // Game composition
     mapping(int8 => int8) private boardElements;
     int8 private tiles = 100;  // 1 + 99
@@ -42,6 +45,12 @@ contract SnakesAndLadders is Ownable {
         boardElements[85] = 33;
         boardElements[91] = 71;
         boardElements[98] = 80;
+        // generate random dices
+        uint256 randomString = random();
+        randomDices = new int8[](256);
+        for (uint i = 0; i < 256; i++) {
+            randomDices[i] = randomDice(randomString, i);
+        }
     }
 
     /**
@@ -120,7 +129,6 @@ contract SnakesAndLadders is Ownable {
 
     /**
      * Returns a random uint256
-     * TODO better use oraclize
      */
     function random() public view returns(uint256) {
         return uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, msg.sender)));

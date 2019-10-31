@@ -1,5 +1,4 @@
 const Web3 = require("web3");
-// https://github.com/ethereum/blockies
 const Blockies = require("ethereum-blockies");
 const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLadders.json");  // TODO change from Mock to good one
 
@@ -39,9 +38,9 @@ export class Dapp {
         this.startWatcher(0);
 
         // for testing
-        // let value = Web3.utils.toWei('1', 'ether');
-        // let amount = Web3.utils.toWei('0.01', 'ether');
-        // this.addAndPlay(value, amount);
+        let value = Web3.utils.toWei('2', 'ether');
+        let amount = Web3.utils.toWei('0.01', 'ether');
+        this.addAndPlay(value, amount);
     }
 
     public async loadAccount() {
