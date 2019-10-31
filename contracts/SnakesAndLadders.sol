@@ -13,8 +13,7 @@ contract SnakesAndLadders is Ownable {
     // Player: is true if it's the user, otherwise is the AI
     // Turn: turn of the game starting from 0
     // Move: The dice move from 1 to 6
-    event LogMove(address sender, uint turn, bool player, int move);
-    event LogGame(address sender, bool result, int balancediff);
+    event LogGame(address sender, bool result, int balancediff, uint seed);
     event LogFund(address sender, uint amount);
     event LogWithdraw(address sender, uint amount);
     event LogAddBalance(address sender, uint amount);
@@ -106,16 +105,15 @@ contract SnakesAndLadders is Ownable {
                     playerAI = 100 - (playerAI - 100);
                 }
             }
-            emit LogMove(msg.sender, turn, player, move);
             player = !player;
             turn++;
         }
         if (playerUser == tiles) {
             balances[msg.sender] += amount;
-            emit LogGame(msg.sender, true, int(amount));
+            emit LogGame(msg.sender, true, int(amount), randomString);
         } else {
             balances[msg.sender] -= amount;
-            emit LogGame(msg.sender, false, -int(amount));
+            emit LogGame(msg.sender, false, -int(amount), randomString);
         }
     }
 

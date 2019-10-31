@@ -1,4 +1,5 @@
 const SnakesAndLadders = artifacts.require("SnakesAndLaddersMock.sol");
+const getTransactionGasUsed = require("../util/get-transaction-cost.js");
 const expectedExceptionPromise = require("../util/expected-exception-promise.js");
 const { toWei, toBN } = web3.utils;
 
@@ -53,14 +54,11 @@ contract('SnakesAndLadders', (accounts) => {
 
         it("testing the mock default game", async function () {
             let txObj = await instance.play(qty/100, {from: alice});
+            console.log("        gas used: " + getTransactionGasUsed(txObj));
             // Check event
-            assert.strictEqual(txObj.logs.length > 1, true, "More than one event expected");
+            assert.strictEqual(txObj.logs.length, 1, "Only one event expected");
             for (let i = 0; i < txObj.logs.length; i++) {
                 let ev = txObj.logs[i];
-                if (ev.event === "LogMove") {
-                    assert.strictEqual(parseInt(ev.args["move"].toString()) >= 1, true, "Dice was less than 1, was " + parseInt(ev.args["move"].toString()));
-                    assert.strictEqual(parseInt(ev.args["move"].toString()) <= 6, true, "Dice was more than 6, was " + parseInt(ev.args["move"].toString()));
-                }
                 if (ev.event === "LogGame") {
                     assert.strictEqual(ev.args["result"], true, "IA should had lose");
                     assert.strictEqual(parseInt(ev.args["balancediff"].toString()), qty/100, "Removed the wrong amount of balance");
