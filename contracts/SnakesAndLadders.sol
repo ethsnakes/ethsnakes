@@ -10,18 +10,17 @@ contract SnakesAndLadders is Ownable {
     // All balances
     mapping(address => uint) public balances;
 
+    // Board composition
+    mapping(uint8 => uint8) private boardElements;
+
     // Player: is true if it's the user, otherwise is the AI
-    // Turn: turn of the game starting from 0
-    // Move: The dice move from 1 to 6
+    // Turn: starting from 1
+    // Move: the dice move from 1 to 6
     event LogGame(address sender, bool result, int balancediff, uint seed);
     event LogFund(address sender, uint amount);
     event LogWithdraw(address sender, uint amount);
     event LogAddBalance(address sender, uint amount);
     event LogRemoveBalance(address sender, uint amount);
-
-    // Board composition
-    mapping(uint8 => uint8) private boardElements;
-    uint8 private tiles = 100;  // 1 + 99
 
     constructor() public {
         // ladders
@@ -46,7 +45,7 @@ contract SnakesAndLadders is Ownable {
     /**
      * Avoid sending money directly to the contract
      */
-    function() external payable {
+    function () external payable {
         revert("Use addBalance to send money.");
     }
 
@@ -68,17 +67,17 @@ contract SnakesAndLadders is Ownable {
         require(amount*10 < address(this).balance, "You cannot bet more than 1/10 of this contract balance");
         uint randomString = random();
         uint turn = 0;
+        // let's decide who starts
         bool player = false;  // true if next move is for player, false if for computer
         uint8 playerUser = 0;
         uint8 playerAI = 0;
-        // let's decide who starts
-        uint8 startDice = randomDice(randomString, uint8(255));
-        if (startDice == 1 || startDice == 2) {
+        uint8 move = randomDice(randomString, 255);  // TODO first move is deciding who starts
+        if (move == 1 || move == 2) {
             player = true;
         }
         // make all the moves and emit the results
-        while (playerUser != tiles && playerAI != tiles) {
-            uint8 move = randomDice(randomString, turn);
+        while (playerUser != 100 && playerAI != 100) {
+            move = randomDice(randomString, turn);
             if (player) {
                 playerUser = playerUser + move;
                 if (boardElements[playerUser] != 0) {
@@ -99,7 +98,7 @@ contract SnakesAndLadders is Ownable {
             player = !player;
             turn++;
         }
-        if (playerUser == tiles) {
+        if (playerUser == 100) {
             balances[msg.sender] += amount;
             emit LogGame(msg.sender, true, int(amount), randomString);
         } else {
