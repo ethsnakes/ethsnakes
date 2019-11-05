@@ -11,7 +11,7 @@ contract SnakesAndLadders is Ownable {
     mapping(address => uint) public balances;
 
     // Board composition
-    uint constant tiles = 100;
+    uint8 constant tiles = 100;
     mapping(uint8 => uint8) private boardElements;
 
     // Player: is true if it's the user, otherwise is the AI
@@ -68,6 +68,7 @@ contract SnakesAndLadders is Ownable {
         require(amount*10 < address(this).balance, "You cannot bet more than 1/10 of this contract balance");
         uint randomString = random();
         uint turn = 0;
+        uint8 boardElement;
         // let's decide who starts
         bool player = false;  // true if next move is for player, false if for computer
         uint8 playerUser = 0;
@@ -81,19 +82,21 @@ contract SnakesAndLadders is Ownable {
             move = randomDice(randomString, turn);
             if (player) {
                 playerUser = playerUser + move;
-                if (boardElements[playerUser] != 0) {
-                    playerUser = boardElements[playerUser];
+                boardElement = boardElements[playerUser];
+                if (boardElement != 0) {
+                    playerUser = boardElement;
                 }
-                if (playerUser > 100) {
-                    playerUser = 100 - (playerUser - 100);
+                if (playerUser > tiles) {
+                    playerUser = tiles - (playerUser - tiles);
                 }
             } else {
                 playerAI = playerAI + move;
-                if (boardElements[playerAI] != 0) {
-                    playerAI = boardElements[playerAI];
+                boardElement = boardElements[playerAI];
+                if (boardElement != 0) {
+                    playerAI = boardElement;
                 }
-                if (playerAI > 100) {
-                    playerAI = 100 - (playerAI - 100);
+                if (playerAI > tiles) {
+                    playerAI = tiles - (playerAI - tiles);
                 }
             }
             player = !player;
