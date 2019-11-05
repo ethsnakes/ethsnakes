@@ -5,7 +5,7 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 contract SnakesAndLadders is Ownable {
     using SafeMath for uint;
-    using SafeMath for uint8;
+    using SafeMath for uint8;  // till 0-255
 
     // All balances
     mapping(address => uint) public balances;
@@ -20,8 +20,8 @@ contract SnakesAndLadders is Ownable {
     event LogRemoveBalance(address sender, uint amount);
 
     // Board composition
-    mapping(int8 => int8) private boardElements;
-    int8 private tiles = 100;  // 1 + 99
+    mapping(uint8 => uint8) private boardElements;
+    uint8 private tiles = 100;  // 1 + 99
 
     constructor() public {
         // ladders
@@ -69,16 +69,16 @@ contract SnakesAndLadders is Ownable {
         uint randomString = random();
         uint turn = 0;
         bool player = false;  // true if next move is for player, false if for computer
-        int8 playerUser = 0;
-        int8 playerAI = 0;
+        uint8 playerUser = 0;
+        uint8 playerAI = 0;
         // let's decide who starts
-        int8 startDice = randomDice(randomString, 255);
+        uint8 startDice = randomDice(randomString, uint8(255));
         if (startDice == 1 || startDice == 2) {
             player = true;
         }
         // make all the moves and emit the results
         while (playerUser != tiles && playerAI != tiles) {
-            int8 move = randomDice(randomString, turn);
+            uint8 move = randomDice(randomString, turn);
             if (player) {
                 playerUser = playerUser + move;
                 if (boardElements[playerUser] != 0) {
@@ -109,17 +109,17 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
-     * Returns a random number from 1 to 6 based from a uint256 and turn
+     * Returns a random number from 1 to 6 based from a uint and turn
      */
-    function randomDice(uint randomString, uint turn) public pure returns(int8) {
+    function randomDice(uint randomString, uint turn) public pure returns(uint8) {
         turn = turn%256;
-        return int8(uint8(randomString/2**turn)%6 + 1);
+        return uint8(randomString/2**turn)%6 + 1;
     }
 
     /**
-     * Returns a random uint256
+     * Returns a random uint
      */
-    function random() public view returns(uint256) {
+    function random() public view returns(uint) {
         return uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, msg.sender)));
     }
 

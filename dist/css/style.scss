@@ -9,6 +9,10 @@
  * Tags
  */
 
+body {
+  background-color: #48566f;
+}
+
 h1 {
   padding: 20px 0;
   border-bottom: 1px solid #ddd;
@@ -45,42 +49,64 @@ input {
   top: 0;
   right: 0;
   width: 400px;
+  min-width: 400px;
   height: 100%;
-  background-color: #48566f;
-  .stream-msg {
-    width: 400-10px;
-    padding: 10px;
-    margin: 5px;
-    overflow: hidden;
+  @media(max-width: 1500px) {
+    display: none;
+  }
+  #stream-title {
+    margin: 0 5px;
+    padding: 10px 10px 6px;
+    border-bottom: 1px solid #000;
     font-family: monospace;
-    font-size: 14px;
-    line-height: 24px;
-    border-radius: 3px;
-    &.result-true {
-      background: #e2de64;
-      .eth-balancediff {
-        margin-left: 8px;
+    font-size: 12px;
+    span {
+      display: inline-block;
+      &:nth-child(1) {
+        width: 128px;
+      }
+      &:nth-child(2) {
+        width: 100px;
       }
     }
-    &.result-false {
-    }
-    .eth-blockie {
-      display: inline-block;
-      height: 24px;
-      width: 24px;
-      margin-right: 10px;
-    }
-    .eth-address {
-      display: inline-block;
-      width: 100px;
-    }
-    .eth-msg {
-      display: inline-block;
-      width: 100px;
-    }
-    .eth-balancediff {
-      display: inline-block;
-      text-align: right;
+  }
+  #stream-content {
+    .stream-msg {
+      width: 400-10px;
+      padding: 10px;
+      margin: 5px;
+      overflow: hidden;
+      font-family: monospace;
+      font-size: 14px;
+      line-height: 24px;
+      border-radius: 3px;
+      &.result-true {
+        background: #e2de64;
+        box-shadow: 0 0 4px;
+        .eth-balancediff {
+          margin-left: 8px;
+        }
+      }
+      &.result-false {
+      }
+      .eth-blockie {
+        display: inline-block;
+        height: 24px;
+        width: 24px;
+        margin-right: 10px;
+      }
+      .eth-address {
+        display: inline-block;
+        width: 100px;
+      }
+      .eth-msg {
+        display: inline-block;
+        width: 100px;
+      }
+      .eth-balancediff {
+        display: inline-block;
+        text-align: right;
+      }
     }
   }
 }
