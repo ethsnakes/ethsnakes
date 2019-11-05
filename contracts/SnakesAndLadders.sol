@@ -19,10 +19,7 @@ contract SnakesAndLadders is Ownable {
     event LogAddBalance(address sender, uint amount);
     event LogRemoveBalance(address sender, uint amount);
 
-    // Random generated dices
-    int8[] public randomDices;
-
-    // Board
+    // Board composition
     mapping(int8 => int8) private boardElements;
     int8 private tiles = 100;  // 1 + 99
 
@@ -44,12 +41,6 @@ contract SnakesAndLadders is Ownable {
         boardElements[85] = 33;
         boardElements[91] = 71;
         boardElements[98] = 80;
-        // generate random dices
-        uint256 randomString = random();
-        randomDices = new int8[](256);
-        for (uint i = 0; i < 256; i++) {
-            randomDices[i] = randomDice(randomString, i);
-        }
     }
 
     /**
@@ -76,18 +67,18 @@ contract SnakesAndLadders is Ownable {
         require(amount <= balances[msg.sender], "You don't have enough balance");
         require(amount*10 < address(this).balance, "You cannot bet more than 1/10 of this contract balance");
         uint randomString = random();
+        uint turn = 0;
         bool player = false;  // true if next move is for player, false if for computer
         int8 playerUser = 0;
         int8 playerAI = 0;
         // let's decide who starts
-        uint256 startDice = randomString%256;
-        if (randomDices[startDice] - 1 <= 1) {
+        int8 startDice = randomDice(randomString, 255);
+        if (startDice == 1 || startDice == 2) {
             player = true;
         }
         // make all the moves and emit the results
         while (playerUser != tiles && playerAI != tiles) {
-            startDice = (++startDice)%256;
-            int8 move = int8(randomDices[startDice]);
+            int8 move = randomDice(randomString, turn);
             if (player) {
                 playerUser = playerUser + move;
                 if (boardElements[playerUser] != 0) {
@@ -106,6 +97,7 @@ contract SnakesAndLadders is Ownable {
                 }
             }
             player = !player;
+            turn++;
         }
         if (playerUser == tiles) {
             balances[msg.sender] += amount;
