@@ -11,6 +11,7 @@ contract SnakesAndLadders is Ownable {
     mapping(address => uint) public balances;
 
     // Board composition
+    uint constant tiles = 100;
     mapping(uint8 => uint8) private boardElements;
 
     // Player: is true if it's the user, otherwise is the AI
@@ -76,7 +77,7 @@ contract SnakesAndLadders is Ownable {
             player = true;
         }
         // make all the moves and emit the results
-        while (playerUser != 100 && playerAI != 100) {
+        while (playerUser != tiles && playerAI != tiles) {
             move = randomDice(randomString, turn);
             if (player) {
                 playerUser = playerUser + move;
@@ -98,7 +99,7 @@ contract SnakesAndLadders is Ownable {
             player = !player;
             turn++;
         }
-        if (playerUser == 100) {
+        if (playerUser == tiles) {
             balances[msg.sender] += amount;
             emit LogGame(msg.sender, true, int(amount), randomString);
         } else {
