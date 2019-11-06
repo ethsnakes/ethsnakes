@@ -40,7 +40,7 @@ export class Dapp {
         // for testing
         let value = Web3.utils.toWei('0.1', 'ether');
         let amount = Web3.utils.toWei('0.001', 'ether');
-        this.addAndPlay(value, amount);
+        this.playNow(value, amount);
     }
 
     public async loadAccount() {
@@ -63,11 +63,11 @@ export class Dapp {
     }
 
 
-    public addAndPlay(value, amount) {
+    public playNow(value, amount) {
 
         let self = this;
         let gasPrice = Web3.utils.toWei('10', 'gwei');
-        self.contract.methods.addAndPlay(amount).send({ from: self.account, value: value, gas: 500000, gasPrice: gasPrice })
+        self.contract.methods.playNow(amount).send({ from: self.account, value: value, gas: 500000, gasPrice: gasPrice })
             .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
             .on("confirmation", (confirmationNumber, receipt) => {
                 if (receipt.status === true && confirmationNumber === 1) {

@@ -10,6 +10,10 @@ contract SnakesAndLadders is Ownable {
     // All balances
     mapping(address => uint) public balances;
 
+    // Payout addresses
+    address payout1;
+    address payout2;
+
     // Board composition
     uint8 constant tiles = 100;
     mapping(uint8 => uint8) private boardElements;
@@ -18,12 +22,10 @@ contract SnakesAndLadders is Ownable {
     // Turn: starting from 1
     // Move: the dice move from 1 to 6
     event LogGame(address sender, bool result, int balancediff, uint seed);
-    event LogFund(address sender, uint amount);
-    event LogWithdraw(address sender, uint amount);
     event LogAddBalance(address sender, uint amount);
-    event LogRemoveBalance(address sender, uint amount);
+    event LogWithdrawBalance(address sender, uint amount);
 
-    constructor() public {
+    constructor(address _payout1, address _payout2) public {
         // ladders
         boardElements[4] = 14;
         boardElements[8] = 32;
@@ -41,20 +43,16 @@ contract SnakesAndLadders is Ownable {
         boardElements[85] = 33;
         boardElements[91] = 71;
         boardElements[98] = 80;
-    }
-
-    /**
-     * Avoid sending money directly to the contract
-     */
-    function () external payable {
-        revert("Use addBalance to send money.");
+        // payouts
+        payout1 = _payout1;
+        payout2 = _payout2;
     }
 
     /**
      * Adds balance and plays a game
      */
-    function addAndPlay(uint amount) public payable {
-        emit LogFund(msg.sender, msg.value);
+    function playNow(uint amount) public payable {
+        emit LogAddBalance(msg.sender, msg.value);
         balances[msg.sender] += msg.value;
         play(amount);
     }
@@ -100,7 +98,7 @@ contract SnakesAndLadders is Ownable {
                     playerAI = tiles - (playerAI - tiles);
                 }
             }
-            player = !player;  // todo turn%2
+            player = !player;
         }
         if (playerUser == tiles) {
             balances[msg.sender] += amount;
@@ -112,6 +110,13 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
+     * Returns a random uint
+     */
+    function random() public view returns(uint) {
+        return uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, msg.sender)));
+    }
+
+    /**
      * Returns a random number from 1 to 6 based from a uint and turn
      */
     function randomDice(uint randomString, uint turn) public pure returns(uint8) {
@@ -120,17 +125,10 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
-     * Returns a random uint
-     */
-    function random() public view returns(uint) {
-        return uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, msg.sender)));
-    }
-
-    /**
      * Add to balance
      */
     function addBalance() public payable {
-        emit LogFund(msg.sender, msg.value);
+        emit LogAddBalance(msg.sender, msg.value);
         balances[msg.sender] += msg.value;
     }
 
@@ -140,25 +138,20 @@ contract SnakesAndLadders is Ownable {
     function withdrawBalance() public {
         uint toWithdraw = balances[msg.sender];
         require(toWithdraw > 0, "There is no balance to withdraw");
-        emit LogWithdraw(msg.sender, toWithdraw);
+        emit LogWithdrawBalance(msg.sender, toWithdraw);
         balances[msg.sender] = 0;
         msg.sender.transfer(toWithdraw);
     }
 
     /**
-     * Add funds to the contract by the owner
+     * Add balance to payout addresses for paying out.
      */
-    function addFunds() public payable onlyOwner {
-        emit LogAddBalance(msg.sender, msg.value);
-    }
-
-    /**
-     * Remove funds from the contract by the owner
-     */
-    function withdrawFunds(uint amount) public onlyOwner {
-        require(address(this).balance > 0, "There is no balance to withdraw");
+    function payout(uint amount) public onlyOwner {
+        require(amount > 0, "There is no balance to withdraw");
+        require(amount%2 == 0, "Amount to withdraw must be pair");
         require(address(this).balance >= amount, "There is not enough balance to withdraw");
-        emit LogRemoveBalance(msg.sender, address(this).balance);
-        msg.sender.transfer(amount);
+        uint payout = amount/2;
+        balances[payout1] += payout;
+        balances[payout2] += payout;
     }
 }
