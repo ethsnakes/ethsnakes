@@ -68,17 +68,18 @@ contract SnakesAndLadders is Ownable {
         require(amount*10 < address(this).balance, "You cannot bet more than 1/10 of this contract balance");
         uint randomString = random();
         uint turn = 0;
-        uint8 boardElement;
         // let's decide who starts
+        uint8 move = randomDice(randomString, turn);  // move 0 decides who starts
         bool player = false;  // true if next move is for player, false if for computer
-        uint8 playerUser = 0;
-        uint8 playerAI = 0;
-        uint8 move = randomDice(randomString, 255);  // TODO first move is deciding who starts
         if (move == 1 || move == 2) {
             player = true;
         }
         // make all the moves and emit the results
+        uint8 playerUser = 0;
+        uint8 playerAI = 0;
+        uint8 boardElement;
         while (playerUser != tiles && playerAI != tiles) {
+            turn++;
             move = randomDice(randomString, turn);
             if (player) {
                 playerUser = playerUser + move;
@@ -99,8 +100,7 @@ contract SnakesAndLadders is Ownable {
                     playerAI = tiles - (playerAI - tiles);
                 }
             }
-            player = !player;
-            turn++;
+            player = !player;  // todo turn%2
         }
         if (playerUser == tiles) {
             balances[msg.sender] += amount;
