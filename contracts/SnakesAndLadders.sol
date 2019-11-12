@@ -62,10 +62,7 @@ contract SnakesAndLadders is Ownable {
      * Adds balance and plays a game
      */
     function playNow(uint amount) public payable {
-        require(msg.value > 0, "You must send something when calling this function");
-        emit LogAddBalance(msg.sender, msg.value);
-        balances[msg.sender] += msg.value;
-        totalBalance += msg.value;
+        addBalance();
         play(amount);
     }
 
@@ -77,10 +74,10 @@ contract SnakesAndLadders is Ownable {
         require(amount <= balances[msg.sender], "You don't have enough balance to play");
         require(amount*10 < address(this).balance, "You cannot bet more than 1/10 of this contract total balance");
         require(amount <= 1 ether, "Maximum bet amount is 1 ether");
-        uint randomString = random();
+        uint seed = random();
         uint turn = 0;
         // let's decide who starts
-        uint8 move = randomDice(randomString, turn);  // move 0 decides who starts
+        uint8 move = randomDice(seed, turn);  // move 0 decides who starts
         bool player = false;  // true if next move is for player, false if for computer
         if (move == 1 || move == 2) {
             player = true;
@@ -91,7 +88,7 @@ contract SnakesAndLadders is Ownable {
         uint8 boardElement;
         while (playerUser != tiles && playerAI != tiles) {
             turn++;
-            move = randomDice(randomString, turn);
+            move = randomDice(seed, turn);
             if (player) {
                 playerUser = playerUser + move;
                 boardElement = boardElements[playerUser];
@@ -116,11 +113,11 @@ contract SnakesAndLadders is Ownable {
         if (playerUser == tiles) {
             balances[msg.sender] += amount;
             totalBalance += amount;
-            emit LogGame(msg.sender, true, int(amount), randomString);
+            emit LogGame(msg.sender, true, int(amount), seed);
         } else {
             balances[msg.sender] -= amount;
             totalBalance -= amount;
-            emit LogGame(msg.sender, false, -int(amount), randomString);
+            emit LogGame(msg.sender, false, -int(amount), seed);
         }
     }
 
@@ -149,7 +146,7 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
-     * Withdraw all balance
+     * Withdraw balance
      */
     function withdrawBalance() public {
         uint toWithdraw = balances[msg.sender];
@@ -175,7 +172,7 @@ contract SnakesAndLadders is Ownable {
     function payout(uint amount) public onlyOwner {
         require(amount > 0, "The balance that you want to withdraw must be more than 0");
         require(amount%2 == 0, "Amount to withdraw must be pair");
-        require(address(this).balance - totalBalance >= amount, "There is not enough balance to withdraw");
+        require(address(this).balance - totalBalance >= amount, "There is not enough free balance to withdraw");
         emit LogPayout(msg.sender, amount);
         uint half = amount/2;
         balances[payout1] += half;

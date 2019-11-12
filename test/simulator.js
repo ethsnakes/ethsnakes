@@ -1,17 +1,16 @@
-const SnakesAndLadders = artifacts.require("SnakesAndLadders.sol");
+const SnakesAndLadders = artifacts.require("SnakesAndLaddersMock.sol");
 const getTransactionGasUsed = require("../util/get-transaction-cost.js");
-const { toWei, toBN, fromAscii } = web3.utils;
+const { toWei, toBN } = web3.utils;
 
 contract('SnakesAndLadders Simulation', (accounts) => {
-    const [ owner, p1, p2, alice, bob, carol ] = accounts;
-    let instance;
+    const [ owner, p1, p2, alice ] = accounts;
     const qty = toWei('0.01', 'ether');
-    const qtyBN = toBN(qty);
     const simulations = 10;
+    let instance;
 
     before("running check if the setup is correct to pass the tests", async function() {
         let aliceBalanceBN = toBN(await web3.eth.getBalance(alice));
-        let minimum = toBN(toWei('1', 'ether'));
+        let minimum = toBN(toWei('10', 'ether'));
         assert.isTrue(aliceBalanceBN.gte(minimum));
     });
 
@@ -19,7 +18,8 @@ contract('SnakesAndLadders Simulation', (accounts) => {
         instance = await SnakesAndLadders.new(p1, p2, {from: owner});
     });
 
-    // Test 1 - (10.000): winners: 4971, losers: 5029
+    // Test 1 (10.000) - 12/11/2019: winners: 4768, losers: 5232, avg gas: 76097.7172
+    // Test 2 (10.000) - 12/11/2019: winners: 4988, losers: 5012, avg gas: 81204.2446
 
     describe("simulate", function() {
 
@@ -33,7 +33,8 @@ contract('SnakesAndLadders Simulation', (accounts) => {
             let losers = 0;
             let totalGas = 0;
             for (let i = 0; i < simulations; i++) {
-                let txObj = await instance.play(qty/1000, {from: alice});
+                await instance.setNonce(i, {from: owner});
+                let txObj = await instance.play(qty/10000, {from: alice});
                 totalGas += getTransactionGasUsed(txObj);
                 let ev = txObj.logs[txObj.logs.length - 1];
                 if (ev.event === "LogGame") {
