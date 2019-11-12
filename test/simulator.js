@@ -3,11 +3,11 @@ const getTransactionGasUsed = require("../util/get-transaction-cost.js");
 const { toWei, toBN, fromAscii } = web3.utils;
 
 contract('SnakesAndLadders Simulation', (accounts) => {
-    const [ owner, alice, bob, carol ] = accounts;
+    const [ owner, p1, p2, alice, bob, carol ] = accounts;
     let instance;
     const qty = toWei('0.01', 'ether');
     const qtyBN = toBN(qty);
-    const simulations = 10000;
+    const simulations = 10;
 
     before("running check if the setup is correct to pass the tests", async function() {
         let aliceBalanceBN = toBN(await web3.eth.getBalance(alice));
@@ -16,7 +16,7 @@ contract('SnakesAndLadders Simulation', (accounts) => {
     });
 
     beforeEach("deploy and prepare", async function() {
-        instance = await SnakesAndLadders.new({from: owner});
+        instance = await SnakesAndLadders.new(p1, p2, {from: owner});
     });
 
     // Test 1 - (10.000): winners: 4971, losers: 5029

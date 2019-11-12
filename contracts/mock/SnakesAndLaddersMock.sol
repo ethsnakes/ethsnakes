@@ -1,5 +1,7 @@
 pragma solidity 0.5.0;
 
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "../SnakesAndLadders.sol";
 
 contract SnakesAndLaddersMock is SnakesAndLadders {
@@ -12,7 +14,7 @@ contract SnakesAndLaddersMock is SnakesAndLadders {
     /**
      * Returns a NOT a random number
      */
-    function random() public view returns(uint256) {
+    function random() public view returns(uint) {
         return uint256(keccak256(abi.encodePacked(nonce)));
     }
 }

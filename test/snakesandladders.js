@@ -4,7 +4,7 @@ const expectedExceptionPromise = require("../util/expected-exception-promise.js"
 const { toWei, toBN } = web3.utils;
 
 contract('SnakesAndLadders', (accounts) => {
-    const [ owner, alice, bob, carol ] = accounts;
+    const [ owner, p1, p2, alice, bob, carol ] = accounts;
     let instance;
     const qty = toWei('0.01', 'ether');
     const qtyBN = toBN(qty);
@@ -16,7 +16,7 @@ contract('SnakesAndLadders', (accounts) => {
     });
 
     beforeEach("deploy and prepare", async function() {
-        instance = await SnakesAndLadders.new({from: owner});
+        instance = await SnakesAndLadders.new(p1, p2, {from: owner});
     });
 
     describe("sending funds to play", function() {

@@ -9,14 +9,14 @@ contract SnakesAndLadders is Ownable {
 
     // All balances
     mapping(address => uint) public balances;
-    uint totalBalance;
+    uint private totalBalance;
 
     // Payout addresses
-    address payout1;
-    address payout2;
+    address private payout1;
+    address private payout2;
 
     // Board composition
-    uint8 constant tiles = 100;
+    uint8 constant private tiles = 100;
     mapping(uint8 => uint8) private boardElements;
 
     // Player: is true if it's the user, otherwise is the AI
