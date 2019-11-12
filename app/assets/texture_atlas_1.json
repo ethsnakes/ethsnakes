@@ -35,20 +35,20 @@
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 858,
-						"h": 657
+						"w": 859,
+						"h": 694
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 858,
-						"h": 657
+						"w": 859,
+						"h": 694
 					},
 					"frame": {
 						"x": 1027,
 						"y": 1,
-						"w": 858,
-						"h": 657
+						"w": 859,
+						"h": 694
 					}
 				},
 				{
@@ -66,7 +66,7 @@
 						"h": 118
 					},
 					"frame": {
-						"x": 1887,
+						"x": 1888,
 						"y": 1,
 						"w": 156,
 						"h": 118
@@ -87,7 +87,7 @@
 						"h": 118
 					},
 					"frame": {
-						"x": 1887,
+						"x": 1888,
 						"y": 121,
 						"w": 156,
 						"h": 118
@@ -108,7 +108,7 @@
 						"h": 118
 					},
 					"frame": {
-						"x": 1887,
+						"x": 1888,
 						"y": 241,
 						"w": 156,
 						"h": 118
@@ -129,7 +129,7 @@
 						"h": 118
 					},
 					"frame": {
-						"x": 1887,
+						"x": 1888,
 						"y": 361,
 						"w": 156,
 						"h": 118
@@ -150,7 +150,7 @@
 						"h": 80
 					},
 					"frame": {
-						"x": 1887,
+						"x": 1888,
 						"y": 481,
 						"w": 92,
 						"h": 80
@@ -171,7 +171,7 @@
 						"h": 64
 					},
 					"frame": {
-						"x": 1981,
+						"x": 1982,
 						"y": 481,
 						"w": 63,
 						"h": 64
@@ -192,7 +192,7 @@
 						"h": 64
 					},
 					"frame": {
-						"x": 1981,
+						"x": 1982,
 						"y": 547,
 						"w": 63,
 						"h": 64
@@ -213,7 +213,7 @@
 						"h": 80
 					},
 					"frame": {
-						"x": 1887,
+						"x": 1888,
 						"y": 563,
 						"w": 80,
 						"h": 80
@@ -234,7 +234,7 @@
 						"h": 45
 					},
 					"frame": {
-						"x": 1969,
+						"x": 1970,
 						"y": 613,
 						"w": 51,
 						"h": 45
@@ -255,7 +255,7 @@
 						"h": 45
 					},
 					"frame": {
-						"x": 1887,
+						"x": 1888,
 						"y": 645,
 						"w": 51,
 						"h": 45
@@ -276,7 +276,7 @@
 						"h": 45
 					},
 					"frame": {
-						"x": 1940,
+						"x": 1941,
 						"y": 660,
 						"w": 51,
 						"h": 45
@@ -297,10 +297,94 @@
 						"h": 45
 					},
 					"frame": {
-						"x": 1993,
-						"y": 660,
+						"x": 1888,
+						"y": 692,
 						"w": 51,
 						"h": 45
+					}
+				},
+				{
+					"filename": "arrow",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 35,
+						"h": 27
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 35,
+						"h": 27
+					},
+					"frame": {
+						"x": 1994,
+						"y": 660,
+						"w": 35,
+						"h": 27
+					}
+				},
+				{
+					"filename": "chip_bot",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 30,
+						"h": 90
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 30,
+						"h": 90
+					},
+					"frame": {
+						"x": 1994,
+						"y": 689,
+						"w": 30,
+						"h": 90
+					}
+				},
+				{
+					"filename": "chip_player",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 30,
+						"h": 90
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 30,
+						"h": 90
+					},
+					"frame": {
+						"x": 1941,
+						"y": 707,
+						"w": 30,
+						"h": 90
+					}
+				},
+				{
+					"filename": "player_shadow",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 20
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 1,
+						"w": 30,
+						"h": 15
+					},
+					"frame": {
+						"x": 1973,
+						"y": 781,
+						"w": 30,
+						"h": 15
 					}
 				},
 				{
@@ -319,7 +403,7 @@
 					},
 					"frame": {
 						"x": 1027,
-						"y": 660,
+						"y": 697,
 						"w": 642,
 						"h": 641
 					}
@@ -346,87 +430,45 @@
 					}
 				},
 				{
+					"filename": "balance",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 373,
+						"h": 69
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 373,
+						"h": 69
+					},
+					"frame": {
+						"x": 1671,
+						"y": 799,
+						"w": 373,
+						"h": 69
+					}
+				},
+				{
 					"filename": "btn_add_funds_off",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 190,
-						"h": 84
+						"w": 250,
+						"h": 68
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 190,
-						"h": 84
+						"w": 250,
+						"h": 68
 					},
 					"frame": {
 						"x": 1671,
-						"y": 660,
-						"w": 190,
-						"h": 84
-					}
-				},
-				{
-					"filename": "arrow",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 35,
-						"h": 27
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 35,
-						"h": 27
-					},
-					"frame": {
-						"x": 1863,
-						"y": 692,
-						"w": 35,
-						"h": 27
-					}
-				},
-				{
-					"filename": "chip_bot",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 30,
-						"h": 90
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 30,
-						"h": 90
-					},
-					"frame": {
-						"x": 1900,
-						"y": 692,
-						"w": 30,
-						"h": 90
-					}
-				},
-				{
-					"filename": "chip_player",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 30,
-						"h": 90
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 30,
-						"h": 90
-					},
-					"frame": {
-						"x": 1863,
-						"y": 721,
-						"w": 30,
-						"h": 90
+						"y": 870,
+						"w": 250,
+						"h": 68
 					}
 				},
 				{
@@ -434,41 +476,20 @@
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 190,
-						"h": 84
+						"w": 250,
+						"h": 68
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 190,
-						"h": 84
+						"w": 250,
+						"h": 68
 					},
 					"frame": {
 						"x": 1671,
-						"y": 746,
-						"w": 190,
-						"h": 84
-					}
-				},
-				{
-					"filename": "player_shadow",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 38,
-						"h": 20
-					},
-					"spriteSourceSize": {
-						"x": 4,
-						"y": 1,
-						"w": 30,
-						"h": 15
-					},
-					"frame": {
-						"x": 1932,
-						"y": 707,
-						"w": 30,
-						"h": 15
+						"y": 940,
+						"w": 250,
+						"h": 68
 					}
 				},
 				{
@@ -476,20 +497,20 @@
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 190,
-						"h": 84
+						"w": 250,
+						"h": 68
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 190,
-						"h": 84
+						"w": 250,
+						"h": 68
 					},
 					"frame": {
 						"x": 1671,
-						"y": 832,
-						"w": 190,
-						"h": 84
+						"y": 1010,
+						"w": 250,
+						"h": 68
 					}
 				},
 				{
@@ -497,20 +518,20 @@
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 190,
-						"h": 84
+						"w": 250,
+						"h": 68
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 190,
-						"h": 84
+						"w": 250,
+						"h": 68
 					},
 					"frame": {
 						"x": 1671,
-						"y": 918,
-						"w": 190,
-						"h": 84
+						"y": 1080,
+						"w": 250,
+						"h": 68
 					}
 				}
 			]
@@ -519,6 +540,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:bda027ff1d267352123e73a9c2b616fe:bf142705b61367c25231eb1a5a09951b:1bd3fbbbdaf54e41cf80e3e904578de4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:60a46eaf537f972fcf661037f12b9389:a1e16c1147250a08b711cbfbe8704692:1bd3fbbbdaf54e41cf80e3e904578de4$"
 	}
 }

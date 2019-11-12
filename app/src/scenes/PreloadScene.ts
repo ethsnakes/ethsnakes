@@ -26,7 +26,7 @@ export class PreloadScene extends Phaser.Scene {
     }
     private composeScene(): void {
 
-        this.add.text(-100, -100, "abcdefg", { fontFamily: "RussoOne", fontSize: 28, color: "#A6F834" });
+        this.add.text(-100, -100, "abcdefg", { fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: 28, color: "#A6F834" });
     }
 
     private loadAssets(): void {

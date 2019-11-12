@@ -24,12 +24,12 @@ export class GUI extends Phaser.GameObjects.Container {
         this.playButton.onUp(this.onClickPlay, this);
         this.add(this.playButton);
 
-        this.addFundsButton = new Button(this.scene, 100 * GameVars.scaleX, GameConstants.GAME_HEIGHT - 180, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
+        this.addFundsButton = new Button(this.scene, 530, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
         this.addFundsButton.scaleX = GameVars.scaleX;
         this.addFundsButton.onUp(this.onClickAddFunds, this);
         this.add(this.addFundsButton);
 
-        this.retrieveFundsButton = new Button(this.scene, 100 * GameVars.scaleX, GameConstants.GAME_HEIGHT - 90, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
+        this.retrieveFundsButton = new Button(this.scene, 800, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
         this.retrieveFundsButton.scaleX = GameVars.scaleX;
         this.retrieveFundsButton.onUp(this.onClickRetrieveFunds, this);
         this.add(this.retrieveFundsButton);
