@@ -5,7 +5,7 @@ const { toWei, toBN } = web3.utils;
 contract('SnakesAndLadders Simulation', (accounts) => {
     const [ owner, p1, p2, alice ] = accounts;
     const qty = toWei('0.01', 'ether');
-    const simulations = 10;
+    const simulations = 10000;
     let instance;
 
     before("running check if the setup is correct to pass the tests", async function() {
@@ -19,7 +19,9 @@ contract('SnakesAndLadders Simulation', (accounts) => {
     });
 
     // Test 1 (10.000) - 12/11/2019: winners: 4768, losers: 5232, avg gas: 76097.7172
-    // Test 2 (10.000) - 12/11/2019: winners: 4988, losers: 5012, avg gas: 81204.2446
+    // Test 2 (10.000) - 12/11/2019: winners: 4988, losers: 5012, avg gas: 81204.2446 (0.5012)
+    // Test 3 (50.000) - 13/11/2019: winners: 24930, losers: 25070, avg gas: 81279.03442 (0.5014)
+    // Test 4 (10.000) - 13/11/2019: (ALWAYS STARTS MACHINE), winners: 4938 losers: 5062, avg gas: 81072.6702 (0.5062)
 
     describe("simulate", function() {
 
@@ -28,7 +30,7 @@ contract('SnakesAndLadders Simulation', (accounts) => {
         });
 
         it("simulate " + simulations + " games", async function () {
-            this.timeout(1000000000000);
+            this.timeout(10000000000000);
             let winners = 0;
             let losers = 0;
             let totalGas = 0;
