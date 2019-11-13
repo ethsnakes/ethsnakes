@@ -16,7 +16,7 @@ export class Chip extends Phaser.GameObjects.Container {
     private movementCells: number [];
     private marker: Phaser.GameObjects.Image;
 
-    constructor(scene: Phaser.Scene, color: number, isPlayer: boolean) {
+    constructor(scene: Phaser.Scene, isPlayer: boolean) {
 
         super(scene);
 
@@ -31,7 +31,7 @@ export class Chip extends Phaser.GameObjects.Container {
         this.x = p.x - BoardContainer.CELL_SIZE;
         this.y = p.y;
  
-        this.origY = .85;
+        this.origY = .75;
 
         this.shadow = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "player_shadow");
         this.shadow.setOrigin(.5, 0);
@@ -53,12 +53,12 @@ export class Chip extends Phaser.GameObjects.Container {
 
         this.marked = true;
 
-        this.marker = new Phaser.GameObjects.Image(this.scene, 0, -92, "texture_atlas_1", "arrow");
+        this.marker = new Phaser.GameObjects.Image(this.scene, 0, -72, "texture_atlas_1", "arrow");
         this.add(this.marker);
 
         this.scene.tweens.add({
             targets: this.marker,
-            y: -100,
+            y: -80,
             ease: Phaser.Math.Easing.Cubic.Out,
             duration: 250,
             yoyo: true,
@@ -203,10 +203,10 @@ export class Chip extends Phaser.GameObjects.Container {
         y = (4.5 - Math.floor((i - 1) / 10)) * BoardContainer.CELL_SIZE;
 
         if (this.isPlayer) {
-            x += 5;
+            x += 3;
         } else {
-            x -= 5;
-            y -= 25;
+            x -= 3;
+            y -= 20;
         }
 
         return {x: x, y: y};

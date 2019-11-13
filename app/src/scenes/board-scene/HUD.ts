@@ -1,6 +1,5 @@
 import { GameVars } from "../../GameVars";
 import { GameConstants } from "../../GameConstants";
-import { Game } from "phaser";
 import { BoardScene } from "./BoardScene";
 import { BoardManager } from "./BoardManager";
 
@@ -16,13 +15,20 @@ export class HUD extends Phaser.GameObjects.Container {
         background.setOrigin(0);
         this.add(background);
 
-        const yourBalanceLabel = new Phaser.GameObjects.Text(this.scene, 10, 15, "YOUR BALANCE:", {fontFamily: "RussoOne", fontSize: "40px", color: "#000000"});
-        yourBalanceLabel.scaleX = GameVars.scaleX;
-        this.add(yourBalanceLabel);
+        const balanceContainer = new Phaser.GameObjects.Container(this.scene);
+        balanceContainer.setPosition(200, 40);
+        this.add(balanceContainer);
 
-        this.balanceLabel = new Phaser.GameObjects.Text(this.scene, (yourBalanceLabel.x + yourBalanceLabel.width + 20) * GameVars.scaleX, yourBalanceLabel.y, GameVars.balance + " ETH" , {fontFamily: "RussoOne", fontSize: "40px", color: "#000000"});
+        const balanceContainerBackground = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "balance");
+        balanceContainer.add(balanceContainerBackground);
+
+        const yourBalanceLabel = new Phaser.GameObjects.Text(this.scene, -100, -15, "BALANCE:", {fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "28px", color: "#7A431C"});
+        yourBalanceLabel.scaleX = GameVars.scaleX;
+        balanceContainer.add(yourBalanceLabel);
+
+        this.balanceLabel = new Phaser.GameObjects.Text(this.scene, (yourBalanceLabel.x + yourBalanceLabel.width + 20) * GameVars.scaleX, yourBalanceLabel.y, GameVars.balance + " ETH", {fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "28px", color: "#7A431C"});
         this.balanceLabel.scaleX = GameVars.scaleX;
-        this.add(this.balanceLabel);
+        balanceContainer.add(this.balanceLabel);
     }
 
     public playerClimbsLadder(): void {
