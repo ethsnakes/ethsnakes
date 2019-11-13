@@ -53,6 +53,8 @@ export class BoardScene extends Phaser.Scene {
 
         this.gui = new GUI(this);
         this.add.existing(this.gui);
+
+        // this.removeWaitingLayer();
     }
 
     public showSelectBetLayer(): void {

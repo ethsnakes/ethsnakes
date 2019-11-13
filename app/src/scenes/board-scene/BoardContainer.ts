@@ -18,20 +18,24 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         BoardContainer.currentInstance = this;
 
         this.x = GameConstants.GAME_WIDTH / 2;
-        this.y = 420;
+        this.y = 430;
         this.scaleX = GameVars.scaleX;
 
-        const boardBackground = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "board");
+        const boardBackground = new Phaser.GameObjects.Image(this.scene, -4, -15, "texture_atlas_1", "board");
         this.add(boardBackground);
+
+        if (GameConstants.DEBUG_MODE) {
+            this.drawGrid();
+        }
 
         const snakesAndLadders = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "snakes_ladders");
         snakesAndLadders.setScale(.915);
         this.add(snakesAndLadders);
 
-        this.botChip = new Chip(this.scene, 1, false);
+        this.botChip = new Chip(this.scene, false);
         this.add(this.botChip);
 
-        this.playerChip = new Chip(this.scene, 1, true);
+        this.playerChip = new Chip(this.scene, true);
         this.add(this.playerChip);
 
         this.scene.sys.updateList.add(this);
@@ -72,5 +76,26 @@ export class BoardContainer extends Phaser.GameObjects.Container {
 
         i = chip.cellIndex + GameVars.diceResult;
         chip.move(i);
+    }
+
+    private drawGrid(): void {
+
+        const grid = new Phaser.GameObjects.Graphics(this.scene);
+        this.add(grid);
+
+        grid.lineStyle(1, 0x0000FF);
+
+        // las horizontales
+        for (let i = 0; i < 11; i ++) {
+            grid.moveTo(-BoardContainer.CELL_SIZE * 5, -BoardContainer.CELL_SIZE * (i - 5));
+            grid.lineTo(BoardContainer.CELL_SIZE * 5, -BoardContainer.CELL_SIZE * (i - 5));
+        }
+
+        for (let i = 0; i < 11; i ++) {
+            grid.moveTo( -BoardContainer.CELL_SIZE * (i - 5), -BoardContainer.CELL_SIZE * 5);
+            grid.lineTo(-BoardContainer.CELL_SIZE * (i - 5), BoardContainer.CELL_SIZE * 5);
+        }
+
+        grid.stroke();
     }
 }

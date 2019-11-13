@@ -680,7 +680,7 @@ var PreloadScene = /** @class */ (function (_super) {
         GameManager_1.GameManager.onGameAssetsLoaded();
     };
     PreloadScene.prototype.composeScene = function () {
-        this.add.text(-100, -100, "abcdefg", { fontFamily: "RussoOne", fontSize: 28, color: "#A6F834" });
+        this.add.text(-100, -100, "abcdefg", { fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: 28, color: "#A6F834" });
     };
     PreloadScene.prototype.loadAssets = function () {
         this.load.atlas("texture_atlas_1", "assets/texture_atlas_1.png", "assets/texture_atlas_1.json");
@@ -731,10 +731,13 @@ var BoardContainer = /** @class */ (function (_super) {
         var _this = _super.call(this, scene) || this;
         BoardContainer.currentInstance = _this;
         _this.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
-        _this.y = 420;
+        _this.y = 430;
         _this.scaleX = GameVars_1.GameVars.scaleX;
-        var boardBackground = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "board");
+        var boardBackground = new Phaser.GameObjects.Image(_this.scene, -4, -15, "texture_atlas_1", "board");
         _this.add(boardBackground);
+        if (GameConstants_1.GameConstants.DEBUG_MODE) {
+            _this.drawGrid();
+        }
         var snakesAndLadders = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "snakes_ladders");
         snakesAndLadders.setScale(.915);
         _this.add(snakesAndLadders);
@@ -775,6 +778,21 @@ var BoardContainer = /** @class */ (function (_super) {
         }
         i = chip.cellIndex + GameVars_1.GameVars.diceResult;
         chip.move(i);
+    };
+    BoardContainer.prototype.drawGrid = function () {
+        var grid = new Phaser.GameObjects.Graphics(this.scene);
+        this.add(grid);
+        grid.lineStyle(1, 0x0000FF);
+        // las horizontales
+        for (var i = 0; i < 11; i++) {
+            grid.moveTo(-BoardContainer.CELL_SIZE * 5, -BoardContainer.CELL_SIZE * (i - 5));
+            grid.lineTo(BoardContainer.CELL_SIZE * 5, -BoardContainer.CELL_SIZE * (i - 5));
+        }
+        for (var i = 0; i < 11; i++) {
+            grid.moveTo(-BoardContainer.CELL_SIZE * (i - 5), -BoardContainer.CELL_SIZE * 5);
+            grid.lineTo(-BoardContainer.CELL_SIZE * (i - 5), BoardContainer.CELL_SIZE * 5);
+        }
+        grid.stroke();
     };
     BoardContainer.CELL_SIZE = 58;
     return BoardContainer;
@@ -1214,12 +1232,17 @@ var HUD = /** @class */ (function (_super) {
         var background = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "top_bar");
         background.setOrigin(0);
         _this.add(background);
-        var yourBalanceLabel = new Phaser.GameObjects.Text(_this.scene, 10, 15, "YOUR BALANCE:", { fontFamily: "RussoOne", fontSize: "40px", color: "#000000" });
+        var balanceContainer = new Phaser.GameObjects.Container(_this.scene);
+        balanceContainer.setPosition(200, 40);
+        _this.add(balanceContainer);
+        var balanceContainerBackground = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "balance");
+        balanceContainer.add(balanceContainerBackground);
+        var yourBalanceLabel = new Phaser.GameObjects.Text(_this.scene, -100, -15, "BALANCE:", { fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "28px", color: "#7A431C" });
         yourBalanceLabel.scaleX = GameVars_1.GameVars.scaleX;
-        _this.add(yourBalanceLabel);
-        _this.balanceLabel = new Phaser.GameObjects.Text(_this.scene, (yourBalanceLabel.x + yourBalanceLabel.width + 20) * GameVars_1.GameVars.scaleX, yourBalanceLabel.y, GameVars_1.GameVars.balance + " ETH", { fontFamily: "RussoOne", fontSize: "40px", color: "#000000" });
+        balanceContainer.add(yourBalanceLabel);
+        _this.balanceLabel = new Phaser.GameObjects.Text(_this.scene, (yourBalanceLabel.x + yourBalanceLabel.width + 20) * GameVars_1.GameVars.scaleX, yourBalanceLabel.y, GameVars_1.GameVars.balance + " ETH", { fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "28px", color: "#7A431C" });
         _this.balanceLabel.scaleX = GameVars_1.GameVars.scaleX;
-        _this.add(_this.balanceLabel);
+        balanceContainer.add(_this.balanceLabel);
         return _this;
     }
     HUD.prototype.playerClimbsLadder = function () {
@@ -1451,11 +1474,11 @@ var GUI = /** @class */ (function (_super) {
         _this.playButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.playButton.onUp(_this.onClickPlay, _this);
         _this.add(_this.playButton);
-        _this.addFundsButton = new Utils_1.Button(_this.scene, 100 * GameVars_1.GameVars.scaleX, GameConstants_1.GameConstants.GAME_HEIGHT - 180, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
+        _this.addFundsButton = new Utils_1.Button(_this.scene, 530, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
         _this.addFundsButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.addFundsButton.onUp(_this.onClickAddFunds, _this);
         _this.add(_this.addFundsButton);
-        _this.retrieveFundsButton = new Utils_1.Button(_this.scene, 100 * GameVars_1.GameVars.scaleX, GameConstants_1.GameConstants.GAME_HEIGHT - 90, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
+        _this.retrieveFundsButton = new Utils_1.Button(_this.scene, 800, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
         _this.retrieveFundsButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.retrieveFundsButton.onUp(_this.onClickRetrieveFunds, _this);
         _this.add(_this.retrieveFundsButton);
