@@ -19,9 +19,10 @@ contract('SnakesAndLadders Simulation', (accounts) => {
     });
 
     // Test 1 (10.000) - 12/11/2019: winners: 4768, losers: 5232, avg gas: 76097.7172
-    // Test 2 (10.000) - 12/11/2019: winners: 4988, losers: 5012, avg gas: 81204.2446 (0.5012)
-    // Test 3 (50.000) - 13/11/2019: winners: 24930, losers: 25070, avg gas: 81279.03442 (0.5014)
-    // Test 4 (10.000) - 13/11/2019: (ALWAYS STARTS MACHINE), winners: 4938 losers: 5062, avg gas: 81072.6702 (0.5062)
+    // Test 2 (10.000) - 12/11/2019: winners: 4988, losers: 5012, avg gas: 81204.2446 (50.12%)
+    // Test 3 (50.000) - 13/11/2019: winners: 24930, losers: 25070, avg gas: 81279.03442 (50.14%)
+    // Test 4 (10.000) - 13/11/2019: (ALWAYS STARTS MACHINE), winners: 4938 losers: 5062, avg gas: 81072.6702 (50.62%)
+    // Test 5 - 30%-70%
 
     describe("simulate", function() {
 

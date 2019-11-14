@@ -16,3 +16,16 @@ truffle test
 truffle migrate --network dev
 npm run dev
 ```
+
+## Paleta
+
+E9466B
+019DB0
+19D3C5
+87B723
+CBE942
+54821D
+C6753F
+FFE3A1
+F08005
+FADF03

@@ -79,9 +79,11 @@ contract SnakesAndLadders is Ownable {
         // let's decide who starts
         uint8 move = randomDice(seed, turn);  // move 0 decides who starts
         bool player = false;  // true if next move is for player, false if for computer
+        /*
         if (move == 1 || move == 2) {
             player = true;
         }
+        */
         // make all the moves and emit the results
         uint8 playerUser = 0;
         uint8 playerAI = 0;
