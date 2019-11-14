@@ -41,12 +41,9 @@ export class WaitingLayer extends Phaser.GameObjects.Container {
         infoLabelTime.setOrigin(.5);
         infoLabelTime.scaleX = GameVars.scaleX;
         scaledItemsContainer.add(infoLabelTime);
-
-        // HAY Q HACER ESTO PQ EL METODO UPDATE NO SE UTILIZA DE MANERA AUTOMATICA
-        this.scene.sys.updateList.add(this);
     }
 
-    public preUpdate(time: number, delta: number): void {
+    public update(): void {
 
         this.f ++;
 

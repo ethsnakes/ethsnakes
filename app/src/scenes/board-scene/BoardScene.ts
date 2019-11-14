@@ -57,6 +57,15 @@ export class BoardScene extends Phaser.Scene {
         // this.removeWaitingLayer();
     }
 
+    public update(): void {
+
+        if (this.waitingLayer) {
+            this.waitingLayer.update();
+        }
+
+        this.boardContainer.update();
+    }
+
     public showSelectBetLayer(): void {
 
         this.gui.disableButtons();
@@ -77,6 +86,7 @@ export class BoardScene extends Phaser.Scene {
 
         if (this.waitingLayer) {
             this.waitingLayer.destroy();
+            this.waitingLayer = null;
         }
 
         this.gui.enableButtons();
@@ -116,14 +126,20 @@ export class BoardScene extends Phaser.Scene {
 
     private addDiceAnimations(): void {
 
-        for (let i = 1; i <= 6; i ++) {
-            const config = {
-                key: "roll" + i,
-                frames: this.anims.generateFrameNumbers("dice" + i, {}),
-                frameRate: 24
-            };
+        // for (let i = 1; i <= 6; i ++) {
+        //     const config = {
+        //         key: "roll" + i,
+        //         frames: this.anims.generateFrameNumbers("dice_red" + i, {}),
+        //         frameRate: 24
+        //     };
     
-            this.anims.create(config);
-        }
+        //     this.anims.create(config);
+        // }
+
+        this.anims.create({ 
+            key: "dice_red_2", 
+            frames: this.anims.generateFrameNames("texture_atlas_1", { prefix: "dice2_red_", start: 1, end: 12, zeroPad: 2}), 
+            frameRate: 24,
+        });
     }
 }

@@ -74,7 +74,9 @@ export class BoardManager {
 
         GameVars.diceBlocked = true;
 
-        GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
+        // GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
+
+        GameVars.diceResult = 2;
 
         BoardScene.currentInstance.rollDice();
     }

@@ -9,7 +9,7 @@
   "dependencies": {
     "ethereum-blockies": "0.1.1",
     "openzeppelin-solidity": "2.3.0",
-    "phaser": "3.19.0"
+    "phaser": "3.20.1"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.0.1",
