@@ -63,13 +63,17 @@ export class HUD extends Phaser.GameObjects.Container {
     public startGame(): void {
         
         let turnStr: string;
+        let textColor: string;
+
         if (GameVars.turn === GameConstants.PLAYER) {
             turnStr = "YOU START";
+            textColor = "#E9466B";
         } else {
             turnStr = "ADVERSARY STARTS";
+            textColor = "#019DB9";
         }
 
-        const turnLabel = new Phaser.GameObjects.Text(this.scene, GameConstants.GAME_WIDTH * 3 / 2, GameConstants.GAME_HEIGHT / 2, turnStr, {fontFamily: "RussoOne", fontSize: "75px", color: "#FFFFFF"});
+        const turnLabel = new Phaser.GameObjects.Text(this.scene, GameConstants.GAME_WIDTH * 3 / 2, GameConstants.GAME_HEIGHT / 2, turnStr, {fontFamily: "RussoOne", fontSize: "75px", color: textColor});
         turnLabel.scaleX = GameVars.scaleX;
         turnLabel.setOrigin(.5);
         BoardScene.currentInstance.add.existing(turnLabel);

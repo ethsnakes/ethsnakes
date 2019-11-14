@@ -57,8 +57,11 @@ export class GUI extends Phaser.GameObjects.Container {
         this.playButton.visible = false;
         this.diceButton.visible = true;
 
-        this.addFundsButton.visible = false;
-        this.retrieveFundsButton.visible = false;
+        this.addFundsButton.alpha = .375;
+        this.retrieveFundsButton.alpha = .375;
+
+        this.addFundsButton.disableInteractive();
+        this.retrieveFundsButton.disableInteractive();
 
         if (GameVars.turn === GameConstants.PLAYER) {
 

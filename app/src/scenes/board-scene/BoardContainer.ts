@@ -37,11 +37,12 @@ export class BoardContainer extends Phaser.GameObjects.Container {
 
         this.playerChip = new Chip(this.scene, true);
         this.add(this.playerChip);
-
-        this.scene.sys.updateList.add(this);
     }
 
-    public preUpdate(time: number, delta: number): void {
+    public update(): void {
+
+        this.botChip.update();
+        this.playerChip.update();
 
         if (this.botChip.y > this.playerChip.y) {
             this.bringToTop(this.botChip);

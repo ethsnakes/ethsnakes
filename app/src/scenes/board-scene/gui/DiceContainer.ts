@@ -11,8 +11,8 @@ export class DiceContainer extends Phaser.GameObjects.Container {
 
         super(scene);
 
-        this.dice = new Phaser.GameObjects.Sprite(this.scene, GameConstants.GAME_WIDTH - 115 * GameVars.scaleX, 520, "dice2");
-        this.dice.scaleX = GameVars.scaleX;
+        this.dice = new Phaser.GameObjects.Sprite(this.scene, GameConstants.GAME_WIDTH - 115 * GameVars.scaleX, 300, "texture_atlas_1", "dice2_red_01");
+        this.dice.setScale(.5);
         BoardScene.currentInstance.add.existing(this.dice);
         this.dice.visible = false;
         this.add(this.dice);
@@ -23,7 +23,8 @@ export class DiceContainer extends Phaser.GameObjects.Container {
     public roll(i: number): void {
        
         this.dice.visible = true;
-        this.dice.play("roll" + i);
+
+        this.dice.play("dice_red_" + i);
     }
 
     public matchOver(): void {

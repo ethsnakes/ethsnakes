@@ -39,12 +39,9 @@ export class Chip extends Phaser.GameObjects.Container {
 
         this.chip = new Phaser.GameObjects.Image(this.scene, 0, 0,  "texture_atlas_1", this.isPlayer ? "chip_player" : "chip_bot");
         this.add(this.chip);
-
-        // HAY Q HACER ESTO PQ EL METODO UPDATE NO SE UTILIZA DE MANERA AUTOMATICA
-        this.scene.sys.updateList.add(this);
     }
 
-    public preUpdate(time: number, delta: number): void {
+    public update(): void {
 
         this.chip.setOrigin(.5, this.origY);
     }
@@ -53,12 +50,12 @@ export class Chip extends Phaser.GameObjects.Container {
 
         this.marked = true;
 
-        this.marker = new Phaser.GameObjects.Image(this.scene, 0, -72, "texture_atlas_1", "arrow");
+        this.marker = new Phaser.GameObjects.Image(this.scene, 0, -68, "texture_atlas_1", "arrow");
         this.add(this.marker);
 
         this.scene.tweens.add({
             targets: this.marker,
-            y: -80,
+            y: -78,
             ease: Phaser.Math.Easing.Cubic.Out,
             duration: 250,
             yoyo: true,
