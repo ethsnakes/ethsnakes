@@ -28,7 +28,7 @@ export class Chip extends Phaser.GameObjects.Container {
 
         const p = this.getCellPosition(this.cellIndex + 1);
 
-        this.x = p.x - BoardContainer.CELL_SIZE;
+        this.x = p.x - 2.25 * BoardContainer.CELL_SIZE;
         this.y = p.y;
  
         this.origY = .75;

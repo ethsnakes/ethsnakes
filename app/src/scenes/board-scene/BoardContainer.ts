@@ -10,6 +10,8 @@ export class BoardContainer extends Phaser.GameObjects.Container {
 
     private playerChip: Chip;
     private botChip: Chip;
+    private woodSupport: Phaser.GameObjects.Image;
+    private moves: number;
 
     constructor(scene: Phaser.Scene) {
 
@@ -20,6 +22,10 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         this.x = GameConstants.GAME_WIDTH / 2;
         this.y = 430;
         this.scaleX = GameVars.scaleX;
+        this.moves = 0;
+
+        this.woodSupport = new Phaser.GameObjects.Image(this.scene, -380, 250, "texture_atlas_1", "wood_support");
+        this.add(this.woodSupport);
 
         const boardBackground = new Phaser.GameObjects.Image(this.scene, -4, -15, "texture_atlas_1", "board");
         this.add(boardBackground);
@@ -77,6 +83,23 @@ export class BoardContainer extends Phaser.GameObjects.Container {
 
         i = chip.cellIndex + GameVars.diceResult;
         chip.move(i);
+
+        this.moves ++;
+
+        if (this.moves === 2) {
+            // retiramos el soporte de las fichas
+            this.scene.tweens.add({
+                targets: this.woodSupport,
+                x: this.woodSupport.x + 140,
+                ease: Phaser.Math.Easing.Cubic.Out,
+                delay: 500,
+                duration: 500,
+                onComplete: function(): void {
+                    this.woodSupport.destroy();
+                },
+                onCompleteScope: this
+            });
+        }
     }
 
     private drawGrid(): void {
