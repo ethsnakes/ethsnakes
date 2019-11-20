@@ -808,24 +808,24 @@
 					}
 				},
 				{
-					"filename": "dice2_red_09",
+					"filename": "start_txt_01",
 					"rotated": false,
-					"trimmed": true,
+					"trimmed": false,
 					"sourceSize": {
-						"w": 189,
-						"h": 949
+						"w": 528,
+						"h": 195
 					},
 					"spriteSourceSize": {
-						"x": 6,
-						"y": 168,
-						"w": 122,
-						"h": 130
+						"x": 0,
+						"y": 0,
+						"w": 528,
+						"h": 195
 					},
 					"frame": {
 						"x": 1,
 						"y": 1440,
-						"w": 122,
-						"h": 130
+						"w": 528,
+						"h": 195
 					}
 				},
 				{
@@ -871,6 +871,48 @@
 					}
 				},
 				{
+					"filename": "start_txt_02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 492,
+						"h": 99
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 492,
+						"h": 99
+					},
+					"frame": {
+						"x": 531,
+						"y": 1117,
+						"w": 492,
+						"h": 99
+					}
+				},
+				{
+					"filename": "dice2_red_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 189,
+						"h": 949
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 323,
+						"w": 123,
+						"h": 116
+					},
+					"frame": {
+						"x": 1,
+						"y": 1218,
+						"w": 123,
+						"h": 116
+					}
+				},
+				{
 					"filename": "button-radio-green-off",
 					"rotated": false,
 					"trimmed": false,
@@ -892,7 +934,7 @@
 					}
 				},
 				{
-					"filename": "dice2_blue_09",
+					"filename": "dice2_blue_06",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -900,16 +942,16 @@
 						"h": 945
 					},
 					"spriteSourceSize": {
-						"x": 0,
-						"y": 651,
-						"w": 115,
-						"h": 130
+						"x": 12,
+						"y": 435,
+						"w": 122,
+						"h": 113
 					},
 					"frame": {
-						"x": 1,
-						"y": 1117,
-						"w": 115,
-						"h": 130
+						"x": 126,
+						"y": 1218,
+						"w": 122,
+						"h": 113
 					}
 				},
 				{
@@ -927,10 +969,73 @@
 						"h": 30
 					},
 					"frame": {
-						"x": 1,
-						"y": 1249,
+						"x": 136,
+						"y": 1392,
 						"w": 40,
 						"h": 30
+					}
+				},
+				{
+					"filename": "dice2_red_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 189,
+						"h": 949
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 168,
+						"w": 122,
+						"h": 130
+					},
+					"frame": {
+						"x": 250,
+						"y": 1218,
+						"w": 122,
+						"h": 130
+					}
+				},
+				{
+					"filename": "dice2_red_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 189,
+						"h": 949
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 401,
+						"w": 122,
+						"h": 113
+					},
+					"frame": {
+						"x": 374,
+						"y": 1117,
+						"w": 122,
+						"h": 113
+					}
+				},
+				{
+					"filename": "dice2_blue_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 180,
+						"h": 945
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 651,
+						"w": 115,
+						"h": 130
+					},
+					"frame": {
+						"x": 374,
+						"y": 1232,
+						"w": 115,
+						"h": 130
 					}
 				},
 				{
@@ -948,8 +1053,8 @@
 						"h": 127
 					},
 					"frame": {
-						"x": 118,
-						"y": 1117,
+						"x": 491,
+						"y": 1232,
 						"w": 119,
 						"h": 127
 					}
@@ -970,7 +1075,7 @@
 					},
 					"frame": {
 						"x": 1,
-						"y": 1572,
+						"y": 1637,
 						"w": 115,
 						"h": 127
 					}
@@ -991,72 +1096,9 @@
 					},
 					"frame": {
 						"x": 1,
-						"y": 1701,
+						"y": 1766,
 						"w": 119,
 						"h": 126
-					}
-				},
-				{
-					"filename": "dice2_red_07",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 189,
-						"h": 949
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 323,
-						"w": 123,
-						"h": 116
-					},
-					"frame": {
-						"x": 118,
-						"y": 1572,
-						"w": 123,
-						"h": 116
-					}
-				},
-				{
-					"filename": "dice2_blue_06",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 180,
-						"h": 945
-					},
-					"spriteSourceSize": {
-						"x": 12,
-						"y": 435,
-						"w": 122,
-						"h": 113
-					},
-					"frame": {
-						"x": 125,
-						"y": 1440,
-						"w": 122,
-						"h": 113
-					}
-				},
-				{
-					"filename": "dice2_red_06",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 189,
-						"h": 949
-					},
-					"spriteSourceSize": {
-						"x": 25,
-						"y": 401,
-						"w": 122,
-						"h": 113
-					},
-					"frame": {
-						"x": 136,
-						"y": 1246,
-						"w": 122,
-						"h": 113
 					}
 				}
 			]
@@ -1065,6 +1107,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:c9f4945bd52f5ce6073096ad2c5e2aeb:8d195c933a4dea39b0fa0936a2ed1515:1bd3fbbbdaf54e41cf80e3e904578de4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:01154f926d370b431c765ed2f094ecde:7b744095c94a75bf5a0f8c104e43d729:1bd3fbbbdaf54e41cf80e3e904578de4$"
 	}
 }

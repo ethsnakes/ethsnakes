@@ -62,36 +62,27 @@ export class HUD extends Phaser.GameObjects.Container {
 
     public startGame(): void {
         
-        let turnStr: string;
-        let textColor: string;
-
-        if (GameVars.turn === GameConstants.PLAYER) {
-            turnStr = "YOU START";
-            textColor = "#E9466B";
-        } else {
-            turnStr = "ADVERSARY STARTS";
-            textColor = "#019DB9";
-        }
-
-        const turnLabel = new Phaser.GameObjects.Text(this.scene, GameConstants.GAME_WIDTH * 3 / 2, GameConstants.GAME_HEIGHT / 2, turnStr, {fontFamily: "RussoOne", fontSize: "75px", color: textColor});
-        turnLabel.scaleX = GameVars.scaleX;
-        turnLabel.setOrigin(.5);
-        BoardScene.currentInstance.add.existing(turnLabel);
+        let turnImageName = GameVars.turn === GameConstants.PLAYER ? "start_txt_02" : "start_txt_01";
+       
+        const turnImg = new Phaser.GameObjects.Image(this.scene, GameConstants.GAME_WIDTH * 3 / 2, GameConstants.GAME_HEIGHT / 2, "texture_atlas_1", turnImageName);
+        turnImg.scaleX = GameVars.scaleX;
+        turnImg.setOrigin(.5);
+        BoardScene.currentInstance.add.existing(turnImg);
 
         this.scene.tweens.add({
-            targets: turnLabel,
+            targets: turnImg,
             x: GameConstants.GAME_WIDTH / 2,
             ease: Phaser.Math.Easing.Cubic.Out,
             duration: 500,
             onComplete: function(): void {
                 this.scene.tweens.add({
-                    targets: turnLabel,
+                    targets: turnImg,
                     x: -GameConstants.GAME_WIDTH / 2,
                     ease: Phaser.Math.Easing.Cubic.Out,
                     delay: 1500,
                     duration: 500,
                     onComplete: function(): void {
-                        turnLabel.destroy();
+                        turnImg.destroy();
                         BoardManager.startGame();
                     },
                     onCompleteScope: this

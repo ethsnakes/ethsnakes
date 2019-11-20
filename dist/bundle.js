@@ -733,6 +733,9 @@ var BoardContainer = /** @class */ (function (_super) {
         _this.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
         _this.y = 430;
         _this.scaleX = GameVars_1.GameVars.scaleX;
+        _this.moves = 0;
+        _this.woodSupport = new Phaser.GameObjects.Image(_this.scene, -380, 250, "texture_atlas_1", "wood_support");
+        _this.add(_this.woodSupport);
         var boardBackground = new Phaser.GameObjects.Image(_this.scene, -4, -15, "texture_atlas_1", "board");
         _this.add(boardBackground);
         if (GameConstants_1.GameConstants.DEBUG_MODE) {
@@ -779,6 +782,21 @@ var BoardContainer = /** @class */ (function (_super) {
         }
         i = chip.cellIndex + GameVars_1.GameVars.diceResult;
         chip.move(i);
+        this.moves++;
+        if (this.moves === 2) {
+            // retiramos el soporte de las fichas
+            this.scene.tweens.add({
+                targets: this.woodSupport,
+                x: this.woodSupport.x + 140,
+                ease: Phaser.Math.Easing.Cubic.Out,
+                delay: 500,
+                duration: 500,
+                onComplete: function () {
+                    this.woodSupport.destroy();
+                },
+                onCompleteScope: this
+            });
+        }
     };
     BoardContainer.prototype.drawGrid = function () {
         var grid = new Phaser.GameObjects.Graphics(this.scene);
@@ -871,7 +889,8 @@ var BoardManager = /** @class */ (function () {
     };
     BoardManager.rollDice = function () {
         GameVars_1.GameVars.diceBlocked = true;
-        GameVars_1.GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
+        // GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
+        GameVars_1.GameVars.diceResult = 2;
         BoardScene_1.BoardScene.currentInstance.rollDice();
     };
     BoardManager.onDiceResultAvailable = function () {
@@ -960,11 +979,11 @@ var BoardScene = /** @class */ (function (_super) {
         this.add.existing(this.boardContainer);
         this.gui = new GUI_1.GUI(this);
         this.add.existing(this.gui);
-        this.removeWaitingLayer();
+        // this.removeWaitingLayer();
     };
     BoardScene.prototype.update = function () {
         if (this.waitingLayer) {
-            this.waitingLayer.destroy();
+            this.waitingLayer.update();
         }
         this.boardContainer.update();
     };
@@ -1006,14 +1025,19 @@ var BoardScene = /** @class */ (function (_super) {
         this.gui.matchOver();
     };
     BoardScene.prototype.addDiceAnimations = function () {
-        for (var i = 1; i <= 6; i++) {
-            var config = {
-                key: "roll" + i,
-                frames: this.anims.generateFrameNumbers("dice" + i, {}),
-                frameRate: 24
-            };
-            this.anims.create(config);
-        }
+        // for (let i = 1; i <= 6; i ++) {
+        //     const config = {
+        //         key: "roll" + i,
+        //         frames: this.anims.generateFrameNumbers("dice_red" + i, {}),
+        //         frameRate: 24
+        //     };
+        //     this.anims.create(config);
+        // }
+        this.anims.create({
+            key: "dice_red_2",
+            frames: this.anims.generateFrameNames("texture_atlas_1", { prefix: "dice2_red_", start: 1, end: 12, zeroPad: 2 }),
+            frameRate: 24,
+        });
     };
     return BoardScene;
 }(Phaser.Scene));
@@ -1057,7 +1081,7 @@ var Chip = /** @class */ (function (_super) {
         _this.movementCells = [];
         _this.marked = false;
         var p = _this.getCellPosition(_this.cellIndex + 1);
-        _this.x = p.x - BoardContainer_1.BoardContainer.CELL_SIZE;
+        _this.x = p.x - 2.25 * BoardContainer_1.BoardContainer.CELL_SIZE;
         _this.y = p.y;
         _this.origY = .75;
         _this.shadow = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "player_shadow");
@@ -1279,34 +1303,25 @@ var HUD = /** @class */ (function (_super) {
         });
     };
     HUD.prototype.startGame = function () {
-        var turnStr;
-        var textColor;
-        if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER) {
-            turnStr = "YOU START";
-            textColor = "#E9466B";
-        }
-        else {
-            turnStr = "ADVERSARY STARTS";
-            textColor = "#019DB9";
-        }
-        var turnLabel = new Phaser.GameObjects.Text(this.scene, GameConstants_1.GameConstants.GAME_WIDTH * 3 / 2, GameConstants_1.GameConstants.GAME_HEIGHT / 2, turnStr, { fontFamily: "RussoOne", fontSize: "75px", color: textColor });
-        turnLabel.scaleX = GameVars_1.GameVars.scaleX;
-        turnLabel.setOrigin(.5);
-        BoardScene_1.BoardScene.currentInstance.add.existing(turnLabel);
+        var turnImageName = GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER ? "start_txt_02" : "start_txt_01";
+        var turnImg = new Phaser.GameObjects.Image(this.scene, GameConstants_1.GameConstants.GAME_WIDTH * 3 / 2, GameConstants_1.GameConstants.GAME_HEIGHT / 2, "texture_atlas_1", turnImageName);
+        turnImg.scaleX = GameVars_1.GameVars.scaleX;
+        turnImg.setOrigin(.5);
+        BoardScene_1.BoardScene.currentInstance.add.existing(turnImg);
         this.scene.tweens.add({
-            targets: turnLabel,
+            targets: turnImg,
             x: GameConstants_1.GameConstants.GAME_WIDTH / 2,
             ease: Phaser.Math.Easing.Cubic.Out,
             duration: 500,
             onComplete: function () {
                 this.scene.tweens.add({
-                    targets: turnLabel,
+                    targets: turnImg,
                     x: -GameConstants_1.GameConstants.GAME_WIDTH / 2,
                     ease: Phaser.Math.Easing.Cubic.Out,
                     delay: 1500,
                     duration: 500,
                     onComplete: function () {
-                        turnLabel.destroy();
+                        turnImg.destroy();
                         BoardManager_1.BoardManager.startGame();
                     },
                     onCompleteScope: this
@@ -1416,8 +1431,8 @@ var DiceContainer = /** @class */ (function (_super) {
     __extends(DiceContainer, _super);
     function DiceContainer(scene) {
         var _this = _super.call(this, scene) || this;
-        _this.dice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 115 * GameVars_1.GameVars.scaleX, 520, "dice2");
-        _this.dice.scaleX = GameVars_1.GameVars.scaleX;
+        _this.dice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 115 * GameVars_1.GameVars.scaleX, 300, "texture_atlas_1", "dice2_red_01");
+        _this.dice.setScale(.5);
         BoardScene_1.BoardScene.currentInstance.add.existing(_this.dice);
         _this.dice.visible = false;
         _this.add(_this.dice);
@@ -1426,7 +1441,7 @@ var DiceContainer = /** @class */ (function (_super) {
     }
     DiceContainer.prototype.roll = function (i) {
         this.dice.visible = true;
-        this.dice.play("roll" + i);
+        this.dice.play("dice_red_" + i);
     };
     DiceContainer.prototype.matchOver = function () {
         this.scene.tweens.add({
@@ -1510,8 +1525,10 @@ var GUI = /** @class */ (function (_super) {
     GUI.prototype.startGame = function () {
         this.playButton.visible = false;
         this.diceButton.visible = true;
-        this.addFundsButton.visible = false;
-        this.retrieveFundsButton.visible = false;
+        this.addFundsButton.alpha = .375;
+        this.retrieveFundsButton.alpha = .375;
+        this.addFundsButton.disableInteractive();
+        this.retrieveFundsButton.disableInteractive();
         if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER) {
             this.diceButtonTween = this.scene.tweens.add({
                 targets: this.diceButton,
@@ -1749,13 +1766,24 @@ var SelectBetLayer = /** @class */ (function (_super) {
         _this.add(scaledItemsContainer);
         _this.betSelectionButtonsContainer = new BetSelectionButtonsContainer_1.BetSelectionButtonsContainer(_this.scene);
         scaledItemsContainer.add(_this.betSelectionButtonsContainer);
-        var playButton = new Utils_1.Button(_this.scene, 0, 550, "texture_atlas_1", "btn_play_off", "btn_play_on");
-        playButton.scaleX = GameVars_1.GameVars.scaleX;
-        playButton.onUp(_this.onClickPlay, _this);
-        scaledItemsContainer.add(playButton);
+        _this.playButton = new Utils_1.Button(_this.scene, 0, 550, "texture_atlas_1", "btn_play_off", "btn_play_on");
+        _this.playButton.setScale(0);
+        _this.playButton.onUp(_this.onClickPlay, _this);
+        _this.playButton.visible = false;
+        scaledItemsContainer.add(_this.playButton);
         return _this;
     }
     SelectBetLayer.prototype.betSelected = function (value) {
+        if (!this.playButton.visible) {
+            this.playButton.visible = true;
+            this.scene.tweens.add({
+                targets: this.playButton,
+                scaleX: 1,
+                scaleY: 1,
+                ease: Phaser.Math.Easing.Cubic.Out,
+                duration: 400
+            });
+        }
         this.betSelectionButtonsContainer.betSelected(value);
     };
     SelectBetLayer.prototype.onClickPlay = function () {

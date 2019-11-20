@@ -194,7 +194,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">texture_atlas_1/background.png</key>
+            <key type="filename">texture_atlas_1/background.jpg</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -443,6 +443,19 @@
                 <rect>256,22,512,44</rect>
                 <key>scale9Paddings</key>
                 <rect>256,22,512,44</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/wood_support.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>35,25,69,49</rect>
+                <key>scale9Paddings</key>
+                <rect>35,25,69,49</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
