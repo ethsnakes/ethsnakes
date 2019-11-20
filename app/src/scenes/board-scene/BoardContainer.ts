@@ -12,6 +12,7 @@ export class BoardContainer extends Phaser.GameObjects.Container {
     private botChip: Chip;
     private woodSupport: Phaser.GameObjects.Image;
     private moves: number;
+    private snakes: Phaser.GameObjects.Image[];
 
     constructor(scene: Phaser.Scene) {
 
@@ -23,6 +24,7 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         this.y = 430;
         this.scaleX = GameVars.scaleX;
         this.moves = 0;
+        this.snakes = [];
 
         this.woodSupport = new Phaser.GameObjects.Image(this.scene, -380, 250, "texture_atlas_1", "wood_support");
         this.add(this.woodSupport);
@@ -34,9 +36,13 @@ export class BoardContainer extends Phaser.GameObjects.Container {
             this.drawGrid();
         }
 
-        const snakesAndLadders = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "snakes_ladders");
-        snakesAndLadders.setScale(.915);
-        this.add(snakesAndLadders);
+        const laddersBehind = new Phaser.GameObjects.Image(this.scene, -4, -15, "texture_atlas_1", "ladders_back");
+        this.add(laddersBehind);
+
+        this.addSnakes();
+
+        const laddersFront = new Phaser.GameObjects.Image(this.scene, -4, -15, "texture_atlas_1", "ladders_front");
+        this.add(laddersFront);
 
         this.botChip = new Chip(this.scene, false);
         this.add(this.botChip);
@@ -99,6 +105,14 @@ export class BoardContainer extends Phaser.GameObjects.Container {
                 },
                 onCompleteScope: this
             });
+        }
+    }
+
+    private addSnakes(): void {
+        
+        for (let i = 1; i <= 8; i ++) {
+            const snake = new Phaser.GameObjects.Image(this.scene, -4, -15, "texture_atlas_2", "snake_" + i + "_01");
+            this.add(snake);
         }
     }
 
