@@ -3,6 +3,7 @@ import { GameConstants } from "../../GameConstants";
 import { BoardScene } from "./BoardScene";
 import { GameManager } from "../../GameManager";
 import { Chip } from "./Chip";
+import { BoardContainer } from "./BoardContainer";
 
 export class BoardManager {
 
@@ -40,26 +41,26 @@ export class BoardManager {
             BoardManager.matchOver(chip.isPlayer);
         } else {
 
-            let outCell = null;
+            let boardElement: {in: number, out: number, id: number} = null;
 
             for (let i = 0; i < GameConstants.BOARD_ELEMENTS.length; i ++) {
                 if (GameConstants.BOARD_ELEMENTS[i].in === chip.cellIndex) {
-                    outCell = GameConstants.BOARD_ELEMENTS[i].out;
+                    boardElement = GameConstants.BOARD_ELEMENTS[i];
                     break;
                 }
             }
 
-            if (outCell === null) {
+            if (boardElement === null) {
                 BoardManager.changeTurn();
             } else {
-                if (outCell > chip.cellIndex) {
-                    chip.moveInLadder(outCell);
+                if (boardElement.out > chip.cellIndex) {
+                    chip.moveInLadder(boardElement.out);
 
                     if (chip.isPlayer) {
                         BoardScene.currentInstance.hud.playerClimbsLadder();
                     }
                 } else {
-                    chip.moveInSnake(outCell);
+                    BoardContainer.currentInstance.snakeEatsChip(chip, boardElement);
                 }
             }
         }

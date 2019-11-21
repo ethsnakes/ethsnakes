@@ -460,6 +460,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">texture_atlas_1/super_txt.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>93,25,185,49</rect>
+                <key>scale9Paddings</key>
+                <rect>93,25,185,49</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">texture_atlas_1/top_bar.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>

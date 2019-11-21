@@ -407,6 +407,20 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">texture_atlas_1/ladders_back.png</key>
+            <key type="filename">texture_atlas_1/ladders_front.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>187,175,375,349</rect>
+                <key>scale9Paddings</key>
+                <rect>187,175,375,349</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">texture_atlas_1/player_shadow.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -420,16 +434,42 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">texture_atlas_1/snakes_ladders.png</key>
+            <key type="filename">texture_atlas_1/start_txt_01.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>163,163,325,325</rect>
+                <rect>132,49,264,97</rect>
                 <key>scale9Paddings</key>
-                <rect>163,163,325,325</rect>
+                <rect>132,49,264,97</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/start_txt_02.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>123,25,246,49</rect>
+                <key>scale9Paddings</key>
+                <rect>123,25,246,49</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/super_txt.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>93,25,185,49</rect>
+                <key>scale9Paddings</key>
+                <rect>93,25,185,49</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

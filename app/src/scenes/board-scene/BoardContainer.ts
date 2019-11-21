@@ -1,6 +1,7 @@
 import { GameConstants } from "../../GameConstants";
 import { GameVars } from "../../GameVars";
 import { Chip } from "./Chip";
+import { BoardScene } from "./BoardScene";
 
 export class BoardContainer extends Phaser.GameObjects.Container {
 
@@ -12,7 +13,7 @@ export class BoardContainer extends Phaser.GameObjects.Container {
     private botChip: Chip;
     private woodSupport: Phaser.GameObjects.Image;
     private moves: number;
-    private snakes: Phaser.GameObjects.Image[];
+    private snakes: Phaser.GameObjects.Sprite[];
 
     constructor(scene: Phaser.Scene) {
 
@@ -108,10 +109,23 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         }
     }
 
+    public snakeEatsChip(chip: Chip, boardElement: {in: number, out: number, id: number} ): void {
+        
+        chip.moveInSnake(boardElement.out);
+
+        // pillar la serpiente y mover 
+        const snakeID = boardElement.id;
+        const snake = this.snakes[snakeID - 1];
+
+        snake.play("snake_swallow_" + snakeID);
+    }
+
     private addSnakes(): void {
         
         for (let i = 1; i <= 8; i ++) {
-            const snake = new Phaser.GameObjects.Image(this.scene, -4, -15, "texture_atlas_2", "snake_" + i + "_01");
+            const snake = new Phaser.GameObjects.Sprite(this.scene, -4, -15, "texture_atlas_2", "snake_" + i + "_01");
+            this.snakes.push(snake);
+            BoardScene.currentInstance.add.existing(snake);
             this.add(snake);
         }
     }

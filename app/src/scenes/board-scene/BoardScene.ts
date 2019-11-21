@@ -38,7 +38,7 @@ export class BoardScene extends Phaser.Scene {
 
         BoardManager.init(this);
 
-        this.addDiceAnimations();
+        this.addAnimations();
 
         this.add.image(GameConstants.GAME_WIDTH / 2, GameConstants.GAME_HEIGHT / 2, "texture_atlas_1", "background");
 
@@ -53,8 +53,6 @@ export class BoardScene extends Phaser.Scene {
 
         this.gui = new GUI(this);
         this.add.existing(this.gui);
-
-        // this.removeWaitingLayer();
     }
 
     public update(): void {
@@ -124,7 +122,7 @@ export class BoardScene extends Phaser.Scene {
         this.gui.matchOver();
     }
 
-    private addDiceAnimations(): void {
+    private addAnimations(): void {
 
         // for (let i = 1; i <= 6; i ++) {
         //     const config = {
@@ -141,5 +139,14 @@ export class BoardScene extends Phaser.Scene {
             frames: this.anims.generateFrameNames("texture_atlas_1", { prefix: "dice2_red_", start: 1, end: 12, zeroPad: 2}), 
             frameRate: 24,
         });
+
+        for (let i = 1; i <= 8; i ++) {
+
+            this.anims.create({ 
+                key: "snake_swallow_" + i, 
+                frames: this.anims.generateFrameNames("texture_atlas_2", { prefix: "snake_" + i + "_", start: 1, end: 17, zeroPad: 2}), 
+                frameRate: 24,
+            });
+        }
     }
 }

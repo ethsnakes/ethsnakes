@@ -33,25 +33,24 @@ export class HUD extends Phaser.GameObjects.Container {
 
     public playerClimbsLadder(): void {
 
-        const superLabel = new Phaser.GameObjects.Text(this.scene, GameConstants.GAME_WIDTH * 3 / 2, GameConstants.GAME_HEIGHT / 2, "SUPER", {fontFamily: "RussoOne", fontSize: "75px", color: "#FFFFFF"});
-        superLabel.scaleX = GameVars.scaleX;
-        superLabel.setOrigin(.5);
-        BoardScene.currentInstance.add.existing(superLabel);
+        const superImage = new Phaser.GameObjects.Image(this.scene, GameConstants.GAME_WIDTH * 3 / 2, GameConstants.GAME_HEIGHT / 2, "texture_atlas_1", "super_txt");
+        superImage.scaleX = GameVars.scaleX;
+        BoardScene.currentInstance.add.existing(superImage);
 
         this.scene.tweens.add({
-            targets: superLabel,
+            targets: superImage,
             x: GameConstants.GAME_WIDTH / 2,
             ease: Phaser.Math.Easing.Cubic.Out,
             duration: 500,
             onComplete: function(): void {
                 this.scene.tweens.add({
-                    targets: superLabel,
+                    targets: superImage,
                     x: -GameConstants.GAME_WIDTH / 2,
                     ease: Phaser.Math.Easing.Cubic.Out,
                     delay: 750,
                     duration: 500,
                     onComplete: function(): void {
-                        superLabel.destroy();
+                        superImage.destroy();
                     },
                     onCompleteScope: this
                 });
