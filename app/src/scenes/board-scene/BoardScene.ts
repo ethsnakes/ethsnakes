@@ -134,6 +134,14 @@ export class BoardScene extends Phaser.Scene {
         //     this.anims.create(config);
         // }
 
+        // la animación de espera
+        this.anims.create({ 
+            key: "waiting", 
+            frames: this.anims.generateFrameNames("texture_atlas_3", { prefix: "waiting_loop_", start: 1, end: 46, zeroPad: 2}), 
+            frameRate: 16,
+            repeat: -1
+        });
+
         this.anims.create({ 
             key: "dice_red_2", 
             frames: this.anims.generateFrameNames("texture_atlas_1", { prefix: "dice2_red_", start: 1, end: 12, zeroPad: 2}), 
