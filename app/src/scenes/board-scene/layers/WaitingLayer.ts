@@ -57,8 +57,15 @@ export class WaitingLayer extends Phaser.GameObjects.Container {
         }
 
         if (this.f === 300) {
-
-            GameManager.onConnection();
+            
+            this.scene.tweens.add({
+                targets: this,
+                alpha: 0,
+                ease: Phaser.Math.Easing.Cubic.Out,
+                duration: 450,
+                onComplete: GameManager.onConnection,
+                onCompleteScope: GameManager
+            });
         }
     }
 }

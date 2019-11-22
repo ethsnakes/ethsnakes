@@ -686,6 +686,7 @@ var PreloadScene = /** @class */ (function (_super) {
         this.load.atlas("texture_atlas_1", "assets/texture_atlas_1.png", "assets/texture_atlas_1.json");
         this.load.atlas("texture_atlas_2", "assets/texture_atlas_2.png", "assets/texture_atlas_2.json");
         this.load.atlas("texture_atlas_3", "assets/texture_atlas_3.png", "assets/texture_atlas_3.json");
+        this.load.atlas("texture_atlas_4", "assets/texture_atlas_4.png", "assets/texture_atlas_4.json");
     };
     return PreloadScene;
 }(Phaser.Scene));
@@ -994,6 +995,8 @@ var BoardScene = /** @class */ (function (_super) {
         this.add.existing(this.boardContainer);
         this.gui = new GUI_1.GUI(this);
         this.add.existing(this.gui);
+        // TODO: BORRAR ESTO
+        this.removeWaitingLayer();
     };
     BoardScene.prototype.update = function () {
         if (this.waitingLayer) {
@@ -1047,9 +1050,16 @@ var BoardScene = /** @class */ (function (_super) {
         //     };
         //     this.anims.create(config);
         // }
+        // la animación de espera
+        this.anims.create({
+            key: "waiting",
+            frames: this.anims.generateFrameNames("texture_atlas_3", { prefix: "waiting_loop_", start: 1, end: 46, zeroPad: 2 }),
+            frameRate: 12,
+            repeat: -1
+        });
         this.anims.create({
             key: "dice_red_2",
-            frames: this.anims.generateFrameNames("texture_atlas_1", { prefix: "dice2_red_", start: 1, end: 12, zeroPad: 2 }),
+            frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice2_red_", start: 1, end: 12, zeroPad: 2 }),
             frameRate: 24,
         });
         for (var i = 1; i <= 8; i++) {
@@ -1451,7 +1461,7 @@ var DiceContainer = /** @class */ (function (_super) {
     __extends(DiceContainer, _super);
     function DiceContainer(scene) {
         var _this = _super.call(this, scene) || this;
-        _this.dice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 115 * GameVars_1.GameVars.scaleX, 300, "texture_atlas_1", "dice2_red_01");
+        _this.dice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 115 * GameVars_1.GameVars.scaleX, 300, "texture_atlas_4", "dice2_red_01");
         _this.dice.setScale(.5);
         BoardScene_1.BoardScene.currentInstance.add.existing(_this.dice);
         _this.dice.visible = false;
@@ -1896,6 +1906,10 @@ var WaitingLayer = /** @class */ (function (_super) {
         scaledItemsContainer.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
         scaledItemsContainer.scaleX = GameVars_1.GameVars.scaleX;
         _this.add(scaledItemsContainer);
+        var waitingAnimation = new Phaser.GameObjects.Sprite(_this.scene, 0, 220, "texture_atlas_3", "waiting_loop_01");
+        _this.scene.add.existing(waitingAnimation);
+        waitingAnimation.play("waiting");
+        scaledItemsContainer.add(waitingAnimation);
         _this.connectingLabel = new Phaser.GameObjects.Text(_this.scene, 0, 450, "CONNECTING TO ETHEREUM", { fontFamily: "RussoOne", fontSize: "40px", color: "#FFFFFF" });
         _this.connectingLabel.setOrigin(.5);
         scaledItemsContainer.add(_this.connectingLabel);

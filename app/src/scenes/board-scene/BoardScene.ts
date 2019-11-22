@@ -138,14 +138,22 @@ export class BoardScene extends Phaser.Scene {
         this.anims.create({ 
             key: "waiting", 
             frames: this.anims.generateFrameNames("texture_atlas_3", { prefix: "waiting_loop_", start: 1, end: 46, zeroPad: 2}), 
-            frameRate: 16,
+            frameRate: 12,
             repeat: -1
         });
 
+        // el dado rojo
         this.anims.create({ 
             key: "dice_red_2", 
-            frames: this.anims.generateFrameNames("texture_atlas_1", { prefix: "dice2_red_", start: 1, end: 12, zeroPad: 2}), 
+            frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice2_red_", start: 1, end: 12, zeroPad: 2}), 
             frameRate: 24,
+        });
+
+        // el dado azul
+        this.anims.create({ 
+            key: "dice_blue_3", 
+            frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice_blue_3_", start: 1, end: 15, zeroPad: 2}), 
+            frameRate: 20
         });
 
         for (let i = 1; i <= 8; i ++) {

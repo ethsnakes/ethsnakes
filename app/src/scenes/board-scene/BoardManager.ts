@@ -77,8 +77,12 @@ export class BoardManager {
 
         // GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
 
-        GameVars.diceResult = 2;
-
+        if (GameVars.turn === GameConstants.PLAYER) {
+            GameVars.diceResult = 2;
+        } else {
+            GameVars.diceResult = 3;
+        }
+        
         BoardScene.currentInstance.rollDice();
     }
 
