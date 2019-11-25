@@ -13,7 +13,7 @@ export class BetSelectionButtonsContainer extends Phaser.GameObjects.Container {
 
         this.buttons = [];
 
-        const infoLabelBet = new Phaser.GameObjects.Text(this.scene, 0, -100, "Select your bet", {fontFamily: "Arial", fontSize: "50px", color: "#FFFFFF"});
+        const infoLabelBet = new Phaser.GameObjects.Text(this.scene, 0, -115, "SELECT YOUR BET", {fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "50px", color: "#FEB403"});
         infoLabelBet.setOrigin(.5);
         this.add(infoLabelBet);
 

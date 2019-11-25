@@ -80,6 +80,21 @@ export class GUI extends Phaser.GameObjects.Container {
         }
     }
 
+    public onTurnChanged(): void {
+
+        if (GameVars.turn === GameConstants.PLAYER) {
+
+            this.diceButton.visible = true;
+            
+            this.scene.tweens.add({
+                targets: this.diceButton,
+                alpha: 1,
+                ease: Phaser.Math.Easing.Cubic.Out,
+                duration: 300
+            });
+        }
+    }
+
     public disableButtons(): void {
 
         this.playButton.disableInteractive();
@@ -156,6 +171,17 @@ export class GUI extends Phaser.GameObjects.Container {
 
             this.diceButton.setScale(1);
         }
+
+        this.scene.tweens.add({
+            targets: this.diceButton,
+            alpha: 0,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 300, 
+            onComplete: function(): void {
+                this.diceButton.visible = false;
+            },
+            onCompleteScope: this
+        });
        
         BoardManager.rollDice();
     }

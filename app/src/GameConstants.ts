@@ -7,8 +7,8 @@ export class GameConstants {
     public static readonly DEBUG_MODE = false;
     public static readonly VERBOSE = false;
 
-    public static readonly GAME_WIDTH = 1024;
-    public static readonly GAME_HEIGHT = 768;
+    public static readonly GAME_WIDTH = 1000;
+    public static readonly GAME_HEIGHT = 800;
 
     public static readonly CONTRACT_ADDRESS = "0x18572FD0f44B51F67zf16c5f1dc3c6653C554963";
 

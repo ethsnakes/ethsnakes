@@ -95,6 +95,11 @@ export class BoardScene extends Phaser.Scene {
         this.boardContainer.starGame();
     }
 
+    public onTurnChanged(): void {
+
+        this.gui.onTurnChanged();
+    }
+
     public rollDice(): void {
 
         this.dice.roll(GameVars.diceResult);
@@ -138,7 +143,7 @@ export class BoardScene extends Phaser.Scene {
         this.anims.create({ 
             key: "waiting", 
             frames: this.anims.generateFrameNames("texture_atlas_3", { prefix: "waiting_loop_", start: 1, end: 46, zeroPad: 2}), 
-            frameRate: 12,
+            frameRate: 18,
             repeat: -1
         });
 

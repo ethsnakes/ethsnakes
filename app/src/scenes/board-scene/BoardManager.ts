@@ -123,5 +123,7 @@ export class BoardManager {
         } else {
             GameVars.diceBlocked = false;
         }
+
+        BoardScene.currentInstance.onTurnChanged();
     }
 }

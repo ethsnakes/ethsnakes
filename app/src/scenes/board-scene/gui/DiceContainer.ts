@@ -31,9 +31,15 @@ export class DiceContainer extends Phaser.GameObjects.Container {
     public roll(i: number): void {
 
         if (GameVars.turn === GameConstants.PLAYER) {
+
+            this.botDice.visible = false;
+
             this.playerDice.visible = true;
             this.playerDice.play("dice_red_" + i);
+
         } else {
+
+            this.playerDice.visible = false;
 
             this.botDice.visible = true;
             this.botDice.alpha = 0;

@@ -324,8 +324,8 @@ var GameConstants = /** @class */ (function () {
     GameConstants.DEVELOPMENT = true;
     GameConstants.DEBUG_MODE = false;
     GameConstants.VERBOSE = false;
-    GameConstants.GAME_WIDTH = 1024;
-    GameConstants.GAME_HEIGHT = 768;
+    GameConstants.GAME_WIDTH = 1000;
+    GameConstants.GAME_HEIGHT = 800;
     GameConstants.CONTRACT_ADDRESS = "0x18572FD0f44B51F67zf16c5f1dc3c6653C554963";
     GameConstants.BOT = "bot";
     GameConstants.PLAYER = "player";
@@ -681,6 +681,7 @@ var PreloadScene = /** @class */ (function (_super) {
     };
     PreloadScene.prototype.composeScene = function () {
         this.add.text(-100, -100, "abcdefg", { fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: 28, color: "#A6F834" });
+        this.add.text(-100, -50, "abcdefg", { fontFamily: "BladiTwo4F", fontSize: 28, color: "#A6F834" });
     };
     PreloadScene.prototype.loadAssets = function () {
         this.load.atlas("texture_atlas_1", "assets/texture_atlas_1.png", "assets/texture_atlas_1.json");
@@ -728,7 +729,7 @@ var BoardContainer = /** @class */ (function (_super) {
         var _this = _super.call(this, scene) || this;
         BoardContainer.currentInstance = _this;
         _this.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
-        _this.y = 430;
+        _this.y = 460;
         _this.scaleX = GameVars_1.GameVars.scaleX;
         _this.moves = 0;
         _this.snakes = [];
@@ -906,7 +907,12 @@ var BoardManager = /** @class */ (function () {
     BoardManager.rollDice = function () {
         GameVars_1.GameVars.diceBlocked = true;
         // GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
-        GameVars_1.GameVars.diceResult = 2;
+        if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER) {
+            GameVars_1.GameVars.diceResult = 2;
+        }
+        else {
+            GameVars_1.GameVars.diceResult = 3;
+        }
         BoardScene_1.BoardScene.currentInstance.rollDice();
     };
     BoardManager.onDiceResultAvailable = function () {
@@ -933,6 +939,7 @@ var BoardManager = /** @class */ (function () {
         else {
             GameVars_1.GameVars.diceBlocked = false;
         }
+        BoardScene_1.BoardScene.currentInstance.onTurnChanged();
     };
     return BoardManager;
 }());
@@ -995,8 +1002,6 @@ var BoardScene = /** @class */ (function (_super) {
         this.add.existing(this.boardContainer);
         this.gui = new GUI_1.GUI(this);
         this.add.existing(this.gui);
-        // TODO: BORRAR ESTO
-        this.removeWaitingLayer();
     };
     BoardScene.prototype.update = function () {
         if (this.waitingLayer) {
@@ -1023,6 +1028,9 @@ var BoardScene = /** @class */ (function (_super) {
         this.gui.startGame();
         this.hud.startGame();
         this.boardContainer.starGame();
+    };
+    BoardScene.prototype.onTurnChanged = function () {
+        this.gui.onTurnChanged();
     };
     BoardScene.prototype.rollDice = function () {
         this.dice.roll(GameVars_1.GameVars.diceResult);
@@ -1054,13 +1062,20 @@ var BoardScene = /** @class */ (function (_super) {
         this.anims.create({
             key: "waiting",
             frames: this.anims.generateFrameNames("texture_atlas_3", { prefix: "waiting_loop_", start: 1, end: 46, zeroPad: 2 }),
-            frameRate: 12,
+            frameRate: 18,
             repeat: -1
         });
+        // el dado rojo
         this.anims.create({
             key: "dice_red_2",
             frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice2_red_", start: 1, end: 12, zeroPad: 2 }),
             frameRate: 24,
+        });
+        // el dado azul
+        this.anims.create({
+            key: "dice_blue_3",
+            frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice_blue_3_", start: 1, end: 15, zeroPad: 2 }),
+            frameRate: 20
         });
         for (var i = 1; i <= 8; i++) {
             this.anims.create({
@@ -1461,17 +1476,37 @@ var DiceContainer = /** @class */ (function (_super) {
     __extends(DiceContainer, _super);
     function DiceContainer(scene) {
         var _this = _super.call(this, scene) || this;
-        _this.dice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 115 * GameVars_1.GameVars.scaleX, 300, "texture_atlas_4", "dice2_red_01");
-        _this.dice.setScale(.5);
-        BoardScene_1.BoardScene.currentInstance.add.existing(_this.dice);
-        _this.dice.visible = false;
-        _this.add(_this.dice);
-        _this.dice.on("animationcomplete", _this.onAnimationComplete, _this);
+        _this.botDice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 150 * GameVars_1.GameVars.scaleX, 280, "texture_atlas_4", "dice_blue_3_01");
+        BoardScene_1.BoardScene.currentInstance.add.existing(_this.botDice);
+        _this.botDice.visible = false;
+        _this.add(_this.botDice);
+        _this.botDice.on("animationcomplete", _this.onAnimationComplete, _this);
+        _this.playerDice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 115 * GameVars_1.GameVars.scaleX, 300, "texture_atlas_4", "dice2_red_01");
+        _this.playerDice.setScale(.5);
+        BoardScene_1.BoardScene.currentInstance.add.existing(_this.playerDice);
+        _this.playerDice.visible = false;
+        _this.add(_this.playerDice);
+        _this.playerDice.on("animationcomplete", _this.onAnimationComplete, _this);
         return _this;
     }
     DiceContainer.prototype.roll = function (i) {
-        this.dice.visible = true;
-        this.dice.play("dice_red_" + i);
+        if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER) {
+            this.botDice.visible = false;
+            this.playerDice.visible = true;
+            this.playerDice.play("dice_red_" + i);
+        }
+        else {
+            this.playerDice.visible = false;
+            this.botDice.visible = true;
+            this.botDice.alpha = 0;
+            this.scene.tweens.add({
+                targets: this.botDice,
+                alpha: 1,
+                ease: Phaser.Math.Easing.Cubic.Out,
+                duration: 800
+            });
+            this.botDice.play("dice_blue_" + i);
+        }
     };
     DiceContainer.prototype.matchOver = function () {
         this.scene.tweens.add({
@@ -1574,6 +1609,17 @@ var GUI = /** @class */ (function (_super) {
             this.diceButtonTween = null;
         }
     };
+    GUI.prototype.onTurnChanged = function () {
+        if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER) {
+            this.diceButton.visible = true;
+            this.scene.tweens.add({
+                targets: this.diceButton,
+                alpha: 1,
+                ease: Phaser.Math.Easing.Cubic.Out,
+                duration: 300
+            });
+        }
+    };
     GUI.prototype.disableButtons = function () {
         this.playButton.disableInteractive();
         this.addFundsButton.disableInteractive();
@@ -1628,6 +1674,16 @@ var GUI = /** @class */ (function (_super) {
             this.diceButtonTween = null;
             this.diceButton.setScale(1);
         }
+        this.scene.tweens.add({
+            targets: this.diceButton,
+            alpha: 0,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 300,
+            onComplete: function () {
+                this.diceButton.visible = false;
+            },
+            onCompleteScope: this
+        });
         BoardManager_1.BoardManager.rollDice();
     };
     return GUI;
@@ -1668,14 +1724,14 @@ var BetSelectionButton = /** @class */ (function (_super) {
     function BetSelectionButton(scene, value) {
         var _this = _super.call(this, scene) || this;
         _this.name = value.toString();
-        _this.offButton = new Utils_1.Button(_this.scene, 0, 0, "texture_atlas_1", "button-radio-green-off", "button-radio-green-off");
+        _this.offButton = new Utils_1.Button(_this.scene, 0, 0, "texture_atlas_1", "tick_mark_0_off", "tick_mark_0_on");
         _this.offButton.onUp(_this.onClickButton, _this);
         _this.add(_this.offButton);
-        _this.onButton = new Utils_1.Button(_this.scene, 0, 0, "texture_atlas_1", "button-radio-green-on", "button-radio-green-on");
+        _this.onButton = new Utils_1.Button(_this.scene, 0, 0, "texture_atlas_1", "tick_mark_1_off", "tick_mark_1_on");
         _this.onButton.visible = false;
         _this.onButton.onUp(_this.onClickButton, _this);
         _this.add(_this.onButton);
-        var infoLabelBet = new Phaser.GameObjects.Text(_this.scene, 0, 80, GameVars_1.GameVars.formatNumber(value) + " wei", { fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF" });
+        var infoLabelBet = new Phaser.GameObjects.Text(_this.scene, 0, 80, GameVars_1.GameVars.formatNumber(value) + " wei", { fontFamily: "BladiTwo4F", fontSize: "27px", color: "#19D3C5" });
         infoLabelBet.setOrigin(.5);
         _this.add(infoLabelBet);
         return _this;
@@ -1727,7 +1783,7 @@ var BetSelectionButtonsContainer = /** @class */ (function (_super) {
         var _this = _super.call(this, scene) || this;
         _this.y = 300;
         _this.buttons = [];
-        var infoLabelBet = new Phaser.GameObjects.Text(_this.scene, 0, -100, "Select your bet", { fontFamily: "Arial", fontSize: "50px", color: "#FFFFFF" });
+        var infoLabelBet = new Phaser.GameObjects.Text(_this.scene, 0, -115, "SELECT YOUR BET", { fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "50px", color: "#FEB403" });
         infoLabelBet.setOrigin(.5);
         _this.add(infoLabelBet);
         var deltaButton = 180;
@@ -1933,7 +1989,14 @@ var WaitingLayer = /** @class */ (function (_super) {
             this.connectingLabel.alpha = this.connectingLabel.alpha === 1 ? .5 : 1;
         }
         if (this.f === 300) {
-            GameManager_1.GameManager.onConnection();
+            this.scene.tweens.add({
+                targets: this,
+                alpha: 0,
+                ease: Phaser.Math.Easing.Cubic.Out,
+                duration: 450,
+                onComplete: GameManager_1.GameManager.onConnection,
+                onCompleteScope: GameManager_1.GameManager
+            });
         }
     };
     return WaitingLayer;

@@ -13,16 +13,16 @@ export class BetSelectionButton extends Phaser.GameObjects.Container {
 
         this.name = value.toString();
 
-        this.offButton = new Button(this.scene, 0, 0, "texture_atlas_1", "button-radio-green-off", "button-radio-green-off");
+        this.offButton = new Button(this.scene, 0, 0, "texture_atlas_1", "tick_mark_0_off", "tick_mark_0_on");
         this.offButton.onUp(this.onClickButton, this);
         this.add(this.offButton);
 
-        this.onButton = new Button(this.scene, 0, 0, "texture_atlas_1", "button-radio-green-on", "button-radio-green-on");
+        this.onButton = new Button(this.scene, 0, 0, "texture_atlas_1", "tick_mark_1_off", "tick_mark_1_on");
         this.onButton.visible = false;
         this.onButton.onUp(this.onClickButton, this);
         this.add(this.onButton);
 
-        const infoLabelBet = new Phaser.GameObjects.Text(this.scene, 0, 80, GameVars.formatNumber(value) + " wei", {fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF"});
+        const infoLabelBet = new Phaser.GameObjects.Text(this.scene, 0, 80, GameVars.formatNumber(value) + " wei", {fontFamily: "BladiTwo4F", fontSize: "27px", color: "#19D3C5"});
         infoLabelBet.setOrigin(.5);
         this.add(infoLabelBet);
     }

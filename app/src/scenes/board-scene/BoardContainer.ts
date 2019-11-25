@@ -22,7 +22,7 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         BoardContainer.currentInstance = this;
 
         this.x = GameConstants.GAME_WIDTH / 2;
-        this.y = 430;
+        this.y = 460;
         this.scaleX = GameVars.scaleX;
         this.moves = 0;
         this.snakes = [];
