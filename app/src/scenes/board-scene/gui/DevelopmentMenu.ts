@@ -1,7 +1,7 @@
 import { GameVars } from "../../../GameVars";
 import { Button } from "../../../utils/Utils";
-import { GameManager } from "../../../GameManager";
 import { BoardManager } from "../BoardManager";
+import { GameConstants } from "../../../GameConstants";
 
 export class DevelopmentMenu extends Phaser.GameObjects.Container {
 
@@ -36,11 +36,11 @@ export class DevelopmentMenu extends Phaser.GameObjects.Container {
 
     private onClickWin(): void {
         
-        BoardManager.matchOver(true);
+        BoardManager.matchOver(GameConstants.PLAYER);
     }
 
     private onClickLose(): void {
         
-        BoardManager.matchOver(false);
+        BoardManager.matchOver(GameConstants.BOT);
     }
 }

@@ -9,6 +9,7 @@ import { DiceContainer } from "./gui/DiceContainer";
 import { GameVars } from "../../GameVars";
 import { SelectBetLayer } from "./layers/SelectBetLayer";
 import { WaitingLayer } from "./layers/WaitingLayer";
+import { OutcomeLayer } from "./layers/OutcomeLayer";
 
 export class BoardScene extends Phaser.Scene {
 
@@ -22,6 +23,7 @@ export class BoardScene extends Phaser.Scene {
     private dice: DiceContainer;
     private selectBetLayer: SelectBetLayer;
     private waitingLayer: WaitingLayer;
+    private outcomeLayer: OutcomeLayer;
     
     constructor() {
 
@@ -36,7 +38,7 @@ export class BoardScene extends Phaser.Scene {
 
         GameManager.setCurrentScene(this);
 
-        BoardManager.init(this);
+        BoardManager.init();
 
         this.addAnimations();
 
@@ -125,6 +127,9 @@ export class BoardScene extends Phaser.Scene {
         
         this.dice.matchOver();
         this.gui.matchOver();
+
+        this.outcomeLayer = new OutcomeLayer(this);
+        this.add.existing(this.outcomeLayer);
     }
 
     private addAnimations(): void {
@@ -169,5 +174,13 @@ export class BoardScene extends Phaser.Scene {
                 frameRate: 24,
             });
         }
+
+        // la animacion de la cinta
+        this.anims.create({ 
+            key: "ribbon", 
+            frames: this.anims.generateFrameNames("texture_atlas_1", { prefix: "victory_result_txt_", start: 1, end: 10, zeroPad: 2}), 
+            frameRate: 14,
+            repeat: -1
+        });
     }
 }
