@@ -179,8 +179,7 @@ export class BoardScene extends Phaser.Scene {
         this.anims.create({ 
             key: "ribbon", 
             frames: this.anims.generateFrameNames("texture_atlas_1", { prefix: "victory_result_txt_", start: 1, end: 10, zeroPad: 2}), 
-            frameRate: 14,
-            repeat: -1
+            frameRate: 12
         });
     }
 }

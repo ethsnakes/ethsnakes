@@ -1086,6 +1086,12 @@ var BoardScene = /** @class */ (function (_super) {
                 frameRate: 24,
             });
         }
+        // la animacion de la cinta
+        this.anims.create({
+            key: "ribbon",
+            frames: this.anims.generateFrameNames("texture_atlas_1", { prefix: "victory_result_txt_", start: 1, end: 10, zeroPad: 2 }),
+            frameRate: 12
+        });
     };
     return BoardScene;
 }(Phaser.Scene));
@@ -1189,8 +1195,8 @@ var Chip = /** @class */ (function (_super) {
                 this.scene.tweens.add({
                     targets: this,
                     scaleY: 1,
-                    ease: Phaser.Math.Easing.Cubic.Out,
-                    duration: 300,
+                    ease: Phaser.Math.Easing.Elastic.Out,
+                    duration: 900,
                     delay: 600,
                     onComplete: BoardManager_1.BoardManager.chipArrivedToItsFinalPosition,
                     onCompleteScope: BoardManager_1.BoardManager
@@ -1835,38 +1841,58 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var GameVars_1 = __webpack_require__(/*! ../../../GameVars */ "./app/src/GameVars.ts");
 var GameConstants_1 = __webpack_require__(/*! ../../../GameConstants */ "./app/src/GameConstants.ts");
+var BoardScene_1 = __webpack_require__(/*! ../BoardScene */ "./app/src/scenes/board-scene/BoardScene.ts");
 var OutcomeLayer = /** @class */ (function (_super) {
     __extends(OutcomeLayer, _super);
     function OutcomeLayer(scene) {
         var _this = _super.call(this, scene) || this;
-        var w = 210;
-        var h = 100;
-        _this.f = 0;
-        _this.visible = false;
         var background = new Phaser.GameObjects.Graphics(_this.scene);
-        background.fillStyle(0xFFFFFF, .8);
-        background.fillRect(0, 0, w, h);
+        background.fillStyle(0x000000, .7);
+        background.fillRect(0, 0, GameConstants_1.GameConstants.GAME_WIDTH, GameConstants_1.GameConstants.GAME_HEIGHT);
         _this.add(background);
-        background.x = GameConstants_1.GameConstants.GAME_WIDTH / 2 - w / 2;
-        background.y = GameConstants_1.GameConstants.GAME_HEIGHT / 2 - h / 2;
-        _this.container1 = new Phaser.GameObjects.Container(_this.scene);
-        _this.container1.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
-        _this.container1.y = 180 - 3;
-        _this.add(_this.container1);
-        _this.container2 = new Phaser.GameObjects.Container(_this.scene);
-        _this.container2.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
-        _this.container2.y = 180 + 3;
-        _this.add(_this.container2);
-        var label = new Phaser.GameObjects.Text(_this.scene, 0, -45, "Y   U   W  N", { fontFamily: "RussoOne", fontSize: "35px", color: "#080893" });
-        label.setOrigin(.5);
-        _this.container1.add(label);
-        label = new Phaser.GameObjects.Text(_this.scene, -58, -45, "O", { fontFamily: "RussoOne", fontSize: "35px", color: "#080893" });
-        label.setOrigin(.5);
-        _this.container2.add(label);
-        label = new Phaser.GameObjects.Text(_this.scene, 62, -45, "I", { fontFamily: "RussoOne", fontSize: "35px", color: "#080893" });
-        label.setOrigin(.5);
-        _this.container2.add(label);
+        var scaledItemsContainer = new Phaser.GameObjects.Container(_this.scene);
+        scaledItemsContainer.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
+        scaledItemsContainer.y = 300;
+        scaledItemsContainer.scaleX = GameVars_1.GameVars.scaleX;
+        _this.add(scaledItemsContainer);
+        if (GameVars_1.GameVars.winner === GameConstants_1.GameConstants.PLAYER) {
+            var star = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "victory_result_01");
+            scaledItemsContainer.add(star);
+            _this.scene.tweens.add({
+                targets: star,
+                scaleX: 1.15,
+                scaleY: 1.15,
+                ease: Phaser.Math.Easing.Cubic.InOut,
+                duration: 1000,
+                yoyo: true,
+                repeat: -1
+            });
+            var badge = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "victory_result_02");
+            scaledItemsContainer.add(badge);
+            var ribbon = new Phaser.GameObjects.Sprite(_this.scene, 0, 145, "texture_atlas_1", "victory_result_txt_01");
+            BoardScene_1.BoardScene.currentInstance.add.existing(ribbon);
+            scaledItemsContainer.add(ribbon);
+            ribbon.play("ribbon");
+        }
+        else {
+            var shadow = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "defeat_result_01");
+            scaledItemsContainer.add(shadow);
+            var badge = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "defeat_result_02");
+            scaledItemsContainer.add(badge);
+            var ribbon = new Phaser.GameObjects.Image(_this.scene, 0, 145, "texture_atlas_1", "defeat_result_txt");
+            scaledItemsContainer.add(ribbon);
+            _this.scene.tweens.add({
+                targets: shadow,
+                scaleX: 1.075,
+                scaleY: 1.075,
+                ease: Phaser.Math.Easing.Cubic.InOut,
+                duration: 1000,
+                yoyo: true,
+                repeat: -1
+            });
+        }
         return _this;
     }
     return OutcomeLayer;
