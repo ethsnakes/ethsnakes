@@ -1573,6 +1573,15 @@ var GUI = /** @class */ (function (_super) {
         _this.playButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.playButton.onUp(_this.onClickPlay, _this);
         _this.add(_this.playButton);
+        _this.scene.tweens.add({
+            targets: _this.playButton,
+            scaleX: 1.05,
+            scaleY: 1.05,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 350,
+            yoyo: true,
+            repeat: -1
+        });
         _this.addFundsButton = new Utils_1.Button(_this.scene, 530, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
         _this.addFundsButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.addFundsButton.onUp(_this.onClickAddFunds, _this);

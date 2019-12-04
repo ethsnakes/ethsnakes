@@ -28,7 +28,7 @@ export class WaitingLayer extends Phaser.GameObjects.Container {
         waitingAnimation.play("waiting");
         scaledItemsContainer.add(waitingAnimation);
 
-        this.connectingLabel = new Phaser.GameObjects.Text(this.scene, 0, 450, "CONNECTING TO ETHEREUM", {fontFamily: "RussoOne", fontSize: "40px", color: "#FFFFFF"});
+        this.connectingLabel = new Phaser.GameObjects.Text(this.scene, 0, 450, "MINING TRANSACTION", {fontFamily: "RussoOne", fontSize: "40px", color: "#FFFFFF"});
         this.connectingLabel.setOrigin(.5);
         scaledItemsContainer.add(this.connectingLabel);
 
