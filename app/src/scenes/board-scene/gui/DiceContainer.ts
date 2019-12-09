@@ -12,15 +12,14 @@ export class DiceContainer extends Phaser.GameObjects.Container {
 
         super(scene);
 
-        this.botDice = new Phaser.GameObjects.Sprite(this.scene, GameConstants.GAME_WIDTH - 150 * GameVars.scaleX, 280, "texture_atlas_4", "dice_blue_3_01");
+        this.botDice = new Phaser.GameObjects.Sprite(this.scene, GameConstants.GAME_WIDTH - 95 * GameVars.scaleX, 340, "texture_atlas_4", "dice_blue_3_01");
         BoardScene.currentInstance.add.existing(this.botDice);
         this.botDice.visible = false;
         this.add(this.botDice);
 
         this.botDice.on("animationcomplete", this.onAnimationComplete, this);
 
-        this.playerDice = new Phaser.GameObjects.Sprite(this.scene, GameConstants.GAME_WIDTH - 115 * GameVars.scaleX, 300, "texture_atlas_4", "dice2_red_01");
-        this.playerDice.setScale(.5);
+        this.playerDice = new Phaser.GameObjects.Sprite(this.scene, GameConstants.GAME_WIDTH - 95 * GameVars.scaleX, 430, "texture_atlas_4", "dice_pink_3_01");
         BoardScene.currentInstance.add.existing(this.playerDice);
         this.playerDice.visible = false;
         this.add(this.playerDice);
@@ -35,7 +34,7 @@ export class DiceContainer extends Phaser.GameObjects.Container {
             this.botDice.visible = false;
 
             this.playerDice.visible = true;
-            this.playerDice.play("dice_red_" + i);
+            this.playerDice.play("dice_pink_" + i);
 
         } else {
 

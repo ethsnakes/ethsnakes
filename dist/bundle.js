@@ -1795,6 +1795,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameConstants_1 = __webpack_require__(/*! ../../../GameConstants */ "./app/src/GameConstants.ts");
 var BetSelectionButton_1 = __webpack_require__(/*! ./BetSelectionButton */ "./app/src/scenes/board-scene/layers/BetSelectionButton.ts");
+var GameVars_1 = __webpack_require__(/*! ../../../GameVars */ "./app/src/GameVars.ts");
 var BetSelectionButtonsContainer = /** @class */ (function (_super) {
     __extends(BetSelectionButtonsContainer, _super);
     function BetSelectionButtonsContainer(scene) {
@@ -1811,9 +1812,15 @@ var BetSelectionButtonsContainer = /** @class */ (function (_super) {
             _this.add(b);
             _this.buttons.push(b);
         }
+        _this.outcomeLabel = new Phaser.GameObjects.Text(_this.scene, 0, 145, "IF YOU WIN YOU'LL GET", { fontFamily: "BladiTwo4F", fontSize: "26px", color: "#FFFFFF" });
+        _this.outcomeLabel.visible = false;
+        _this.outcomeLabel.setOrigin(.5);
+        _this.add(_this.outcomeLabel);
         return _this;
     }
     BetSelectionButtonsContainer.prototype.betSelected = function (value) {
+        this.outcomeLabel.visible = true;
+        this.outcomeLabel.text = "IF YOU WIN YOU'LL GET " + GameVars_1.GameVars.formatNumber(2 * value) + " wei";
         for (var i = 0; i < this.buttons.length; i++) {
             if (this.buttons[i].name !== value.toString()) {
                 this.buttons[i].disableButton();
@@ -1954,7 +1961,7 @@ var SelectBetLayer = /** @class */ (function (_super) {
         _this.add(scaledItemsContainer);
         _this.betSelectionButtonsContainer = new BetSelectionButtonsContainer_1.BetSelectionButtonsContainer(_this.scene);
         scaledItemsContainer.add(_this.betSelectionButtonsContainer);
-        _this.playButton = new Utils_1.Button(_this.scene, 0, 550, "texture_atlas_1", "btn_play_off", "btn_play_on");
+        _this.playButton = new Utils_1.Button(_this.scene, 0, 585, "texture_atlas_1", "btn_play_off", "btn_play_on");
         _this.playButton.setScale(0);
         _this.playButton.onUp(_this.onClickPlay, _this);
         _this.playButton.visible = false;
@@ -2068,7 +2075,7 @@ var WaitingLayer = /** @class */ (function (_super) {
         _this.scene.add.existing(waitingAnimation);
         waitingAnimation.play("waiting");
         scaledItemsContainer.add(waitingAnimation);
-        _this.connectingLabel = new Phaser.GameObjects.Text(_this.scene, 0, 450, "CONNECTING TO ETHEREUM", { fontFamily: "RussoOne", fontSize: "40px", color: "#FFFFFF" });
+        _this.connectingLabel = new Phaser.GameObjects.Text(_this.scene, 0, 450, "MINING TRANSACTION", { fontFamily: "RussoOne", fontSize: "40px", color: "#FFFFFF" });
         _this.connectingLabel.setOrigin(.5);
         scaledItemsContainer.add(_this.connectingLabel);
         var infoLabelSmartContract = new Phaser.GameObjects.Text(_this.scene, 0, 520, "Smart contract address", { fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF" });

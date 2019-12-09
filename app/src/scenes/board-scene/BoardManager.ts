@@ -70,14 +70,8 @@ export class BoardManager {
 
         GameVars.diceBlocked = true;
 
-        // GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
+        GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
 
-        if (GameVars.turn === GameConstants.PLAYER) {
-            GameVars.diceResult = 2;
-        } else {
-            GameVars.diceResult = 3;
-        }
-        
         BoardScene.currentInstance.rollDice();
     }
 

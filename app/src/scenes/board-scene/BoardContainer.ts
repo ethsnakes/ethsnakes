@@ -5,7 +5,7 @@ import { BoardScene } from "./BoardScene";
 
 export class BoardContainer extends Phaser.GameObjects.Container {
 
-    public static readonly CELL_SIZE = 58;
+    public static readonly CELL_SIZE = 57;
 
     public static currentInstance: BoardContainer;
 
