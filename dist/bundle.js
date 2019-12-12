@@ -829,7 +829,7 @@ var BoardContainer = /** @class */ (function (_super) {
         }
         grid.stroke();
     };
-    BoardContainer.CELL_SIZE = 58;
+    BoardContainer.CELL_SIZE = 57;
     return BoardContainer;
 }(Phaser.GameObjects.Container));
 exports.BoardContainer = BoardContainer;
@@ -905,13 +905,7 @@ var BoardManager = /** @class */ (function () {
     };
     BoardManager.rollDice = function () {
         GameVars_1.GameVars.diceBlocked = true;
-        // GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
-        if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER) {
-            GameVars_1.GameVars.diceResult = 2;
-        }
-        else {
-            GameVars_1.GameVars.diceResult = 3;
-        }
+        GameVars_1.GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
         BoardScene_1.BoardScene.currentInstance.rollDice();
     };
     BoardManager.onDiceResultAvailable = function () {
@@ -1002,6 +996,8 @@ var BoardScene = /** @class */ (function (_super) {
         this.add.existing(this.boardContainer);
         this.gui = new GUI_1.GUI(this);
         this.add.existing(this.gui);
+        // TODO: BORRAR ESTO
+        // this.removeWaitingLayer();
     };
     BoardScene.prototype.update = function () {
         if (this.waitingLayer) {
@@ -1052,14 +1048,6 @@ var BoardScene = /** @class */ (function (_super) {
         this.add.existing(this.outcomeLayer);
     };
     BoardScene.prototype.addAnimations = function () {
-        // for (let i = 1; i <= 6; i ++) {
-        //     const config = {
-        //         key: "roll" + i,
-        //         frames: this.anims.generateFrameNumbers("dice_red" + i, {}),
-        //         frameRate: 24
-        //     };
-        //     this.anims.create(config);
-        // }
         // la animación de espera
         this.anims.create({
             key: "waiting",
@@ -1074,11 +1062,18 @@ var BoardScene = /** @class */ (function (_super) {
             frameRate: 24,
         });
         // el dado azul
-        this.anims.create({
-            key: "dice_blue_3",
-            frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice_blue_3_", start: 1, end: 15, zeroPad: 2 }),
-            frameRate: 20
-        });
+        for (var i = 1; i <= 6; i++) {
+            this.anims.create({
+                key: "dice_blue_" + i,
+                frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice_blue_" + i + "_", start: 1, end: 17, zeroPad: 2 }),
+                frameRate: 26
+            });
+            this.anims.create({
+                key: "dice_pink_" + i,
+                frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice_pink_" + i + "_", start: 1, end: 17, zeroPad: 2 }),
+                frameRate: 26
+            });
+        }
         for (var i = 1; i <= 8; i++) {
             this.anims.create({
                 key: "snake_swallow_" + i,
@@ -1485,13 +1480,12 @@ var DiceContainer = /** @class */ (function (_super) {
     __extends(DiceContainer, _super);
     function DiceContainer(scene) {
         var _this = _super.call(this, scene) || this;
-        _this.botDice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 150 * GameVars_1.GameVars.scaleX, 280, "texture_atlas_4", "dice_blue_3_01");
+        _this.botDice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 95 * GameVars_1.GameVars.scaleX, 340, "texture_atlas_4", "dice_blue_3_01");
         BoardScene_1.BoardScene.currentInstance.add.existing(_this.botDice);
         _this.botDice.visible = false;
         _this.add(_this.botDice);
         _this.botDice.on("animationcomplete", _this.onAnimationComplete, _this);
-        _this.playerDice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 115 * GameVars_1.GameVars.scaleX, 300, "texture_atlas_4", "dice2_red_01");
-        _this.playerDice.setScale(.5);
+        _this.playerDice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 95 * GameVars_1.GameVars.scaleX, 430, "texture_atlas_4", "dice_pink_3_01");
         BoardScene_1.BoardScene.currentInstance.add.existing(_this.playerDice);
         _this.playerDice.visible = false;
         _this.add(_this.playerDice);
@@ -1502,7 +1496,7 @@ var DiceContainer = /** @class */ (function (_super) {
         if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER) {
             this.botDice.visible = false;
             this.playerDice.visible = true;
-            this.playerDice.play("dice_red_" + i);
+            this.playerDice.play("dice_pink_" + i);
         }
         else {
             this.playerDice.visible = false;
