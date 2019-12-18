@@ -111,8 +111,8 @@ export class Chip extends Phaser.GameObjects.Container {
                 this.scene.tweens.add({
                     targets: this,
                     scaleY: 1,
-                    ease: Phaser.Math.Easing.Cubic.Out,
-                    duration: 300,
+                    ease: Phaser.Math.Easing.Elastic.Out,
+                    duration: 900,
                     delay: 600,
                     onComplete: BoardManager.chipArrivedToItsFinalPosition,
                     onCompleteScope: BoardManager

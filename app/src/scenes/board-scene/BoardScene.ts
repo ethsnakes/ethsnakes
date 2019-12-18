@@ -9,6 +9,7 @@ import { DiceContainer } from "./gui/DiceContainer";
 import { GameVars } from "../../GameVars";
 import { SelectBetLayer } from "./layers/SelectBetLayer";
 import { WaitingLayer } from "./layers/WaitingLayer";
+import { OutcomeLayer } from "./layers/OutcomeLayer";
 
 export class BoardScene extends Phaser.Scene {
 
@@ -22,6 +23,7 @@ export class BoardScene extends Phaser.Scene {
     private dice: DiceContainer;
     private selectBetLayer: SelectBetLayer;
     private waitingLayer: WaitingLayer;
+    private outcomeLayer: OutcomeLayer;
     
     constructor() {
 
@@ -36,7 +38,7 @@ export class BoardScene extends Phaser.Scene {
 
         GameManager.setCurrentScene(this);
 
-        BoardManager.init(this);
+        BoardManager.init();
 
         this.addAnimations();
 
@@ -53,6 +55,9 @@ export class BoardScene extends Phaser.Scene {
 
         this.gui = new GUI(this);
         this.add.existing(this.gui);
+
+        // TODO: BORRAR ESTO
+        // this.removeWaitingLayer();
     }
 
     public update(): void {
@@ -125,19 +130,12 @@ export class BoardScene extends Phaser.Scene {
         
         this.dice.matchOver();
         this.gui.matchOver();
+
+        this.outcomeLayer = new OutcomeLayer(this);
+        this.add.existing(this.outcomeLayer);
     }
 
     private addAnimations(): void {
-
-        // for (let i = 1; i <= 6; i ++) {
-        //     const config = {
-        //         key: "roll" + i,
-        //         frames: this.anims.generateFrameNumbers("dice_red" + i, {}),
-        //         frameRate: 24
-        //     };
-    
-        //     this.anims.create(config);
-        // }
 
         // la animación de espera
         this.anims.create({ 
@@ -155,12 +153,21 @@ export class BoardScene extends Phaser.Scene {
         });
 
         // el dado azul
-        this.anims.create({ 
-            key: "dice_blue_3", 
-            frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice_blue_3_", start: 1, end: 15, zeroPad: 2}), 
-            frameRate: 20
-        });
+        for (let i = 1; i <= 6; i ++) {
 
+            this.anims.create({ 
+                key: "dice_blue_" + i, 
+                frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice_blue_" + i + "_", start: 1, end: 17, zeroPad: 2}), 
+                frameRate: 26
+            });
+
+            this.anims.create({ 
+                key: "dice_pink_" + i, 
+                frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice_pink_" + i + "_", start: 1, end: 17, zeroPad: 2}), 
+                frameRate: 26
+            });
+        }
+        
         for (let i = 1; i <= 8; i ++) {
 
             this.anims.create({ 
@@ -169,5 +176,12 @@ export class BoardScene extends Phaser.Scene {
                 frameRate: 24,
             });
         }
+
+        // la animacion de la cinta
+        this.anims.create({ 
+            key: "ribbon", 
+            frames: this.anims.generateFrameNames("texture_atlas_1", { prefix: "victory_result_txt_", start: 1, end: 10, zeroPad: 2}), 
+            frameRate: 12
+        });
     }
 }

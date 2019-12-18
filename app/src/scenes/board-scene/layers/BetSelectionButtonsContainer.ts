@@ -1,9 +1,11 @@
 import { GameConstants } from "../../../GameConstants";
 import { BetSelectionButton } from "./BetSelectionButton";
+import { GameVars } from "../../../GameVars";
 
 export class BetSelectionButtonsContainer extends Phaser.GameObjects.Container {
 
     private buttons: BetSelectionButton[];
+    private outcomeLabel: Phaser.GameObjects.Text;
 
     constructor(scene: Phaser.Scene) {
 
@@ -26,9 +28,17 @@ export class BetSelectionButtonsContainer extends Phaser.GameObjects.Container {
 
             this.buttons.push(b);
         }
+
+        this.outcomeLabel = new Phaser.GameObjects.Text(this.scene, 0, 145, "IF YOU WIN YOU'LL GET", {fontFamily: "BladiTwo4F", fontSize: "26px", color: "#FFFFFF"});
+        this.outcomeLabel.visible = false;
+        this.outcomeLabel.setOrigin(.5);
+        this.add(this.outcomeLabel );
     }
 
     public betSelected(value: number): void {
+
+        this.outcomeLabel.visible = true;
+        this.outcomeLabel.text =  "IF YOU WIN YOU'LL GET " + GameVars.formatNumber(2 * value) + " wei";
 
         for (let i = 0; i < this.buttons.length; i++) {
             if (this.buttons[i].name !== value.toString()) {

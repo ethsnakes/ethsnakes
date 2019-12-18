@@ -1,50 +1,68 @@
 import { GameVars } from "../../../GameVars";
 import { GameConstants } from "../../../GameConstants";
+import { BoardScene } from "../BoardScene";
 
 export class OutcomeLayer extends Phaser.GameObjects.Container {
-
-    private container1: Phaser.GameObjects.Container;
-    private container2: Phaser.GameObjects.Container;
-    private f: number;
 
     constructor(scene: Phaser.Scene) {
 
         super(scene);
 
-        const w = 210;
-        const h = 100;
-
-        this.f = 0;
-        this.visible = false;
-
         const background = new Phaser.GameObjects.Graphics(this.scene);
-        background.fillStyle(0xFFFFFF, .8);
-        background.fillRect(0, 0, w, h);
+        background.fillStyle(0x000000, .7);
+        background.fillRect(0, 0, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
         this.add(background);
 
-        background.x = GameConstants.GAME_WIDTH / 2 - w / 2;
-        background.y = GameConstants.GAME_HEIGHT / 2 - h / 2;
+        const scaledItemsContainer = new Phaser.GameObjects.Container(this.scene);
+        scaledItemsContainer.x = GameConstants.GAME_WIDTH / 2;
+        scaledItemsContainer.y = 300;
+        scaledItemsContainer.scaleX = GameVars.scaleX;
+        this.add(scaledItemsContainer);
 
-        this.container1 = new Phaser.GameObjects.Container(this.scene);
-        this.container1.x = GameConstants.GAME_WIDTH / 2;
-        this.container1.y = 180 - 3;
-        this.add(this.container1);
+        if (GameVars.winner === GameConstants.PLAYER) {
 
-        this.container2 = new Phaser.GameObjects.Container(this.scene);
-        this.container2.x = GameConstants.GAME_WIDTH / 2;
-        this.container2.y = 180 + 3;
-        this.add(this.container2);
+            const star = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "victory_result_01");
+            scaledItemsContainer.add(star);
 
-        let label = new Phaser.GameObjects.Text(this.scene, 0, -45, "Y   U   W  N", {fontFamily: "RussoOne", fontSize: "35px", color: "#080893"}); 
-        label.setOrigin(.5);
-        this.container1.add(label);
+            this.scene.tweens.add({
+                targets: star,
+                scaleX: 1.15,
+                scaleY: 1.15,
+                ease: Phaser.Math.Easing.Cubic.InOut,
+                duration: 1000,
+                yoyo: true,
+                repeat: -1
+            });
 
-        label = new Phaser.GameObjects.Text(this.scene, -58, -45, "O", {fontFamily: "RussoOne", fontSize: "35px", color: "#080893"}); 
-        label.setOrigin(.5);
-        this.container2.add(label);
+            const badge = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "victory_result_02");
+            scaledItemsContainer.add(badge); 
 
-        label = new Phaser.GameObjects.Text(this.scene, 62, -45, "I", {fontFamily: "RussoOne", fontSize: "35px", color: "#080893"}); 
-        label.setOrigin(.5);
-        this.container2.add(label);
+            const ribbon = new Phaser.GameObjects.Sprite(this.scene, 0, 145, "texture_atlas_1", "victory_result_txt_01");
+            BoardScene.currentInstance.add.existing(ribbon);
+            scaledItemsContainer.add(ribbon); 
+
+            ribbon.play("ribbon");
+
+        } else {
+
+            const shadow = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "defeat_result_01");
+            scaledItemsContainer.add(shadow);
+
+            const badge = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "defeat_result_02");
+            scaledItemsContainer.add(badge); 
+
+            const ribbon = new Phaser.GameObjects.Image(this.scene, 0, 145, "texture_atlas_1", "defeat_result_txt");
+            scaledItemsContainer.add(ribbon); 
+
+            this.scene.tweens.add({
+                targets: shadow,
+                scaleX: 1.075,
+                scaleY: 1.075,
+                ease: Phaser.Math.Easing.Cubic.InOut,
+                duration: 1000,
+                yoyo: true,
+                repeat: -1
+            });
+        }
     }
 }

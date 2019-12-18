@@ -333,6 +333,49 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">texture_atlas_1/defeat_result_01.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>117,119,235,238</rect>
+                <key>scale9Paddings</key>
+                <rect>117,119,235,238</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/defeat_result_02.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>67,67,134,134</rect>
+                <key>scale9Paddings</key>
+                <rect>67,67,134,134</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/defeat_result_txt.png</key>
+            <key type="filename">texture_atlas_1/victory_result_txt_01.png</key>
+            <key type="filename">texture_atlas_1/victory_result_txt_02.png</key>
+            <key type="filename">texture_atlas_1/victory_result_txt_03.png</key>
+            <key type="filename">texture_atlas_1/victory_result_txt_10.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>85,29,170,57</rect>
+                <key>scale9Paddings</key>
+                <rect>85,29,170,57</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">texture_atlas_1/ladders_back.png</key>
             <key type="filename">texture_atlas_1/ladders_front.png</key>
             <struct type="IndividualSpriteSettings">
@@ -425,6 +468,110 @@
                 <rect>256,22,512,44</rect>
                 <key>scale9Paddings</key>
                 <rect>256,22,512,44</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/victory_result_01.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>113,113,226,225</rect>
+                <key>scale9Paddings</key>
+                <rect>113,113,226,225</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/victory_result_02.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>68,68,135,135</rect>
+                <key>scale9Paddings</key>
+                <rect>68,68,135,135</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/victory_result_txt_04.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>85,29,170,58</rect>
+                <key>scale9Paddings</key>
+                <rect>85,29,170,58</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/victory_result_txt_05.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>86,30,171,60</rect>
+                <key>scale9Paddings</key>
+                <rect>86,30,171,60</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/victory_result_txt_06.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>89,30,179,60</rect>
+                <key>scale9Paddings</key>
+                <rect>89,30,179,60</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/victory_result_txt_07.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>91,31,181,61</rect>
+                <key>scale9Paddings</key>
+                <rect>91,31,181,61</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/victory_result_txt_08.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>92,30,183,61</rect>
+                <key>scale9Paddings</key>
+                <rect>92,30,183,61</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/victory_result_txt_09.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>92,30,183,59</rect>
+                <key>scale9Paddings</key>
+                <rect>92,30,183,59</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

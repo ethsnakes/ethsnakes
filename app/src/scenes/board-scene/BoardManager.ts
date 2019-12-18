@@ -1,17 +1,12 @@
 import { GameVars } from "../../GameVars";
 import { GameConstants } from "../../GameConstants";
 import { BoardScene } from "./BoardScene";
-import { GameManager } from "../../GameManager";
 import { Chip } from "./Chip";
 import { BoardContainer } from "./BoardContainer";
 
 export class BoardManager {
-
-    private static scene: Phaser.Scene;
-   
-    public static init(scene: Phaser.Scene): void {
-
-        BoardManager.scene = scene;
+ 
+    public static init(): void {
        
         GameVars.diceBlocked = false;
         GameVars.turn = Math.random() > .5 ? GameConstants.PLAYER : GameConstants.BOT;
@@ -38,7 +33,7 @@ export class BoardManager {
     public static chipArrivedToItsPosition(chip: Chip): void {
 
         if (chip.cellIndex === 100) {
-            BoardManager.matchOver(chip.isPlayer);
+            BoardManager.matchOver(GameVars.turn);
         } else {
 
             let boardElement: {in: number, out: number, id: number} = null;
@@ -75,14 +70,8 @@ export class BoardManager {
 
         GameVars.diceBlocked = true;
 
-        // GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
+        GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
 
-        if (GameVars.turn === GameConstants.PLAYER) {
-            GameVars.diceResult = 2;
-        } else {
-            GameVars.diceResult = 3;
-        }
-        
         BoardScene.currentInstance.rollDice();
     }
 
@@ -105,11 +94,11 @@ export class BoardManager {
         BoardScene.currentInstance.showSettingsLayer();
     }
 
-    public static matchOver(hasPlayerWon: boolean): void {
-
-        console.log("PARTIDA TERMINADA HA GANADO:", hasPlayerWon ? "el jugador" : "el bot");
+    public static matchOver(winner: string): void {
 
         GameVars.matchOver = true;
+
+        GameVars.winner = winner;
 
         BoardScene.currentInstance.matchOver();
     }

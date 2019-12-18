@@ -30,7 +30,7 @@ export class SelectBetLayer extends Phaser.GameObjects.Container {
         this.betSelectionButtonsContainer = new BetSelectionButtonsContainer(this.scene);
         scaledItemsContainer.add(this.betSelectionButtonsContainer);
 
-        this.playButton = new Button(this.scene, 0, 550, "texture_atlas_1", "btn_play_off", "btn_play_on");
+        this.playButton = new Button(this.scene, 0, 585, "texture_atlas_1", "btn_play_off", "btn_play_on");
         this.playButton.setScale(0);
         this.playButton.onUp(this.onClickPlay, this);
         this.playButton.visible = false;

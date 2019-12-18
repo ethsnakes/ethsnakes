@@ -829,7 +829,7 @@ var BoardContainer = /** @class */ (function (_super) {
         }
         grid.stroke();
     };
-    BoardContainer.CELL_SIZE = 58;
+    BoardContainer.CELL_SIZE = 57;
     return BoardContainer;
 }(Phaser.GameObjects.Container));
 exports.BoardContainer = BoardContainer;
@@ -854,8 +854,7 @@ var BoardContainer_1 = __webpack_require__(/*! ./BoardContainer */ "./app/src/sc
 var BoardManager = /** @class */ (function () {
     function BoardManager() {
     }
-    BoardManager.init = function (scene) {
-        BoardManager.scene = scene;
+    BoardManager.init = function () {
         GameVars_1.GameVars.diceBlocked = false;
         GameVars_1.GameVars.turn = Math.random() > .5 ? GameConstants_1.GameConstants.PLAYER : GameConstants_1.GameConstants.BOT;
         GameVars_1.GameVars.matchOver = false;
@@ -875,7 +874,7 @@ var BoardManager = /** @class */ (function () {
     };
     BoardManager.chipArrivedToItsPosition = function (chip) {
         if (chip.cellIndex === 100) {
-            BoardManager.matchOver(chip.isPlayer);
+            BoardManager.matchOver(GameVars_1.GameVars.turn);
         }
         else {
             var boardElement = null;
@@ -906,13 +905,7 @@ var BoardManager = /** @class */ (function () {
     };
     BoardManager.rollDice = function () {
         GameVars_1.GameVars.diceBlocked = true;
-        // GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
-        if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER) {
-            GameVars_1.GameVars.diceResult = 2;
-        }
-        else {
-            GameVars_1.GameVars.diceResult = 3;
-        }
+        GameVars_1.GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
         BoardScene_1.BoardScene.currentInstance.rollDice();
     };
     BoardManager.onDiceResultAvailable = function () {
@@ -926,9 +919,9 @@ var BoardManager = /** @class */ (function () {
         GameVars_1.GameVars.paused = false;
         BoardScene_1.BoardScene.currentInstance.showSettingsLayer();
     };
-    BoardManager.matchOver = function (hasPlayerWon) {
-        console.log("PARTIDA TERMINADA HA GANADO:", hasPlayerWon ? "el jugador" : "el bot");
+    BoardManager.matchOver = function (winner) {
         GameVars_1.GameVars.matchOver = true;
+        GameVars_1.GameVars.winner = winner;
         BoardScene_1.BoardScene.currentInstance.matchOver();
     };
     BoardManager.changeTurn = function () {
@@ -982,6 +975,7 @@ var DiceContainer_1 = __webpack_require__(/*! ./gui/DiceContainer */ "./app/src/
 var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./app/src/GameVars.ts");
 var SelectBetLayer_1 = __webpack_require__(/*! ./layers/SelectBetLayer */ "./app/src/scenes/board-scene/layers/SelectBetLayer.ts");
 var WaitingLayer_1 = __webpack_require__(/*! ./layers/WaitingLayer */ "./app/src/scenes/board-scene/layers/WaitingLayer.ts");
+var OutcomeLayer_1 = __webpack_require__(/*! ./layers/OutcomeLayer */ "./app/src/scenes/board-scene/layers/OutcomeLayer.ts");
 var BoardScene = /** @class */ (function (_super) {
     __extends(BoardScene, _super);
     function BoardScene() {
@@ -991,7 +985,7 @@ var BoardScene = /** @class */ (function (_super) {
         this.add.text(-100, -100, "abcdefg", { fontFamily: "RussoOne", fontSize: 28, color: "#A6F834" });
         BoardScene.currentInstance = this;
         GameManager_1.GameManager.setCurrentScene(this);
-        BoardManager_1.BoardManager.init(this);
+        BoardManager_1.BoardManager.init();
         this.addAnimations();
         this.add.image(GameConstants_1.GameConstants.GAME_WIDTH / 2, GameConstants_1.GameConstants.GAME_HEIGHT / 2, "texture_atlas_1", "background");
         this.dice = new DiceContainer_1.DiceContainer(this);
@@ -1002,6 +996,8 @@ var BoardScene = /** @class */ (function (_super) {
         this.add.existing(this.boardContainer);
         this.gui = new GUI_1.GUI(this);
         this.add.existing(this.gui);
+        // TODO: BORRAR ESTO
+        // this.removeWaitingLayer();
     };
     BoardScene.prototype.update = function () {
         if (this.waitingLayer) {
@@ -1048,16 +1044,10 @@ var BoardScene = /** @class */ (function (_super) {
     BoardScene.prototype.matchOver = function () {
         this.dice.matchOver();
         this.gui.matchOver();
+        this.outcomeLayer = new OutcomeLayer_1.OutcomeLayer(this);
+        this.add.existing(this.outcomeLayer);
     };
     BoardScene.prototype.addAnimations = function () {
-        // for (let i = 1; i <= 6; i ++) {
-        //     const config = {
-        //         key: "roll" + i,
-        //         frames: this.anims.generateFrameNumbers("dice_red" + i, {}),
-        //         frameRate: 24
-        //     };
-        //     this.anims.create(config);
-        // }
         // la animación de espera
         this.anims.create({
             key: "waiting",
@@ -1072,11 +1062,18 @@ var BoardScene = /** @class */ (function (_super) {
             frameRate: 24,
         });
         // el dado azul
-        this.anims.create({
-            key: "dice_blue_3",
-            frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice_blue_3_", start: 1, end: 15, zeroPad: 2 }),
-            frameRate: 20
-        });
+        for (var i = 1; i <= 6; i++) {
+            this.anims.create({
+                key: "dice_blue_" + i,
+                frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice_blue_" + i + "_", start: 1, end: 17, zeroPad: 2 }),
+                frameRate: 26
+            });
+            this.anims.create({
+                key: "dice_pink_" + i,
+                frames: this.anims.generateFrameNames("texture_atlas_4", { prefix: "dice_pink_" + i + "_", start: 1, end: 17, zeroPad: 2 }),
+                frameRate: 26
+            });
+        }
         for (var i = 1; i <= 8; i++) {
             this.anims.create({
                 key: "snake_swallow_" + i,
@@ -1084,6 +1081,12 @@ var BoardScene = /** @class */ (function (_super) {
                 frameRate: 24,
             });
         }
+        // la animacion de la cinta
+        this.anims.create({
+            key: "ribbon",
+            frames: this.anims.generateFrameNames("texture_atlas_1", { prefix: "victory_result_txt_", start: 1, end: 10, zeroPad: 2 }),
+            frameRate: 12
+        });
     };
     return BoardScene;
 }(Phaser.Scene));
@@ -1187,8 +1190,8 @@ var Chip = /** @class */ (function (_super) {
                 this.scene.tweens.add({
                     targets: this,
                     scaleY: 1,
-                    ease: Phaser.Math.Easing.Cubic.Out,
-                    duration: 300,
+                    ease: Phaser.Math.Easing.Elastic.Out,
+                    duration: 900,
                     delay: 600,
                     onComplete: BoardManager_1.BoardManager.chipArrivedToItsFinalPosition,
                     onCompleteScope: BoardManager_1.BoardManager
@@ -1408,6 +1411,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var GameVars_1 = __webpack_require__(/*! ../../../GameVars */ "./app/src/GameVars.ts");
 var Utils_1 = __webpack_require__(/*! ../../../utils/Utils */ "./app/src/utils/Utils.ts");
 var BoardManager_1 = __webpack_require__(/*! ../BoardManager */ "./app/src/scenes/board-scene/BoardManager.ts");
+var GameConstants_1 = __webpack_require__(/*! ../../../GameConstants */ "./app/src/GameConstants.ts");
 var DevelopmentMenu = /** @class */ (function (_super) {
     __extends(DevelopmentMenu, _super);
     function DevelopmentMenu(scene) {
@@ -1433,10 +1437,10 @@ var DevelopmentMenu = /** @class */ (function (_super) {
         return _this;
     }
     DevelopmentMenu.prototype.onClickWin = function () {
-        BoardManager_1.BoardManager.matchOver(true);
+        BoardManager_1.BoardManager.matchOver(GameConstants_1.GameConstants.PLAYER);
     };
     DevelopmentMenu.prototype.onClickLose = function () {
-        BoardManager_1.BoardManager.matchOver(false);
+        BoardManager_1.BoardManager.matchOver(GameConstants_1.GameConstants.BOT);
     };
     return DevelopmentMenu;
 }(Phaser.GameObjects.Container));
@@ -1476,13 +1480,12 @@ var DiceContainer = /** @class */ (function (_super) {
     __extends(DiceContainer, _super);
     function DiceContainer(scene) {
         var _this = _super.call(this, scene) || this;
-        _this.botDice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 150 * GameVars_1.GameVars.scaleX, 280, "texture_atlas_4", "dice_blue_3_01");
+        _this.botDice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 95 * GameVars_1.GameVars.scaleX, 340, "texture_atlas_4", "dice_blue_3_01");
         BoardScene_1.BoardScene.currentInstance.add.existing(_this.botDice);
         _this.botDice.visible = false;
         _this.add(_this.botDice);
         _this.botDice.on("animationcomplete", _this.onAnimationComplete, _this);
-        _this.playerDice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 115 * GameVars_1.GameVars.scaleX, 300, "texture_atlas_4", "dice2_red_01");
-        _this.playerDice.setScale(.5);
+        _this.playerDice = new Phaser.GameObjects.Sprite(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 95 * GameVars_1.GameVars.scaleX, 430, "texture_atlas_4", "dice_pink_3_01");
         BoardScene_1.BoardScene.currentInstance.add.existing(_this.playerDice);
         _this.playerDice.visible = false;
         _this.add(_this.playerDice);
@@ -1493,7 +1496,7 @@ var DiceContainer = /** @class */ (function (_super) {
         if (GameVars_1.GameVars.turn === GameConstants_1.GameConstants.PLAYER) {
             this.botDice.visible = false;
             this.playerDice.visible = true;
-            this.playerDice.play("dice_red_" + i);
+            this.playerDice.play("dice_pink_" + i);
         }
         else {
             this.playerDice.visible = false;
@@ -1564,6 +1567,15 @@ var GUI = /** @class */ (function (_super) {
         _this.playButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.playButton.onUp(_this.onClickPlay, _this);
         _this.add(_this.playButton);
+        _this.scene.tweens.add({
+            targets: _this.playButton,
+            scaleX: 1.05,
+            scaleY: 1.05,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 350,
+            yoyo: true,
+            repeat: -1
+        });
         _this.addFundsButton = new Utils_1.Button(_this.scene, 530, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
         _this.addFundsButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.addFundsButton.onUp(_this.onClickAddFunds, _this);
@@ -1777,6 +1789,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameConstants_1 = __webpack_require__(/*! ../../../GameConstants */ "./app/src/GameConstants.ts");
 var BetSelectionButton_1 = __webpack_require__(/*! ./BetSelectionButton */ "./app/src/scenes/board-scene/layers/BetSelectionButton.ts");
+var GameVars_1 = __webpack_require__(/*! ../../../GameVars */ "./app/src/GameVars.ts");
 var BetSelectionButtonsContainer = /** @class */ (function (_super) {
     __extends(BetSelectionButtonsContainer, _super);
     function BetSelectionButtonsContainer(scene) {
@@ -1793,9 +1806,15 @@ var BetSelectionButtonsContainer = /** @class */ (function (_super) {
             _this.add(b);
             _this.buttons.push(b);
         }
+        _this.outcomeLabel = new Phaser.GameObjects.Text(_this.scene, 0, 145, "IF YOU WIN YOU'LL GET", { fontFamily: "BladiTwo4F", fontSize: "26px", color: "#FFFFFF" });
+        _this.outcomeLabel.visible = false;
+        _this.outcomeLabel.setOrigin(.5);
+        _this.add(_this.outcomeLabel);
         return _this;
     }
     BetSelectionButtonsContainer.prototype.betSelected = function (value) {
+        this.outcomeLabel.visible = true;
+        this.outcomeLabel.text = "IF YOU WIN YOU'LL GET " + GameVars_1.GameVars.formatNumber(2 * value) + " wei";
         for (var i = 0; i < this.buttons.length; i++) {
             if (this.buttons[i].name !== value.toString()) {
                 this.buttons[i].disableButton();
@@ -1805,6 +1824,90 @@ var BetSelectionButtonsContainer = /** @class */ (function (_super) {
     return BetSelectionButtonsContainer;
 }(Phaser.GameObjects.Container));
 exports.BetSelectionButtonsContainer = BetSelectionButtonsContainer;
+
+
+/***/ }),
+
+/***/ "./app/src/scenes/board-scene/layers/OutcomeLayer.ts":
+/*!***********************************************************!*\
+  !*** ./app/src/scenes/board-scene/layers/OutcomeLayer.ts ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameVars_1 = __webpack_require__(/*! ../../../GameVars */ "./app/src/GameVars.ts");
+var GameConstants_1 = __webpack_require__(/*! ../../../GameConstants */ "./app/src/GameConstants.ts");
+var BoardScene_1 = __webpack_require__(/*! ../BoardScene */ "./app/src/scenes/board-scene/BoardScene.ts");
+var OutcomeLayer = /** @class */ (function (_super) {
+    __extends(OutcomeLayer, _super);
+    function OutcomeLayer(scene) {
+        var _this = _super.call(this, scene) || this;
+        var background = new Phaser.GameObjects.Graphics(_this.scene);
+        background.fillStyle(0x000000, .7);
+        background.fillRect(0, 0, GameConstants_1.GameConstants.GAME_WIDTH, GameConstants_1.GameConstants.GAME_HEIGHT);
+        _this.add(background);
+        var scaledItemsContainer = new Phaser.GameObjects.Container(_this.scene);
+        scaledItemsContainer.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
+        scaledItemsContainer.y = 300;
+        scaledItemsContainer.scaleX = GameVars_1.GameVars.scaleX;
+        _this.add(scaledItemsContainer);
+        if (GameVars_1.GameVars.winner === GameConstants_1.GameConstants.PLAYER) {
+            var star = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "victory_result_01");
+            scaledItemsContainer.add(star);
+            _this.scene.tweens.add({
+                targets: star,
+                scaleX: 1.15,
+                scaleY: 1.15,
+                ease: Phaser.Math.Easing.Cubic.InOut,
+                duration: 1000,
+                yoyo: true,
+                repeat: -1
+            });
+            var badge = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "victory_result_02");
+            scaledItemsContainer.add(badge);
+            var ribbon = new Phaser.GameObjects.Sprite(_this.scene, 0, 145, "texture_atlas_1", "victory_result_txt_01");
+            BoardScene_1.BoardScene.currentInstance.add.existing(ribbon);
+            scaledItemsContainer.add(ribbon);
+            ribbon.play("ribbon");
+        }
+        else {
+            var shadow = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "defeat_result_01");
+            scaledItemsContainer.add(shadow);
+            var badge = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "defeat_result_02");
+            scaledItemsContainer.add(badge);
+            var ribbon = new Phaser.GameObjects.Image(_this.scene, 0, 145, "texture_atlas_1", "defeat_result_txt");
+            scaledItemsContainer.add(ribbon);
+            _this.scene.tweens.add({
+                targets: shadow,
+                scaleX: 1.075,
+                scaleY: 1.075,
+                ease: Phaser.Math.Easing.Cubic.InOut,
+                duration: 1000,
+                yoyo: true,
+                repeat: -1
+            });
+        }
+        return _this;
+    }
+    return OutcomeLayer;
+}(Phaser.GameObjects.Container));
+exports.OutcomeLayer = OutcomeLayer;
 
 
 /***/ }),
@@ -1852,7 +1955,7 @@ var SelectBetLayer = /** @class */ (function (_super) {
         _this.add(scaledItemsContainer);
         _this.betSelectionButtonsContainer = new BetSelectionButtonsContainer_1.BetSelectionButtonsContainer(_this.scene);
         scaledItemsContainer.add(_this.betSelectionButtonsContainer);
-        _this.playButton = new Utils_1.Button(_this.scene, 0, 550, "texture_atlas_1", "btn_play_off", "btn_play_on");
+        _this.playButton = new Utils_1.Button(_this.scene, 0, 585, "texture_atlas_1", "btn_play_off", "btn_play_on");
         _this.playButton.setScale(0);
         _this.playButton.onUp(_this.onClickPlay, _this);
         _this.playButton.visible = false;
@@ -1966,7 +2069,7 @@ var WaitingLayer = /** @class */ (function (_super) {
         _this.scene.add.existing(waitingAnimation);
         waitingAnimation.play("waiting");
         scaledItemsContainer.add(waitingAnimation);
-        _this.connectingLabel = new Phaser.GameObjects.Text(_this.scene, 0, 450, "CONNECTING TO ETHEREUM", { fontFamily: "RussoOne", fontSize: "40px", color: "#FFFFFF" });
+        _this.connectingLabel = new Phaser.GameObjects.Text(_this.scene, 0, 450, "MINING TRANSACTION", { fontFamily: "RussoOne", fontSize: "40px", color: "#FFFFFF" });
         _this.connectingLabel.setOrigin(.5);
         scaledItemsContainer.add(_this.connectingLabel);
         var infoLabelSmartContract = new Phaser.GameObjects.Text(_this.scene, 0, 520, "Smart contract address", { fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF" });
