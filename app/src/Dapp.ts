@@ -40,7 +40,7 @@ export class Dapp {
         // for testing
         let value = Web3.utils.toWei('0.1', 'ether');
         let amount = Web3.utils.toWei('0.001', 'ether');
-        this.playNow(value, amount);
+        // this.playNow(value, amount);
     }
 
     public async loadAccount() {
@@ -97,7 +97,7 @@ export class Dapp {
         let eth_address = document.createElement("span");
         let eth_msg = document.createElement("span");
         let eth_balancediff = document.createElement("span");
-        let blockie = Blockies.create({ seed: this.account, color: "#64f06e", bgcolor: "#009aa4", scale: 3 });
+        let blockie = Blockies.create({ seed: this.account, color: "#019DB0", bgcolor: "#CBE942", scale: 3 });
         stream_msg.className = 'stream-msg result-' + result;
         eth_blockie.className = 'eth-blockie';
         eth_blockie.style.backgroundImage = 'url(' + blockie.toDataURL() + ')';

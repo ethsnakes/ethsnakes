@@ -163,7 +163,7 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>1</uint>
+            <uint>0</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>
@@ -226,7 +226,6 @@
             <key type="filename">texture_atlas_3/waiting_loop_43.png</key>
             <key type="filename">texture_atlas_3/waiting_loop_44.png</key>
             <key type="filename">texture_atlas_3/waiting_loop_45.png</key>
-            <key type="filename">texture_atlas_3/waiting_loop_46.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

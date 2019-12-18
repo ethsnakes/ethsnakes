@@ -1,3 +1,6 @@
+/*
+ * Variables
+ */
 *, *:before, *:after {
   box-sizing: border-box;
   margin: 0;
@@ -42,6 +45,14 @@ input {
   @media (max-width: 1500px) {
     #stream {
       display: none; } }
+  #stream #links {
+    padding: 10px;
+    color: #fff;
+    text-align: right; }
+    #stream #links a {
+      color: #fff;
+      text-decoration: none;
+      font-family: monospace; }
   #stream #stream-title {
     margin: 0 5px;
     padding: 10px 10px 6px;
@@ -64,7 +75,7 @@ input {
     line-height: 24px;
     border-radius: 3px; }
     #stream #stream-content .stream-msg.result-true {
-      background: #e2de64;
+      background: #FADF03;
       box-shadow: 0 0 4px; }
       #stream #stream-content .stream-msg.result-true .eth-balancediff {
         margin-left: 8px; }

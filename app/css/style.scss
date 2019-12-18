@@ -1,3 +1,18 @@
+/*
+ * Variables
+ */
+
+$color-magenta: #E9466B;
+$color-blue: #019DB0;
+$color-sky: #19D3C5;
+$color-green: #87B723;
+$color-apple: #CBE942;
+$color-darkgreen: #54821D;
+$color-clearorange: #C6753F;
+$color-clearyellow: #FFE3A1;
+$color-orange: #F08005;
+$color-yellow: #FADF03;
+
 *, *:before, *:after {
   box-sizing: border-box;
   margin: 0;
@@ -54,6 +69,16 @@ input {
   @media(max-width: 1500px) {
     display: none;
   }
+  #links {
+    padding: 10px;
+    color: #fff;
+    text-align: right;
+    a {
+      color: #fff;
+      text-decoration: none;
+      font-family: monospace;
+    }
+  }
   #stream-title {
     margin: 0 5px;
     padding: 10px 10px 6px;
@@ -81,7 +106,7 @@ input {
       line-height: 24px;
       border-radius: 3px;
       &.result-true {
-        background: #e2de64;
+        background: $color-yellow;
         box-shadow: 0 0 4px;
         .eth-balancediff {
           margin-left: 8px;

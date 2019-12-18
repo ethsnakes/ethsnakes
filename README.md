@@ -17,15 +17,10 @@ truffle migrate --network dev
 npm run dev
 ```
 
-## Paleta
+## Apuestas iniciales
 
-E9466B
-019DB0
-19D3C5
-87B723
-CBE942
-54821D
-C6753F
-FFE3A1
-F08005
-FADF03
+* 0.01 ETH
+* 0.02 ETH
+* 0.05 ETH
+* 0.1 ETH
+* 0.2 ETH

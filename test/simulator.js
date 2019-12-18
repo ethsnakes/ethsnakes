@@ -22,6 +22,7 @@ contract('SnakesAndLadders Simulation', (accounts) => {
     // Test 2 (10.000) - 12/11/2019: winners: 4988, losers: 5012, avg gas: 81204.2446 (50.12%)
     // Test 3 (50.000) - 13/11/2019: winners: 24930, losers: 25070, avg gas: 81279.03442 (50.14%)
     // Test 4 (10.000) - 13/11/2019: (ALWAYS STARTS MACHINE), winners: 4938 losers: 5062, avg gas: 81072.6702 (50.62%)
+    // Fees on gas are less than 0.005 (more like 0.001) which is less than one cent
     // Test 5 - 30%-70%
 
     describe("simulate", function() {

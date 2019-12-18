@@ -319,32 +319,6 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">texture_atlas_1/button-radio-green-off.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>20,20,40,40</rect>
-                <key>scale9Paddings</key>
-                <rect>20,20,40,40</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">texture_atlas_1/button-radio-green-on.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>26,20,51,40</rect>
-                <key>scale9Paddings</key>
-                <rect>26,20,51,40</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
             <key type="filename">texture_atlas_1/chip_bot.png</key>
             <key type="filename">texture_atlas_1/chip_player.png</key>
             <struct type="IndividualSpriteSettings">
@@ -356,54 +330,6 @@
                 <rect>13,39,26,77</rect>
                 <key>scale9Paddings</key>
                 <rect>13,39,26,77</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">texture_atlas_1/dice2_blue_01.png</key>
-            <key type="filename">texture_atlas_1/dice2_blue_02.png</key>
-            <key type="filename">texture_atlas_1/dice2_blue_03.png</key>
-            <key type="filename">texture_atlas_1/dice2_blue_04.png</key>
-            <key type="filename">texture_atlas_1/dice2_blue_05.png</key>
-            <key type="filename">texture_atlas_1/dice2_blue_06.png</key>
-            <key type="filename">texture_atlas_1/dice2_blue_07.png</key>
-            <key type="filename">texture_atlas_1/dice2_blue_08.png</key>
-            <key type="filename">texture_atlas_1/dice2_blue_09.png</key>
-            <key type="filename">texture_atlas_1/dice2_blue_10.png</key>
-            <key type="filename">texture_atlas_1/dice2_blue_11.png</key>
-            <key type="filename">texture_atlas_1/dice2_blue_12.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>45,236,90,473</rect>
-                <key>scale9Paddings</key>
-                <rect>45,236,90,473</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">texture_atlas_1/dice2_red_01.png</key>
-            <key type="filename">texture_atlas_1/dice2_red_02.png</key>
-            <key type="filename">texture_atlas_1/dice2_red_03.png</key>
-            <key type="filename">texture_atlas_1/dice2_red_04.png</key>
-            <key type="filename">texture_atlas_1/dice2_red_05.png</key>
-            <key type="filename">texture_atlas_1/dice2_red_06.png</key>
-            <key type="filename">texture_atlas_1/dice2_red_07.png</key>
-            <key type="filename">texture_atlas_1/dice2_red_08.png</key>
-            <key type="filename">texture_atlas_1/dice2_red_09.png</key>
-            <key type="filename">texture_atlas_1/dice2_red_10.png</key>
-            <key type="filename">texture_atlas_1/dice2_red_11.png</key>
-            <key type="filename">texture_atlas_1/dice2_red_12.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>47,237,95,475</rect>
-                <key>scale9Paddings</key>
-                <rect>47,237,95,475</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -470,6 +396,22 @@
                 <rect>93,25,185,49</rect>
                 <key>scale9Paddings</key>
                 <rect>93,25,185,49</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/tick_mark_0_off.png</key>
+            <key type="filename">texture_atlas_1/tick_mark_0_on.png</key>
+            <key type="filename">texture_atlas_1/tick_mark_1_off.png</key>
+            <key type="filename">texture_atlas_1/tick_mark_1_on.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>23,23,45,45</rect>
+                <key>scale9Paddings</key>
+                <rect>23,23,45,45</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
