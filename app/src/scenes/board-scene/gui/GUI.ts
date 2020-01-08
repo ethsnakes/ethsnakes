@@ -13,7 +13,7 @@ export class GUI extends Phaser.GameObjects.Container {
     private retrieveFundsButton: Button;
     private playButton: Button;
     private diceButtonTween: Phaser.Tweens.Tween;
-
+  
     constructor(scene: Phaser.Scene) {
 
         super(scene);
@@ -22,7 +22,7 @@ export class GUI extends Phaser.GameObjects.Container {
 
         this.playButton = new Button(this.scene, playButtonPosition.x, playButtonPosition.y, "texture_atlas_1", "btn_play_off", "btn_play_on");
         this.playButton.scaleX = GameVars.scaleX;
-        this.playButton.onUp(this.onClickPlay, this);
+        this.playButton.onDown(this.onClickPlay, this);
         this.add(this.playButton);
 
         this.scene.tweens.add({
@@ -52,7 +52,7 @@ export class GUI extends Phaser.GameObjects.Container {
 
         this.diceButton = new Button(this.scene, playButtonPosition.x, playButtonPosition.y, "texture_atlas_1", "btn_dice_off", "btn_dice_on");
         this.diceButton.scaleX = GameVars.scaleX;
-        this.diceButton.onUp(this.onClickDiceButton, this);
+        this.diceButton.onDown(this.onClickDiceButton, this);
         this.diceButton.visible = false;
         this.add(this.diceButton);
 
@@ -127,8 +127,6 @@ export class GUI extends Phaser.GameObjects.Container {
 
     public matchOver(): void {
 
-        this.playButton.visible = true;
-
         this.addFundsButton.alpha = 1;
         this.addFundsButton.setInteractive();
         
@@ -178,6 +176,7 @@ export class GUI extends Phaser.GameObjects.Container {
         }
 
         if (this.diceButtonTween) {
+
             this.diceButtonTween.stop();
             this.diceButtonTween = null;
 

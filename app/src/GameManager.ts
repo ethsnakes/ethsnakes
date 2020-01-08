@@ -56,7 +56,7 @@ export class GameManager {
         GameManager.enterBoardScene();
     }
 
-    public static enterBoardScene(difficulty?: string): void {
+    public static enterBoardScene(): void {
 
         GameVars.currentScene.scene.start("BoardScene");
     }
@@ -71,6 +71,11 @@ export class GameManager {
         BoardManager.resetBoard();
     
         BoardScene.currentInstance.showSelectBetLayer();
+    }
+
+    public static replay(): void {
+
+        GameManager.enterBoardScene();
     }
 
     public static connectToEthereum(): void {

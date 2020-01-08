@@ -30,7 +30,7 @@ export class BoardManager {
         //
     }
 
-    public static chipArrivedToItsPosition(chip: Chip): void {
+    public static   chipArrivedToItsPosition(chip: Chip): void {
 
         if (chip.cellIndex === 100) {
             BoardManager.matchOver(GameVars.turn);
@@ -46,7 +46,9 @@ export class BoardManager {
             }
 
             if (boardElement === null) {
+
                 BoardManager.changeTurn();
+
             } else {
                 if (boardElement.out > chip.cellIndex) {
                     chip.moveInLadder(boardElement.out);
@@ -72,6 +74,8 @@ export class BoardManager {
 
         GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
 
+        GameVars.diceResult = 2;
+        
         BoardScene.currentInstance.rollDice();
     }
 

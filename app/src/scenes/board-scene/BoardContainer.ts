@@ -1,7 +1,6 @@
 import { GameConstants } from "../../GameConstants";
 import { GameVars } from "../../GameVars";
 import { Chip } from "./Chip";
-import { BoardScene } from "./BoardScene";
 import { Snake } from "./layers/Snake";
 
 export class BoardContainer extends Phaser.GameObjects.Container {

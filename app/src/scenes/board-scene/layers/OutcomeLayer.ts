@@ -1,8 +1,12 @@
 import { GameVars } from "../../../GameVars";
 import { GameConstants } from "../../../GameConstants";
 import { BoardScene } from "../BoardScene";
+import { Button } from "../../../utils/Utils";
+import { GameManager } from "../../../GameManager";
 
 export class OutcomeLayer extends Phaser.GameObjects.Container {
+
+    private scaledItemsContainer: Phaser.GameObjects.Container;
 
     constructor(scene: Phaser.Scene) {
 
@@ -13,16 +17,16 @@ export class OutcomeLayer extends Phaser.GameObjects.Container {
         background.fillRect(0, 0, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
         this.add(background);
 
-        const scaledItemsContainer = new Phaser.GameObjects.Container(this.scene);
-        scaledItemsContainer.x = GameConstants.GAME_WIDTH / 2;
-        scaledItemsContainer.y = 300;
-        scaledItemsContainer.scaleX = GameVars.scaleX;
-        this.add(scaledItemsContainer);
+        this.scaledItemsContainer = new Phaser.GameObjects.Container(this.scene);
+        this.scaledItemsContainer.x = GameConstants.GAME_WIDTH / 2;
+        this.scaledItemsContainer.y = 300;
+        this.scaledItemsContainer.scaleX = GameVars.scaleX;
+        this.add(this.scaledItemsContainer);
 
         if (GameVars.winner === GameConstants.PLAYER) {
 
             const star = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "victory_result_01");
-            scaledItemsContainer.add(star);
+            this.scaledItemsContainer.add(star);
 
             this.scene.tweens.add({
                 targets: star,
@@ -35,24 +39,24 @@ export class OutcomeLayer extends Phaser.GameObjects.Container {
             });
 
             const badge = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "victory_result_02");
-            scaledItemsContainer.add(badge); 
+            this.scaledItemsContainer.add(badge); 
 
             const ribbon = new Phaser.GameObjects.Sprite(this.scene, 0, 145, "texture_atlas_1", "victory_result_txt_01");
             BoardScene.currentInstance.add.existing(ribbon);
-            scaledItemsContainer.add(ribbon); 
+            this.scaledItemsContainer.add(ribbon); 
 
             ribbon.play("ribbon");
 
         } else {
 
             const shadow = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "defeat_result_01");
-            scaledItemsContainer.add(shadow);
+            this.scaledItemsContainer.add(shadow);
 
             const badge = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "defeat_result_02");
-            scaledItemsContainer.add(badge); 
+            this.scaledItemsContainer.add(badge); 
 
             const ribbon = new Phaser.GameObjects.Image(this.scene, 0, 145, "texture_atlas_1", "defeat_result_txt");
-            scaledItemsContainer.add(ribbon); 
+            this.scaledItemsContainer.add(ribbon); 
 
             this.scene.tweens.add({
                 targets: shadow,
@@ -64,5 +68,42 @@ export class OutcomeLayer extends Phaser.GameObjects.Container {
                 repeat: -1
             });
         }
+
+        this.alpha = 0;
+
+        this.scene.tweens.add({
+            targets: this,
+            alpha: 1,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 800,
+            delay: 1000,
+            onComplete: this.showReplayItems,
+            onCompleteScope: this
+        });
+    }
+
+    private showReplayItems(): void {
+
+        const replayLabel = new Phaser.GameObjects.Text(this.scene, 0, 270, "REPLAY?", {fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "64px", color: "#FFFFFF"});
+        replayLabel.setOrigin(.5);
+        replayLabel.alpha = 0;
+        this.scaledItemsContainer.add(replayLabel);
+
+        const replayButton = new Button(this.scene, 0, 370, "texture_atlas_1", "btn_play_off", "btn_play_on");
+        replayButton.alpha = 0;
+        replayButton.onDown(this.onClickReplay, this);
+        this.scaledItemsContainer.add(replayButton);
+
+        this.scene.tweens.add({
+            targets: [replayLabel, replayButton],
+            alpha: 1,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 450
+        });
+    }
+
+    private onClickReplay(): void {
+        
+        GameManager.replay();
     }
 }
