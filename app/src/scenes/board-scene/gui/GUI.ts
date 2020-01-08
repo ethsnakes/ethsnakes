@@ -65,8 +65,7 @@ export class GUI extends Phaser.GameObjects.Container {
     public startGame(): void {
 
         this.playButton.visible = false;
-        this.diceButton.visible = true;
-
+        
         this.addFundsButton.alpha = .375;
         this.retrieveFundsButton.alpha = .375;
 
@@ -85,8 +84,11 @@ export class GUI extends Phaser.GameObjects.Container {
                 repeat: -1
             });
 
+            this.diceButton.visible = true;
+
         } else {
             this.diceButtonTween = null;
+            this.diceButton.visible = false;
         }
     }
 

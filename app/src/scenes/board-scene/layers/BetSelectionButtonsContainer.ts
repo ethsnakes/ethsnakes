@@ -15,7 +15,7 @@ export class BetSelectionButtonsContainer extends Phaser.GameObjects.Container {
 
         this.buttons = [];
 
-        const infoLabelBet = new Phaser.GameObjects.Text(this.scene, 0, -115, "SELECT YOUR BET", {fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "50px", color: "#FEB403"});
+        const infoLabelBet = new Phaser.GameObjects.Text(this.scene, 0, -125, "SELECT YOUR BET", {fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "66px", color: "#FEB403"});
         infoLabelBet.setOrigin(.5);
         this.add(infoLabelBet);
 
@@ -29,7 +29,7 @@ export class BetSelectionButtonsContainer extends Phaser.GameObjects.Container {
             this.buttons.push(b);
         }
 
-        this.outcomeLabel = new Phaser.GameObjects.Text(this.scene, 0, 145, "IF YOU WIN YOU'LL GET", {fontFamily: "BladiTwo4F", fontSize: "26px", color: "#FFFFFF"});
+        this.outcomeLabel = new Phaser.GameObjects.Text(this.scene, 0, 155, "IF YOU WIN YOU'LL GET", {fontFamily: "BladiTwo4F", fontSize: "32px", color: "#FFFFFF"});
         this.outcomeLabel.visible = false;
         this.outcomeLabel.setOrigin(.5);
         this.add(this.outcomeLabel );

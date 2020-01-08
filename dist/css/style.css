@@ -45,6 +45,14 @@ input {
   @media (max-width: 1500px) {
     #stream {
       display: none; } }
+  #stream #links {
+    padding: 10px;
+    color: #fff;
+    text-align: right; }
+    #stream #links a {
+      color: #fff;
+      text-decoration: none;
+      font-family: monospace; }
   #stream #stream-title {
     margin: 0 5px;
     padding: 10px 10px 6px;

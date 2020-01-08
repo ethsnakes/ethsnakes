@@ -198,6 +198,8 @@
             <key type="filename">texture_atlas_2/snake_1_15.png</key>
             <key type="filename">texture_atlas_2/snake_1_16.png</key>
             <key type="filename">texture_atlas_2/snake_1_17.png</key>
+            <key type="filename">texture_atlas_2/snake_1_blink_01.png</key>
+            <key type="filename">texture_atlas_2/snake_1_blink_02.png</key>
             <key type="filename">texture_atlas_2/snake_2_01.png</key>
             <key type="filename">texture_atlas_2/snake_2_02.png</key>
             <key type="filename">texture_atlas_2/snake_2_03.png</key>
@@ -215,6 +217,8 @@
             <key type="filename">texture_atlas_2/snake_2_15.png</key>
             <key type="filename">texture_atlas_2/snake_2_16.png</key>
             <key type="filename">texture_atlas_2/snake_2_17.png</key>
+            <key type="filename">texture_atlas_2/snake_2_blink_01.png</key>
+            <key type="filename">texture_atlas_2/snake_2_blink_02.png</key>
             <key type="filename">texture_atlas_2/snake_3_01.png</key>
             <key type="filename">texture_atlas_2/snake_3_02.png</key>
             <key type="filename">texture_atlas_2/snake_3_03.png</key>
@@ -232,6 +236,8 @@
             <key type="filename">texture_atlas_2/snake_3_15.png</key>
             <key type="filename">texture_atlas_2/snake_3_16.png</key>
             <key type="filename">texture_atlas_2/snake_3_17.png</key>
+            <key type="filename">texture_atlas_2/snake_3_blink_01.png</key>
+            <key type="filename">texture_atlas_2/snake_3_blink_02.png</key>
             <key type="filename">texture_atlas_2/snake_4_01.png</key>
             <key type="filename">texture_atlas_2/snake_4_02.png</key>
             <key type="filename">texture_atlas_2/snake_4_03.png</key>
@@ -249,6 +255,8 @@
             <key type="filename">texture_atlas_2/snake_4_15.png</key>
             <key type="filename">texture_atlas_2/snake_4_16.png</key>
             <key type="filename">texture_atlas_2/snake_4_17.png</key>
+            <key type="filename">texture_atlas_2/snake_4_blink_01.png</key>
+            <key type="filename">texture_atlas_2/snake_4_blink_02.png</key>
             <key type="filename">texture_atlas_2/snake_5_01.png</key>
             <key type="filename">texture_atlas_2/snake_5_02.png</key>
             <key type="filename">texture_atlas_2/snake_5_03.png</key>
@@ -266,6 +274,8 @@
             <key type="filename">texture_atlas_2/snake_5_15.png</key>
             <key type="filename">texture_atlas_2/snake_5_16.png</key>
             <key type="filename">texture_atlas_2/snake_5_17.png</key>
+            <key type="filename">texture_atlas_2/snake_5_blink_01.png</key>
+            <key type="filename">texture_atlas_2/snake_5_blink_02.png</key>
             <key type="filename">texture_atlas_2/snake_6_01.png</key>
             <key type="filename">texture_atlas_2/snake_6_02.png</key>
             <key type="filename">texture_atlas_2/snake_6_03.png</key>
@@ -283,6 +293,8 @@
             <key type="filename">texture_atlas_2/snake_6_15.png</key>
             <key type="filename">texture_atlas_2/snake_6_16.png</key>
             <key type="filename">texture_atlas_2/snake_6_17.png</key>
+            <key type="filename">texture_atlas_2/snake_6_blink_01.png</key>
+            <key type="filename">texture_atlas_2/snake_6_blink_02.png</key>
             <key type="filename">texture_atlas_2/snake_7_01.png</key>
             <key type="filename">texture_atlas_2/snake_7_02.png</key>
             <key type="filename">texture_atlas_2/snake_7_03.png</key>
@@ -300,6 +312,8 @@
             <key type="filename">texture_atlas_2/snake_7_15.png</key>
             <key type="filename">texture_atlas_2/snake_7_16.png</key>
             <key type="filename">texture_atlas_2/snake_7_17.png</key>
+            <key type="filename">texture_atlas_2/snake_7_blink_01.png</key>
+            <key type="filename">texture_atlas_2/snake_7_blink_02.png</key>
             <key type="filename">texture_atlas_2/snake_8_01.png</key>
             <key type="filename">texture_atlas_2/snake_8_02.png</key>
             <key type="filename">texture_atlas_2/snake_8_03.png</key>
@@ -317,6 +331,8 @@
             <key type="filename">texture_atlas_2/snake_8_15.png</key>
             <key type="filename">texture_atlas_2/snake_8_16.png</key>
             <key type="filename">texture_atlas_2/snake_8_17.png</key>
+            <key type="filename">texture_atlas_2/snake_8_blink_01.png</key>
+            <key type="filename">texture_atlas_2/snake_8_blink_02.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
