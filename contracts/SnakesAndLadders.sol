@@ -59,14 +59,6 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
-     * Adds balance and plays a game
-     */
-    function playNow(uint amount) public payable {
-        addBalance();
-        play(amount);
-    }
-
-    /**
      * Plays the game
      */
     function play(uint amount) public {

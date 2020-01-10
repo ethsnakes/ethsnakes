@@ -18,6 +18,8 @@ export class GUI extends Phaser.GameObjects.Container {
 
         super(scene);
 
+        this.visible = false;
+
         const playButtonPosition = {x: GameConstants.GAME_WIDTH - 90 * GameVars.scaleX, y:  GameConstants.GAME_HEIGHT - 110};
 
         this.playButton = new Button(this.scene, playButtonPosition.x, playButtonPosition.y, "texture_atlas_1", "btn_play_off", "btn_play_on");
@@ -59,6 +61,19 @@ export class GUI extends Phaser.GameObjects.Container {
         if (GameConstants.DEVELOPMENT) {
             const developmentMenu = new DevelopmentMenu(this.scene);
             this.add(developmentMenu);
+        }
+    }
+
+    public onBalanceAvailable(): void {
+
+        this.visible = true;
+
+        console.log(typeof GameVars.balance);
+
+        if (GameVars.balance === 0) {
+
+            this.retrieveFundsButton.disableInteractive();
+            this.retrieveFundsButton.alpha = .35;
         }
     }
 
