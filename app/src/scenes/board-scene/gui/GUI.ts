@@ -68,8 +68,6 @@ export class GUI extends Phaser.GameObjects.Container {
 
         this.visible = true;
 
-        console.log(typeof GameVars.balance);
-
         if (GameVars.balance === 0) {
 
             this.retrieveFundsButton.disableInteractive();
