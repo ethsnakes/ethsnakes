@@ -69,6 +69,12 @@ export class BoardScene extends Phaser.Scene {
         this.boardContainer.update();
     }
 
+    public onBalanceAvailable(): void {
+
+        this.hud.onBalanceAvailable();
+        this.gui.onBalanceAvailable();
+    }
+
     public showSelectBetLayer(): void {
 
         this.gui.disableButtons();

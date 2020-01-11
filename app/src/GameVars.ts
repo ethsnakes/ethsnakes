@@ -1,7 +1,10 @@
+import { Dapp } from "./Dapp";
+
 export class GameVars {
 
     public static scaleX: number;
     
+    public static dapp: Dapp;
     public static gameData: GameData;
     public static currentScene: Phaser.Scene;
     public static time: number;

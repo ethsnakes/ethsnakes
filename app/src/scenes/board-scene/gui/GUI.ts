@@ -13,16 +13,18 @@ export class GUI extends Phaser.GameObjects.Container {
     private retrieveFundsButton: Button;
     private playButton: Button;
     private diceButtonTween: Phaser.Tweens.Tween;
-
+  
     constructor(scene: Phaser.Scene) {
 
         super(scene);
+
+        this.visible = false;
 
         const playButtonPosition = {x: GameConstants.GAME_WIDTH - 90 * GameVars.scaleX, y:  GameConstants.GAME_HEIGHT - 110};
 
         this.playButton = new Button(this.scene, playButtonPosition.x, playButtonPosition.y, "texture_atlas_1", "btn_play_off", "btn_play_on");
         this.playButton.scaleX = GameVars.scaleX;
-        this.playButton.onUp(this.onClickPlay, this);
+        this.playButton.onDown(this.onClickPlay, this);
         this.add(this.playButton);
 
         this.scene.tweens.add({
@@ -52,7 +54,7 @@ export class GUI extends Phaser.GameObjects.Container {
 
         this.diceButton = new Button(this.scene, playButtonPosition.x, playButtonPosition.y, "texture_atlas_1", "btn_dice_off", "btn_dice_on");
         this.diceButton.scaleX = GameVars.scaleX;
-        this.diceButton.onUp(this.onClickDiceButton, this);
+        this.diceButton.onDown(this.onClickDiceButton, this);
         this.diceButton.visible = false;
         this.add(this.diceButton);
 
@@ -62,11 +64,21 @@ export class GUI extends Phaser.GameObjects.Container {
         }
     }
 
+    public onBalanceAvailable(): void {
+
+        this.visible = true;
+
+        if (GameVars.balance === 0) {
+
+            this.retrieveFundsButton.disableInteractive();
+            this.retrieveFundsButton.alpha = .35;
+        }
+    }
+
     public startGame(): void {
 
         this.playButton.visible = false;
-        this.diceButton.visible = true;
-
+        
         this.addFundsButton.alpha = .375;
         this.retrieveFundsButton.alpha = .375;
 
@@ -85,8 +97,11 @@ export class GUI extends Phaser.GameObjects.Container {
                 repeat: -1
             });
 
+            this.diceButton.visible = true;
+
         } else {
             this.diceButtonTween = null;
+            this.diceButton.visible = false;
         }
     }
 
@@ -124,8 +139,6 @@ export class GUI extends Phaser.GameObjects.Container {
     }
 
     public matchOver(): void {
-
-        this.playButton.visible = true;
 
         this.addFundsButton.alpha = 1;
         this.addFundsButton.setInteractive();
@@ -176,6 +189,7 @@ export class GUI extends Phaser.GameObjects.Container {
         }
 
         if (this.diceButtonTween) {
+
             this.diceButtonTween.stop();
             this.diceButtonTween = null;
 

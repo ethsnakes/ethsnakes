@@ -4,14 +4,16 @@ import { GameVars } from "../../../GameVars";
 
 export class BetSelectionButton extends Phaser.GameObjects.Container {
 
+    public value: number;
+    
     private offButton: Button;
     private onButton: Button;
-
+    
     constructor(scene: Phaser.Scene, value: number) {
 
         super(scene);
 
-        this.name = value.toString();
+        this.value = value;
 
         this.offButton = new Button(this.scene, 0, 0, "texture_atlas_1", "tick_mark_0_off", "tick_mark_0_on");
         this.offButton.onUp(this.onClickButton, this);
@@ -22,7 +24,7 @@ export class BetSelectionButton extends Phaser.GameObjects.Container {
         this.onButton.onUp(this.onClickButton, this);
         this.add(this.onButton);
 
-        const infoLabelBet = new Phaser.GameObjects.Text(this.scene, 0, 80, GameVars.formatNumber(value) + " wei", {fontFamily: "BladiTwo4F", fontSize: "27px", color: "#19D3C5"});
+        const infoLabelBet = new Phaser.GameObjects.Text(this.scene, 0, 80, GameVars.formatNumber(value) + " ETH", {fontFamily: "BladiTwo4F", fontSize: "27px", color: "#19D3C5"});
         infoLabelBet.setOrigin(.5);
         this.add(infoLabelBet);
     }
@@ -38,6 +40,6 @@ export class BetSelectionButton extends Phaser.GameObjects.Container {
         this.offButton.visible = !this.offButton.visible;
         this.onButton.visible = !this.onButton.visible;
 
-        GameManager.onBetSelected(parseInt(this.name));
+        GameManager.onBetSelected(this.value);
     }
 }

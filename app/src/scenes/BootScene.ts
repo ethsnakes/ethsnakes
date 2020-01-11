@@ -1,4 +1,3 @@
-import { GameVars } from "../GameVars";
 import { GameManager } from "../GameManager";
 
 export class BootScene extends Phaser.Scene {

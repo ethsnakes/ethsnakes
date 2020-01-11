@@ -3,12 +3,12 @@ import { GameVars } from "./GameVars";
 import { BoardScene } from "./scenes/board-scene/BoardScene";
 import { BoardManager } from "./scenes/board-scene/BoardManager";
 import { SelectBetLayer } from "./scenes/board-scene/layers/SelectBetLayer";
+import { Dapp } from "./Dapp";
 
 export class GameManager {
 
     public static init(): void {  
 
-        GameVars.balance = 0.001;
         GameVars.bet = 0;
 
         if (GameVars.currentScene.sys.game.device.os.desktop) {
@@ -46,17 +46,32 @@ export class GameManager {
         );
     }
 
+    public static onBalanceAvailable(balance: string): void {
+
+        GameVars.balance = parseInt(balance);
+
+        BoardScene.currentInstance.onBalanceAvailable();
+    }
+
     public static setCurrentScene(scene: Phaser.Scene): void {
 
         GameVars.currentScene = scene;
     }
 
+    public static onAccountLoaded(): void {
+
+       Dapp.currentInstance.getBalance();
+    }
+
     public static onGameAssetsLoaded(): void {
+
+        GameVars.dapp = new Dapp();
+        GameVars.dapp.unlock();
 
         GameManager.enterBoardScene();
     }
 
-    public static enterBoardScene(difficulty?: string): void {
+    public static enterBoardScene(): void {
 
         GameVars.currentScene.scene.start("BoardScene");
     }
@@ -71,6 +86,11 @@ export class GameManager {
         BoardManager.resetBoard();
     
         BoardScene.currentInstance.showSelectBetLayer();
+    }
+
+    public static replay(): void {
+
+        GameManager.enterBoardScene();
     }
 
     public static connectToEthereum(): void {

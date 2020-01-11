@@ -2866,6 +2866,27 @@
 					}
 				},
 				{
+					"filename": "snake_1_blink_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 749,
+						"h": 698
+					},
+					"spriteSourceSize": {
+						"x": 177,
+						"y": 51,
+						"w": 58,
+						"h": 58
+					},
+					"frame": {
+						"x": 714,
+						"y": 933,
+						"w": 58,
+						"h": 58
+					}
+				},
+				{
 					"filename": "snake_5_blink_02",
 					"rotated": false,
 					"trimmed": true,
@@ -2880,31 +2901,10 @@
 						"h": 56
 					},
 					"frame": {
-						"x": 714,
-						"y": 933,
+						"x": 774,
+						"y": 927,
 						"w": 69,
 						"h": 56
-					}
-				},
-				{
-					"filename": "snake_8_blink_02",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 749,
-						"h": 698
-					},
-					"spriteSourceSize": {
-						"x": 583,
-						"y": 381,
-						"w": 72,
-						"h": 49
-					},
-					"frame": {
-						"x": 785,
-						"y": 927,
-						"w": 72,
-						"h": 49
 					}
 				},
 				{
@@ -2922,7 +2922,7 @@
 						"h": 60
 					},
 					"frame": {
-						"x": 859,
+						"x": 845,
 						"y": 940,
 						"w": 41,
 						"h": 60
@@ -2943,7 +2943,7 @@
 						"h": 60
 					},
 					"frame": {
-						"x": 902,
+						"x": 888,
 						"y": 940,
 						"w": 41,
 						"h": 60
@@ -2971,6 +2971,27 @@
 					}
 				},
 				{
+					"filename": "snake_8_blink_02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 749,
+						"h": 698
+					},
+					"spriteSourceSize": {
+						"x": 583,
+						"y": 381,
+						"w": 72,
+						"h": 49
+					},
+					"frame": {
+						"x": 1098,
+						"y": 1995,
+						"w": 72,
+						"h": 49
+					}
+				},
+				{
 					"filename": "snake_3_blink_02",
 					"rotated": false,
 					"trimmed": true,
@@ -2985,7 +3006,7 @@
 						"h": 47
 					},
 					"frame": {
-						"x": 1098,
+						"x": 1172,
 						"y": 1995,
 						"w": 66,
 						"h": 47
@@ -3006,8 +3027,8 @@
 						"h": 43
 					},
 					"frame": {
-						"x": 1166,
-						"y": 1995,
+						"x": 1240,
+						"y": 2004,
 						"w": 60,
 						"h": 43
 					}
@@ -3027,30 +3048,9 @@
 						"h": 53
 					},
 					"frame": {
-						"x": 1134,
-						"y": 922,
+						"x": 1302,
+						"y": 1990,
 						"w": 66,
-						"h": 53
-					}
-				},
-				{
-					"filename": "snake_1_blink_01",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 749,
-						"h": 698
-					},
-					"spriteSourceSize": {
-						"x": 178,
-						"y": 56,
-						"w": 65,
-						"h": 53
-					},
-					"frame": {
-						"x": 945,
-						"y": 940,
-						"w": 65,
 						"h": 53
 					}
 				},
@@ -3063,16 +3063,16 @@
 						"h": 698
 					},
 					"spriteSourceSize": {
-						"x": 178,
-						"y": 56,
-						"w": 65,
-						"h": 53
+						"x": 177,
+						"y": 51,
+						"w": 58,
+						"h": 58
 					},
 					"frame": {
-						"x": 1012,
-						"y": 937,
-						"w": 65,
-						"h": 53
+						"x": 931,
+						"y": 940,
+						"w": 58,
+						"h": 58
 					}
 				},
 				{
@@ -3207,6 +3207,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:9ed1d2b19ebff2d2b1da197c0055d686:3d12048fc6f50245fbc388013868f8e4:1841566b8127e300c587f5f8309c1e38$"
+		"smartupdate": "$TexturePacker:SmartUpdate:d7bca95f9c7964ef86d0eeeba6828c44:2ff6aa0000dfd88e5ddfa3fd1fdeffaa:1841566b8127e300c587f5f8309c1e38$"
 	}
 }
