@@ -8,6 +8,7 @@ export class SelectBetLayer extends Phaser.GameObjects.Container {
 
     public static currentInstance: SelectBetLayer;
 
+    private selectedBetValue: number;
     private betSelectionButtonsContainer: BetSelectionButtonsContainer;
     private playButton: Button;
 
@@ -16,6 +17,8 @@ export class SelectBetLayer extends Phaser.GameObjects.Container {
         super(scene);
 
         SelectBetLayer.currentInstance = this;
+
+        this.selectedBetValue = 0;
 
         const transparentBackground = new Phaser.GameObjects.Graphics(this.scene);
         transparentBackground.fillStyle(0x000000, .8);
@@ -39,7 +42,10 @@ export class SelectBetLayer extends Phaser.GameObjects.Container {
 
     public betSelected(value: number): void {
 
+        this.selectedBetValue = value;
+
         if (!this.playButton.visible) {
+
             this.playButton.visible = true;
 
             this.scene.tweens.add({
@@ -56,6 +62,6 @@ export class SelectBetLayer extends Phaser.GameObjects.Container {
 
     private onClickPlay(): void {
 
-        GameManager.connectToEthereum();
+        GameManager.onPlayerSelectedBet(this.selectedBetValue);
     }
 }

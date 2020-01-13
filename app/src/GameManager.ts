@@ -18,7 +18,7 @@ export class GameManager {
         } else {
 
             GameVars.currentScene.game.scale.displaySize = GameVars.currentScene.game.scale.parentSize;
-            GameVars.currentScene.game.scale.refresh();
+            GameVars.currentScene.game.scale.refresh();  
 
             const aspectRatio = window.innerWidth / window.innerHeight;
             GameVars.scaleX = (GameConstants.GAME_WIDTH / GameConstants.GAME_HEIGHT) / aspectRatio;
@@ -48,7 +48,7 @@ export class GameManager {
 
     public static onBalanceAvailable(balance: string): void {
 
-        GameVars.balance = parseInt(balance);
+        GameVars.balance = Number(balance);
 
         BoardScene.currentInstance.onBalanceAvailable();
     }
@@ -93,12 +93,14 @@ export class GameManager {
         GameManager.enterBoardScene();
     }
 
-    public static connectToEthereum(): void {
+    public static onPlayerSelectedBet(value: number): void {
 
         BoardScene.currentInstance.showWaitingLayer();
+
+        GameVars.dapp.play(value);
     }
 
-    public static onConnection(): void {
+    public static onTransactionConfirmed(): void {
 
         BoardScene.currentInstance.removeWaitingLayer();
     }
@@ -109,7 +111,7 @@ export class GameManager {
 
     public static addFunds(): void {
         
-        console.log("add funds");
+        GameVars.dapp.addPlayerFunds();
     }
 
     public static onBetSelected(value: number): void {

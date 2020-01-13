@@ -13,7 +13,7 @@ npm install
 ```
 ganache-cli --gasLimit 15000000 --allowUnlimitedContractSize --host 0.0.0.0 --accounts=10 -m "twice spoil carbon design kidney group lunch supply glance scrub ginger impose"
 truffle test
-truffle migrate --network dev
+truffle migrate --reset --network dev
 npm run dev
 ```
 

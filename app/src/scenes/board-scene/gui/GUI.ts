@@ -27,16 +27,6 @@ export class GUI extends Phaser.GameObjects.Container {
         this.playButton.onDown(this.onClickPlay, this);
         this.add(this.playButton);
 
-        this.scene.tweens.add({
-            targets: this.playButton,
-            scaleX: 1.05,
-            scaleY: 1.05,
-            ease: Phaser.Math.Easing.Cubic.Out,
-            duration: 350,
-            yoyo: true,
-            repeat: -1
-        });
-
         this.addFundsButton = new Button(this.scene, 530, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
         this.addFundsButton.scaleX = GameVars.scaleX;
         this.addFundsButton.onUp(this.onClickAddFunds, this);
@@ -70,8 +60,33 @@ export class GUI extends Phaser.GameObjects.Container {
 
         if (GameVars.balance === 0) {
 
+            this.scene.tweens.add({
+                targets: this.addFundsButton,
+                scaleX: 1.05,
+                scaleY: 1.05,
+                ease: Phaser.Math.Easing.Cubic.Out,
+                duration: 350,
+                yoyo: true,
+                repeat: -1
+            });
+
             this.retrieveFundsButton.disableInteractive();
             this.retrieveFundsButton.alpha = .35;
+
+            this.playButton.disableInteractive();
+            this.playButton.alpha = .35;
+
+        } else {
+
+            this.scene.tweens.add({
+                        targets: this.playButton,
+                        scaleX: 1.05,
+                        scaleY: 1.05,
+                        ease: Phaser.Math.Easing.Cubic.Out,
+                        duration: 350,
+                        yoyo: true,
+                        repeat: -1
+                    });
         }
     }
 

@@ -69,26 +69,44 @@ export class Dapp {
                 console.error("Could not retrieve your balance");
                 console.log(e);
             } else {
-                GameManager.onBalanceAvailable(r);
+                GameManager.onBalanceAvailable(Web3.utils.fromWei(r));
             }
         });
     }
 
+    public addPlayerFunds(): void {
+
+        let self = this;
+        self.contract.methods.addBalance().send({ from: self.account, value: Web3.utils.toWei("0.2", "ether")})
+        // self.contract.methods.addBalance().send({ from: self.account})
+            .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
+            .on("confirmation", (confirmationNumber, receipt) => {
+                if (receipt.status === true && confirmationNumber === 1) {
+
+                    console.log("HACER UPDATE DEL BALANCE");
+
+                    self.getBalance();
+                }
+            })
+            .on("error", error => console.error(error));
+    }
+
     public play(amount: number): void {
+
+        amount = Web3.utils.toWei(amount.toString(), "ether");
 
         let self = this;
         let gasPrice = Web3.utils.toWei("10", "gwei");
         self.contract.methods.play(amount).send({ from: self.account, gas: 500000, gasPrice: gasPrice })
             .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
             .on("confirmation", (confirmationNumber, receipt) => {
+
+                console.log("HOLA HOLA");
+                
                 if (receipt.status === true && confirmationNumber === 1) {
 
-                    if (GameConstants.DEVELOPMENT) {
-                        // poner un timeOut 
-                        console.log("Transaction confirmed");
-                    } else {
-                        console.log("Transaction confirmed");
-                    }
+                    console.log("Transaction confirmed");
+                    GameManager.onTransactionConfirmed();
                 }
             })
             .on("error", error => console.error(error));

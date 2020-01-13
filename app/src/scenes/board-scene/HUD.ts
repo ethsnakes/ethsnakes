@@ -28,7 +28,7 @@ export class HUD extends Phaser.GameObjects.Container {
         yourBalanceLabel.scaleX = GameVars.scaleX;
         balanceContainer.add(yourBalanceLabel);
 
-        this.balanceLabel = new Phaser.GameObjects.Text(this.scene, (yourBalanceLabel.x + yourBalanceLabel.width + 20) * GameVars.scaleX, yourBalanceLabel.y, "0 wei", {fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "28px", color: "#7A431C"});
+        this.balanceLabel = new Phaser.GameObjects.Text(this.scene, (yourBalanceLabel.x + yourBalanceLabel.width + 20) * GameVars.scaleX, yourBalanceLabel.y, "", {fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "28px", color: "#7A431C"});
         this.balanceLabel.scaleX = GameVars.scaleX;
         balanceContainer.add(this.balanceLabel);
     }
@@ -37,7 +37,7 @@ export class HUD extends Phaser.GameObjects.Container {
 
         this.visible = true;
 
-        this.balanceLabel.text = GameVars.balance.toString() + " wei";
+        this.balanceLabel.text = GameVars.balance.toString() + " ETH";
     }
 
     public playerClimbsLadder(): void {

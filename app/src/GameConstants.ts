@@ -1,4 +1,5 @@
-// javascript-obfuscator bundle.js --output bundle.js
+// definiciones de TypeScript
+// https://github.com/ethereum/web3.js/blob/c0e727eac7c16826c39fd43a03a4930b5ff6fff8/packages/web3/types.d.ts
 
 export class GameConstants {
 
