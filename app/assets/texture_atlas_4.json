@@ -10,7 +10,7 @@
 			"scale": 1,
 			"frames": [
 				{
-					"filename": "dice_blue_1_17",
+					"filename": "dice_blue_1_01",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -262,7 +262,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_10",
+					"filename": "dice_blue_1_08",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -283,7 +283,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_12",
+					"filename": "dice_blue_1_06",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -325,7 +325,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_11",
+					"filename": "dice_blue_1_07",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -346,7 +346,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_01",
+					"filename": "dice_blue_1_17",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -367,7 +367,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_08",
+					"filename": "dice_blue_1_10",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -388,7 +388,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_13",
+					"filename": "dice_blue_1_05",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -535,7 +535,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_14",
+					"filename": "dice_blue_1_04",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -1438,7 +1438,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_06",
+					"filename": "dice_blue_1_12",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -1522,7 +1522,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_16",
+					"filename": "dice_blue_1_02",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -1984,7 +1984,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_15",
+					"filename": "dice_blue_1_03",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -2866,7 +2866,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_05",
+					"filename": "dice_blue_1_13",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -2992,7 +2992,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_04",
+					"filename": "dice_blue_1_14",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -3097,7 +3097,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_03",
+					"filename": "dice_blue_1_15",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -3265,7 +3265,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_07",
+					"filename": "dice_blue_1_11",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -3433,7 +3433,7 @@
 					}
 				},
 				{
-					"filename": "dice_blue_1_02",
+					"filename": "dice_blue_1_16",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -4299,6 +4299,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:92a935eff38274c39040d1ae92f67f6a:bfd9f74a82200b55b4a3e25c34cff35c:da96745a4979f34ffd84fb8b5d66e27c$"
+		"smartupdate": "$TexturePacker:SmartUpdate:e682e36c2a44d3436674ee72420b5259:f3fb66c1ed80428cd0780b0cb2760f7b:da96745a4979f34ffd84fb8b5d66e27c$"
 	}
 }

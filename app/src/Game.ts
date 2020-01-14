@@ -7,5 +7,7 @@ export class Game extends Phaser.Game {
         super(config);
 
         Game.currentInstance = this;
+
+        console.log("MIRAR ANIMACIONS DADOS PARECE QUE LA DEL 1 ESTA MAL Y ACABA SALIENDO UN 5");
     }
 }
