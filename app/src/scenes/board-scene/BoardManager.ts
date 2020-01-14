@@ -9,17 +9,54 @@ export class BoardManager {
     public static init(): void {
        
         GameVars.diceBlocked = false;
-        GameVars.turn = Math.random() > .5 ? GameConstants.PLAYER : GameConstants.BOT;
+        GameVars.currentTurn = null;
+        GameVars.turns = 0;
         GameVars.matchOver = false;
         GameVars.paused = false;
     }
 
     public static startGame(): void {
 
-        if (GameVars.turn === GameConstants.BOT) {
-            GameVars.diceBlocked = false;
-            BoardManager.rollDice();
+        // se lanza un dado para saber quien sale
+        GameVars.dapp.rollDice(GameVars.seed, GameVars.turns);
+    }
+
+    public static rollDice(): void {
+
+        GameVars.dapp.rollDice(GameVars.seed, GameVars.turns);
+    }
+
+    public static onDiceResultFetched(value: number): void {
+
+        if (GameVars.turns === 0) {
+
+            if (value === 1 || value === 2) {
+                GameVars.currentTurn = GameConstants.PLAYER;
+            } else {
+                GameVars.currentTurn = GameConstants.BOT;
+            }
+
+            BoardScene.currentInstance.startMatch();
+
+        } else {
+
+            GameVars.diceBlocked = true;
+
+            GameVars.diceResult = value;
+
+            BoardScene.currentInstance.rollDice();
         }
+       
+        GameVars.turns ++;
+    }
+
+    public static onTurnMessageRemoved(): void {
+
+        // TODO: aqui tira el bot automaticamente o se le muestra el boton del dado al jugador
+        if (GameVars.currentTurn === GameConstants.BOT) {
+            
+            GameVars.dapp.rollDice(GameVars.seed, GameVars.turns);
+        } 
     }
 
     public static resetBoard(): void {
@@ -30,10 +67,10 @@ export class BoardManager {
         //
     }
 
-    public static   chipArrivedToItsPosition(chip: Chip): void {
+    public static chipArrivedToItsPosition(chip: Chip): void {
 
         if (chip.cellIndex === 100) {
-            BoardManager.matchOver(GameVars.turn);
+            BoardManager.matchOver(GameVars.currentTurn);
         } else {
 
             let boardElement: {in: number, out: number, id: number} = null;
@@ -68,15 +105,6 @@ export class BoardManager {
         BoardManager.changeTurn();
     }
 
-    public static rollDice(): void {
-
-        GameVars.diceBlocked = true;
-
-        GameVars.diceResult = Math.floor(Math.random() * 6 + 1);
-        
-        BoardScene.currentInstance.rollDice();
-    }
-
     public static onDiceResultAvailable(): void {
 
         BoardScene.currentInstance.moveChip();
@@ -107,9 +135,9 @@ export class BoardManager {
 
     private static changeTurn(): void {
 
-        GameVars.turn = GameVars.turn === GameConstants.PLAYER ? GameConstants.BOT : GameConstants.PLAYER;
+        GameVars.currentTurn = GameVars.currentTurn === GameConstants.PLAYER ? GameConstants.BOT : GameConstants.PLAYER;
 
-        if (GameVars.turn === GameConstants.BOT) {
+        if (GameVars.currentTurn === GameConstants.BOT) {
             BoardManager.rollDice();
         } else {
             GameVars.diceBlocked = false;

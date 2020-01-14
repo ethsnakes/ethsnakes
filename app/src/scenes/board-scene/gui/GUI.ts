@@ -90,7 +90,7 @@ export class GUI extends Phaser.GameObjects.Container {
         }
     }
 
-    public startGame(): void {
+    public startMatch(): void {
 
         this.playButton.visible = false;
         
@@ -100,7 +100,7 @@ export class GUI extends Phaser.GameObjects.Container {
         this.addFundsButton.disableInteractive();
         this.retrieveFundsButton.disableInteractive();
 
-        if (GameVars.turn === GameConstants.PLAYER) {
+        if (GameVars.currentTurn === GameConstants.PLAYER) {
 
             this.diceButtonTween = this.scene.tweens.add({
                 targets: this.diceButton,
@@ -115,6 +115,7 @@ export class GUI extends Phaser.GameObjects.Container {
             this.diceButton.visible = true;
 
         } else {
+            
             this.diceButtonTween = null;
             this.diceButton.visible = false;
         }
@@ -122,7 +123,7 @@ export class GUI extends Phaser.GameObjects.Container {
 
     public onTurnChanged(): void {
 
-        if (GameVars.turn === GameConstants.PLAYER) {
+        if (GameVars.currentTurn === GameConstants.PLAYER) {
 
             this.diceButton.visible = true;
             

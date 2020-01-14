@@ -29,7 +29,7 @@ export class DiceContainer extends Phaser.GameObjects.Container {
 
     public roll(i: number): void {
 
-        if (GameVars.turn === GameConstants.PLAYER) {
+        if (GameVars.currentTurn === GameConstants.PLAYER) {
   
             this.scene.tweens.add({
                 targets: this.botDice,

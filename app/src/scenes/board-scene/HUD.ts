@@ -2,6 +2,7 @@ import { GameVars } from "../../GameVars";
 import { GameConstants } from "../../GameConstants";
 import { BoardScene } from "./BoardScene";
 import { BoardManager } from "./BoardManager";
+import { GameManager } from "../../GameManager";
 
 export class HUD extends Phaser.GameObjects.Container {
 
@@ -68,9 +69,9 @@ export class HUD extends Phaser.GameObjects.Container {
         });
     }
 
-    public startGame(): void {
+    public startMatch(): void {
         
-        let turnImageName = GameVars.turn === GameConstants.PLAYER ? "start_txt_02" : "start_txt_01";
+        let turnImageName = GameVars.currentTurn === GameConstants.PLAYER ? "start_txt_02" : "start_txt_01";
        
         const turnImg = new Phaser.GameObjects.Image(this.scene, GameConstants.GAME_WIDTH * 3 / 2, GameConstants.GAME_HEIGHT / 2, "texture_atlas_1", turnImageName);
         turnImg.scaleX = GameVars.scaleX;
@@ -91,7 +92,7 @@ export class HUD extends Phaser.GameObjects.Container {
                     duration: 500,
                     onComplete: function(): void {
                         turnImg.destroy();
-                        BoardManager.startGame();
+                        BoardManager.onTurnMessageRemoved();
                     },
                     onCompleteScope: this
                 });

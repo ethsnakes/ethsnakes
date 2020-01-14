@@ -68,9 +68,9 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         }, this);
     }
 
-    public starGame(): void {
+    public startMatch(): void {
         
-        if (GameVars.turn === GameConstants.PLAYER) {
+        if (GameVars.currentTurn === GameConstants.PLAYER) {
             this.playerChip.mark();
         } else {
             this.botChip.mark();
@@ -82,7 +82,7 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         let i: number;
         let chip: Chip;
 
-        if (GameVars.turn === GameConstants.PLAYER) {
+        if (GameVars.currentTurn === GameConstants.PLAYER) {
             chip = this.playerChip;
         } else {
             chip = this.botChip;

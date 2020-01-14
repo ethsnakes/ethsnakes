@@ -6,13 +6,15 @@ export class GameVars {
     
     public static dapp: Dapp;
     public static gameData: GameData;
+    public static seed: string;
     public static currentScene: Phaser.Scene;
     public static time: number;
     public static matchOver: boolean;
     public static board: any;
     public static paused: boolean;
     public static balance: number;
-    public static turn: string;
+    public static currentTurn: string;
+    public static turns: number;
     public static diceResult: number;
     public static diceBlocked: boolean;
     public static bet: number;

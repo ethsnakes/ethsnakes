@@ -97,13 +97,16 @@ export class BoardScene extends Phaser.Scene {
             this.waitingLayer.destroy();
             this.waitingLayer = null;
         }
+    }
+
+    public startMatch(): void {
 
         this.gui.enableButtons();
-        this.gui.startGame();
+        this.gui.startMatch();
 
-        this.hud.startGame();
+        this.hud.startMatch();
 
-        this.boardContainer.starGame();
+        this.boardContainer.startMatch();
     }
 
     public onTurnChanged(): void {

@@ -105,6 +105,15 @@ export class GameManager {
         BoardScene.currentInstance.removeWaitingLayer();
     }
 
+    public static onSeedAvailable(seed: string): void {
+
+        GameVars.seed = seed;
+
+        console.log("seed es:", GameVars.seed);
+
+        BoardManager.startGame();
+    }
+
     public static matchOver(): void {
         //
     }

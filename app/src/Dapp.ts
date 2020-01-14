@@ -1,5 +1,5 @@
-import { GameConstants } from "./GameConstants";
 import { GameManager } from "./GameManager";
+import { BoardManager } from "./scenes/board-scene/BoardManager";
 
 const Web3 = require("web3");
 const Blockies = require("ethereum-blockies");
@@ -45,7 +45,8 @@ export class Dapp {
         const networkId = await this.web3.eth.net.getId();
         this.contract = new this.web3.eth.Contract(SnakesAndLaddersArtifact.abi, SnakesAndLaddersArtifact.networks[networkId].address);
 
-        this.startWatcher(0);
+        const latest = await web3.eth.getBlockNumber();
+        this.startWatcher(latest);
 
         // for testing
         // const value = Web3.utils.toWei("0.1", "ether");
@@ -69,18 +70,21 @@ export class Dapp {
                 console.error("Could not retrieve your balance");
                 console.log(e);
             } else {
+
+                r = r || "0";
                 GameManager.onBalanceAvailable(Web3.utils.fromWei(r));
             }
         });
     }
 
-    public addPlayerFunds(): void {
+    public addPlayerFunds(value?: string): void {
+
+        value = value || "0.2";
 
         let self = this;
-        self.contract.methods.addPlayerFunds().send({ from: self.account, value: Web3.utils.toWei("0.2", "ether")})
+        self.contract.methods.addPlayerFunds().send({ from: self.account, value: Web3.utils.toWei(value, "ether")})
             .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
-            .on('receipt', function(receipt){
-                console.log("HACER UPDATE DEL BALANCE");
+            .on("receipt", function(receipt) {
                 self.getBalance();
             })
             .on("error", error => console.error(error));
@@ -89,12 +93,13 @@ export class Dapp {
     public play(amount: number): void {
 
         amount = Web3.utils.toWei(amount.toString(), "ether");
+
         let self = this;
         let gasPrice = Web3.utils.toWei("10", "gwei");
         self.contract.methods.play(amount).send({ from: self.account, gas: 500000, gasPrice: gasPrice })
             .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
-            .on('receipt', function(receipt){
-                console.log("HOLA HOLA");
+            .on("receipt", function(receipt) {
+               
                 GameManager.onTransactionConfirmed();
             })
             .on("error", error => console.error(error));
@@ -105,10 +110,22 @@ export class Dapp {
         let self = this;
         self.contract.events.LogGame({ fromBlock: fromBlock })
             .on("data", e => {
+                
                 self.addNewGameResult(e.returnValues["sender"], e.returnValues["result"], e.returnValues["balancediff"]);
-                console.log("YA TENEMOS EL SEED:", e.returnValues["seed"]);
+
+                GameManager.onSeedAvailable(e.returnValues["seed"]);
             });
     }
+
+    public rollDice(seed: string, turn: number): void {
+
+        let self = this;
+        self.contract.methods.randomDice(seed, turn).call()
+            .then(function(result) {
+                console.log("DICE RESULT: " + result);
+                BoardManager.onDiceResultFetched(parseInt(result));
+            });
+    } 
 
     public addNewGameResult(sender, result, balancediff): void {
 
