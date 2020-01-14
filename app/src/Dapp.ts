@@ -77,16 +77,11 @@ export class Dapp {
     public addPlayerFunds(): void {
 
         let self = this;
-        self.contract.methods.addBalance().send({ from: self.account, value: Web3.utils.toWei("0.2", "ether")})
-        // self.contract.methods.addBalance().send({ from: self.account})
+        self.contract.methods.addPlayerFunds().send({ from: self.account, value: Web3.utils.toWei("0.2", "ether")})
             .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
-            .on("confirmation", (confirmationNumber, receipt) => {
-                if (receipt.status === true && confirmationNumber === 1) {
-
-                    console.log("HACER UPDATE DEL BALANCE");
-
-                    self.getBalance();
-                }
+            .on('receipt', function(receipt){
+                console.log("HACER UPDATE DEL BALANCE");
+                self.getBalance();
             })
             .on("error", error => console.error(error));
     }
@@ -94,20 +89,13 @@ export class Dapp {
     public play(amount: number): void {
 
         amount = Web3.utils.toWei(amount.toString(), "ether");
-
         let self = this;
         let gasPrice = Web3.utils.toWei("10", "gwei");
         self.contract.methods.play(amount).send({ from: self.account, gas: 500000, gasPrice: gasPrice })
             .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
-            .on("confirmation", (confirmationNumber, receipt) => {
-
+            .on('receipt', function(receipt){
                 console.log("HOLA HOLA");
-                
-                if (receipt.status === true && confirmationNumber === 1) {
-
-                    console.log("Transaction confirmed");
-                    GameManager.onTransactionConfirmed();
-                }
+                GameManager.onTransactionConfirmed();
             })
             .on("error", error => console.error(error));
     }

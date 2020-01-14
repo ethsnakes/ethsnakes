@@ -23,8 +23,8 @@ contract SnakesAndLadders is Ownable {
     // Turn: starting from 1
     // Move: the dice move from 1 to 6
     event LogGame(address sender, bool result, int balancediff, uint seed);
-    event LogAddBalance(address sender, uint amount);
-    event LogWithdrawBalance(address sender, uint amount);
+    event LogAddPlayerFunds(address sender, uint amount);
+    event LogWithdrawPlayerFunds(address sender, uint amount);
     event LogAddFunds(address sender, uint amount);
     event LogPayout(address sender, uint amount);
 
@@ -130,23 +130,23 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
-     * User adds balance
+     * User adds player funds
      */
-    function addBalance() public payable {
+    function addPlayerFunds() public payable {
         require(msg.value > 0, "You must send something to add into balance");
-        emit LogAddBalance(msg.sender, msg.value);
+        emit LogAddPlayerFunds(msg.sender, msg.value);
         balances[msg.sender] += msg.value;
         totalBalance += msg.value;
     }
 
     /**
-     * Withdraw balance
+     * Withdraw player funds
      */
-    function withdrawBalance() public {
+    function withdrawPlayerFunds() public {
         uint toWithdraw = balances[msg.sender];
         require(toWithdraw > 0, "There is no balance to withdraw");
         require(toWithdraw <= address(this).balance, "There are not enough funds in the contract to withdraw");
-        emit LogWithdrawBalance(msg.sender, toWithdraw);
+        emit LogWithdrawPlayerFunds(msg.sender, toWithdraw);
         balances[msg.sender] = 0;
         totalBalance -= toWithdraw;
         msg.sender.transfer(toWithdraw);
