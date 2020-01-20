@@ -1,4 +1,4 @@
-import { BoardScene } from "../BoardScene";
+import { BoardScene } from "./BoardScene";
 
 export class Snake extends Phaser.GameObjects.Container {
 
@@ -18,8 +18,8 @@ export class Snake extends Phaser.GameObjects.Container {
         this.blinking = false;
         this.f = 0;
         this.tBlink = 0;
-        this.x = -4;
-        this.y = -15;
+        this.x = -8;
+        this.y = -2;
 
         this.snakeSprite = new Phaser.GameObjects.Sprite(this.scene, 0, 0, "texture_atlas_2", "snake_" + this.id + "_01");
 

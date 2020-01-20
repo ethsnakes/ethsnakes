@@ -1,11 +1,11 @@
 import { GameConstants } from "../../GameConstants";
 import { GameVars } from "../../GameVars";
 import { Chip } from "./Chip";
-import { Snake } from "./layers/Snake";
+import { Snake } from "./Snake";
 
 export class BoardContainer extends Phaser.GameObjects.Container {
 
-    public static readonly CELL_SIZE = 57;
+    public static readonly CELL_SIZE = 57.5;
 
     public static currentInstance: BoardContainer;
 
@@ -22,7 +22,7 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         BoardContainer.currentInstance = this;
 
         this.x = GameConstants.GAME_WIDTH / 2;
-        this.y = 460;
+        this.y = 450;
         this.scaleX = GameVars.scaleX;
         this.moves = 0;
         this.snakes = [];
@@ -30,19 +30,19 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         this.woodSupport = new Phaser.GameObjects.Image(this.scene, -380, 250, "texture_atlas_1", "wood_support");
         this.add(this.woodSupport);
 
-        const boardBackground = new Phaser.GameObjects.Image(this.scene, -4, -15, "texture_atlas_1", "board");
+        const boardBackground = new Phaser.GameObjects.Image(this.scene, -8, -2, "texture_atlas_1", "board");
         this.add(boardBackground);
 
         if (GameConstants.DEBUG_MODE) {
             this.drawGrid();
         }
 
-        const laddersBehind = new Phaser.GameObjects.Image(this.scene, -4, -15, "texture_atlas_1", "ladders_back");
+        const laddersBehind = new Phaser.GameObjects.Image(this.scene, -4, -2, "texture_atlas_1", "ladders_back");
         this.add(laddersBehind);
 
         this.addSnakes();
 
-        const laddersFront = new Phaser.GameObjects.Image(this.scene, -4, -15, "texture_atlas_1", "ladders_front");
+        const laddersFront = new Phaser.GameObjects.Image(this.scene, -4, -2, "texture_atlas_1", "ladders_front");
         this.add(laddersFront);
 
         this.botChip = new Chip(this.scene, false);
