@@ -113,7 +113,9 @@ export class Dapp {
                 
                 self.addNewGameResult(e.returnValues["sender"], e.returnValues["result"], e.returnValues["balancediff"]);
 
-                GameManager.onSeedAvailable(e.returnValues["seed"]);
+                if (e.returnValues["sender"] == this.account) {
+                    GameManager.onSeedAvailable(e.returnValues["seed"]);
+                }
             });
     }
 
