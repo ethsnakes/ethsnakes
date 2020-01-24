@@ -91,11 +91,42 @@ contract('SnakesAndLadders', (accounts) => {
             await instance.addPlayerFunds({from: alice, value: qty1});
         });
 
-        it("testing the mocked default game (winner)", async function () {
+        it("testing the mocked default game checking the dices", async function () {
+            let betAmount = qty1/100;
+            let txObj = await instance.play(qty1/100, {from: alice});
+            console.log("        ↱ gas used: " + getTransactionGasUsed(txObj));
+            // check events
+            assert.strictEqual(txObj.logs.length, 1, "Only one event expected");
+            let ev = txObj.logs[0];
+            assert.strictEqual(ev.event, "LogGame", "Event should be LogGame");
+            assert.strictEqual(ev.args['sender'], alice, "Log sender is not correct");
+            assert.strictEqual(ev.args['result'], false, "Game should be favorable to Player");
+            assert.strictEqual(ev.args['balancediff'].toString(), (-betAmount).toString(), "Log balancediff is not correct");
+            assert.strictEqual(ev.args['seed'].toString() !== "", true, "Seed cannot be empty");
+            // check resulting balance
+            let newBalance = await instance.balances.call(alice);
+            assert.strictEqual(newBalance.toString(), (parseInt(qty1) - betAmount).toString(), "New balance should be the amount plus the bet");
+            // check dices from the seed
+            let seed = ev.args['seed'].toString();
+            let dice0 = await instance.randomDice(seed, 0, {from: alice});
+            let dice1 = await instance.randomDice(seed, 1, {from: alice});
+            let dice2 = await instance.randomDice(seed, 2, {from: alice});
+            let dice3 = await instance.randomDice(seed, 3, {from: alice});
+            let dice4 = await instance.randomDice(seed, 4, {from: alice});
+            let dice5 = await instance.randomDice(seed, 5, {from: alice});
+            assert.strictEqual(dice0 >= 3, true, "Dice0 is wrong");
+            assert.strictEqual(dice1.toString(), "4", "Dice1 is wrong");
+            assert.strictEqual(dice2.toString(), "5", "Dice2 is wrong");
+            assert.strictEqual(dice3.toString(), "5", "Dice3 is wrong");
+            assert.strictEqual(dice4.toString(), "3", "Dice4 is wrong");
+            assert.strictEqual(dice5.toString(), "2", "Dice5 is wrong");
+        });
+
+        it("testing the mocked winner game", async function () {
             let betAmount = qty1/100;
             await instance.setNonce(3, {from: carol});
             let txObj = await instance.play(qty1/100, {from: alice});
-            console.log("        gas used: " + getTransactionGasUsed(txObj));
+            console.log("        ↱ gas used: " + getTransactionGasUsed(txObj));
             // check events
             assert.strictEqual(txObj.logs.length, 1, "Only one event expected");
             let ev = txObj.logs[0];
@@ -109,7 +140,7 @@ contract('SnakesAndLadders', (accounts) => {
             assert.strictEqual(newBalance.toString(), (parseInt(qty1) + betAmount).toString(), "New balance should be the amount plus the bet");
         });
 
-        it("testing the mocked default game (loser)", async function () {
+        it("testing the mocked loser game", async function () {
             let betAmount = qty1/100;
             await instance.setNonce(2, {from: carol});  // setting nonce 2, which is a loser game
             let txObj = await instance.play(qty1/100, {from: alice});

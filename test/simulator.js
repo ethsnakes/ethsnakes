@@ -25,7 +25,7 @@ contract('SnakesAndLadders Simulation', (accounts) => {
     // Test 5 - 30%-70%
 
     // set the number of simulations to run
-    const simulations = 1;
+    const simulations = 10;
 
     describe("simulate", function() {
 
@@ -45,14 +45,15 @@ contract('SnakesAndLadders Simulation', (accounts) => {
                 let ev = txObj.logs[txObj.logs.length - 1];
                 if (ev.event === "LogGame") {
                     if (ev.args["result"]) {
+                        console.log("        " + i + " winner");
                         winners++;
                     } else {
+                        console.log("        " + i + " loser");
                         losers++;
                     }
                 }
             }
-            console.log("        winners: " + winners, "losers: " + losers);
-            console.log("        avg gas: " + totalGas/simulations)
+            console.log("        ↱ winners: " + winners, "losers: " + losers + ", " + "avg gas: " + totalGas/simulations)
         });
     });
 });
