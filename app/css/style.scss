@@ -26,8 +26,13 @@ $color-background: #94d6af;
  * Tags
  */
 
+html {
+  height: 100%;
+}
+
 body {
-  background-color: #48566f;
+  height: 100%;
+  font-family: 'Roboto Mono', monospace;
 }
 
 h1 {
@@ -50,15 +55,56 @@ input {
 #wrapper {
   display: table;
   table-layout: fixed;
+  min-height: 100%;
+  background-color: #48566f;
+  @media(max-width: 1250px) {
+    display: block;
+    table-layout: initial;
+  }
 }
 
 #game-wrapper {
+  position: relative;
   display: table-cell;
   width: 100%;
-  background-color: #48566f;
-}
-
-#game {
+  min-height: 100%;
+  @media(max-width: 1250px) {
+    display: block;
+    position: absolute;
+  }
+  h1 {
+    text-align: center;
+    border: 0;
+    padding: 50px 0 25px;
+    color: #cce2e0;
+  }
+  #game {
+    height: 100%;
+    #content {
+      max-height: 650px;
+      height: 650px;
+      text-align: center;
+      canvas {
+        box-shadow: 0 0 10px 2px #303030;
+        border-radius: 3px;
+        margin-left: 0 !important;
+        margin-top: 0 !important;
+      }
+    }
+  }
+  #links {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 15px 0;
+    color: #000000;
+    text-align: center;
+    font-size: 13px;
+    a {
+      color: #000000;
+      text-decoration: underline;
+    }
+  }
 }
 
 #stream {
@@ -69,25 +115,13 @@ input {
   min-width: 400px;
   height: 100%;
   background: $color-background;
-  @media(max-width: 1500px) {
+  @media(max-width: 1250px) {
     display: none;
-  }
-  #links {
-    padding: 10px;
-    color: #464646;
-    text-align: center;
-    font-family: monospace;
-    a {
-      color: #464646;
-      text-decoration: none;
-      font-family: monospace;
-    }
   }
   #stream-title {
     margin: 0 5px;
     padding: 10px 10px 6px;
     border-bottom: 1px solid #000;
-    font-family: monospace;
     font-size: 12px;
     span {
       display: inline-block;
@@ -105,7 +139,6 @@ input {
       padding: 10px;
       margin: 5px;
       overflow: hidden;
-      font-family: monospace;
       font-size: 14px;
       line-height: 24px;
       border-radius: 3px;
