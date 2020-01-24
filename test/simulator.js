@@ -5,7 +5,6 @@ const { toWei, toBN } = web3.utils;
 contract('SnakesAndLadders Simulation', (accounts) => {
     const [ owner, p1, p2, alice ] = accounts;
     const qty = toWei('0.01', 'ether');
-    const simulations = 10000;
     let instance;
 
     before("running check if the setup is correct to pass the tests", async function() {
@@ -25,10 +24,13 @@ contract('SnakesAndLadders Simulation', (accounts) => {
     // Fees on gas are less than 0.005 (more like 0.001) which is less than one cent
     // Test 5 - 30%-70%
 
+    // set the number of simulations to run
+    const simulations = 1;
+
     describe("simulate", function() {
 
         beforeEach("add some funds", async function() {
-            await instance.addBalance({from: alice, value: qty});
+            await instance.addPlayerFunds({from: alice, value: qty});
         });
 
         it("simulate " + simulations + " games", async function () {

@@ -4,7 +4,7 @@ const expectedExceptionPromise = require("../util/expected-exception-promise.js"
 const { toWei, toBN } = web3.utils;
 
 contract('SnakesAndLadders', (accounts) => {
-    const [ owner, p1, p2, alice, bob ] = accounts;
+    const [ carol, p1, p2, alice, bob ] = accounts;
     let instance;
     const qty1 = toWei('0.01', 'ether');
     const qtyhalf = toWei('0.005', 'ether');
@@ -19,26 +19,26 @@ contract('SnakesAndLadders', (accounts) => {
     });
 
     beforeEach("deploy before each describe", async function() {
-        instance = await SnakesAndLadders.new(p1, p2, {from: owner});
+        instance = await SnakesAndLadders.new(p1, p2, {from: carol});
     });
 
-    describe("add balance", function() {
+    describe("add player funds", function() {
 
         it("should start with 0 balance", async function () {
             let b1 = await instance.balances.call(alice);
             assert.strictEqual(b1.toString(), "0", "Initial balance of alice should be 0");
-            let b2 = await instance.balances.call(owner);
-            assert.strictEqual(b2.toString(), "0", "Initial balance of owner should be 0");
+            let b2 = await instance.balances.call(carol);
+            assert.strictEqual(b2.toString(), "0", "Initial balance of carol should be 0");
         });
 
         it("should not let add 0 balance", async function () {
             return await expectedExceptionPromise(function () {
-                return instance.addBalance({from: alice, value: 0});
+                return instance.addPlayerFunds({from: alice, value: 0});
             });
         });
 
         it("should let alice add balance twice", async function () {
-            let txObj = await instance.addBalance({from: alice, value: qty1});
+            let txObj = await instance.addPlayerFunds({from: alice, value: qty1});
             assert.strictEqual(txObj.logs.length, 1, "Only one event is expected");
             let args = txObj.logs[0].args;
             assert.strictEqual(args['sender'], alice, "Log sender is not correct");
@@ -46,7 +46,7 @@ contract('SnakesAndLadders', (accounts) => {
             let newBalance = await instance.balances.call(alice);
             assert.strictEqual(newBalance.toString(), qty1.toString(), "Balance for alice should be the added balance");
             // add balance for a second time
-            let txObj2 = await instance.addBalance({from: alice, value: qty2});
+            let txObj2 = await instance.addPlayerFunds({from: alice, value: qty2});
             assert.strictEqual(txObj2.logs.length, 1, "Only one event is expected");
             let args2 = txObj2.logs[0].args;
             assert.strictEqual(args2['sender'], alice, "Log sender is not correct");
@@ -55,11 +55,11 @@ contract('SnakesAndLadders', (accounts) => {
             assert.strictEqual(newBalance2.toString(), qty3.toString(), "New balance should be the sum of the two balances added");
         });
 
-        it("should let owner add balance", async function () {
-            let txObj = await instance.addBalance({from: owner, value: qty1});
+        it("should let carol add balance", async function () {
+            let txObj = await instance.addPlayerFunds({from: carol, value: qty1});
             assert.strictEqual(txObj.logs.length, 1, "Only one event is expected");
             let args = txObj.logs[0].args;
-            assert.strictEqual(args['sender'], owner, "Log sender is not correct");
+            assert.strictEqual(args['sender'], carol, "Log sender is not correct");
             assert.strictEqual(args['amount'].toString(), qty1.toString(), "Log amount is not correct");
         });
     });
@@ -67,11 +67,12 @@ contract('SnakesAndLadders', (accounts) => {
     describe("play the game", function() {
 
         beforeEach("add some funds to alice", async function() {
-            await instance.addBalance({from: alice, value: qty1});
+            await instance.addPlayerFunds({from: alice, value: qty1});
         });
 
         it("testing the mocked default game (winner)", async function () {
             let betAmount = qty1/100;
+            await instance.setNonce(3, {from: carol});
             let txObj = await instance.play(qty1/100, {from: alice});
             console.log("        gas used: " + getTransactionGasUsed(txObj));
             // check events
@@ -89,14 +90,14 @@ contract('SnakesAndLadders', (accounts) => {
 
         it("testing the mocked default game (loser)", async function () {
             let betAmount = qty1/100;
-            await instance.setNonce(2, {from: owner});  // setting nonce 2, which is a loser game
+            await instance.setNonce(2, {from: carol});  // setting nonce 2, which is a loser game
             let txObj = await instance.play(qty1/100, {from: alice});
             // check events
             assert.strictEqual(txObj.logs.length, 1, "Only one event expected");
             let ev = txObj.logs[0];
             assert.strictEqual(ev.event, "LogGame", "Event should be LogGame");
             assert.strictEqual(ev.args['sender'], alice, "Log sender is not correct");
-            assert.strictEqual(ev.args['result'], false, "Game should be favorable to Player");
+            assert.strictEqual(ev.args['result'], false, "Game should be favorable to AI");
             assert.strictEqual(ev.args['balancediff'].toString(), (-betAmount).toString(), "Log balancediff is not correct");
             assert.strictEqual(ev.args['seed'].toString() !== "", true, "Seed cannot be empty");
             // check resulting balance
@@ -117,7 +118,7 @@ contract('SnakesAndLadders', (accounts) => {
         });
 
         it("cannot play if doesn't have enough balance to play", async function () {
-            await instance.addBalance({from: alice, value: qty1});
+            await instance.addPlayerFunds({from: alice, value: qty1});
             return await expectedExceptionPromise(function () {
                 return instance.play(qty2, {from: bob});
             });
@@ -130,6 +131,7 @@ contract('SnakesAndLadders', (accounts) => {
         });
 
         it("can play if bets less than 1/10 of the contract balance", async function () {
+            await instance.setNonce(3, {from: carol});
             let betAmount = parseInt(qty1)/10 - 1;
             let txObj = await instance.play(betAmount, {from: alice});
             // check events
@@ -143,42 +145,19 @@ contract('SnakesAndLadders', (accounts) => {
         });
 
         it("cannot bet more than 1 eth", async function () {
-            await instance.addBalance({from: bob, value: toWei('11', 'ether')});
+            await instance.addPlayerFunds({from: bob, value: toWei('11', 'ether')});
             return await expectedExceptionPromise(function () {
                 return instance.play(toWei('1.00001', 'ether'), {from: bob});
             });
         });
     });
 
-    describe("play the game with playNow", function() {
-
-        it("testing if playNow works", async function () {
-            let betAmount = qty1/100;
-            let txObj = await instance.playNow(betAmount, {from: alice, value: qty1});
-            // check events
-            assert.strictEqual(txObj.logs.length, 2, "Two events expected");
-            let ev0 = txObj.logs[0];
-            let ev1 = txObj.logs[1];
-            assert.strictEqual(ev0.event, "LogAddBalance", "Event 0 should be LogAddBalance");
-            assert.strictEqual(ev0.args['sender'], alice, "Log sender is not correct");
-            assert.strictEqual(ev0.args['amount'].toString(), qty1.toString(), "Log amount is not correct");
-            assert.strictEqual(ev1.event, "LogGame", "Event 1 should be LogGame");
-            assert.strictEqual(ev1.args['sender'], alice, "Log sender is not correct");
-            assert.strictEqual(ev1.args['result'], true, "Game should be favorable to Player");
-            assert.strictEqual(ev1.args['balancediff'].toString(), betAmount.toString(), "Log balancediff is not correct");
-            assert.strictEqual(ev1.args['seed'].toString() !== "", true, "Seed cannot be empty");
-            // check resulting balance
-            let newBalance = await instance.balances.call(alice);
-            assert.strictEqual(newBalance.toString(), (parseInt(qty1) + betAmount).toString(), "New balance should be the amount plus the bet");
-        });
-    });
-
     describe("withdraw balance", function () {
 
-        it("should let anyone to withdrawBalance", async function () {
-            await instance.addBalance({from: alice, value: qty1});
+        it("should let anyone to withdrawPlayerFunds", async function () {
+            await instance.addPlayerFunds({from: alice, value: qty1});
             let balanceBefore = await instance.balances.call(alice);
-            let txObj = await instance.withdrawBalance({from: alice});
+            let txObj = await instance.withdrawPlayerFunds({from: alice});
             let args = txObj.logs[0].args;
             assert.strictEqual(args['sender'], alice, "Log sender is not correct");
             assert.strictEqual(args['amount'].toString(), balanceBefore.toString(), "Log amount is not correct");
@@ -188,7 +167,7 @@ contract('SnakesAndLadders', (accounts) => {
 
         it("should not let withdraw if there is no balance", async function () {
             return await expectedExceptionPromise(function () {
-                return instance.withdrawBalance({from: alice});
+                return instance.withdrawPlayerFunds({from: alice});
             });
         });
     });
@@ -201,46 +180,40 @@ contract('SnakesAndLadders', (accounts) => {
             });
         });
 
-        it("should not let owner send eth directly", async function () {
+        it("should not let carol send eth directly", async function () {
             return await expectedExceptionPromise(function () {
-                return instance.sendTransaction({from: owner, value: qty1});
+                return instance.sendTransaction({from: carol, value: qty1});
             });
         });
 
-        it("should let the owner send balance with addFunds", async function () {
+        it("should let anyone add funds with addFunds", async function () {
             // contract starts with 0 amount
             let oldBalance = await web3.eth.getBalance(instance.address);
             assert.strictEqual(oldBalance.toString(), "0", "Contract should start with 0 eth");
             // add funds
-            let txObj = await instance.addFunds({from: owner, value: qty1});
+            let txObj = await instance.addFunds({from: bob, value: qty1});
             // check event
             assert.strictEqual(txObj.logs.length, 1, "Only one event is expected");
             let args = txObj.logs[0].args;
-            assert.strictEqual(args['sender'], owner, "Log sender is not correct");
+            assert.strictEqual(args['sender'], bob, "Log sender is not correct");
             assert.strictEqual(args['amount'].toString(), qty1, "Log amount is not correct");
             // check that contract got the value
             let newBalance = await web3.eth.getBalance(instance.address);
             assert.strictEqual(newBalance.toString(), qty1.toString(), "New amount in the contract is not correct");
-        });
-
-        it("should not let alice add funds", async function () {
-            return await expectedExceptionPromise(function () {
-                return instance.addFunds({from: alice, value: qty1});
-            });
         });
     });
 
     describe("payout the two payout addresses", function() {
 
         beforeEach("add some funds", async function() {
-            await instance.addFunds({from: owner, value: qty1});
+            await instance.addFunds({from: carol, value: qty1});
         });
 
-        it("should let the owner call the payout", async function () {
-            let txObj = await instance.payout(qty1, {from: owner});
+        it("should let p1 call the payout", async function () {
+            let txObj = await instance.payout(qty1, {from: p1});
             assert.strictEqual(txObj.logs.length, 1, "Only one event is expected");
             let args = txObj.logs[0].args;
-            assert.strictEqual(args['sender'], owner, "Log sender is not correct");
+            assert.strictEqual(args['sender'], p1, "Log sender is not correct");
             assert.strictEqual(args['amount'].toString(), qty1, "Log amount is not correct");
             // check resulting balance
             let balance1 = await instance.balances.call(p1);
@@ -251,20 +224,20 @@ contract('SnakesAndLadders', (accounts) => {
 
         it("cannot payout if there is not enough funds to withdraw", async function () {
             return await expectedExceptionPromise(function () {
-                return instance.payout(qty2, {from: owner});
+                return instance.payout(qty2, {from: carol});
             });
         });
 
         it("cannot payout if there is not enough free funds to withdraw", async function () {
             // add balance which is "locked"
-            let txObj = await instance.addBalance({from: alice, value: qty3});
+            let txObj = await instance.addPlayerFunds({from: alice, value: qty3});
             assert.strictEqual(txObj.logs.length, 1, "Only one event is expected");
             let args = txObj.logs[0].args;
             assert.strictEqual(args['sender'], alice, "Log sender is not correct");
             assert.strictEqual(args['amount'].toString(), qty3.toString(), "Log amount is not correct");
             // expect a payout that is bigger than free funds but less than total funds
             return await expectedExceptionPromise(function () {
-                return instance.payout(qty2, {from: owner});
+                return instance.payout(qty2, {from: carol});
             });
         });
 
