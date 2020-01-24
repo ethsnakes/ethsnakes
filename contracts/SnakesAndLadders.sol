@@ -1,9 +1,8 @@
 pragma solidity ^0.5.0;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
-contract SnakesAndLadders is Ownable {
+contract SnakesAndLadders {
     using SafeMath for uint;
     using SafeMath for uint8;  // 0-255
 
@@ -55,7 +54,7 @@ contract SnakesAndLadders is Ownable {
      * Avoid sending money directly to the contract
      */
     function () external payable {
-        revert("Use addBalance to send money.");
+        revert("Use addPlayerFunds to send money.");
     }
 
     /**
@@ -69,13 +68,11 @@ contract SnakesAndLadders is Ownable {
         uint seed = random();
         uint turn = 0;
         // let's decide who starts
-        uint8 move = randomDice(seed, turn);  // move 0 decides who starts
         bool player = false;  // true if next move is for player, false if for computer
-        /*
+        uint8 move = randomDice(seed, turn);  // move 0 decides who starts
         if (move == 1 || move == 2) {
             player = true;
         }
-        */
         // make all the moves and emit the results
         uint8 playerUser = 0;
         uint8 playerAI = 0;
@@ -102,7 +99,10 @@ contract SnakesAndLadders is Ownable {
                     playerAI = tiles - (playerAI - tiles);
                 }
             }
-            player = !player;
+            // if the player rolls a 6 has an extra turn
+            if (move != 6) {
+                player = !player;
+            }
         }
         if (playerUser == tiles) {
             balances[msg.sender] += amount;
@@ -116,21 +116,21 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
-     * Returns a non-miner-secure random uint
+     * Returns a non-miner-secure random uint.
      */
     function random() public view returns(uint) {
         return uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, msg.sender)));
     }
 
     /**
-     * Returns a random number from 1 to 6 based from a uint and turn
+     * Returns a random number from 1 to 6 based from a uint and turn.
      */
     function randomDice(uint randomString, uint turn) public pure returns(uint8) {
         return uint8(randomString/2**(turn%256))%6 + 1;
     }
 
     /**
-     * User adds player funds
+     * User adds player funds.
      */
     function addPlayerFunds() public payable {
         require(msg.value > 0, "You must send something to add into balance");
@@ -140,7 +140,7 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
-     * Withdraw player funds
+     * Withdraw player funds.
      */
     function withdrawPlayerFunds() public {
         uint toWithdraw = balances[msg.sender];
@@ -153,19 +153,21 @@ contract SnakesAndLadders is Ownable {
     }
 
     /**
-     * Only the owner can add funds to the contract
-    */
-    function addFunds() public payable onlyOwner {
+     * Anyone can send funds but it has to be from this function. This does not count in totalBalance.
+     */
+    function addFunds() public payable {
         require(msg.value > 0, "You must send something when calling this function");
         emit LogAddFunds(msg.sender, msg.value);
     }
 
     /**
-     * Only owner can emit payouts
+     * Only payout addresses can emit payouts.
      */
-    function payout(uint amount) public onlyOwner {
+    function payout(uint amount) public {
+        require(msg.sender == payout1 || msg.sender == payout2, "You must be one a payout address");
         require(amount > 0, "The balance that you want to withdraw must be more than 0");
         require(amount%2 == 0, "Amount to withdraw must be pair");
+        // this is made in a way to protect the customer
         require(address(this).balance - totalBalance >= amount, "There is not enough free balance to withdraw");
         emit LogPayout(msg.sender, amount);
         uint half = amount/2;

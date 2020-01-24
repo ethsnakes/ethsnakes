@@ -13,6 +13,8 @@ $color-clearyellow: #FFE3A1;
 $color-orange: #F08005;
 $color-yellow: #FADF03;
 
+$color-background: #94d6af;
+
 *, *:before, *:after {
   box-sizing: border-box;
   margin: 0;
@@ -66,15 +68,17 @@ input {
   width: 400px;
   min-width: 400px;
   height: 100%;
+  background: $color-background;
   @media(max-width: 1500px) {
     display: none;
   }
   #links {
     padding: 10px;
-    color: #fff;
-    text-align: right;
+    color: #464646;
+    text-align: center;
+    font-family: monospace;
     a {
-      color: #fff;
+      color: #464646;
       text-decoration: none;
       font-family: monospace;
     }

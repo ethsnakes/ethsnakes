@@ -41,16 +41,18 @@ input {
   right: 0;
   width: 400px;
   min-width: 400px;
-  height: 100%; }
+  height: 100%;
+  background: #94d6af; }
   @media (max-width: 1500px) {
     #stream {
       display: none; } }
   #stream #links {
     padding: 10px;
-    color: #fff;
-    text-align: right; }
+    color: #464646;
+    text-align: center;
+    font-family: monospace; }
     #stream #links a {
-      color: #fff;
+      color: #464646;
       text-decoration: none;
       font-family: monospace; }
   #stream #stream-title {
