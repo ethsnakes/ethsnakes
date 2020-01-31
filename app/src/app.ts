@@ -6,7 +6,6 @@ import { GameConstants } from "./GameConstants";
 import { BootScene } from "./scenes/BootScene";
 import { PreloadScene } from "./scenes/PreloadScene";
 import { BoardScene } from "./scenes/board-scene/BoardScene";
-import { Dapp } from "./Dapp";
 
 let game: Game;
 

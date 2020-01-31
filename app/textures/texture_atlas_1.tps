@@ -266,6 +266,24 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">texture_atlas_1/btn_info_off.png</key>
+            <key type="filename">texture_atlas_1/btn_info_on.png</key>
+            <key type="filename">texture_atlas_1/btn_sound_off.png</key>
+            <key type="filename">texture_atlas_1/btn_sound_off_on.png</key>
+            <key type="filename">texture_atlas_1/btn_sound_on.png</key>
+            <key type="filename">texture_atlas_1/btn_sound_on_on.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>16,16,31,32</rect>
+                <key>scale9Paddings</key>
+                <rect>16,16,31,32</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">texture_atlas_1/btn_ok_off.png</key>
             <key type="filename">texture_atlas_1/btn_ok_on.png</key>
             <struct type="IndividualSpriteSettings">
@@ -317,22 +335,6 @@
                 <rect>15,16,30,31</rect>
                 <key>scale9Paddings</key>
                 <rect>15,16,30,31</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">texture_atlas_1/btn_sound_off.png</key>
-            <key type="filename">texture_atlas_1/btn_sound_off_on.png</key>
-            <key type="filename">texture_atlas_1/btn_sound_on.png</key>
-            <key type="filename">texture_atlas_1/btn_sound_on_on.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>16,16,31,32</rect>
-                <key>scale9Paddings</key>
-                <rect>16,16,31,32</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

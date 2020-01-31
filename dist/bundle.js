@@ -495,6 +495,7 @@ var BoardScene_1 = __webpack_require__(/*! ./scenes/board-scene/BoardScene */ ".
 var BoardManager_1 = __webpack_require__(/*! ./scenes/board-scene/BoardManager */ "./app/src/scenes/board-scene/BoardManager.ts");
 var SelectBetLayer_1 = __webpack_require__(/*! ./scenes/board-scene/layers/SelectBetLayer */ "./app/src/scenes/board-scene/layers/SelectBetLayer.ts");
 var Dapp_1 = __webpack_require__(/*! ./Dapp */ "./app/src/Dapp.ts");
+var AudioManager_1 = __webpack_require__(/*! ./AudioManager */ "./app/src/AudioManager.ts");
 var GameManager = /** @class */ (function () {
     function GameManager() {
     }
@@ -524,6 +525,12 @@ var GameManager = /** @class */ (function () {
             GameManager.startGame();
         });
     };
+    GameManager.onGameAssetsLoaded = function () {
+        AudioManager_1.AudioManager.init();
+        GameVars_1.GameVars.dapp = new Dapp_1.Dapp();
+        GameVars_1.GameVars.dapp.unlock();
+        GameManager.enterBoardScene();
+    };
     GameManager.onBalanceAvailable = function (balance) {
         GameVars_1.GameVars.balance = Number(balance);
         BoardScene_1.BoardScene.currentInstance.onBalanceAvailable();
@@ -533,11 +540,6 @@ var GameManager = /** @class */ (function () {
     };
     GameManager.onAccountLoaded = function () {
         Dapp_1.Dapp.currentInstance.getBalance();
-    };
-    GameManager.onGameAssetsLoaded = function () {
-        GameVars_1.GameVars.dapp = new Dapp_1.Dapp();
-        GameVars_1.GameVars.dapp.unlock();
-        GameManager.enterBoardScene();
     };
     GameManager.enterBoardScene = function () {
         GameVars_1.GameVars.currentScene.scene.start("BoardScene");
@@ -679,6 +681,7 @@ exports.GameVars = GameVars;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 __webpack_require__(/*! phaser */ "./node_modules/phaser/dist/phaser.min.js");
+__webpack_require__(/*! howler */ "./node_modules/howler/dist/howler.js");
 var Game_1 = __webpack_require__(/*! ./Game */ "./app/src/Game.ts");
 var GameConstants_1 = __webpack_require__(/*! ./GameConstants */ "./app/src/GameConstants.ts");
 var BootScene_1 = __webpack_require__(/*! ./scenes/BootScene */ "./app/src/scenes/BootScene.ts");
@@ -807,6 +810,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var GameManager_1 = __webpack_require__(/*! ../GameManager */ "./app/src/GameManager.ts");
 var GameConstants_1 = __webpack_require__(/*! ../GameConstants */ "./app/src/GameConstants.ts");
 var GameVars_1 = __webpack_require__(/*! ../GameVars */ "./app/src/GameVars.ts");
+var AudioManager_1 = __webpack_require__(/*! ../AudioManager */ "./app/src/AudioManager.ts");
 var PreloadScene = /** @class */ (function (_super) {
     __extends(PreloadScene, _super);
     function PreloadScene() {
@@ -819,7 +823,7 @@ var PreloadScene = /** @class */ (function (_super) {
     PreloadScene.prototype.create = function () {
         PreloadScene.currentInstance = this;
         GameManager_1.GameManager.setCurrentScene(this);
-        GameManager_1.GameManager.onGameAssetsLoaded();
+        this.loadHowl();
     };
     PreloadScene.prototype.updateLoadedPercentage = function (percentageLoaded) {
         this.progressBar.clear();
@@ -839,7 +843,18 @@ var PreloadScene = /** @class */ (function (_super) {
         this.load.atlas("texture_atlas_2", "assets/texture_atlas_2.png", "assets/texture_atlas_2.json");
         this.load.atlas("texture_atlas_3", "assets/texture_atlas_3.png", "assets/texture_atlas_3.json");
         this.load.atlas("texture_atlas_4", "assets/texture_atlas_4.png", "assets/texture_atlas_4.json");
+        this.load.json("audiosprite", "assets/audio/audiosprite.json");
         this.load.on("progress", this.updateLoadedPercentage, this);
+    };
+    PreloadScene.prototype.loadHowl = function () {
+        var json = this.cache.json.get("audiosprite");
+        json = JSON.parse(JSON.stringify(json).replace("urls", "src"));
+        json = JSON.parse(JSON.stringify(json).replace("../", ""));
+        json = JSON.parse(JSON.stringify(json).replace("../", ""));
+        AudioManager_1.AudioManager.howl = new Howl(json);
+        AudioManager_1.AudioManager.howl.on("load", function () {
+            GameManager_1.GameManager.onGameAssetsLoaded();
+        });
     };
     return PreloadScene;
 }(Phaser.Scene));
@@ -1127,8 +1142,13 @@ var BoardManager = /** @class */ (function () {
     BoardManager.resetBoard = function () {
         //
     };
-    BoardManager.onClickSettings = function () {
-        //
+    BoardManager.showInfoLayer = function () {
+        GameVars_1.GameVars.paused = true;
+        BoardScene_1.BoardScene.currentInstance.showInfoLayer();
+    };
+    BoardManager.hideInfoLayer = function () {
+        GameVars_1.GameVars.paused = false;
+        BoardScene_1.BoardScene.currentInstance.hideInfoLayer();
     };
     BoardManager.chipArrivedToItsPosition = function (chip) {
         if (chip.cellIndex === 100) {
@@ -1164,14 +1184,6 @@ var BoardManager = /** @class */ (function () {
     };
     BoardManager.onDiceResultAvailable = function () {
         BoardScene_1.BoardScene.currentInstance.moveChip();
-    };
-    BoardManager.showSettingsLayer = function () {
-        GameVars_1.GameVars.paused = true;
-        BoardScene_1.BoardScene.currentInstance.showSettingsLayer();
-    };
-    BoardManager.hideSettingsLayer = function () {
-        GameVars_1.GameVars.paused = false;
-        BoardScene_1.BoardScene.currentInstance.showSettingsLayer();
     };
     BoardManager.matchOver = function (winner) {
         GameVars_1.GameVars.matchOver = true;
@@ -1224,12 +1236,12 @@ var HUD_1 = __webpack_require__(/*! ./HUD */ "./app/src/scenes/board-scene/HUD.t
 var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./app/src/GameConstants.ts");
 var BoardContainer_1 = __webpack_require__(/*! ./BoardContainer */ "./app/src/scenes/board-scene/BoardContainer.ts");
 var BoardManager_1 = __webpack_require__(/*! ./BoardManager */ "./app/src/scenes/board-scene/BoardManager.ts");
-var SettingsLayer_1 = __webpack_require__(/*! ./layers/SettingsLayer */ "./app/src/scenes/board-scene/layers/SettingsLayer.ts");
 var DiceContainer_1 = __webpack_require__(/*! ./gui/DiceContainer */ "./app/src/scenes/board-scene/gui/DiceContainer.ts");
 var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./app/src/GameVars.ts");
 var SelectBetLayer_1 = __webpack_require__(/*! ./layers/SelectBetLayer */ "./app/src/scenes/board-scene/layers/SelectBetLayer.ts");
 var WaitingLayer_1 = __webpack_require__(/*! ./layers/WaitingLayer */ "./app/src/scenes/board-scene/layers/WaitingLayer.ts");
 var OutcomeLayer_1 = __webpack_require__(/*! ./layers/OutcomeLayer */ "./app/src/scenes/board-scene/layers/OutcomeLayer.ts");
+var InfoLayer_1 = __webpack_require__(/*! ./layers/InfoLayer */ "./app/src/scenes/board-scene/layers/InfoLayer.ts");
 var BoardScene = /** @class */ (function (_super) {
     __extends(BoardScene, _super);
     function BoardScene() {
@@ -1293,12 +1305,12 @@ var BoardScene = /** @class */ (function (_super) {
     BoardScene.prototype.moveChip = function () {
         this.boardContainer.moveChip();
     };
-    BoardScene.prototype.showSettingsLayer = function () {
-        this.settingsLayer = new SettingsLayer_1.SettingsLayer(this);
-        this.add.existing(this.settingsLayer);
+    BoardScene.prototype.showInfoLayer = function () {
+        this.infoLayer = new InfoLayer_1.InfoLayer(this);
+        this.add.existing(this.infoLayer);
     };
-    BoardScene.prototype.hideSettingsLayer = function () {
-        this.settingsLayer.destroy();
+    BoardScene.prototype.hideInfoLayer = function () {
+        this.infoLayer.destroy();
     };
     BoardScene.prototype.matchOver = function () {
         this.dice.matchOver();
@@ -2020,13 +2032,13 @@ var GUI = /** @class */ (function (_super) {
         _this.addFundsButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.addFundsButton.onUp(_this.onClickAddFunds, _this);
         _this.add(_this.addFundsButton);
-        _this.retrieveFundsButton = new Utils_1.Button(_this.scene, 750, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
+        _this.retrieveFundsButton = new Utils_1.Button(_this.scene, 740, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
         _this.retrieveFundsButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.retrieveFundsButton.onUp(_this.onClickRetrieveFunds, _this);
         _this.add(_this.retrieveFundsButton);
-        _this.infoButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 100 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_settings_off", "btn_settings_on");
+        _this.infoButton = new Utils_1.Button(_this.scene, GameConstants_1.GameConstants.GAME_WIDTH - 110 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_info_off", "btn_info_on");
         _this.infoButton.scaleX = GameVars_1.GameVars.scaleX;
-        _this.infoButton.onUp(_this.onClickSettings, _this);
+        _this.infoButton.onUp(_this.onClickInfo, _this);
         _this.add(_this.infoButton);
         _this.audioButton = new AudioButton_1.AudioButton(_this.scene);
         _this.audioButton.scaleX = GameVars_1.GameVars.scaleX;
@@ -2147,8 +2159,8 @@ var GUI = /** @class */ (function (_super) {
     GUI.prototype.onClickRetrieveFunds = function () {
         GameManager_1.GameManager.retrieveFunds();
     };
-    GUI.prototype.onClickSettings = function () {
-        BoardManager_1.BoardManager.onClickSettings();
+    GUI.prototype.onClickInfo = function () {
+        BoardManager_1.BoardManager.showInfoLayer();
     };
     GUI.prototype.onClickDiceButton = function () {
         if (GameVars_1.GameVars.diceBlocked) {
@@ -2297,6 +2309,82 @@ var BetSelectionButtonsContainer = /** @class */ (function (_super) {
     return BetSelectionButtonsContainer;
 }(Phaser.GameObjects.Container));
 exports.BetSelectionButtonsContainer = BetSelectionButtonsContainer;
+
+
+/***/ }),
+
+/***/ "./app/src/scenes/board-scene/layers/InfoLayer.ts":
+/*!********************************************************!*\
+  !*** ./app/src/scenes/board-scene/layers/InfoLayer.ts ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameConstants_1 = __webpack_require__(/*! ../../../GameConstants */ "./app/src/GameConstants.ts");
+var GameVars_1 = __webpack_require__(/*! ../../../GameVars */ "./app/src/GameVars.ts");
+var Utils_1 = __webpack_require__(/*! ../../../utils/Utils */ "./app/src/utils/Utils.ts");
+var BoardManager_1 = __webpack_require__(/*! ../BoardManager */ "./app/src/scenes/board-scene/BoardManager.ts");
+var InfoLayer = /** @class */ (function (_super) {
+    __extends(InfoLayer, _super);
+    function InfoLayer(scene) {
+        var _this = _super.call(this, scene) || this;
+        var background = new Phaser.GameObjects.Graphics(_this.scene);
+        background.fillStyle(0x495471, .7);
+        background.fillRect(0, 0, GameConstants_1.GameConstants.GAME_WIDTH, GameConstants_1.GameConstants.GAME_HEIGHT);
+        background.setInteractive(new Phaser.Geom.Rectangle(0, 0, GameConstants_1.GameConstants.GAME_WIDTH, GameConstants_1.GameConstants.GAME_HEIGHT), Phaser.Geom.Rectangle.Contains);
+        background.on("pointerdown", function () {
+            //
+        }, _this);
+        _this.add(background);
+        _this.scaledItemsContainer = new Phaser.GameObjects.Container(_this.scene);
+        _this.scaledItemsContainer.x = GameConstants_1.GameConstants.GAME_WIDTH / 2;
+        _this.scaledItemsContainer.y = GameConstants_1.GameConstants.GAME_HEIGHT / 2;
+        _this.scaledItemsContainer.scaleX = GameVars_1.GameVars.scaleX;
+        _this.add(_this.scaledItemsContainer);
+        var title = new Phaser.GameObjects.Image(_this.scene, 0, -260, "texture_atlas_1", "header_tutorial");
+        _this.scaledItemsContainer.add(title);
+        var base = new Phaser.GameObjects.Image(_this.scene, 0, 0, "texture_atlas_1", "layout_base");
+        _this.scaledItemsContainer.add(base);
+        var text = new Phaser.GameObjects.Text(_this.scene, 0, -60, "The first player that reaches the end of the board wins.\n\nLaunch the dice to move your piece, if you get a 6 you'll get an extra turn.\n\nLadders will help you reach the top, but snakes will make you go down.", { fontFamily: "BladiTwo4F", fontSize: "22px", color: "#3f680c", align: "center" });
+        text.setOrigin(.5);
+        text.setWordWrapWidth(500);
+        _this.scaledItemsContainer.add(text);
+        var image = new Phaser.GameObjects.Image(_this.scene, 0, 120, "texture_atlas_1", "tutorial_img");
+        _this.scaledItemsContainer.add(image);
+        var okButton = new Utils_1.Button(_this.scene, 0, 280, "texture_atlas_1", "btn_ok_off", "btn_ok_on");
+        okButton.onDown(_this.onOkDown, _this);
+        _this.scaledItemsContainer.add(okButton);
+        _this.alpha = 0;
+        _this.scene.tweens.add({
+            targets: _this,
+            alpha: 1,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 400
+        });
+        return _this;
+    }
+    InfoLayer.prototype.onOkDown = function () {
+        BoardManager_1.BoardManager.hideInfoLayer();
+    };
+    return InfoLayer;
+}(Phaser.GameObjects.Container));
+exports.InfoLayer = InfoLayer;
 
 
 /***/ }),
@@ -2487,47 +2575,6 @@ var SelectBetLayer = /** @class */ (function (_super) {
     return SelectBetLayer;
 }(Phaser.GameObjects.Container));
 exports.SelectBetLayer = SelectBetLayer;
-
-
-/***/ }),
-
-/***/ "./app/src/scenes/board-scene/layers/SettingsLayer.ts":
-/*!************************************************************!*\
-  !*** ./app/src/scenes/board-scene/layers/SettingsLayer.ts ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var GameConstants_1 = __webpack_require__(/*! ../../../GameConstants */ "./app/src/GameConstants.ts");
-var SettingsLayer = /** @class */ (function (_super) {
-    __extends(SettingsLayer, _super);
-    function SettingsLayer(scene) {
-        var _this = _super.call(this, scene) || this;
-        var darkLayer = new Phaser.GameObjects.Graphics(_this.scene);
-        darkLayer.fillStyle(0x000000, .65);
-        darkLayer.fillRect(0, 0, GameConstants_1.GameConstants.GAME_WIDTH, GameConstants_1.GameConstants.GAME_HEIGHT);
-        _this.add(darkLayer);
-        return _this;
-    }
-    return SettingsLayer;
-}(Phaser.GameObjects.Container));
-exports.SettingsLayer = SettingsLayer;
 
 
 /***/ }),
@@ -2737,7 +2784,7 @@ exports.Button = Button;
 /*! exports provided: contractName, abi, metadata, bytecode, deployedBytecode, sourceMap, deployedSourceMap, source, sourcePath, ast, legacyAST, compiler, networks, schemaVersion, updatedAt, networkType, devdoc, userdoc, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"contractName\":\"SnakesAndLaddersMock\",\"abi\":[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"}],\"name\":\"balances\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"play\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"addPlayerFunds\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"randomString\",\"type\":\"uint256\"},{\"name\":\"turn\",\"type\":\"uint256\"}],\"name\":\"randomDice\",\"outputs\":[{\"name\":\"\",\"type\":\"uint8\"}],\"payable\":false,\"stateMutability\":\"pure\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"addFunds\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"withdrawPlayerFunds\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"payout\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"_payout1\",\"type\":\"address\"},{\"name\":\"_payout2\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"fallback\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"result\",\"type\":\"bool\"},{\"indexed\":false,\"name\":\"balancediff\",\"type\":\"int256\"},{\"indexed\":false,\"name\":\"seed\",\"type\":\"uint256\"}],\"name\":\"LogGame\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogAddPlayerFunds\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogWithdrawPlayerFunds\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogAddFunds\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogPayout\",\"type\":\"event\"},{\"constant\":false,\"inputs\":[{\"name\":\"n\",\"type\":\"uint256\"}],\"name\":\"setNonce\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"random\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"metadata\":\"{\\\"compiler\\\":{\\\"version\\\":\\\"0.5.0+commit.1d4f565a\\\"},\\\"language\\\":\\\"Solidity\\\",\\\"output\\\":{\\\"abi\\\":[{\\\"constant\\\":true,\\\"inputs\\\":[{\\\"name\\\":\\\"\\\",\\\"type\\\":\\\"address\\\"}],\\\"name\\\":\\\"balances\\\",\\\"outputs\\\":[{\\\"name\\\":\\\"\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"view\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":true,\\\"inputs\\\":[],\\\"name\\\":\\\"random\\\",\\\"outputs\\\":[{\\\"name\\\":\\\"\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"view\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":false,\\\"inputs\\\":[{\\\"name\\\":\\\"amount\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"play\\\",\\\"outputs\\\":[],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"nonpayable\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":false,\\\"inputs\\\":[],\\\"name\\\":\\\"addPlayerFunds\\\",\\\"outputs\\\":[],\\\"payable\\\":true,\\\"stateMutability\\\":\\\"payable\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":true,\\\"inputs\\\":[{\\\"name\\\":\\\"randomString\\\",\\\"type\\\":\\\"uint256\\\"},{\\\"name\\\":\\\"turn\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"randomDice\\\",\\\"outputs\\\":[{\\\"name\\\":\\\"\\\",\\\"type\\\":\\\"uint8\\\"}],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"pure\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":false,\\\"inputs\\\":[],\\\"name\\\":\\\"addFunds\\\",\\\"outputs\\\":[],\\\"payable\\\":true,\\\"stateMutability\\\":\\\"payable\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":false,\\\"inputs\\\":[],\\\"name\\\":\\\"withdrawPlayerFunds\\\",\\\"outputs\\\":[],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"nonpayable\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":false,\\\"inputs\\\":[{\\\"name\\\":\\\"amount\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"payout\\\",\\\"outputs\\\":[],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"nonpayable\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":false,\\\"inputs\\\":[{\\\"name\\\":\\\"n\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"setNonce\\\",\\\"outputs\\\":[],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"nonpayable\\\",\\\"type\\\":\\\"function\\\"},{\\\"inputs\\\":[{\\\"name\\\":\\\"_payout1\\\",\\\"type\\\":\\\"address\\\"},{\\\"name\\\":\\\"_payout2\\\",\\\"type\\\":\\\"address\\\"}],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"nonpayable\\\",\\\"type\\\":\\\"constructor\\\"},{\\\"payable\\\":true,\\\"stateMutability\\\":\\\"payable\\\",\\\"type\\\":\\\"fallback\\\"},{\\\"anonymous\\\":false,\\\"inputs\\\":[{\\\"indexed\\\":false,\\\"name\\\":\\\"sender\\\",\\\"type\\\":\\\"address\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"result\\\",\\\"type\\\":\\\"bool\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"balancediff\\\",\\\"type\\\":\\\"int256\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"seed\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"LogGame\\\",\\\"type\\\":\\\"event\\\"},{\\\"anonymous\\\":false,\\\"inputs\\\":[{\\\"indexed\\\":false,\\\"name\\\":\\\"sender\\\",\\\"type\\\":\\\"address\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"amount\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"LogAddPlayerFunds\\\",\\\"type\\\":\\\"event\\\"},{\\\"anonymous\\\":false,\\\"inputs\\\":[{\\\"indexed\\\":false,\\\"name\\\":\\\"sender\\\",\\\"type\\\":\\\"address\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"amount\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"LogWithdrawPlayerFunds\\\",\\\"type\\\":\\\"event\\\"},{\\\"anonymous\\\":false,\\\"inputs\\\":[{\\\"indexed\\\":false,\\\"name\\\":\\\"sender\\\",\\\"type\\\":\\\"address\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"amount\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"LogAddFunds\\\",\\\"type\\\":\\\"event\\\"},{\\\"anonymous\\\":false,\\\"inputs\\\":[{\\\"indexed\\\":false,\\\"name\\\":\\\"sender\\\",\\\"type\\\":\\\"address\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"amount\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"LogPayout\\\",\\\"type\\\":\\\"event\\\"}],\\\"devdoc\\\":{\\\"methods\\\":{}},\\\"userdoc\\\":{\\\"methods\\\":{\\\"addFunds()\\\":{\\\"notice\\\":\\\"Anyone can send funds but it has to be from this function. This does not count in totalBalance.\\\"},\\\"addPlayerFunds()\\\":{\\\"notice\\\":\\\"User adds player funds.\\\"},\\\"constructor\\\":\\\"Pass parameters to parent\\\",\\\"payout(uint256)\\\":{\\\"notice\\\":\\\"Only payout addresses can emit payouts.\\\"},\\\"play(uint256)\\\":{\\\"notice\\\":\\\"Plays the game\\\"},\\\"random()\\\":{\\\"notice\\\":\\\"Returns a NOT a random number\\\"},\\\"randomDice(uint256,uint256)\\\":{\\\"notice\\\":\\\"Returns a random number from 1 to 6 based from a uint and turn.\\\"},\\\"withdrawPlayerFunds()\\\":{\\\"notice\\\":\\\"Withdraw player funds.\\\"}}}},\\\"settings\\\":{\\\"compilationTarget\\\":{\\\"/Users/enrique/Sites/ethsnakesandladders/contracts/mock/SnakesAndLaddersMock.sol\\\":\\\"SnakesAndLaddersMock\\\"},\\\"evmVersion\\\":\\\"byzantium\\\",\\\"libraries\\\":{},\\\"optimizer\\\":{\\\"enabled\\\":false,\\\"runs\\\":200},\\\"remappings\\\":[]},\\\"sources\\\":{\\\"/Users/enrique/Sites/ethsnakesandladders/contracts/SnakesAndLadders.sol\\\":{\\\"keccak256\\\":\\\"0x944cc0682b9f5ed284c12d2a29c66bd52f90155e59c44ce51984ea41602c7e79\\\",\\\"urls\\\":[\\\"bzzr://0b13470402eee973862d3044c2d4a395da2b6f5307a68ceb7f07cc9caa3f1b85\\\"]},\\\"/Users/enrique/Sites/ethsnakesandladders/contracts/mock/SnakesAndLaddersMock.sol\\\":{\\\"keccak256\\\":\\\"0x393babdb53cd2f02679e711a93702e61ec429862b7a69303021d2d5e7046730f\\\",\\\"urls\\\":[\\\"bzzr://eb94aad0071a10f231a675559bebad8bf827a73765dce9b2ca7f60e13090a600\\\"]},\\\"openzeppelin-solidity/contracts/math/SafeMath.sol\\\":{\\\"keccak256\\\":\\\"0x4ccf2d7b51873db1ccfd54ca2adae5eac3b184f9699911ed4490438419f1c690\\\",\\\"urls\\\":[\\\"bzzr://1604f5b6d6e916c154efd8c6720cda069e5ba32dfa0a9dedf2b42e5b02d07f89\\\"]}},\\\"version\\\":1}\",\"bytecode\":\"0x6080604052600060055534801561001557600080fd5b506040516040806116868339810180604052604081101561003557600080fd5b8101908080519060200190929190805190602001909291905050508181600e60046000600460ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550602060046000600860ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550602660046000601460ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550605460046000601c60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550603b60046000602860ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550605360046000603a60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550605d60046000604860ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550600360046000600f60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550600960046000601f60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550601a60046000602c60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550601360046000603e60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550604660046000604a60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550602160046000605560ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550604760046000605b60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550605060046000606260ff16815260200190815260200160002060006101000a81548160ff021916908360ff16021790555081600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555080600360006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550505050506112c0806103c66000396000f3fe608060405260043610610099576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806327e235e31461012d5780635ec01e4d146101925780636898f82b146101bd5780638492b706146101f85780639f4aec5914610202578063a26759cb14610261578063de9e43d31461026b578063e115234314610282578063f360c183146102bd575b6040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260218152602001807f55736520616464506c6179657246756e647320746f2073656e64206d6f6e657981526020017f2e0000000000000000000000000000000000000000000000000000000000000081525060400191505060405180910390fd5b34801561013957600080fd5b5061017c6004803603602081101561015057600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506102f8565b6040518082815260200191505060405180910390f35b34801561019e57600080fd5b506101a7610310565b6040518082815260200191505060405180910390f35b3480156101c957600080fd5b506101f6600480360360208110156101e057600080fd5b8101908080359060200190929190505050610344565b005b610200610903565b005b34801561020e57600080fd5b506102456004803603604081101561022557600080fd5b810190808035906020019092919080359060200190929190505050610a6a565b604051808260ff1660ff16815260200191505060405180910390f35b610269610aa2565b005b34801561027757600080fd5b50610280610bad565b005b34801561028e57600080fd5b506102bb600480360360208110156102a557600080fd5b8101908080359060200190929190505050610e26565b005b3480156102c957600080fd5b506102f6600480360360208110156102e057600080fd5b810190808035906020019092919050505061128a565b005b60006020528060005260406000206000915090505481565b6000600554604051602001808281526020019150506040516020818303038152906040528051906020012060019004905090565b6000811115156103bc576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601e8152602001807f596f75206d7573742073656e6420736f6d657468696e6720746f20626574000081525060200191505060405180910390fd5b6000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020548111151515610498576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260258152602001807f596f7520646f6e2774206861766520656e6f7567682062616c616e636520746f81526020017f20706c617900000000000000000000000000000000000000000000000000000081525060400191505060405180910390fd5b3073ffffffffffffffffffffffffffffffffffffffff1631600a820210151561054f576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603c8152602001807f596f752063616e6e6f7420626574206d6f7265207468616e20312f3130206f6681526020017f207468697320636f6e747261637420746f74616c2062616c616e63650000000081525060400191505060405180910390fd5b670de0b6b3a764000081111515156105cf576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601d8152602001807f4d6178696d756d2062657420616d6f756e74206973203120657468657200000081525060200191505060405180910390fd5b60006105d9610310565b90506000809050600080905060006105f18484610a6a565b905060018160ff161480610608575060028160ff16145b1561061257600191505b6000809050600080905060005b606460ff168360ff161415801561063d5750606460ff168260ff1614155b156107295785806001019650506106548787610a6a565b935084156106b9578383019250600460008460ff1660ff16815260200190815260200160002060009054906101000a900460ff16905060008160ff1614151561069b578092505b606460ff168360ff1611156106b4576064830360640392505b610712565b8382019150600460008360ff1660ff16815260200190815260200160002060009054906101000a900460ff16905060008160ff161415156106f8578091505b606460ff168260ff161115610711576064820360640391505b5b60068460ff1614151561072457841594505b61061f565b606460ff168360ff16141561081957876000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540192505081905550876001600082825401925050819055507f1b8173b2ebc7d3b1be2bb58d232ecec5dc93a1445e6f6eef77211e49391869303360018a8a604051808573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018415151515815260200183815260200182815260200194505050505060405180910390a16108f9565b876000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540392505081905550876001600082825403925050819055507f1b8173b2ebc7d3b1be2bb58d232ecec5dc93a1445e6f6eef77211e49391869303360008a6000038a604051808573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018415151515815260200183815260200182815260200194505050505060405180910390a15b5050505050505050565b6000341115156109a1576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252602b8152602001807f596f75206d7573742073656e6420736f6d657468696e6720746f20616464206981526020017f6e746f2062616c616e636500000000000000000000000000000000000000000081525060400191505060405180910390fd5b7f0fad0ee523af769263e35ca10343b0d098a75cd8d5453768ff2c2a976acf6fe73334604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1346000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000206000828254019250508190555034600160008282540192505081905550565b60006001600661010084811515610a7d57fe5b0660020a85811515610a8b57fe5b0460ff16811515610a9857fe5b0601905092915050565b600034111515610b40576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260328152602001807f596f75206d7573742073656e6420736f6d657468696e67207768656e2063616c81526020017f6c696e6720746869732066756e6374696f6e000000000000000000000000000081525060400191505060405180910390fd5b7ff10a70d7840292e5567b3acea76264b1528c1c5c45625420169815099f702d1b3334604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1565b60008060003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020549050600081111515610c68576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601f8152602001807f5468657265206973206e6f2062616c616e636520746f2077697468647261770081525060200191505060405180910390fd5b3073ffffffffffffffffffffffffffffffffffffffff16318111151515610d1d576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260368152602001807f546865726520617265206e6f7420656e6f7567682066756e647320696e20746881526020017f6520636f6e747261637420746f2077697468647261770000000000000000000081525060400191505060405180910390fd5b7ff45703a0c722c37e7e1ecaca11700b61c644684bd6d7cc70fff9dbec194769563382604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a160008060003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002081905550806001600082825403925050819055503373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051600060405180830381858888f19350505050158015610e22573d6000803e3d6000fd5b5050565b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161480610ecf5750600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16145b1515610f43576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260208152602001807f596f75206d757374206265206f6e652061207061796f7574206164647265737381525060200191505060405180910390fd5b600081111515610fe1576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260398152602001807f5468652062616c616e6365207468617420796f752077616e7420746f2077697481526020017f6864726177206d757374206265206d6f7265207468616e20300000000000000081525060400191505060405180910390fd5b6000600282811515610fef57fe5b06141515611065576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601f8152602001807f416d6f756e7420746f207769746864726177206d75737420626520706169720081525060200191505060405180910390fd5b806001543073ffffffffffffffffffffffffffffffffffffffff1631031015151561111e576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252602c8152602001807f5468657265206973206e6f7420656e6f75676820667265652062616c616e636581526020017f20746f207769746864726177000000000000000000000000000000000000000081525060400191505060405180910390fd5b7f7d6963073a93103d7a336ea21c7f029ad757c9ef4c0c6ad0ff86c689480e0ed83382604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1600060028281151561119757fe5b04905080600080600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000206000828254019250508190555080600080600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540192505081905550816001600082825401925050819055505050565b806005819055505056fea165627a7a72305820befc73e5503f0550f4027b2084ce7b01513383533a9a69e0fcef83a7d1e6ebbd0029\",\"deployedBytecode\":\"0x608060405260043610610099576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806327e235e31461012d5780635ec01e4d146101925780636898f82b146101bd5780638492b706146101f85780639f4aec5914610202578063a26759cb14610261578063de9e43d31461026b578063e115234314610282578063f360c183146102bd575b6040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260218152602001807f55736520616464506c6179657246756e647320746f2073656e64206d6f6e657981526020017f2e0000000000000000000000000000000000000000000000000000000000000081525060400191505060405180910390fd5b34801561013957600080fd5b5061017c6004803603602081101561015057600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506102f8565b6040518082815260200191505060405180910390f35b34801561019e57600080fd5b506101a7610310565b6040518082815260200191505060405180910390f35b3480156101c957600080fd5b506101f6600480360360208110156101e057600080fd5b8101908080359060200190929190505050610344565b005b610200610903565b005b34801561020e57600080fd5b506102456004803603604081101561022557600080fd5b810190808035906020019092919080359060200190929190505050610a6a565b604051808260ff1660ff16815260200191505060405180910390f35b610269610aa2565b005b34801561027757600080fd5b50610280610bad565b005b34801561028e57600080fd5b506102bb600480360360208110156102a557600080fd5b8101908080359060200190929190505050610e26565b005b3480156102c957600080fd5b506102f6600480360360208110156102e057600080fd5b810190808035906020019092919050505061128a565b005b60006020528060005260406000206000915090505481565b6000600554604051602001808281526020019150506040516020818303038152906040528051906020012060019004905090565b6000811115156103bc576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601e8152602001807f596f75206d7573742073656e6420736f6d657468696e6720746f20626574000081525060200191505060405180910390fd5b6000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020548111151515610498576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260258152602001807f596f7520646f6e2774206861766520656e6f7567682062616c616e636520746f81526020017f20706c617900000000000000000000000000000000000000000000000000000081525060400191505060405180910390fd5b3073ffffffffffffffffffffffffffffffffffffffff1631600a820210151561054f576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603c8152602001807f596f752063616e6e6f7420626574206d6f7265207468616e20312f3130206f6681526020017f207468697320636f6e747261637420746f74616c2062616c616e63650000000081525060400191505060405180910390fd5b670de0b6b3a764000081111515156105cf576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601d8152602001807f4d6178696d756d2062657420616d6f756e74206973203120657468657200000081525060200191505060405180910390fd5b60006105d9610310565b90506000809050600080905060006105f18484610a6a565b905060018160ff161480610608575060028160ff16145b1561061257600191505b6000809050600080905060005b606460ff168360ff161415801561063d5750606460ff168260ff1614155b156107295785806001019650506106548787610a6a565b935084156106b9578383019250600460008460ff1660ff16815260200190815260200160002060009054906101000a900460ff16905060008160ff1614151561069b578092505b606460ff168360ff1611156106b4576064830360640392505b610712565b8382019150600460008360ff1660ff16815260200190815260200160002060009054906101000a900460ff16905060008160ff161415156106f8578091505b606460ff168260ff161115610711576064820360640391505b5b60068460ff1614151561072457841594505b61061f565b606460ff168360ff16141561081957876000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540192505081905550876001600082825401925050819055507f1b8173b2ebc7d3b1be2bb58d232ecec5dc93a1445e6f6eef77211e49391869303360018a8a604051808573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018415151515815260200183815260200182815260200194505050505060405180910390a16108f9565b876000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540392505081905550876001600082825403925050819055507f1b8173b2ebc7d3b1be2bb58d232ecec5dc93a1445e6f6eef77211e49391869303360008a6000038a604051808573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018415151515815260200183815260200182815260200194505050505060405180910390a15b5050505050505050565b6000341115156109a1576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252602b8152602001807f596f75206d7573742073656e6420736f6d657468696e6720746f20616464206981526020017f6e746f2062616c616e636500000000000000000000000000000000000000000081525060400191505060405180910390fd5b7f0fad0ee523af769263e35ca10343b0d098a75cd8d5453768ff2c2a976acf6fe73334604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1346000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000206000828254019250508190555034600160008282540192505081905550565b60006001600661010084811515610a7d57fe5b0660020a85811515610a8b57fe5b0460ff16811515610a9857fe5b0601905092915050565b600034111515610b40576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260328152602001807f596f75206d7573742073656e6420736f6d657468696e67207768656e2063616c81526020017f6c696e6720746869732066756e6374696f6e000000000000000000000000000081525060400191505060405180910390fd5b7ff10a70d7840292e5567b3acea76264b1528c1c5c45625420169815099f702d1b3334604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1565b60008060003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020549050600081111515610c68576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601f8152602001807f5468657265206973206e6f2062616c616e636520746f2077697468647261770081525060200191505060405180910390fd5b3073ffffffffffffffffffffffffffffffffffffffff16318111151515610d1d576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260368152602001807f546865726520617265206e6f7420656e6f7567682066756e647320696e20746881526020017f6520636f6e747261637420746f2077697468647261770000000000000000000081525060400191505060405180910390fd5b7ff45703a0c722c37e7e1ecaca11700b61c644684bd6d7cc70fff9dbec194769563382604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a160008060003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002081905550806001600082825403925050819055503373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051600060405180830381858888f19350505050158015610e22573d6000803e3d6000fd5b5050565b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161480610ecf5750600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16145b1515610f43576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260208152602001807f596f75206d757374206265206f6e652061207061796f7574206164647265737381525060200191505060405180910390fd5b600081111515610fe1576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260398152602001807f5468652062616c616e6365207468617420796f752077616e7420746f2077697481526020017f6864726177206d757374206265206d6f7265207468616e20300000000000000081525060400191505060405180910390fd5b6000600282811515610fef57fe5b06141515611065576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601f8152602001807f416d6f756e7420746f207769746864726177206d75737420626520706169720081525060200191505060405180910390fd5b806001543073ffffffffffffffffffffffffffffffffffffffff1631031015151561111e576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252602c8152602001807f5468657265206973206e6f7420656e6f75676820667265652062616c616e636581526020017f20746f207769746864726177000000000000000000000000000000000000000081525060400191505060405180910390fd5b7f7d6963073a93103d7a336ea21c7f029ad757c9ef4c0c6ad0ff86c689480e0ed83382604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1600060028281151561119757fe5b04905080600080600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000206000828254019250508190555080600080600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540192505081905550816001600082825401925050819055505050565b806005819055505056fea165627a7a72305820befc73e5503f0550f4027b2084ce7b01513383533a9a69e0fcef83a7d1e6ebbd0029\",\"sourceMap\":\"60:457:2:-;;;129:1;116:14;;251:94;8:9:-1;5:2;;;30:1;27;20:12;5:2;251:94:2;;;;;;;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;251:94:2;;;;;;;;;;;;;;;;;;;;;;;;;323:8;333;1018:2:1;999:13;:16;1013:1;999:16;;;;;;;;;;;;;;:21;;;;;;;;;;;;;;;;;;1049:2;1030:13;:16;1044:1;1030:16;;;;;;;;;;;;;;:21;;;;;;;;;;;;;;;;;;1081:2;1061:13;:17;1075:2;1061:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1113:2;1093:13;:17;1107:2;1093:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1145:2;1125:13;:17;1139:2;1125:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1177:2;1157:13;:17;1171:2;1157:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1209:2;1189:13;:17;1203:2;1189:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1259:1;1239:13;:17;1253:2;1239:17;;;;;;;;;;;;;;:21;;;;;;;;;;;;;;;;;;1290:1;1270:13;:17;1284:2;1270:17;;;;;;;;;;;;;;:21;;;;;;;;;;;;;;;;;;1321:2;1301:13;:17;1315:2;1301:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1353:2;1333:13;:17;1347:2;1333:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1385:2;1365:13;:17;1379:2;1365:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1417:2;1397:13;:17;1411:2;1397:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1449:2;1429:13;:17;1443:2;1429:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1481:2;1461:13;:17;1475:2;1461:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1522:8;1512:7;;:18;;;;;;;;;;;;;;;;;;1550:8;1540:7;;:18;;;;;;;;;;;;;;;;;;915:650;;251:94:2;;60:457;;;;;;\",\"deployedSourceMap\":\"60:457:2:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1678:43:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;208:40;;8:9:-1;5:2;;;30:1;27;20:12;5:2;208:40:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;208:40:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;404:111:2;;8:9:-1;5:2;;;30:1;27;20:12;5:2;404:111:2;;;;;;;;;;;;;;;;;;;;;;;1772:2175:1;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1772:2175:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;1772:2175:1;;;;;;;;;;;;;;;;;;;;4450:260;;;;;;4257:140;;8:9:-1;5:2;;;30:1;27;20:12;5:2;4257:140:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;4257:140:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5332:177;;;;;;4762:445;;8:9:-1;5:2;;;30:1;27;20:12;5:2;4762:445:1;;;;;;5578:647;;8:9:-1;5:2;;;30:1;27;20:12;5:2;5578:647:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;5578:647:1;;;;;;;;;;;;;;;;;;;;137:59:2;;8:9:-1;5:2;;;30:1;27;20:12;5:2;137:59:2;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;137:59:2;;;;;;;;;;;;;;;;;;;;208:40:1;;;;;;;;;;;;;;;;;:::o;404:111:2:-;442:4;500:5;;483:23;;;;;;;;;;;;;;;49:4:-1;39:7;30;26:21;22:32;13:7;6:49;483:23:2;;;473:34;;;;;;465:43;;;458:50;;404:111;:::o;1772:2175:1:-;1833:1;1824:6;:10;1816:53;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1897:8;:20;1906:10;1897:20;;;;;;;;;;;;;;;;1887:6;:30;;1879:80;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1997:4;1989:21;;;1984:2;1977:6;:9;:33;1969:106;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2103:7;2093:6;:17;;2085:59;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2154:9;2166:8;:6;:8::i;:::-;2154:20;;2184:9;2196:1;2184:13;;2242:11;2256:5;2242:19;;2330:10;2343:22;2354:4;2360;2343:10;:22::i;:::-;2330:35;;2417:1;2409:4;:9;;;:22;;;;2430:1;2422:4;:9;;;2409:22;2405:66;;;2456:4;2447:13;;2405:66;2531:16;2550:1;2531:20;;2561:14;2578:1;2561:18;;2589;2617:974;425:3;2624:19;;:10;:19;;;;:40;;;;;425:3;2647:17;;:8;:17;;;;2624:40;2617:974;;;2680:6;;;;;;;2707:22;2718:4;2724;2707:10;:22::i;:::-;2700:29;;2747:6;2743:704;;;2799:4;2786:10;:17;2773:30;;2836:13;:25;2850:10;2836:25;;;;;;;;;;;;;;;;;;;;;;;;;2821:40;;2899:1;2883:12;:17;;;;2879:89;;;2937:12;2924:25;;2879:89;425:3;2989:18;;:10;:18;;;2985:106;;;425:3;3053:10;:18;425:3;3044:28;3031:41;;2985:106;2743:704;;;3151:4;3140:8;:15;3129:26;;3188:13;:23;3202:8;3188:23;;;;;;;;;;;;;;;;;;;;;;;;;3173:38;;3249:1;3233:12;:17;;;;3229:87;;;3285:12;3274:23;;3229:87;425:3;3337:16;;:8;:16;;;3333:100;;;425:3;3397:8;:16;425:3;3388:26;3377:37;;3333:100;2743:704;3529:1;3521:4;:9;;;;3517:64;;;3560:6;3559:7;3550:16;;3517:64;2617:974;;;425:3;3604:19;;:10;:19;;;3600:341;;;3663:6;3639:8;:20;3648:10;3639:20;;;;;;;;;;;;;;;;:30;;;;;;;;;;;3699:6;3683:12;;:22;;;;;;;;;;;3724:44;3732:10;3744:4;3754:6;3763:4;3724:44;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3600:341;;;3823:6;3799:8;:20;3808:10;3799:20;;;;;;;;;;;;;;;;:30;;;;;;;;;;;3859:6;3843:12;;:22;;;;;;;;;;;3884:46;3892:10;3904:5;3916:6;3911:12;;3925:4;3884:46;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3600:341;1772:2175;;;;;;;;:::o;4450:260::-;4521:1;4509:9;:13;4501:69;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;4585:40;4603:10;4615:9;4585:40;;;;;;;;;;;;;;;;;;;;;;;;;;;;4659:9;4635:8;:20;4644:10;4635:20;;;;;;;;;;;;;;;;:33;;;;;;;;;;;4694:9;4678:12;;:25;;;;;;;;;;;4450:260::o;4257:140::-;4327:5;4389:1;4385;4379:3;4374:4;:8;;;;;;;;4370:1;:13;4357:12;:26;;;;;;;;4351:35;;;;;;;;;;:39;4344:46;;4257:140;;;;:::o;5332:177::-;5397:1;5385:9;:13;5377:76;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5468:34;5480:10;5492:9;5468:34;;;;;;;;;;;;;;;;;;;;;;;;;;;;5332:177::o;4762:445::-;4810:15;4828:8;:20;4837:10;4828:20;;;;;;;;;;;;;;;;4810:38;;4879:1;4866:10;:14;4858:58;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;4956:4;4948:21;;;4934:10;:35;;4926:102;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5043:46;5066:10;5078;5043:46;;;;;;;;;;;;;;;;;;;;;;;;;;;;5122:1;5099:8;:20;5108:10;5099:20;;;;;;;;;;;;;;;:24;;;;5149:10;5133:12;;:26;;;;;;;;;;;5169:10;:19;;:31;5189:10;5169:31;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;5169:31:1;4762:445;:::o;5578:647::-;5646:7;;;;;;;;;;;5632:21;;:10;:21;;;:46;;;;5671:7;;;;;;;;;;;5657:21;;:10;:21;;;5632:46;5624:91;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5742:1;5733:6;:10;5725:80;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5835:1;5830;5823:6;:8;;;;;;;;:13;5815:57;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5987:6;5971:12;;5955:4;5947:21;;;:36;:46;;5939:103;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;6057:29;6067:10;6079:6;6057:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;6096:9;6115:1;6108:6;:8;;;;;;;;6096:20;;6147:4;6126:8;:17;6135:7;;;;;;;;;;;6126:17;;;;;;;;;;;;;;;;:25;;;;;;;;;;;6182:4;6161:8;:17;6170:7;;;;;;;;;;;6161:17;;;;;;;;;;;;;;;;:25;;;;;;;;;;;6212:6;6196:12;;:22;;;;;;;;;;;5578:647;;:::o;137:59:2:-;188:1;180:5;:9;;;;137:59;:::o\",\"source\":\"pragma solidity ^0.5.0;\\n\\nimport \\\"../SnakesAndLadders.sol\\\";\\n\\ncontract SnakesAndLaddersMock is SnakesAndLadders {\\n    uint nonce = 0;\\n\\n    function setNonce(uint n) public {\\n        nonce = n;\\n    }\\n\\n    /**\\n     * Pass parameters to parent\\n     */\\n    constructor(address _payout1, address _payout2) public SnakesAndLadders(_payout1, _payout2) {}\\n\\n    /**\\n     * Returns a NOT a random number\\n     */\\n    function random() public view returns(uint) {\\n        return uint256(keccak256(abi.encodePacked(nonce)));\\n    }\\n}\\n\",\"sourcePath\":\"/Users/enrique/Sites/ethsnakesandladders/contracts/mock/SnakesAndLaddersMock.sol\",\"ast\":{\"absolutePath\":\"/Users/enrique/Sites/ethsnakesandladders/contracts/mock/SnakesAndLaddersMock.sol\",\"exportedSymbols\":{\"SnakesAndLaddersMock\":[739]},\"id\":740,\"nodeType\":\"SourceUnit\",\"nodes\":[{\"id\":695,\"literals\":[\"solidity\",\"^\",\"0.5\",\".0\"],\"nodeType\":\"PragmaDirective\",\"src\":\"0:23:2\"},{\"absolutePath\":\"/Users/enrique/Sites/ethsnakesandladders/contracts/SnakesAndLadders.sol\",\"file\":\"../SnakesAndLadders.sol\",\"id\":696,\"nodeType\":\"ImportDirective\",\"scope\":740,\"sourceUnit\":694,\"src\":\"25:33:2\",\"symbolAliases\":[],\"unitAlias\":\"\"},{\"baseContracts\":[{\"arguments\":null,\"baseName\":{\"contractScope\":null,\"id\":697,\"name\":\"SnakesAndLadders\",\"nodeType\":\"UserDefinedTypeName\",\"referencedDeclaration\":693,\"src\":\"93:16:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_contract$_SnakesAndLadders_$693\",\"typeString\":\"contract SnakesAndLadders\"}},\"id\":698,\"nodeType\":\"InheritanceSpecifier\",\"src\":\"93:16:2\"}],\"contractDependencies\":[693],\"contractKind\":\"contract\",\"documentation\":null,\"fullyImplemented\":true,\"id\":739,\"linearizedBaseContracts\":[739,693],\"name\":\"SnakesAndLaddersMock\",\"nodeType\":\"ContractDefinition\",\"nodes\":[{\"constant\":false,\"id\":701,\"name\":\"nonce\",\"nodeType\":\"VariableDeclaration\",\"scope\":739,\"src\":\"116:14:2\",\"stateVariable\":true,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"},\"typeName\":{\"id\":699,\"name\":\"uint\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"116:4:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"value\":{\"argumentTypes\":null,\"hexValue\":\"30\",\"id\":700,\"isConstant\":false,\"isLValue\":false,\"isPure\":true,\"kind\":\"number\",\"lValueRequested\":false,\"nodeType\":\"Literal\",\"src\":\"129:1:2\",\"subdenomination\":null,\"typeDescriptions\":{\"typeIdentifier\":\"t_rational_0_by_1\",\"typeString\":\"int_const 0\"},\"value\":\"0\"},\"visibility\":\"internal\"},{\"body\":{\"id\":710,\"nodeType\":\"Block\",\"src\":\"170:26:2\",\"statements\":[{\"expression\":{\"argumentTypes\":null,\"id\":708,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"lValueRequested\":false,\"leftHandSide\":{\"argumentTypes\":null,\"id\":706,\"name\":\"nonce\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":701,\"src\":\"180:5:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"nodeType\":\"Assignment\",\"operator\":\"=\",\"rightHandSide\":{\"argumentTypes\":null,\"id\":707,\"name\":\"n\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":703,\"src\":\"188:1:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"src\":\"180:9:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"id\":709,\"nodeType\":\"ExpressionStatement\",\"src\":\"180:9:2\"}]},\"documentation\":null,\"id\":711,\"implemented\":true,\"kind\":\"function\",\"modifiers\":[],\"name\":\"setNonce\",\"nodeType\":\"FunctionDefinition\",\"parameters\":{\"id\":704,\"nodeType\":\"ParameterList\",\"parameters\":[{\"constant\":false,\"id\":703,\"name\":\"n\",\"nodeType\":\"VariableDeclaration\",\"scope\":711,\"src\":\"155:6:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"},\"typeName\":{\"id\":702,\"name\":\"uint\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"155:4:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"value\":null,\"visibility\":\"internal\"}],\"src\":\"154:8:2\"},\"returnParameters\":{\"id\":705,\"nodeType\":\"ParameterList\",\"parameters\":[],\"src\":\"170:0:2\"},\"scope\":739,\"src\":\"137:59:2\",\"stateMutability\":\"nonpayable\",\"superFunction\":null,\"visibility\":\"public\"},{\"body\":{\"id\":722,\"nodeType\":\"Block\",\"src\":\"343:2:2\",\"statements\":[]},\"documentation\":\"Pass parameters to parent\",\"id\":723,\"implemented\":true,\"kind\":\"constructor\",\"modifiers\":[{\"arguments\":[{\"argumentTypes\":null,\"id\":718,\"name\":\"_payout1\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":713,\"src\":\"323:8:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}},{\"argumentTypes\":null,\"id\":719,\"name\":\"_payout2\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":715,\"src\":\"333:8:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}}],\"id\":720,\"modifierName\":{\"argumentTypes\":null,\"id\":717,\"name\":\"SnakesAndLadders\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":693,\"src\":\"306:16:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_type$_t_contract$_SnakesAndLadders_$693_$\",\"typeString\":\"type(contract SnakesAndLadders)\"}},\"nodeType\":\"ModifierInvocation\",\"src\":\"306:36:2\"}],\"name\":\"\",\"nodeType\":\"FunctionDefinition\",\"parameters\":{\"id\":716,\"nodeType\":\"ParameterList\",\"parameters\":[{\"constant\":false,\"id\":713,\"name\":\"_payout1\",\"nodeType\":\"VariableDeclaration\",\"scope\":723,\"src\":\"263:16:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"},\"typeName\":{\"id\":712,\"name\":\"address\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"263:7:2\",\"stateMutability\":\"nonpayable\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}},\"value\":null,\"visibility\":\"internal\"},{\"constant\":false,\"id\":715,\"name\":\"_payout2\",\"nodeType\":\"VariableDeclaration\",\"scope\":723,\"src\":\"281:16:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"},\"typeName\":{\"id\":714,\"name\":\"address\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"281:7:2\",\"stateMutability\":\"nonpayable\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}},\"value\":null,\"visibility\":\"internal\"}],\"src\":\"262:36:2\"},\"returnParameters\":{\"id\":721,\"nodeType\":\"ParameterList\",\"parameters\":[],\"src\":\"343:0:2\"},\"scope\":739,\"src\":\"251:94:2\",\"stateMutability\":\"nonpayable\",\"superFunction\":null,\"visibility\":\"public\"},{\"body\":{\"id\":737,\"nodeType\":\"Block\",\"src\":\"448:67:2\",\"statements\":[{\"expression\":{\"argumentTypes\":null,\"arguments\":[{\"argumentTypes\":null,\"arguments\":[{\"argumentTypes\":null,\"arguments\":[{\"argumentTypes\":null,\"id\":732,\"name\":\"nonce\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":701,\"src\":\"500:5:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}}],\"expression\":{\"argumentTypes\":[{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}],\"expression\":{\"argumentTypes\":null,\"id\":730,\"name\":\"abi\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":874,\"src\":\"483:3:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_magic_abi\",\"typeString\":\"abi\"}},\"id\":731,\"isConstant\":false,\"isLValue\":false,\"isPure\":true,\"lValueRequested\":false,\"memberName\":\"encodePacked\",\"nodeType\":\"MemberAccess\",\"referencedDeclaration\":null,\"src\":\"483:16:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_function_abiencodepacked_pure$__$returns$_t_bytes_memory_ptr_$\",\"typeString\":\"function () pure returns (bytes memory)\"}},\"id\":733,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"kind\":\"functionCall\",\"lValueRequested\":false,\"names\":[],\"nodeType\":\"FunctionCall\",\"src\":\"483:23:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_bytes_memory_ptr\",\"typeString\":\"bytes memory\"}}],\"expression\":{\"argumentTypes\":[{\"typeIdentifier\":\"t_bytes_memory_ptr\",\"typeString\":\"bytes memory\"}],\"id\":729,\"name\":\"keccak256\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":881,\"src\":\"473:9:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_function_keccak256_pure$_t_bytes_memory_ptr_$returns$_t_bytes32_$\",\"typeString\":\"function (bytes memory) pure returns (bytes32)\"}},\"id\":734,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"kind\":\"functionCall\",\"lValueRequested\":false,\"names\":[],\"nodeType\":\"FunctionCall\",\"src\":\"473:34:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_bytes32\",\"typeString\":\"bytes32\"}}],\"expression\":{\"argumentTypes\":[{\"typeIdentifier\":\"t_bytes32\",\"typeString\":\"bytes32\"}],\"id\":728,\"isConstant\":false,\"isLValue\":false,\"isPure\":true,\"lValueRequested\":false,\"nodeType\":\"ElementaryTypeNameExpression\",\"src\":\"465:7:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_type$_t_uint256_$\",\"typeString\":\"type(uint256)\"},\"typeName\":\"uint256\"},\"id\":735,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"kind\":\"typeConversion\",\"lValueRequested\":false,\"names\":[],\"nodeType\":\"FunctionCall\",\"src\":\"465:43:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"functionReturnParameters\":727,\"id\":736,\"nodeType\":\"Return\",\"src\":\"458:50:2\"}]},\"documentation\":\"Returns a NOT a random number\",\"id\":738,\"implemented\":true,\"kind\":\"function\",\"modifiers\":[],\"name\":\"random\",\"nodeType\":\"FunctionDefinition\",\"parameters\":{\"id\":724,\"nodeType\":\"ParameterList\",\"parameters\":[],\"src\":\"419:2:2\"},\"returnParameters\":{\"id\":727,\"nodeType\":\"ParameterList\",\"parameters\":[{\"constant\":false,\"id\":726,\"name\":\"\",\"nodeType\":\"VariableDeclaration\",\"scope\":738,\"src\":\"442:4:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"},\"typeName\":{\"id\":725,\"name\":\"uint\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"442:4:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"value\":null,\"visibility\":\"internal\"}],\"src\":\"441:6:2\"},\"scope\":739,\"src\":\"404:111:2\",\"stateMutability\":\"view\",\"superFunction\":488,\"visibility\":\"public\"}],\"scope\":740,\"src\":\"60:457:2\"}],\"src\":\"0:518:2\"},\"legacyAST\":{\"absolutePath\":\"/Users/enrique/Sites/ethsnakesandladders/contracts/mock/SnakesAndLaddersMock.sol\",\"exportedSymbols\":{\"SnakesAndLaddersMock\":[739]},\"id\":740,\"nodeType\":\"SourceUnit\",\"nodes\":[{\"id\":695,\"literals\":[\"solidity\",\"^\",\"0.5\",\".0\"],\"nodeType\":\"PragmaDirective\",\"src\":\"0:23:2\"},{\"absolutePath\":\"/Users/enrique/Sites/ethsnakesandladders/contracts/SnakesAndLadders.sol\",\"file\":\"../SnakesAndLadders.sol\",\"id\":696,\"nodeType\":\"ImportDirective\",\"scope\":740,\"sourceUnit\":694,\"src\":\"25:33:2\",\"symbolAliases\":[],\"unitAlias\":\"\"},{\"baseContracts\":[{\"arguments\":null,\"baseName\":{\"contractScope\":null,\"id\":697,\"name\":\"SnakesAndLadders\",\"nodeType\":\"UserDefinedTypeName\",\"referencedDeclaration\":693,\"src\":\"93:16:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_contract$_SnakesAndLadders_$693\",\"typeString\":\"contract SnakesAndLadders\"}},\"id\":698,\"nodeType\":\"InheritanceSpecifier\",\"src\":\"93:16:2\"}],\"contractDependencies\":[693],\"contractKind\":\"contract\",\"documentation\":null,\"fullyImplemented\":true,\"id\":739,\"linearizedBaseContracts\":[739,693],\"name\":\"SnakesAndLaddersMock\",\"nodeType\":\"ContractDefinition\",\"nodes\":[{\"constant\":false,\"id\":701,\"name\":\"nonce\",\"nodeType\":\"VariableDeclaration\",\"scope\":739,\"src\":\"116:14:2\",\"stateVariable\":true,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"},\"typeName\":{\"id\":699,\"name\":\"uint\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"116:4:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"value\":{\"argumentTypes\":null,\"hexValue\":\"30\",\"id\":700,\"isConstant\":false,\"isLValue\":false,\"isPure\":true,\"kind\":\"number\",\"lValueRequested\":false,\"nodeType\":\"Literal\",\"src\":\"129:1:2\",\"subdenomination\":null,\"typeDescriptions\":{\"typeIdentifier\":\"t_rational_0_by_1\",\"typeString\":\"int_const 0\"},\"value\":\"0\"},\"visibility\":\"internal\"},{\"body\":{\"id\":710,\"nodeType\":\"Block\",\"src\":\"170:26:2\",\"statements\":[{\"expression\":{\"argumentTypes\":null,\"id\":708,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"lValueRequested\":false,\"leftHandSide\":{\"argumentTypes\":null,\"id\":706,\"name\":\"nonce\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":701,\"src\":\"180:5:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"nodeType\":\"Assignment\",\"operator\":\"=\",\"rightHandSide\":{\"argumentTypes\":null,\"id\":707,\"name\":\"n\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":703,\"src\":\"188:1:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"src\":\"180:9:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"id\":709,\"nodeType\":\"ExpressionStatement\",\"src\":\"180:9:2\"}]},\"documentation\":null,\"id\":711,\"implemented\":true,\"kind\":\"function\",\"modifiers\":[],\"name\":\"setNonce\",\"nodeType\":\"FunctionDefinition\",\"parameters\":{\"id\":704,\"nodeType\":\"ParameterList\",\"parameters\":[{\"constant\":false,\"id\":703,\"name\":\"n\",\"nodeType\":\"VariableDeclaration\",\"scope\":711,\"src\":\"155:6:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"},\"typeName\":{\"id\":702,\"name\":\"uint\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"155:4:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"value\":null,\"visibility\":\"internal\"}],\"src\":\"154:8:2\"},\"returnParameters\":{\"id\":705,\"nodeType\":\"ParameterList\",\"parameters\":[],\"src\":\"170:0:2\"},\"scope\":739,\"src\":\"137:59:2\",\"stateMutability\":\"nonpayable\",\"superFunction\":null,\"visibility\":\"public\"},{\"body\":{\"id\":722,\"nodeType\":\"Block\",\"src\":\"343:2:2\",\"statements\":[]},\"documentation\":\"Pass parameters to parent\",\"id\":723,\"implemented\":true,\"kind\":\"constructor\",\"modifiers\":[{\"arguments\":[{\"argumentTypes\":null,\"id\":718,\"name\":\"_payout1\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":713,\"src\":\"323:8:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}},{\"argumentTypes\":null,\"id\":719,\"name\":\"_payout2\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":715,\"src\":\"333:8:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}}],\"id\":720,\"modifierName\":{\"argumentTypes\":null,\"id\":717,\"name\":\"SnakesAndLadders\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":693,\"src\":\"306:16:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_type$_t_contract$_SnakesAndLadders_$693_$\",\"typeString\":\"type(contract SnakesAndLadders)\"}},\"nodeType\":\"ModifierInvocation\",\"src\":\"306:36:2\"}],\"name\":\"\",\"nodeType\":\"FunctionDefinition\",\"parameters\":{\"id\":716,\"nodeType\":\"ParameterList\",\"parameters\":[{\"constant\":false,\"id\":713,\"name\":\"_payout1\",\"nodeType\":\"VariableDeclaration\",\"scope\":723,\"src\":\"263:16:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"},\"typeName\":{\"id\":712,\"name\":\"address\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"263:7:2\",\"stateMutability\":\"nonpayable\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}},\"value\":null,\"visibility\":\"internal\"},{\"constant\":false,\"id\":715,\"name\":\"_payout2\",\"nodeType\":\"VariableDeclaration\",\"scope\":723,\"src\":\"281:16:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"},\"typeName\":{\"id\":714,\"name\":\"address\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"281:7:2\",\"stateMutability\":\"nonpayable\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}},\"value\":null,\"visibility\":\"internal\"}],\"src\":\"262:36:2\"},\"returnParameters\":{\"id\":721,\"nodeType\":\"ParameterList\",\"parameters\":[],\"src\":\"343:0:2\"},\"scope\":739,\"src\":\"251:94:2\",\"stateMutability\":\"nonpayable\",\"superFunction\":null,\"visibility\":\"public\"},{\"body\":{\"id\":737,\"nodeType\":\"Block\",\"src\":\"448:67:2\",\"statements\":[{\"expression\":{\"argumentTypes\":null,\"arguments\":[{\"argumentTypes\":null,\"arguments\":[{\"argumentTypes\":null,\"arguments\":[{\"argumentTypes\":null,\"id\":732,\"name\":\"nonce\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":701,\"src\":\"500:5:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}}],\"expression\":{\"argumentTypes\":[{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}],\"expression\":{\"argumentTypes\":null,\"id\":730,\"name\":\"abi\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":874,\"src\":\"483:3:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_magic_abi\",\"typeString\":\"abi\"}},\"id\":731,\"isConstant\":false,\"isLValue\":false,\"isPure\":true,\"lValueRequested\":false,\"memberName\":\"encodePacked\",\"nodeType\":\"MemberAccess\",\"referencedDeclaration\":null,\"src\":\"483:16:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_function_abiencodepacked_pure$__$returns$_t_bytes_memory_ptr_$\",\"typeString\":\"function () pure returns (bytes memory)\"}},\"id\":733,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"kind\":\"functionCall\",\"lValueRequested\":false,\"names\":[],\"nodeType\":\"FunctionCall\",\"src\":\"483:23:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_bytes_memory_ptr\",\"typeString\":\"bytes memory\"}}],\"expression\":{\"argumentTypes\":[{\"typeIdentifier\":\"t_bytes_memory_ptr\",\"typeString\":\"bytes memory\"}],\"id\":729,\"name\":\"keccak256\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":881,\"src\":\"473:9:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_function_keccak256_pure$_t_bytes_memory_ptr_$returns$_t_bytes32_$\",\"typeString\":\"function (bytes memory) pure returns (bytes32)\"}},\"id\":734,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"kind\":\"functionCall\",\"lValueRequested\":false,\"names\":[],\"nodeType\":\"FunctionCall\",\"src\":\"473:34:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_bytes32\",\"typeString\":\"bytes32\"}}],\"expression\":{\"argumentTypes\":[{\"typeIdentifier\":\"t_bytes32\",\"typeString\":\"bytes32\"}],\"id\":728,\"isConstant\":false,\"isLValue\":false,\"isPure\":true,\"lValueRequested\":false,\"nodeType\":\"ElementaryTypeNameExpression\",\"src\":\"465:7:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_type$_t_uint256_$\",\"typeString\":\"type(uint256)\"},\"typeName\":\"uint256\"},\"id\":735,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"kind\":\"typeConversion\",\"lValueRequested\":false,\"names\":[],\"nodeType\":\"FunctionCall\",\"src\":\"465:43:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"functionReturnParameters\":727,\"id\":736,\"nodeType\":\"Return\",\"src\":\"458:50:2\"}]},\"documentation\":\"Returns a NOT a random number\",\"id\":738,\"implemented\":true,\"kind\":\"function\",\"modifiers\":[],\"name\":\"random\",\"nodeType\":\"FunctionDefinition\",\"parameters\":{\"id\":724,\"nodeType\":\"ParameterList\",\"parameters\":[],\"src\":\"419:2:2\"},\"returnParameters\":{\"id\":727,\"nodeType\":\"ParameterList\",\"parameters\":[{\"constant\":false,\"id\":726,\"name\":\"\",\"nodeType\":\"VariableDeclaration\",\"scope\":738,\"src\":\"442:4:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"},\"typeName\":{\"id\":725,\"name\":\"uint\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"442:4:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"value\":null,\"visibility\":\"internal\"}],\"src\":\"441:6:2\"},\"scope\":739,\"src\":\"404:111:2\",\"stateMutability\":\"view\",\"superFunction\":488,\"visibility\":\"public\"}],\"scope\":740,\"src\":\"60:457:2\"}],\"src\":\"0:518:2\"},\"compiler\":{\"name\":\"solc\",\"version\":\"0.5.0+commit.1d4f565a.Emscripten.clang\"},\"networks\":{\"5777\":{\"events\":{\"0x1b8173b2ebc7d3b1be2bb58d232ecec5dc93a1445e6f6eef77211e4939186930\":{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"result\",\"type\":\"bool\"},{\"indexed\":false,\"name\":\"balancediff\",\"type\":\"int256\"},{\"indexed\":false,\"name\":\"seed\",\"type\":\"uint256\"}],\"name\":\"LogGame\",\"type\":\"event\",\"signature\":\"0x1b8173b2ebc7d3b1be2bb58d232ecec5dc93a1445e6f6eef77211e4939186930\"},\"0x0fad0ee523af769263e35ca10343b0d098a75cd8d5453768ff2c2a976acf6fe7\":{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogAddPlayerFunds\",\"type\":\"event\",\"signature\":\"0x0fad0ee523af769263e35ca10343b0d098a75cd8d5453768ff2c2a976acf6fe7\"},\"0xf45703a0c722c37e7e1ecaca11700b61c644684bd6d7cc70fff9dbec19476956\":{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogWithdrawPlayerFunds\",\"type\":\"event\",\"signature\":\"0xf45703a0c722c37e7e1ecaca11700b61c644684bd6d7cc70fff9dbec19476956\"},\"0xf10a70d7840292e5567b3acea76264b1528c1c5c45625420169815099f702d1b\":{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogAddFunds\",\"type\":\"event\",\"signature\":\"0xf10a70d7840292e5567b3acea76264b1528c1c5c45625420169815099f702d1b\"},\"0x7d6963073a93103d7a336ea21c7f029ad757c9ef4c0c6ad0ff86c689480e0ed8\":{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogPayout\",\"type\":\"event\",\"signature\":\"0x7d6963073a93103d7a336ea21c7f029ad757c9ef4c0c6ad0ff86c689480e0ed8\"}},\"links\":{},\"address\":\"0x52B017152f2eFB594A3488cf933Bd68b449F3359\",\"transactionHash\":\"0x6075e490ae26006cad4311f720a709a15117aa28687a40a86d393bce2c1a21aa\"}},\"schemaVersion\":\"3.0.19\",\"updatedAt\":\"2020-01-31T11:15:35.740Z\",\"networkType\":\"ethereum\",\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{\"addFunds()\":{\"notice\":\"Anyone can send funds but it has to be from this function. This does not count in totalBalance.\"},\"addPlayerFunds()\":{\"notice\":\"User adds player funds.\"},\"constructor\":\"Pass parameters to parent\",\"payout(uint256)\":{\"notice\":\"Only payout addresses can emit payouts.\"},\"play(uint256)\":{\"notice\":\"Plays the game\"},\"random()\":{\"notice\":\"Returns a NOT a random number\"},\"randomDice(uint256,uint256)\":{\"notice\":\"Returns a random number from 1 to 6 based from a uint and turn.\"},\"withdrawPlayerFunds()\":{\"notice\":\"Withdraw player funds.\"}}}}");
+module.exports = JSON.parse("{\"contractName\":\"SnakesAndLaddersMock\",\"abi\":[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"}],\"name\":\"balances\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"play\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"addPlayerFunds\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"randomString\",\"type\":\"uint256\"},{\"name\":\"turn\",\"type\":\"uint256\"}],\"name\":\"randomDice\",\"outputs\":[{\"name\":\"\",\"type\":\"uint8\"}],\"payable\":false,\"stateMutability\":\"pure\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"addFunds\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"withdrawPlayerFunds\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"payout\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"_payout1\",\"type\":\"address\"},{\"name\":\"_payout2\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"fallback\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"result\",\"type\":\"bool\"},{\"indexed\":false,\"name\":\"balancediff\",\"type\":\"int256\"},{\"indexed\":false,\"name\":\"seed\",\"type\":\"uint256\"}],\"name\":\"LogGame\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogAddPlayerFunds\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogWithdrawPlayerFunds\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogAddFunds\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogPayout\",\"type\":\"event\"},{\"constant\":false,\"inputs\":[{\"name\":\"n\",\"type\":\"uint256\"}],\"name\":\"setNonce\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"random\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"metadata\":\"{\\\"compiler\\\":{\\\"version\\\":\\\"0.5.0+commit.1d4f565a\\\"},\\\"language\\\":\\\"Solidity\\\",\\\"output\\\":{\\\"abi\\\":[{\\\"constant\\\":true,\\\"inputs\\\":[{\\\"name\\\":\\\"\\\",\\\"type\\\":\\\"address\\\"}],\\\"name\\\":\\\"balances\\\",\\\"outputs\\\":[{\\\"name\\\":\\\"\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"view\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":true,\\\"inputs\\\":[],\\\"name\\\":\\\"random\\\",\\\"outputs\\\":[{\\\"name\\\":\\\"\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"view\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":false,\\\"inputs\\\":[{\\\"name\\\":\\\"amount\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"play\\\",\\\"outputs\\\":[],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"nonpayable\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":false,\\\"inputs\\\":[],\\\"name\\\":\\\"addPlayerFunds\\\",\\\"outputs\\\":[],\\\"payable\\\":true,\\\"stateMutability\\\":\\\"payable\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":true,\\\"inputs\\\":[{\\\"name\\\":\\\"randomString\\\",\\\"type\\\":\\\"uint256\\\"},{\\\"name\\\":\\\"turn\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"randomDice\\\",\\\"outputs\\\":[{\\\"name\\\":\\\"\\\",\\\"type\\\":\\\"uint8\\\"}],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"pure\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":false,\\\"inputs\\\":[],\\\"name\\\":\\\"addFunds\\\",\\\"outputs\\\":[],\\\"payable\\\":true,\\\"stateMutability\\\":\\\"payable\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":false,\\\"inputs\\\":[],\\\"name\\\":\\\"withdrawPlayerFunds\\\",\\\"outputs\\\":[],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"nonpayable\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":false,\\\"inputs\\\":[{\\\"name\\\":\\\"amount\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"payout\\\",\\\"outputs\\\":[],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"nonpayable\\\",\\\"type\\\":\\\"function\\\"},{\\\"constant\\\":false,\\\"inputs\\\":[{\\\"name\\\":\\\"n\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"setNonce\\\",\\\"outputs\\\":[],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"nonpayable\\\",\\\"type\\\":\\\"function\\\"},{\\\"inputs\\\":[{\\\"name\\\":\\\"_payout1\\\",\\\"type\\\":\\\"address\\\"},{\\\"name\\\":\\\"_payout2\\\",\\\"type\\\":\\\"address\\\"}],\\\"payable\\\":false,\\\"stateMutability\\\":\\\"nonpayable\\\",\\\"type\\\":\\\"constructor\\\"},{\\\"payable\\\":true,\\\"stateMutability\\\":\\\"payable\\\",\\\"type\\\":\\\"fallback\\\"},{\\\"anonymous\\\":false,\\\"inputs\\\":[{\\\"indexed\\\":false,\\\"name\\\":\\\"sender\\\",\\\"type\\\":\\\"address\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"result\\\",\\\"type\\\":\\\"bool\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"balancediff\\\",\\\"type\\\":\\\"int256\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"seed\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"LogGame\\\",\\\"type\\\":\\\"event\\\"},{\\\"anonymous\\\":false,\\\"inputs\\\":[{\\\"indexed\\\":false,\\\"name\\\":\\\"sender\\\",\\\"type\\\":\\\"address\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"amount\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"LogAddPlayerFunds\\\",\\\"type\\\":\\\"event\\\"},{\\\"anonymous\\\":false,\\\"inputs\\\":[{\\\"indexed\\\":false,\\\"name\\\":\\\"sender\\\",\\\"type\\\":\\\"address\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"amount\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"LogWithdrawPlayerFunds\\\",\\\"type\\\":\\\"event\\\"},{\\\"anonymous\\\":false,\\\"inputs\\\":[{\\\"indexed\\\":false,\\\"name\\\":\\\"sender\\\",\\\"type\\\":\\\"address\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"amount\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"LogAddFunds\\\",\\\"type\\\":\\\"event\\\"},{\\\"anonymous\\\":false,\\\"inputs\\\":[{\\\"indexed\\\":false,\\\"name\\\":\\\"sender\\\",\\\"type\\\":\\\"address\\\"},{\\\"indexed\\\":false,\\\"name\\\":\\\"amount\\\",\\\"type\\\":\\\"uint256\\\"}],\\\"name\\\":\\\"LogPayout\\\",\\\"type\\\":\\\"event\\\"}],\\\"devdoc\\\":{\\\"methods\\\":{}},\\\"userdoc\\\":{\\\"methods\\\":{\\\"addFunds()\\\":{\\\"notice\\\":\\\"Anyone can send funds but it has to be from this function. This does not count in totalBalance.\\\"},\\\"addPlayerFunds()\\\":{\\\"notice\\\":\\\"User adds player funds.\\\"},\\\"constructor\\\":\\\"Pass parameters to parent\\\",\\\"payout(uint256)\\\":{\\\"notice\\\":\\\"Only payout addresses can emit payouts.\\\"},\\\"play(uint256)\\\":{\\\"notice\\\":\\\"Plays the game\\\"},\\\"random()\\\":{\\\"notice\\\":\\\"Returns a NOT a random number\\\"},\\\"randomDice(uint256,uint256)\\\":{\\\"notice\\\":\\\"Returns a random number from 1 to 6 based from a uint and turn.\\\"},\\\"withdrawPlayerFunds()\\\":{\\\"notice\\\":\\\"Withdraw player funds.\\\"}}}},\\\"settings\\\":{\\\"compilationTarget\\\":{\\\"/Users/enrique/Sites/ethsnakesandladders/contracts/mock/SnakesAndLaddersMock.sol\\\":\\\"SnakesAndLaddersMock\\\"},\\\"evmVersion\\\":\\\"byzantium\\\",\\\"libraries\\\":{},\\\"optimizer\\\":{\\\"enabled\\\":false,\\\"runs\\\":200},\\\"remappings\\\":[]},\\\"sources\\\":{\\\"/Users/enrique/Sites/ethsnakesandladders/contracts/SnakesAndLadders.sol\\\":{\\\"keccak256\\\":\\\"0x944cc0682b9f5ed284c12d2a29c66bd52f90155e59c44ce51984ea41602c7e79\\\",\\\"urls\\\":[\\\"bzzr://0b13470402eee973862d3044c2d4a395da2b6f5307a68ceb7f07cc9caa3f1b85\\\"]},\\\"/Users/enrique/Sites/ethsnakesandladders/contracts/mock/SnakesAndLaddersMock.sol\\\":{\\\"keccak256\\\":\\\"0x393babdb53cd2f02679e711a93702e61ec429862b7a69303021d2d5e7046730f\\\",\\\"urls\\\":[\\\"bzzr://eb94aad0071a10f231a675559bebad8bf827a73765dce9b2ca7f60e13090a600\\\"]},\\\"openzeppelin-solidity/contracts/math/SafeMath.sol\\\":{\\\"keccak256\\\":\\\"0x4ccf2d7b51873db1ccfd54ca2adae5eac3b184f9699911ed4490438419f1c690\\\",\\\"urls\\\":[\\\"bzzr://1604f5b6d6e916c154efd8c6720cda069e5ba32dfa0a9dedf2b42e5b02d07f89\\\"]}},\\\"version\\\":1}\",\"bytecode\":\"0x6080604052600060055534801561001557600080fd5b506040516040806116868339810180604052604081101561003557600080fd5b8101908080519060200190929190805190602001909291905050508181600e60046000600460ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550602060046000600860ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550602660046000601460ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550605460046000601c60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550603b60046000602860ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550605360046000603a60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550605d60046000604860ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550600360046000600f60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550600960046000601f60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550601a60046000602c60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550601360046000603e60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550604660046000604a60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550602160046000605560ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550604760046000605b60ff16815260200190815260200160002060006101000a81548160ff021916908360ff160217905550605060046000606260ff16815260200190815260200160002060006101000a81548160ff021916908360ff16021790555081600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555080600360006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550505050506112c0806103c66000396000f3fe608060405260043610610099576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806327e235e31461012d5780635ec01e4d146101925780636898f82b146101bd5780638492b706146101f85780639f4aec5914610202578063a26759cb14610261578063de9e43d31461026b578063e115234314610282578063f360c183146102bd575b6040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260218152602001807f55736520616464506c6179657246756e647320746f2073656e64206d6f6e657981526020017f2e0000000000000000000000000000000000000000000000000000000000000081525060400191505060405180910390fd5b34801561013957600080fd5b5061017c6004803603602081101561015057600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506102f8565b6040518082815260200191505060405180910390f35b34801561019e57600080fd5b506101a7610310565b6040518082815260200191505060405180910390f35b3480156101c957600080fd5b506101f6600480360360208110156101e057600080fd5b8101908080359060200190929190505050610344565b005b610200610903565b005b34801561020e57600080fd5b506102456004803603604081101561022557600080fd5b810190808035906020019092919080359060200190929190505050610a6a565b604051808260ff1660ff16815260200191505060405180910390f35b610269610aa2565b005b34801561027757600080fd5b50610280610bad565b005b34801561028e57600080fd5b506102bb600480360360208110156102a557600080fd5b8101908080359060200190929190505050610e26565b005b3480156102c957600080fd5b506102f6600480360360208110156102e057600080fd5b810190808035906020019092919050505061128a565b005b60006020528060005260406000206000915090505481565b6000600554604051602001808281526020019150506040516020818303038152906040528051906020012060019004905090565b6000811115156103bc576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601e8152602001807f596f75206d7573742073656e6420736f6d657468696e6720746f20626574000081525060200191505060405180910390fd5b6000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020548111151515610498576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260258152602001807f596f7520646f6e2774206861766520656e6f7567682062616c616e636520746f81526020017f20706c617900000000000000000000000000000000000000000000000000000081525060400191505060405180910390fd5b3073ffffffffffffffffffffffffffffffffffffffff1631600a820210151561054f576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603c8152602001807f596f752063616e6e6f7420626574206d6f7265207468616e20312f3130206f6681526020017f207468697320636f6e747261637420746f74616c2062616c616e63650000000081525060400191505060405180910390fd5b670de0b6b3a764000081111515156105cf576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601d8152602001807f4d6178696d756d2062657420616d6f756e74206973203120657468657200000081525060200191505060405180910390fd5b60006105d9610310565b90506000809050600080905060006105f18484610a6a565b905060018160ff161480610608575060028160ff16145b1561061257600191505b6000809050600080905060005b606460ff168360ff161415801561063d5750606460ff168260ff1614155b156107295785806001019650506106548787610a6a565b935084156106b9578383019250600460008460ff1660ff16815260200190815260200160002060009054906101000a900460ff16905060008160ff1614151561069b578092505b606460ff168360ff1611156106b4576064830360640392505b610712565b8382019150600460008360ff1660ff16815260200190815260200160002060009054906101000a900460ff16905060008160ff161415156106f8578091505b606460ff168260ff161115610711576064820360640391505b5b60068460ff1614151561072457841594505b61061f565b606460ff168360ff16141561081957876000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540192505081905550876001600082825401925050819055507f1b8173b2ebc7d3b1be2bb58d232ecec5dc93a1445e6f6eef77211e49391869303360018a8a604051808573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018415151515815260200183815260200182815260200194505050505060405180910390a16108f9565b876000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540392505081905550876001600082825403925050819055507f1b8173b2ebc7d3b1be2bb58d232ecec5dc93a1445e6f6eef77211e49391869303360008a6000038a604051808573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018415151515815260200183815260200182815260200194505050505060405180910390a15b5050505050505050565b6000341115156109a1576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252602b8152602001807f596f75206d7573742073656e6420736f6d657468696e6720746f20616464206981526020017f6e746f2062616c616e636500000000000000000000000000000000000000000081525060400191505060405180910390fd5b7f0fad0ee523af769263e35ca10343b0d098a75cd8d5453768ff2c2a976acf6fe73334604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1346000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000206000828254019250508190555034600160008282540192505081905550565b60006001600661010084811515610a7d57fe5b0660020a85811515610a8b57fe5b0460ff16811515610a9857fe5b0601905092915050565b600034111515610b40576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260328152602001807f596f75206d7573742073656e6420736f6d657468696e67207768656e2063616c81526020017f6c696e6720746869732066756e6374696f6e000000000000000000000000000081525060400191505060405180910390fd5b7ff10a70d7840292e5567b3acea76264b1528c1c5c45625420169815099f702d1b3334604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1565b60008060003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020549050600081111515610c68576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601f8152602001807f5468657265206973206e6f2062616c616e636520746f2077697468647261770081525060200191505060405180910390fd5b3073ffffffffffffffffffffffffffffffffffffffff16318111151515610d1d576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260368152602001807f546865726520617265206e6f7420656e6f7567682066756e647320696e20746881526020017f6520636f6e747261637420746f2077697468647261770000000000000000000081525060400191505060405180910390fd5b7ff45703a0c722c37e7e1ecaca11700b61c644684bd6d7cc70fff9dbec194769563382604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a160008060003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002081905550806001600082825403925050819055503373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051600060405180830381858888f19350505050158015610e22573d6000803e3d6000fd5b5050565b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161480610ecf5750600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16145b1515610f43576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260208152602001807f596f75206d757374206265206f6e652061207061796f7574206164647265737381525060200191505060405180910390fd5b600081111515610fe1576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260398152602001807f5468652062616c616e6365207468617420796f752077616e7420746f2077697481526020017f6864726177206d757374206265206d6f7265207468616e20300000000000000081525060400191505060405180910390fd5b6000600282811515610fef57fe5b06141515611065576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601f8152602001807f416d6f756e7420746f207769746864726177206d75737420626520706169720081525060200191505060405180910390fd5b806001543073ffffffffffffffffffffffffffffffffffffffff1631031015151561111e576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252602c8152602001807f5468657265206973206e6f7420656e6f75676820667265652062616c616e636581526020017f20746f207769746864726177000000000000000000000000000000000000000081525060400191505060405180910390fd5b7f7d6963073a93103d7a336ea21c7f029ad757c9ef4c0c6ad0ff86c689480e0ed83382604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1600060028281151561119757fe5b04905080600080600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000206000828254019250508190555080600080600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540192505081905550816001600082825401925050819055505050565b806005819055505056fea165627a7a72305820befc73e5503f0550f4027b2084ce7b01513383533a9a69e0fcef83a7d1e6ebbd0029\",\"deployedBytecode\":\"0x608060405260043610610099576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806327e235e31461012d5780635ec01e4d146101925780636898f82b146101bd5780638492b706146101f85780639f4aec5914610202578063a26759cb14610261578063de9e43d31461026b578063e115234314610282578063f360c183146102bd575b6040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260218152602001807f55736520616464506c6179657246756e647320746f2073656e64206d6f6e657981526020017f2e0000000000000000000000000000000000000000000000000000000000000081525060400191505060405180910390fd5b34801561013957600080fd5b5061017c6004803603602081101561015057600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506102f8565b6040518082815260200191505060405180910390f35b34801561019e57600080fd5b506101a7610310565b6040518082815260200191505060405180910390f35b3480156101c957600080fd5b506101f6600480360360208110156101e057600080fd5b8101908080359060200190929190505050610344565b005b610200610903565b005b34801561020e57600080fd5b506102456004803603604081101561022557600080fd5b810190808035906020019092919080359060200190929190505050610a6a565b604051808260ff1660ff16815260200191505060405180910390f35b610269610aa2565b005b34801561027757600080fd5b50610280610bad565b005b34801561028e57600080fd5b506102bb600480360360208110156102a557600080fd5b8101908080359060200190929190505050610e26565b005b3480156102c957600080fd5b506102f6600480360360208110156102e057600080fd5b810190808035906020019092919050505061128a565b005b60006020528060005260406000206000915090505481565b6000600554604051602001808281526020019150506040516020818303038152906040528051906020012060019004905090565b6000811115156103bc576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601e8152602001807f596f75206d7573742073656e6420736f6d657468696e6720746f20626574000081525060200191505060405180910390fd5b6000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020548111151515610498576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260258152602001807f596f7520646f6e2774206861766520656e6f7567682062616c616e636520746f81526020017f20706c617900000000000000000000000000000000000000000000000000000081525060400191505060405180910390fd5b3073ffffffffffffffffffffffffffffffffffffffff1631600a820210151561054f576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252603c8152602001807f596f752063616e6e6f7420626574206d6f7265207468616e20312f3130206f6681526020017f207468697320636f6e747261637420746f74616c2062616c616e63650000000081525060400191505060405180910390fd5b670de0b6b3a764000081111515156105cf576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601d8152602001807f4d6178696d756d2062657420616d6f756e74206973203120657468657200000081525060200191505060405180910390fd5b60006105d9610310565b90506000809050600080905060006105f18484610a6a565b905060018160ff161480610608575060028160ff16145b1561061257600191505b6000809050600080905060005b606460ff168360ff161415801561063d5750606460ff168260ff1614155b156107295785806001019650506106548787610a6a565b935084156106b9578383019250600460008460ff1660ff16815260200190815260200160002060009054906101000a900460ff16905060008160ff1614151561069b578092505b606460ff168360ff1611156106b4576064830360640392505b610712565b8382019150600460008360ff1660ff16815260200190815260200160002060009054906101000a900460ff16905060008160ff161415156106f8578091505b606460ff168260ff161115610711576064820360640391505b5b60068460ff1614151561072457841594505b61061f565b606460ff168360ff16141561081957876000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540192505081905550876001600082825401925050819055507f1b8173b2ebc7d3b1be2bb58d232ecec5dc93a1445e6f6eef77211e49391869303360018a8a604051808573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018415151515815260200183815260200182815260200194505050505060405180910390a16108f9565b876000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540392505081905550876001600082825403925050819055507f1b8173b2ebc7d3b1be2bb58d232ecec5dc93a1445e6f6eef77211e49391869303360008a6000038a604051808573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018415151515815260200183815260200182815260200194505050505060405180910390a15b5050505050505050565b6000341115156109a1576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252602b8152602001807f596f75206d7573742073656e6420736f6d657468696e6720746f20616464206981526020017f6e746f2062616c616e636500000000000000000000000000000000000000000081525060400191505060405180910390fd5b7f0fad0ee523af769263e35ca10343b0d098a75cd8d5453768ff2c2a976acf6fe73334604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1346000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000206000828254019250508190555034600160008282540192505081905550565b60006001600661010084811515610a7d57fe5b0660020a85811515610a8b57fe5b0460ff16811515610a9857fe5b0601905092915050565b600034111515610b40576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260328152602001807f596f75206d7573742073656e6420736f6d657468696e67207768656e2063616c81526020017f6c696e6720746869732066756e6374696f6e000000000000000000000000000081525060400191505060405180910390fd5b7ff10a70d7840292e5567b3acea76264b1528c1c5c45625420169815099f702d1b3334604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1565b60008060003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020549050600081111515610c68576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601f8152602001807f5468657265206973206e6f2062616c616e636520746f2077697468647261770081525060200191505060405180910390fd5b3073ffffffffffffffffffffffffffffffffffffffff16318111151515610d1d576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260368152602001807f546865726520617265206e6f7420656e6f7567682066756e647320696e20746881526020017f6520636f6e747261637420746f2077697468647261770000000000000000000081525060400191505060405180910390fd5b7ff45703a0c722c37e7e1ecaca11700b61c644684bd6d7cc70fff9dbec194769563382604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a160008060003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002081905550806001600082825403925050819055503373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051600060405180830381858888f19350505050158015610e22573d6000803e3d6000fd5b5050565b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161480610ecf5750600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16145b1515610f43576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260208152602001807f596f75206d757374206265206f6e652061207061796f7574206164647265737381525060200191505060405180910390fd5b600081111515610fe1576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260398152602001807f5468652062616c616e6365207468617420796f752077616e7420746f2077697481526020017f6864726177206d757374206265206d6f7265207468616e20300000000000000081525060400191505060405180910390fd5b6000600282811515610fef57fe5b06141515611065576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601f8152602001807f416d6f756e7420746f207769746864726177206d75737420626520706169720081525060200191505060405180910390fd5b806001543073ffffffffffffffffffffffffffffffffffffffff1631031015151561111e576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252602c8152602001807f5468657265206973206e6f7420656e6f75676820667265652062616c616e636581526020017f20746f207769746864726177000000000000000000000000000000000000000081525060400191505060405180910390fd5b7f7d6963073a93103d7a336ea21c7f029ad757c9ef4c0c6ad0ff86c689480e0ed83382604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1600060028281151561119757fe5b04905080600080600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000206000828254019250508190555080600080600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008282540192505081905550816001600082825401925050819055505050565b806005819055505056fea165627a7a72305820befc73e5503f0550f4027b2084ce7b01513383533a9a69e0fcef83a7d1e6ebbd0029\",\"sourceMap\":\"60:457:2:-;;;129:1;116:14;;251:94;8:9:-1;5:2;;;30:1;27;20:12;5:2;251:94:2;;;;;;;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;251:94:2;;;;;;;;;;;;;;;;;;;;;;;;;323:8;333;1018:2:1;999:13;:16;1013:1;999:16;;;;;;;;;;;;;;:21;;;;;;;;;;;;;;;;;;1049:2;1030:13;:16;1044:1;1030:16;;;;;;;;;;;;;;:21;;;;;;;;;;;;;;;;;;1081:2;1061:13;:17;1075:2;1061:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1113:2;1093:13;:17;1107:2;1093:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1145:2;1125:13;:17;1139:2;1125:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1177:2;1157:13;:17;1171:2;1157:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1209:2;1189:13;:17;1203:2;1189:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1259:1;1239:13;:17;1253:2;1239:17;;;;;;;;;;;;;;:21;;;;;;;;;;;;;;;;;;1290:1;1270:13;:17;1284:2;1270:17;;;;;;;;;;;;;;:21;;;;;;;;;;;;;;;;;;1321:2;1301:13;:17;1315:2;1301:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1353:2;1333:13;:17;1347:2;1333:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1385:2;1365:13;:17;1379:2;1365:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1417:2;1397:13;:17;1411:2;1397:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1449:2;1429:13;:17;1443:2;1429:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1481:2;1461:13;:17;1475:2;1461:17;;;;;;;;;;;;;;:22;;;;;;;;;;;;;;;;;;1522:8;1512:7;;:18;;;;;;;;;;;;;;;;;;1550:8;1540:7;;:18;;;;;;;;;;;;;;;;;;915:650;;251:94:2;;60:457;;;;;;\",\"deployedSourceMap\":\"60:457:2:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1678:43:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;208:40;;8:9:-1;5:2;;;30:1;27;20:12;5:2;208:40:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;208:40:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;404:111:2;;8:9:-1;5:2;;;30:1;27;20:12;5:2;404:111:2;;;;;;;;;;;;;;;;;;;;;;;1772:2175:1;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1772:2175:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;1772:2175:1;;;;;;;;;;;;;;;;;;;;4450:260;;;;;;4257:140;;8:9:-1;5:2;;;30:1;27;20:12;5:2;4257:140:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;4257:140:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5332:177;;;;;;4762:445;;8:9:-1;5:2;;;30:1;27;20:12;5:2;4762:445:1;;;;;;5578:647;;8:9:-1;5:2;;;30:1;27;20:12;5:2;5578:647:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;5578:647:1;;;;;;;;;;;;;;;;;;;;137:59:2;;8:9:-1;5:2;;;30:1;27;20:12;5:2;137:59:2;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;137:59:2;;;;;;;;;;;;;;;;;;;;208:40:1;;;;;;;;;;;;;;;;;:::o;404:111:2:-;442:4;500:5;;483:23;;;;;;;;;;;;;;;49:4:-1;39:7;30;26:21;22:32;13:7;6:49;483:23:2;;;473:34;;;;;;465:43;;;458:50;;404:111;:::o;1772:2175:1:-;1833:1;1824:6;:10;1816:53;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1897:8;:20;1906:10;1897:20;;;;;;;;;;;;;;;;1887:6;:30;;1879:80;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1997:4;1989:21;;;1984:2;1977:6;:9;:33;1969:106;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2103:7;2093:6;:17;;2085:59;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2154:9;2166:8;:6;:8::i;:::-;2154:20;;2184:9;2196:1;2184:13;;2242:11;2256:5;2242:19;;2330:10;2343:22;2354:4;2360;2343:10;:22::i;:::-;2330:35;;2417:1;2409:4;:9;;;:22;;;;2430:1;2422:4;:9;;;2409:22;2405:66;;;2456:4;2447:13;;2405:66;2531:16;2550:1;2531:20;;2561:14;2578:1;2561:18;;2589;2617:974;425:3;2624:19;;:10;:19;;;;:40;;;;;425:3;2647:17;;:8;:17;;;;2624:40;2617:974;;;2680:6;;;;;;;2707:22;2718:4;2724;2707:10;:22::i;:::-;2700:29;;2747:6;2743:704;;;2799:4;2786:10;:17;2773:30;;2836:13;:25;2850:10;2836:25;;;;;;;;;;;;;;;;;;;;;;;;;2821:40;;2899:1;2883:12;:17;;;;2879:89;;;2937:12;2924:25;;2879:89;425:3;2989:18;;:10;:18;;;2985:106;;;425:3;3053:10;:18;425:3;3044:28;3031:41;;2985:106;2743:704;;;3151:4;3140:8;:15;3129:26;;3188:13;:23;3202:8;3188:23;;;;;;;;;;;;;;;;;;;;;;;;;3173:38;;3249:1;3233:12;:17;;;;3229:87;;;3285:12;3274:23;;3229:87;425:3;3337:16;;:8;:16;;;3333:100;;;425:3;3397:8;:16;425:3;3388:26;3377:37;;3333:100;2743:704;3529:1;3521:4;:9;;;;3517:64;;;3560:6;3559:7;3550:16;;3517:64;2617:974;;;425:3;3604:19;;:10;:19;;;3600:341;;;3663:6;3639:8;:20;3648:10;3639:20;;;;;;;;;;;;;;;;:30;;;;;;;;;;;3699:6;3683:12;;:22;;;;;;;;;;;3724:44;3732:10;3744:4;3754:6;3763:4;3724:44;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3600:341;;;3823:6;3799:8;:20;3808:10;3799:20;;;;;;;;;;;;;;;;:30;;;;;;;;;;;3859:6;3843:12;;:22;;;;;;;;;;;3884:46;3892:10;3904:5;3916:6;3911:12;;3925:4;3884:46;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3600:341;1772:2175;;;;;;;;:::o;4450:260::-;4521:1;4509:9;:13;4501:69;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;4585:40;4603:10;4615:9;4585:40;;;;;;;;;;;;;;;;;;;;;;;;;;;;4659:9;4635:8;:20;4644:10;4635:20;;;;;;;;;;;;;;;;:33;;;;;;;;;;;4694:9;4678:12;;:25;;;;;;;;;;;4450:260::o;4257:140::-;4327:5;4389:1;4385;4379:3;4374:4;:8;;;;;;;;4370:1;:13;4357:12;:26;;;;;;;;4351:35;;;;;;;;;;:39;4344:46;;4257:140;;;;:::o;5332:177::-;5397:1;5385:9;:13;5377:76;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5468:34;5480:10;5492:9;5468:34;;;;;;;;;;;;;;;;;;;;;;;;;;;;5332:177::o;4762:445::-;4810:15;4828:8;:20;4837:10;4828:20;;;;;;;;;;;;;;;;4810:38;;4879:1;4866:10;:14;4858:58;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;4956:4;4948:21;;;4934:10;:35;;4926:102;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5043:46;5066:10;5078;5043:46;;;;;;;;;;;;;;;;;;;;;;;;;;;;5122:1;5099:8;:20;5108:10;5099:20;;;;;;;;;;;;;;;:24;;;;5149:10;5133:12;;:26;;;;;;;;;;;5169:10;:19;;:31;5189:10;5169:31;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;5169:31:1;4762:445;:::o;5578:647::-;5646:7;;;;;;;;;;;5632:21;;:10;:21;;;:46;;;;5671:7;;;;;;;;;;;5657:21;;:10;:21;;;5632:46;5624:91;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5742:1;5733:6;:10;5725:80;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5835:1;5830;5823:6;:8;;;;;;;;:13;5815:57;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5987:6;5971:12;;5955:4;5947:21;;;:36;:46;;5939:103;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;6057:29;6067:10;6079:6;6057:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;6096:9;6115:1;6108:6;:8;;;;;;;;6096:20;;6147:4;6126:8;:17;6135:7;;;;;;;;;;;6126:17;;;;;;;;;;;;;;;;:25;;;;;;;;;;;6182:4;6161:8;:17;6170:7;;;;;;;;;;;6161:17;;;;;;;;;;;;;;;;:25;;;;;;;;;;;6212:6;6196:12;;:22;;;;;;;;;;;5578:647;;:::o;137:59:2:-;188:1;180:5;:9;;;;137:59;:::o\",\"source\":\"pragma solidity ^0.5.0;\\n\\nimport \\\"../SnakesAndLadders.sol\\\";\\n\\ncontract SnakesAndLaddersMock is SnakesAndLadders {\\n    uint nonce = 0;\\n\\n    function setNonce(uint n) public {\\n        nonce = n;\\n    }\\n\\n    /**\\n     * Pass parameters to parent\\n     */\\n    constructor(address _payout1, address _payout2) public SnakesAndLadders(_payout1, _payout2) {}\\n\\n    /**\\n     * Returns a NOT a random number\\n     */\\n    function random() public view returns(uint) {\\n        return uint256(keccak256(abi.encodePacked(nonce)));\\n    }\\n}\\n\",\"sourcePath\":\"/Users/enrique/Sites/ethsnakesandladders/contracts/mock/SnakesAndLaddersMock.sol\",\"ast\":{\"absolutePath\":\"/Users/enrique/Sites/ethsnakesandladders/contracts/mock/SnakesAndLaddersMock.sol\",\"exportedSymbols\":{\"SnakesAndLaddersMock\":[739]},\"id\":740,\"nodeType\":\"SourceUnit\",\"nodes\":[{\"id\":695,\"literals\":[\"solidity\",\"^\",\"0.5\",\".0\"],\"nodeType\":\"PragmaDirective\",\"src\":\"0:23:2\"},{\"absolutePath\":\"/Users/enrique/Sites/ethsnakesandladders/contracts/SnakesAndLadders.sol\",\"file\":\"../SnakesAndLadders.sol\",\"id\":696,\"nodeType\":\"ImportDirective\",\"scope\":740,\"sourceUnit\":694,\"src\":\"25:33:2\",\"symbolAliases\":[],\"unitAlias\":\"\"},{\"baseContracts\":[{\"arguments\":null,\"baseName\":{\"contractScope\":null,\"id\":697,\"name\":\"SnakesAndLadders\",\"nodeType\":\"UserDefinedTypeName\",\"referencedDeclaration\":693,\"src\":\"93:16:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_contract$_SnakesAndLadders_$693\",\"typeString\":\"contract SnakesAndLadders\"}},\"id\":698,\"nodeType\":\"InheritanceSpecifier\",\"src\":\"93:16:2\"}],\"contractDependencies\":[693],\"contractKind\":\"contract\",\"documentation\":null,\"fullyImplemented\":true,\"id\":739,\"linearizedBaseContracts\":[739,693],\"name\":\"SnakesAndLaddersMock\",\"nodeType\":\"ContractDefinition\",\"nodes\":[{\"constant\":false,\"id\":701,\"name\":\"nonce\",\"nodeType\":\"VariableDeclaration\",\"scope\":739,\"src\":\"116:14:2\",\"stateVariable\":true,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"},\"typeName\":{\"id\":699,\"name\":\"uint\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"116:4:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"value\":{\"argumentTypes\":null,\"hexValue\":\"30\",\"id\":700,\"isConstant\":false,\"isLValue\":false,\"isPure\":true,\"kind\":\"number\",\"lValueRequested\":false,\"nodeType\":\"Literal\",\"src\":\"129:1:2\",\"subdenomination\":null,\"typeDescriptions\":{\"typeIdentifier\":\"t_rational_0_by_1\",\"typeString\":\"int_const 0\"},\"value\":\"0\"},\"visibility\":\"internal\"},{\"body\":{\"id\":710,\"nodeType\":\"Block\",\"src\":\"170:26:2\",\"statements\":[{\"expression\":{\"argumentTypes\":null,\"id\":708,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"lValueRequested\":false,\"leftHandSide\":{\"argumentTypes\":null,\"id\":706,\"name\":\"nonce\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":701,\"src\":\"180:5:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"nodeType\":\"Assignment\",\"operator\":\"=\",\"rightHandSide\":{\"argumentTypes\":null,\"id\":707,\"name\":\"n\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":703,\"src\":\"188:1:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"src\":\"180:9:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"id\":709,\"nodeType\":\"ExpressionStatement\",\"src\":\"180:9:2\"}]},\"documentation\":null,\"id\":711,\"implemented\":true,\"kind\":\"function\",\"modifiers\":[],\"name\":\"setNonce\",\"nodeType\":\"FunctionDefinition\",\"parameters\":{\"id\":704,\"nodeType\":\"ParameterList\",\"parameters\":[{\"constant\":false,\"id\":703,\"name\":\"n\",\"nodeType\":\"VariableDeclaration\",\"scope\":711,\"src\":\"155:6:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"},\"typeName\":{\"id\":702,\"name\":\"uint\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"155:4:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"value\":null,\"visibility\":\"internal\"}],\"src\":\"154:8:2\"},\"returnParameters\":{\"id\":705,\"nodeType\":\"ParameterList\",\"parameters\":[],\"src\":\"170:0:2\"},\"scope\":739,\"src\":\"137:59:2\",\"stateMutability\":\"nonpayable\",\"superFunction\":null,\"visibility\":\"public\"},{\"body\":{\"id\":722,\"nodeType\":\"Block\",\"src\":\"343:2:2\",\"statements\":[]},\"documentation\":\"Pass parameters to parent\",\"id\":723,\"implemented\":true,\"kind\":\"constructor\",\"modifiers\":[{\"arguments\":[{\"argumentTypes\":null,\"id\":718,\"name\":\"_payout1\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":713,\"src\":\"323:8:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}},{\"argumentTypes\":null,\"id\":719,\"name\":\"_payout2\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":715,\"src\":\"333:8:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}}],\"id\":720,\"modifierName\":{\"argumentTypes\":null,\"id\":717,\"name\":\"SnakesAndLadders\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":693,\"src\":\"306:16:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_type$_t_contract$_SnakesAndLadders_$693_$\",\"typeString\":\"type(contract SnakesAndLadders)\"}},\"nodeType\":\"ModifierInvocation\",\"src\":\"306:36:2\"}],\"name\":\"\",\"nodeType\":\"FunctionDefinition\",\"parameters\":{\"id\":716,\"nodeType\":\"ParameterList\",\"parameters\":[{\"constant\":false,\"id\":713,\"name\":\"_payout1\",\"nodeType\":\"VariableDeclaration\",\"scope\":723,\"src\":\"263:16:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"},\"typeName\":{\"id\":712,\"name\":\"address\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"263:7:2\",\"stateMutability\":\"nonpayable\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}},\"value\":null,\"visibility\":\"internal\"},{\"constant\":false,\"id\":715,\"name\":\"_payout2\",\"nodeType\":\"VariableDeclaration\",\"scope\":723,\"src\":\"281:16:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"},\"typeName\":{\"id\":714,\"name\":\"address\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"281:7:2\",\"stateMutability\":\"nonpayable\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}},\"value\":null,\"visibility\":\"internal\"}],\"src\":\"262:36:2\"},\"returnParameters\":{\"id\":721,\"nodeType\":\"ParameterList\",\"parameters\":[],\"src\":\"343:0:2\"},\"scope\":739,\"src\":\"251:94:2\",\"stateMutability\":\"nonpayable\",\"superFunction\":null,\"visibility\":\"public\"},{\"body\":{\"id\":737,\"nodeType\":\"Block\",\"src\":\"448:67:2\",\"statements\":[{\"expression\":{\"argumentTypes\":null,\"arguments\":[{\"argumentTypes\":null,\"arguments\":[{\"argumentTypes\":null,\"arguments\":[{\"argumentTypes\":null,\"id\":732,\"name\":\"nonce\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":701,\"src\":\"500:5:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}}],\"expression\":{\"argumentTypes\":[{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}],\"expression\":{\"argumentTypes\":null,\"id\":730,\"name\":\"abi\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":874,\"src\":\"483:3:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_magic_abi\",\"typeString\":\"abi\"}},\"id\":731,\"isConstant\":false,\"isLValue\":false,\"isPure\":true,\"lValueRequested\":false,\"memberName\":\"encodePacked\",\"nodeType\":\"MemberAccess\",\"referencedDeclaration\":null,\"src\":\"483:16:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_function_abiencodepacked_pure$__$returns$_t_bytes_memory_ptr_$\",\"typeString\":\"function () pure returns (bytes memory)\"}},\"id\":733,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"kind\":\"functionCall\",\"lValueRequested\":false,\"names\":[],\"nodeType\":\"FunctionCall\",\"src\":\"483:23:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_bytes_memory_ptr\",\"typeString\":\"bytes memory\"}}],\"expression\":{\"argumentTypes\":[{\"typeIdentifier\":\"t_bytes_memory_ptr\",\"typeString\":\"bytes memory\"}],\"id\":729,\"name\":\"keccak256\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":881,\"src\":\"473:9:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_function_keccak256_pure$_t_bytes_memory_ptr_$returns$_t_bytes32_$\",\"typeString\":\"function (bytes memory) pure returns (bytes32)\"}},\"id\":734,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"kind\":\"functionCall\",\"lValueRequested\":false,\"names\":[],\"nodeType\":\"FunctionCall\",\"src\":\"473:34:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_bytes32\",\"typeString\":\"bytes32\"}}],\"expression\":{\"argumentTypes\":[{\"typeIdentifier\":\"t_bytes32\",\"typeString\":\"bytes32\"}],\"id\":728,\"isConstant\":false,\"isLValue\":false,\"isPure\":true,\"lValueRequested\":false,\"nodeType\":\"ElementaryTypeNameExpression\",\"src\":\"465:7:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_type$_t_uint256_$\",\"typeString\":\"type(uint256)\"},\"typeName\":\"uint256\"},\"id\":735,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"kind\":\"typeConversion\",\"lValueRequested\":false,\"names\":[],\"nodeType\":\"FunctionCall\",\"src\":\"465:43:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"functionReturnParameters\":727,\"id\":736,\"nodeType\":\"Return\",\"src\":\"458:50:2\"}]},\"documentation\":\"Returns a NOT a random number\",\"id\":738,\"implemented\":true,\"kind\":\"function\",\"modifiers\":[],\"name\":\"random\",\"nodeType\":\"FunctionDefinition\",\"parameters\":{\"id\":724,\"nodeType\":\"ParameterList\",\"parameters\":[],\"src\":\"419:2:2\"},\"returnParameters\":{\"id\":727,\"nodeType\":\"ParameterList\",\"parameters\":[{\"constant\":false,\"id\":726,\"name\":\"\",\"nodeType\":\"VariableDeclaration\",\"scope\":738,\"src\":\"442:4:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"},\"typeName\":{\"id\":725,\"name\":\"uint\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"442:4:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"value\":null,\"visibility\":\"internal\"}],\"src\":\"441:6:2\"},\"scope\":739,\"src\":\"404:111:2\",\"stateMutability\":\"view\",\"superFunction\":488,\"visibility\":\"public\"}],\"scope\":740,\"src\":\"60:457:2\"}],\"src\":\"0:518:2\"},\"legacyAST\":{\"absolutePath\":\"/Users/enrique/Sites/ethsnakesandladders/contracts/mock/SnakesAndLaddersMock.sol\",\"exportedSymbols\":{\"SnakesAndLaddersMock\":[739]},\"id\":740,\"nodeType\":\"SourceUnit\",\"nodes\":[{\"id\":695,\"literals\":[\"solidity\",\"^\",\"0.5\",\".0\"],\"nodeType\":\"PragmaDirective\",\"src\":\"0:23:2\"},{\"absolutePath\":\"/Users/enrique/Sites/ethsnakesandladders/contracts/SnakesAndLadders.sol\",\"file\":\"../SnakesAndLadders.sol\",\"id\":696,\"nodeType\":\"ImportDirective\",\"scope\":740,\"sourceUnit\":694,\"src\":\"25:33:2\",\"symbolAliases\":[],\"unitAlias\":\"\"},{\"baseContracts\":[{\"arguments\":null,\"baseName\":{\"contractScope\":null,\"id\":697,\"name\":\"SnakesAndLadders\",\"nodeType\":\"UserDefinedTypeName\",\"referencedDeclaration\":693,\"src\":\"93:16:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_contract$_SnakesAndLadders_$693\",\"typeString\":\"contract SnakesAndLadders\"}},\"id\":698,\"nodeType\":\"InheritanceSpecifier\",\"src\":\"93:16:2\"}],\"contractDependencies\":[693],\"contractKind\":\"contract\",\"documentation\":null,\"fullyImplemented\":true,\"id\":739,\"linearizedBaseContracts\":[739,693],\"name\":\"SnakesAndLaddersMock\",\"nodeType\":\"ContractDefinition\",\"nodes\":[{\"constant\":false,\"id\":701,\"name\":\"nonce\",\"nodeType\":\"VariableDeclaration\",\"scope\":739,\"src\":\"116:14:2\",\"stateVariable\":true,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"},\"typeName\":{\"id\":699,\"name\":\"uint\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"116:4:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"value\":{\"argumentTypes\":null,\"hexValue\":\"30\",\"id\":700,\"isConstant\":false,\"isLValue\":false,\"isPure\":true,\"kind\":\"number\",\"lValueRequested\":false,\"nodeType\":\"Literal\",\"src\":\"129:1:2\",\"subdenomination\":null,\"typeDescriptions\":{\"typeIdentifier\":\"t_rational_0_by_1\",\"typeString\":\"int_const 0\"},\"value\":\"0\"},\"visibility\":\"internal\"},{\"body\":{\"id\":710,\"nodeType\":\"Block\",\"src\":\"170:26:2\",\"statements\":[{\"expression\":{\"argumentTypes\":null,\"id\":708,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"lValueRequested\":false,\"leftHandSide\":{\"argumentTypes\":null,\"id\":706,\"name\":\"nonce\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":701,\"src\":\"180:5:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"nodeType\":\"Assignment\",\"operator\":\"=\",\"rightHandSide\":{\"argumentTypes\":null,\"id\":707,\"name\":\"n\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":703,\"src\":\"188:1:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"src\":\"180:9:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"id\":709,\"nodeType\":\"ExpressionStatement\",\"src\":\"180:9:2\"}]},\"documentation\":null,\"id\":711,\"implemented\":true,\"kind\":\"function\",\"modifiers\":[],\"name\":\"setNonce\",\"nodeType\":\"FunctionDefinition\",\"parameters\":{\"id\":704,\"nodeType\":\"ParameterList\",\"parameters\":[{\"constant\":false,\"id\":703,\"name\":\"n\",\"nodeType\":\"VariableDeclaration\",\"scope\":711,\"src\":\"155:6:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"},\"typeName\":{\"id\":702,\"name\":\"uint\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"155:4:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"value\":null,\"visibility\":\"internal\"}],\"src\":\"154:8:2\"},\"returnParameters\":{\"id\":705,\"nodeType\":\"ParameterList\",\"parameters\":[],\"src\":\"170:0:2\"},\"scope\":739,\"src\":\"137:59:2\",\"stateMutability\":\"nonpayable\",\"superFunction\":null,\"visibility\":\"public\"},{\"body\":{\"id\":722,\"nodeType\":\"Block\",\"src\":\"343:2:2\",\"statements\":[]},\"documentation\":\"Pass parameters to parent\",\"id\":723,\"implemented\":true,\"kind\":\"constructor\",\"modifiers\":[{\"arguments\":[{\"argumentTypes\":null,\"id\":718,\"name\":\"_payout1\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":713,\"src\":\"323:8:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}},{\"argumentTypes\":null,\"id\":719,\"name\":\"_payout2\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":715,\"src\":\"333:8:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}}],\"id\":720,\"modifierName\":{\"argumentTypes\":null,\"id\":717,\"name\":\"SnakesAndLadders\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":693,\"src\":\"306:16:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_type$_t_contract$_SnakesAndLadders_$693_$\",\"typeString\":\"type(contract SnakesAndLadders)\"}},\"nodeType\":\"ModifierInvocation\",\"src\":\"306:36:2\"}],\"name\":\"\",\"nodeType\":\"FunctionDefinition\",\"parameters\":{\"id\":716,\"nodeType\":\"ParameterList\",\"parameters\":[{\"constant\":false,\"id\":713,\"name\":\"_payout1\",\"nodeType\":\"VariableDeclaration\",\"scope\":723,\"src\":\"263:16:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"},\"typeName\":{\"id\":712,\"name\":\"address\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"263:7:2\",\"stateMutability\":\"nonpayable\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}},\"value\":null,\"visibility\":\"internal\"},{\"constant\":false,\"id\":715,\"name\":\"_payout2\",\"nodeType\":\"VariableDeclaration\",\"scope\":723,\"src\":\"281:16:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"},\"typeName\":{\"id\":714,\"name\":\"address\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"281:7:2\",\"stateMutability\":\"nonpayable\",\"typeDescriptions\":{\"typeIdentifier\":\"t_address\",\"typeString\":\"address\"}},\"value\":null,\"visibility\":\"internal\"}],\"src\":\"262:36:2\"},\"returnParameters\":{\"id\":721,\"nodeType\":\"ParameterList\",\"parameters\":[],\"src\":\"343:0:2\"},\"scope\":739,\"src\":\"251:94:2\",\"stateMutability\":\"nonpayable\",\"superFunction\":null,\"visibility\":\"public\"},{\"body\":{\"id\":737,\"nodeType\":\"Block\",\"src\":\"448:67:2\",\"statements\":[{\"expression\":{\"argumentTypes\":null,\"arguments\":[{\"argumentTypes\":null,\"arguments\":[{\"argumentTypes\":null,\"arguments\":[{\"argumentTypes\":null,\"id\":732,\"name\":\"nonce\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":701,\"src\":\"500:5:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}}],\"expression\":{\"argumentTypes\":[{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}],\"expression\":{\"argumentTypes\":null,\"id\":730,\"name\":\"abi\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":874,\"src\":\"483:3:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_magic_abi\",\"typeString\":\"abi\"}},\"id\":731,\"isConstant\":false,\"isLValue\":false,\"isPure\":true,\"lValueRequested\":false,\"memberName\":\"encodePacked\",\"nodeType\":\"MemberAccess\",\"referencedDeclaration\":null,\"src\":\"483:16:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_function_abiencodepacked_pure$__$returns$_t_bytes_memory_ptr_$\",\"typeString\":\"function () pure returns (bytes memory)\"}},\"id\":733,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"kind\":\"functionCall\",\"lValueRequested\":false,\"names\":[],\"nodeType\":\"FunctionCall\",\"src\":\"483:23:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_bytes_memory_ptr\",\"typeString\":\"bytes memory\"}}],\"expression\":{\"argumentTypes\":[{\"typeIdentifier\":\"t_bytes_memory_ptr\",\"typeString\":\"bytes memory\"}],\"id\":729,\"name\":\"keccak256\",\"nodeType\":\"Identifier\",\"overloadedDeclarations\":[],\"referencedDeclaration\":881,\"src\":\"473:9:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_function_keccak256_pure$_t_bytes_memory_ptr_$returns$_t_bytes32_$\",\"typeString\":\"function (bytes memory) pure returns (bytes32)\"}},\"id\":734,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"kind\":\"functionCall\",\"lValueRequested\":false,\"names\":[],\"nodeType\":\"FunctionCall\",\"src\":\"473:34:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_bytes32\",\"typeString\":\"bytes32\"}}],\"expression\":{\"argumentTypes\":[{\"typeIdentifier\":\"t_bytes32\",\"typeString\":\"bytes32\"}],\"id\":728,\"isConstant\":false,\"isLValue\":false,\"isPure\":true,\"lValueRequested\":false,\"nodeType\":\"ElementaryTypeNameExpression\",\"src\":\"465:7:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_type$_t_uint256_$\",\"typeString\":\"type(uint256)\"},\"typeName\":\"uint256\"},\"id\":735,\"isConstant\":false,\"isLValue\":false,\"isPure\":false,\"kind\":\"typeConversion\",\"lValueRequested\":false,\"names\":[],\"nodeType\":\"FunctionCall\",\"src\":\"465:43:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"functionReturnParameters\":727,\"id\":736,\"nodeType\":\"Return\",\"src\":\"458:50:2\"}]},\"documentation\":\"Returns a NOT a random number\",\"id\":738,\"implemented\":true,\"kind\":\"function\",\"modifiers\":[],\"name\":\"random\",\"nodeType\":\"FunctionDefinition\",\"parameters\":{\"id\":724,\"nodeType\":\"ParameterList\",\"parameters\":[],\"src\":\"419:2:2\"},\"returnParameters\":{\"id\":727,\"nodeType\":\"ParameterList\",\"parameters\":[{\"constant\":false,\"id\":726,\"name\":\"\",\"nodeType\":\"VariableDeclaration\",\"scope\":738,\"src\":\"442:4:2\",\"stateVariable\":false,\"storageLocation\":\"default\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"},\"typeName\":{\"id\":725,\"name\":\"uint\",\"nodeType\":\"ElementaryTypeName\",\"src\":\"442:4:2\",\"typeDescriptions\":{\"typeIdentifier\":\"t_uint256\",\"typeString\":\"uint256\"}},\"value\":null,\"visibility\":\"internal\"}],\"src\":\"441:6:2\"},\"scope\":739,\"src\":\"404:111:2\",\"stateMutability\":\"view\",\"superFunction\":488,\"visibility\":\"public\"}],\"scope\":740,\"src\":\"60:457:2\"}],\"src\":\"0:518:2\"},\"compiler\":{\"name\":\"solc\",\"version\":\"0.5.0+commit.1d4f565a.Emscripten.clang\"},\"networks\":{\"5777\":{\"events\":{\"0x1b8173b2ebc7d3b1be2bb58d232ecec5dc93a1445e6f6eef77211e4939186930\":{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"result\",\"type\":\"bool\"},{\"indexed\":false,\"name\":\"balancediff\",\"type\":\"int256\"},{\"indexed\":false,\"name\":\"seed\",\"type\":\"uint256\"}],\"name\":\"LogGame\",\"type\":\"event\",\"signature\":\"0x1b8173b2ebc7d3b1be2bb58d232ecec5dc93a1445e6f6eef77211e4939186930\"},\"0x0fad0ee523af769263e35ca10343b0d098a75cd8d5453768ff2c2a976acf6fe7\":{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogAddPlayerFunds\",\"type\":\"event\",\"signature\":\"0x0fad0ee523af769263e35ca10343b0d098a75cd8d5453768ff2c2a976acf6fe7\"},\"0xf45703a0c722c37e7e1ecaca11700b61c644684bd6d7cc70fff9dbec19476956\":{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogWithdrawPlayerFunds\",\"type\":\"event\",\"signature\":\"0xf45703a0c722c37e7e1ecaca11700b61c644684bd6d7cc70fff9dbec19476956\"},\"0xf10a70d7840292e5567b3acea76264b1528c1c5c45625420169815099f702d1b\":{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogAddFunds\",\"type\":\"event\",\"signature\":\"0xf10a70d7840292e5567b3acea76264b1528c1c5c45625420169815099f702d1b\"},\"0x7d6963073a93103d7a336ea21c7f029ad757c9ef4c0c6ad0ff86c689480e0ed8\":{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"LogPayout\",\"type\":\"event\",\"signature\":\"0x7d6963073a93103d7a336ea21c7f029ad757c9ef4c0c6ad0ff86c689480e0ed8\"}},\"links\":{},\"address\":\"0x95D50c1f2Ce9B3561F180E875918a106C5Aa7a09\",\"transactionHash\":\"0x5bdd8ec3aa0bb42f197d5b1c251bbb8cb161bbf59f11c93a7a04a858bfbe1f1b\"}},\"schemaVersion\":\"3.0.19\",\"updatedAt\":\"2020-01-31T16:20:30.693Z\",\"networkType\":\"ethereum\",\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{\"addFunds()\":{\"notice\":\"Anyone can send funds but it has to be from this function. This does not count in totalBalance.\"},\"addPlayerFunds()\":{\"notice\":\"User adds player funds.\"},\"constructor\":\"Pass parameters to parent\",\"payout(uint256)\":{\"notice\":\"Only payout addresses can emit payouts.\"},\"play(uint256)\":{\"notice\":\"Plays the game\"},\"random()\":{\"notice\":\"Returns a NOT a random number\"},\"randomDice(uint256,uint256)\":{\"notice\":\"Returns a random number from 1 to 6 based from a uint and turn.\"},\"withdrawPlayerFunds()\":{\"notice\":\"Withdraw player funds.\"}}}}");
 
 /***/ }),
 
@@ -24289,6 +24336,3175 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
   return utils.encode(res, enc);
 };
 
+
+/***/ }),
+
+/***/ "./node_modules/howler/dist/howler.js":
+/*!********************************************!*\
+  !*** ./node_modules/howler/dist/howler.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ *  howler.js v2.1.3
+ *  howlerjs.com
+ *
+ *  (c) 2013-2019, James Simpson of GoldFire Studios
+ *  goldfirestudios.com
+ *
+ *  MIT License
+ */
+
+(function() {
+
+  'use strict';
+
+  /** Global Methods **/
+  /***************************************************************************/
+
+  /**
+   * Create the global controller. All contained methods and properties apply
+   * to all sounds that are currently playing or will be in the future.
+   */
+  var HowlerGlobal = function() {
+    this.init();
+  };
+  HowlerGlobal.prototype = {
+    /**
+     * Initialize the global Howler object.
+     * @return {Howler}
+     */
+    init: function() {
+      var self = this || Howler;
+
+      // Create a global ID counter.
+      self._counter = 1000;
+
+      // Pool of unlocked HTML5 Audio objects.
+      self._html5AudioPool = [];
+      self.html5PoolSize = 10;
+
+      // Internal properties.
+      self._codecs = {};
+      self._howls = [];
+      self._muted = false;
+      self._volume = 1;
+      self._canPlayEvent = 'canplaythrough';
+      self._navigator = (typeof window !== 'undefined' && window.navigator) ? window.navigator : null;
+
+      // Public properties.
+      self.masterGain = null;
+      self.noAudio = false;
+      self.usingWebAudio = true;
+      self.autoSuspend = true;
+      self.ctx = null;
+
+      // Set to false to disable the auto audio unlocker.
+      self.autoUnlock = true;
+
+      // Setup the various state values for global tracking.
+      self._setup();
+
+      return self;
+    },
+
+    /**
+     * Get/set the global volume for all sounds.
+     * @param  {Float} vol Volume from 0.0 to 1.0.
+     * @return {Howler/Float}     Returns self or current volume.
+     */
+    volume: function(vol) {
+      var self = this || Howler;
+      vol = parseFloat(vol);
+
+      // If we don't have an AudioContext created yet, run the setup.
+      if (!self.ctx) {
+        setupAudioContext();
+      }
+
+      if (typeof vol !== 'undefined' && vol >= 0 && vol <= 1) {
+        self._volume = vol;
+
+        // Don't update any of the nodes if we are muted.
+        if (self._muted) {
+          return self;
+        }
+
+        // When using Web Audio, we just need to adjust the master gain.
+        if (self.usingWebAudio) {
+          self.masterGain.gain.setValueAtTime(vol, Howler.ctx.currentTime);
+        }
+
+        // Loop through and change volume for all HTML5 audio nodes.
+        for (var i=0; i<self._howls.length; i++) {
+          if (!self._howls[i]._webAudio) {
+            // Get all of the sounds in this Howl group.
+            var ids = self._howls[i]._getSoundIds();
+
+            // Loop through all sounds and change the volumes.
+            for (var j=0; j<ids.length; j++) {
+              var sound = self._howls[i]._soundById(ids[j]);
+
+              if (sound && sound._node) {
+                sound._node.volume = sound._volume * vol;
+              }
+            }
+          }
+        }
+
+        return self;
+      }
+
+      return self._volume;
+    },
+
+    /**
+     * Handle muting and unmuting globally.
+     * @param  {Boolean} muted Is muted or not.
+     */
+    mute: function(muted) {
+      var self = this || Howler;
+
+      // If we don't have an AudioContext created yet, run the setup.
+      if (!self.ctx) {
+        setupAudioContext();
+      }
+
+      self._muted = muted;
+
+      // With Web Audio, we just need to mute the master gain.
+      if (self.usingWebAudio) {
+        self.masterGain.gain.setValueAtTime(muted ? 0 : self._volume, Howler.ctx.currentTime);
+      }
+
+      // Loop through and mute all HTML5 Audio nodes.
+      for (var i=0; i<self._howls.length; i++) {
+        if (!self._howls[i]._webAudio) {
+          // Get all of the sounds in this Howl group.
+          var ids = self._howls[i]._getSoundIds();
+
+          // Loop through all sounds and mark the audio node as muted.
+          for (var j=0; j<ids.length; j++) {
+            var sound = self._howls[i]._soundById(ids[j]);
+
+            if (sound && sound._node) {
+              sound._node.muted = (muted) ? true : sound._muted;
+            }
+          }
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Unload and destroy all currently loaded Howl objects.
+     * @return {Howler}
+     */
+    unload: function() {
+      var self = this || Howler;
+
+      for (var i=self._howls.length-1; i>=0; i--) {
+        self._howls[i].unload();
+      }
+
+      // Create a new AudioContext to make sure it is fully reset.
+      if (self.usingWebAudio && self.ctx && typeof self.ctx.close !== 'undefined') {
+        self.ctx.close();
+        self.ctx = null;
+        setupAudioContext();
+      }
+
+      return self;
+    },
+
+    /**
+     * Check for codec support of specific extension.
+     * @param  {String} ext Audio file extention.
+     * @return {Boolean}
+     */
+    codecs: function(ext) {
+      return (this || Howler)._codecs[ext.replace(/^x-/, '')];
+    },
+
+    /**
+     * Setup various state values for global tracking.
+     * @return {Howler}
+     */
+    _setup: function() {
+      var self = this || Howler;
+
+      // Keeps track of the suspend/resume state of the AudioContext.
+      self.state = self.ctx ? self.ctx.state || 'suspended' : 'suspended';
+
+      // Automatically begin the 30-second suspend process
+      self._autoSuspend();
+
+      // Check if audio is available.
+      if (!self.usingWebAudio) {
+        // No audio is available on this system if noAudio is set to true.
+        if (typeof Audio !== 'undefined') {
+          try {
+            var test = new Audio();
+
+            // Check if the canplaythrough event is available.
+            if (typeof test.oncanplaythrough === 'undefined') {
+              self._canPlayEvent = 'canplay';
+            }
+          } catch(e) {
+            self.noAudio = true;
+          }
+        } else {
+          self.noAudio = true;
+        }
+      }
+
+      // Test to make sure audio isn't disabled in Internet Explorer.
+      try {
+        var test = new Audio();
+        if (test.muted) {
+          self.noAudio = true;
+        }
+      } catch (e) {}
+
+      // Check for supported codecs.
+      if (!self.noAudio) {
+        self._setupCodecs();
+      }
+
+      return self;
+    },
+
+    /**
+     * Check for browser support for various codecs and cache the results.
+     * @return {Howler}
+     */
+    _setupCodecs: function() {
+      var self = this || Howler;
+      var audioTest = null;
+
+      // Must wrap in a try/catch because IE11 in server mode throws an error.
+      try {
+        audioTest = (typeof Audio !== 'undefined') ? new Audio() : null;
+      } catch (err) {
+        return self;
+      }
+
+      if (!audioTest || typeof audioTest.canPlayType !== 'function') {
+        return self;
+      }
+
+      var mpegTest = audioTest.canPlayType('audio/mpeg;').replace(/^no$/, '');
+
+      // Opera version <33 has mixed MP3 support, so we need to check for and block it.
+      var checkOpera = self._navigator && self._navigator.userAgent.match(/OPR\/([0-6].)/g);
+      var isOldOpera = (checkOpera && parseInt(checkOpera[0].split('/')[1], 10) < 33);
+
+      self._codecs = {
+        mp3: !!(!isOldOpera && (mpegTest || audioTest.canPlayType('audio/mp3;').replace(/^no$/, ''))),
+        mpeg: !!mpegTest,
+        opus: !!audioTest.canPlayType('audio/ogg; codecs="opus"').replace(/^no$/, ''),
+        ogg: !!audioTest.canPlayType('audio/ogg; codecs="vorbis"').replace(/^no$/, ''),
+        oga: !!audioTest.canPlayType('audio/ogg; codecs="vorbis"').replace(/^no$/, ''),
+        wav: !!audioTest.canPlayType('audio/wav; codecs="1"').replace(/^no$/, ''),
+        aac: !!audioTest.canPlayType('audio/aac;').replace(/^no$/, ''),
+        caf: !!audioTest.canPlayType('audio/x-caf;').replace(/^no$/, ''),
+        m4a: !!(audioTest.canPlayType('audio/x-m4a;') || audioTest.canPlayType('audio/m4a;') || audioTest.canPlayType('audio/aac;')).replace(/^no$/, ''),
+        mp4: !!(audioTest.canPlayType('audio/x-mp4;') || audioTest.canPlayType('audio/mp4;') || audioTest.canPlayType('audio/aac;')).replace(/^no$/, ''),
+        weba: !!audioTest.canPlayType('audio/webm; codecs="vorbis"').replace(/^no$/, ''),
+        webm: !!audioTest.canPlayType('audio/webm; codecs="vorbis"').replace(/^no$/, ''),
+        dolby: !!audioTest.canPlayType('audio/mp4; codecs="ec-3"').replace(/^no$/, ''),
+        flac: !!(audioTest.canPlayType('audio/x-flac;') || audioTest.canPlayType('audio/flac;')).replace(/^no$/, '')
+      };
+
+      return self;
+    },
+
+    /**
+     * Some browsers/devices will only allow audio to be played after a user interaction.
+     * Attempt to automatically unlock audio on the first user interaction.
+     * Concept from: http://paulbakaus.com/tutorials/html5/web-audio-on-ios/
+     * @return {Howler}
+     */
+    _unlockAudio: function() {
+      var self = this || Howler;
+
+      // Only run this if Web Audio is supported and it hasn't already been unlocked.
+      if (self._audioUnlocked || !self.ctx) {
+        return;
+      }
+
+      self._audioUnlocked = false;
+      self.autoUnlock = false;
+
+      // Some mobile devices/platforms have distortion issues when opening/closing tabs and/or web views.
+      // Bugs in the browser (especially Mobile Safari) can cause the sampleRate to change from 44100 to 48000.
+      // By calling Howler.unload(), we create a new AudioContext with the correct sampleRate.
+      if (!self._mobileUnloaded && self.ctx.sampleRate !== 44100) {
+        self._mobileUnloaded = true;
+        self.unload();
+      }
+
+      // Scratch buffer for enabling iOS to dispose of web audio buffers correctly, as per:
+      // http://stackoverflow.com/questions/24119684
+      self._scratchBuffer = self.ctx.createBuffer(1, 1, 22050);
+
+      // Call this method on touch start to create and play a buffer,
+      // then check if the audio actually played to determine if
+      // audio has now been unlocked on iOS, Android, etc.
+      var unlock = function(e) {
+        // Create a pool of unlocked HTML5 Audio objects that can
+        // be used for playing sounds without user interaction. HTML5
+        // Audio objects must be individually unlocked, as opposed
+        // to the WebAudio API which only needs a single activation.
+        // This must occur before WebAudio setup or the source.onended
+        // event will not fire.
+        for (var i=0; i<self.html5PoolSize; i++) {
+          try {
+            var audioNode = new Audio();
+
+            // Mark this Audio object as unlocked to ensure it can get returned
+            // to the unlocked pool when released.
+            audioNode._unlocked = true;
+
+            // Add the audio node to the pool.
+            self._releaseHtml5Audio(audioNode);
+          } catch (e) {
+            self.noAudio = true;
+          }
+        }
+
+        // Loop through any assigned audio nodes and unlock them.
+        for (var i=0; i<self._howls.length; i++) {
+          if (!self._howls[i]._webAudio) {
+            // Get all of the sounds in this Howl group.
+            var ids = self._howls[i]._getSoundIds();
+
+            // Loop through all sounds and unlock the audio nodes.
+            for (var j=0; j<ids.length; j++) {
+              var sound = self._howls[i]._soundById(ids[j]);
+
+              if (sound && sound._node && !sound._node._unlocked) {
+                sound._node._unlocked = true;
+                sound._node.load();
+              }
+            }
+          }
+        }
+
+        // Fix Android can not play in suspend state.
+        self._autoResume();
+
+        // Create an empty buffer.
+        var source = self.ctx.createBufferSource();
+        source.buffer = self._scratchBuffer;
+        source.connect(self.ctx.destination);
+
+        // Play the empty buffer.
+        if (typeof source.start === 'undefined') {
+          source.noteOn(0);
+        } else {
+          source.start(0);
+        }
+
+        // Calling resume() on a stack initiated by user gesture is what actually unlocks the audio on Android Chrome >= 55.
+        if (typeof self.ctx.resume === 'function') {
+          self.ctx.resume();
+        }
+
+        // Setup a timeout to check that we are unlocked on the next event loop.
+        source.onended = function() {
+          source.disconnect(0);
+
+          // Update the unlocked state and prevent this check from happening again.
+          self._audioUnlocked = true;
+
+          // Remove the touch start listener.
+          document.removeEventListener('touchstart', unlock, true);
+          document.removeEventListener('touchend', unlock, true);
+          document.removeEventListener('click', unlock, true);
+
+          // Let all sounds know that audio has been unlocked.
+          for (var i=0; i<self._howls.length; i++) {
+            self._howls[i]._emit('unlock');
+          }
+        };
+      };
+
+      // Setup a touch start listener to attempt an unlock in.
+      document.addEventListener('touchstart', unlock, true);
+      document.addEventListener('touchend', unlock, true);
+      document.addEventListener('click', unlock, true);
+
+      return self;
+    },
+
+    /**
+     * Get an unlocked HTML5 Audio object from the pool. If none are left,
+     * return a new Audio object and throw a warning.
+     * @return {Audio} HTML5 Audio object.
+     */
+    _obtainHtml5Audio: function() {
+      var self = this || Howler;
+
+      // Return the next object from the pool if one exists.
+      if (self._html5AudioPool.length) {
+        return self._html5AudioPool.pop();
+      }
+
+      //.Check if the audio is locked and throw a warning.
+      var testPlay = new Audio().play();
+      if (testPlay && typeof Promise !== 'undefined' && (testPlay instanceof Promise || typeof testPlay.then === 'function')) {
+        testPlay.catch(function() {
+          console.warn('HTML5 Audio pool exhausted, returning potentially locked audio object.');
+        });
+      }
+
+      return new Audio();
+    },
+
+    /**
+     * Return an activated HTML5 Audio object to the pool.
+     * @return {Howler}
+     */
+    _releaseHtml5Audio: function(audio) {
+      var self = this || Howler;
+
+      // Don't add audio to the pool if we don't know if it has been unlocked.
+      if (audio._unlocked) {
+        self._html5AudioPool.push(audio);
+      }
+
+      return self;
+    },
+
+    /**
+     * Automatically suspend the Web Audio AudioContext after no sound has played for 30 seconds.
+     * This saves processing/energy and fixes various browser-specific bugs with audio getting stuck.
+     * @return {Howler}
+     */
+    _autoSuspend: function() {
+      var self = this;
+
+      if (!self.autoSuspend || !self.ctx || typeof self.ctx.suspend === 'undefined' || !Howler.usingWebAudio) {
+        return;
+      }
+
+      // Check if any sounds are playing.
+      for (var i=0; i<self._howls.length; i++) {
+        if (self._howls[i]._webAudio) {
+          for (var j=0; j<self._howls[i]._sounds.length; j++) {
+            if (!self._howls[i]._sounds[j]._paused) {
+              return self;
+            }
+          }
+        }
+      }
+
+      if (self._suspendTimer) {
+        clearTimeout(self._suspendTimer);
+      }
+
+      // If no sound has played after 30 seconds, suspend the context.
+      self._suspendTimer = setTimeout(function() {
+        if (!self.autoSuspend) {
+          return;
+        }
+
+        self._suspendTimer = null;
+        self.state = 'suspending';
+        self.ctx.suspend().then(function() {
+          self.state = 'suspended';
+
+          if (self._resumeAfterSuspend) {
+            delete self._resumeAfterSuspend;
+            self._autoResume();
+          }
+        });
+      }, 30000);
+
+      return self;
+    },
+
+    /**
+     * Automatically resume the Web Audio AudioContext when a new sound is played.
+     * @return {Howler}
+     */
+    _autoResume: function() {
+      var self = this;
+
+      if (!self.ctx || typeof self.ctx.resume === 'undefined' || !Howler.usingWebAudio) {
+        return;
+      }
+
+      if (self.state === 'running' && self._suspendTimer) {
+        clearTimeout(self._suspendTimer);
+        self._suspendTimer = null;
+      } else if (self.state === 'suspended') {
+        self.ctx.resume().then(function() {
+          self.state = 'running';
+
+          // Emit to all Howls that the audio has resumed.
+          for (var i=0; i<self._howls.length; i++) {
+            self._howls[i]._emit('resume');
+          }
+        });
+
+        if (self._suspendTimer) {
+          clearTimeout(self._suspendTimer);
+          self._suspendTimer = null;
+        }
+      } else if (self.state === 'suspending') {
+        self._resumeAfterSuspend = true;
+      }
+
+      return self;
+    }
+  };
+
+  // Setup the global audio controller.
+  var Howler = new HowlerGlobal();
+
+  /** Group Methods **/
+  /***************************************************************************/
+
+  /**
+   * Create an audio group controller.
+   * @param {Object} o Passed in properties for this group.
+   */
+  var Howl = function(o) {
+    var self = this;
+
+    // Throw an error if no source is provided.
+    if (!o.src || o.src.length === 0) {
+      console.error('An array of source files must be passed with any new Howl.');
+      return;
+    }
+
+    self.init(o);
+  };
+  Howl.prototype = {
+    /**
+     * Initialize a new Howl group object.
+     * @param  {Object} o Passed in properties for this group.
+     * @return {Howl}
+     */
+    init: function(o) {
+      var self = this;
+
+      // If we don't have an AudioContext created yet, run the setup.
+      if (!Howler.ctx) {
+        setupAudioContext();
+      }
+
+      // Setup user-defined default properties.
+      self._autoplay = o.autoplay || false;
+      self._format = (typeof o.format !== 'string') ? o.format : [o.format];
+      self._html5 = o.html5 || false;
+      self._muted = o.mute || false;
+      self._loop = o.loop || false;
+      self._pool = o.pool || 5;
+      self._preload = (typeof o.preload === 'boolean') ? o.preload : true;
+      self._rate = o.rate || 1;
+      self._sprite = o.sprite || {};
+      self._src = (typeof o.src !== 'string') ? o.src : [o.src];
+      self._volume = o.volume !== undefined ? o.volume : 1;
+      self._xhrWithCredentials = o.xhrWithCredentials || false;
+
+      // Setup all other default properties.
+      self._duration = 0;
+      self._state = 'unloaded';
+      self._sounds = [];
+      self._endTimers = {};
+      self._queue = [];
+      self._playLock = false;
+
+      // Setup event listeners.
+      self._onend = o.onend ? [{fn: o.onend}] : [];
+      self._onfade = o.onfade ? [{fn: o.onfade}] : [];
+      self._onload = o.onload ? [{fn: o.onload}] : [];
+      self._onloaderror = o.onloaderror ? [{fn: o.onloaderror}] : [];
+      self._onplayerror = o.onplayerror ? [{fn: o.onplayerror}] : [];
+      self._onpause = o.onpause ? [{fn: o.onpause}] : [];
+      self._onplay = o.onplay ? [{fn: o.onplay}] : [];
+      self._onstop = o.onstop ? [{fn: o.onstop}] : [];
+      self._onmute = o.onmute ? [{fn: o.onmute}] : [];
+      self._onvolume = o.onvolume ? [{fn: o.onvolume}] : [];
+      self._onrate = o.onrate ? [{fn: o.onrate}] : [];
+      self._onseek = o.onseek ? [{fn: o.onseek}] : [];
+      self._onunlock = o.onunlock ? [{fn: o.onunlock}] : [];
+      self._onresume = [];
+
+      // Web Audio or HTML5 Audio?
+      self._webAudio = Howler.usingWebAudio && !self._html5;
+
+      // Automatically try to enable audio.
+      if (typeof Howler.ctx !== 'undefined' && Howler.ctx && Howler.autoUnlock) {
+        Howler._unlockAudio();
+      }
+
+      // Keep track of this Howl group in the global controller.
+      Howler._howls.push(self);
+
+      // If they selected autoplay, add a play event to the load queue.
+      if (self._autoplay) {
+        self._queue.push({
+          event: 'play',
+          action: function() {
+            self.play();
+          }
+        });
+      }
+
+      // Load the source file unless otherwise specified.
+      if (self._preload) {
+        self.load();
+      }
+
+      return self;
+    },
+
+    /**
+     * Load the audio file.
+     * @return {Howler}
+     */
+    load: function() {
+      var self = this;
+      var url = null;
+
+      // If no audio is available, quit immediately.
+      if (Howler.noAudio) {
+        self._emit('loaderror', null, 'No audio support.');
+        return;
+      }
+
+      // Make sure our source is in an array.
+      if (typeof self._src === 'string') {
+        self._src = [self._src];
+      }
+
+      // Loop through the sources and pick the first one that is compatible.
+      for (var i=0; i<self._src.length; i++) {
+        var ext, str;
+
+        if (self._format && self._format[i]) {
+          // If an extension was specified, use that instead.
+          ext = self._format[i];
+        } else {
+          // Make sure the source is a string.
+          str = self._src[i];
+          if (typeof str !== 'string') {
+            self._emit('loaderror', null, 'Non-string found in selected audio sources - ignoring.');
+            continue;
+          }
+
+          // Extract the file extension from the URL or base64 data URI.
+          ext = /^data:audio\/([^;,]+);/i.exec(str);
+          if (!ext) {
+            ext = /\.([^.]+)$/.exec(str.split('?', 1)[0]);
+          }
+
+          if (ext) {
+            ext = ext[1].toLowerCase();
+          }
+        }
+
+        // Log a warning if no extension was found.
+        if (!ext) {
+          console.warn('No file extension was found. Consider using the "format" property or specify an extension.');
+        }
+
+        // Check if this extension is available.
+        if (ext && Howler.codecs(ext)) {
+          url = self._src[i];
+          break;
+        }
+      }
+
+      if (!url) {
+        self._emit('loaderror', null, 'No codec support for selected audio sources.');
+        return;
+      }
+
+      self._src = url;
+      self._state = 'loading';
+
+      // If the hosting page is HTTPS and the source isn't,
+      // drop down to HTML5 Audio to avoid Mixed Content errors.
+      if (window.location.protocol === 'https:' && url.slice(0, 5) === 'http:') {
+        self._html5 = true;
+        self._webAudio = false;
+      }
+
+      // Create a new sound object and add it to the pool.
+      new Sound(self);
+
+      // Load and decode the audio data for playback.
+      if (self._webAudio) {
+        loadBuffer(self);
+      }
+
+      return self;
+    },
+
+    /**
+     * Play a sound or resume previous playback.
+     * @param  {String/Number} sprite   Sprite name for sprite playback or sound id to continue previous.
+     * @param  {Boolean} internal Internal Use: true prevents event firing.
+     * @return {Number}          Sound ID.
+     */
+    play: function(sprite, internal) {
+      var self = this;
+      var id = null;
+
+      // Determine if a sprite, sound id or nothing was passed
+      if (typeof sprite === 'number') {
+        id = sprite;
+        sprite = null;
+      } else if (typeof sprite === 'string' && self._state === 'loaded' && !self._sprite[sprite]) {
+        // If the passed sprite doesn't exist, do nothing.
+        return null;
+      } else if (typeof sprite === 'undefined') {
+        // Use the default sound sprite (plays the full audio length).
+        sprite = '__default';
+
+        // Check if there is a single paused sound that isn't ended. 
+        // If there is, play that sound. If not, continue as usual.  
+        if (!self._playLock) {
+          var num = 0;
+          for (var i=0; i<self._sounds.length; i++) {
+            if (self._sounds[i]._paused && !self._sounds[i]._ended) {
+              num++;
+              id = self._sounds[i]._id;
+            }
+          }
+
+          if (num === 1) {
+            sprite = null;
+          } else {
+            id = null;
+          }
+        }
+      }
+
+      // Get the selected node, or get one from the pool.
+      var sound = id ? self._soundById(id) : self._inactiveSound();
+
+      // If the sound doesn't exist, do nothing.
+      if (!sound) {
+        return null;
+      }
+
+      // Select the sprite definition.
+      if (id && !sprite) {
+        sprite = sound._sprite || '__default';
+      }
+
+      // If the sound hasn't loaded, we must wait to get the audio's duration.
+      // We also need to wait to make sure we don't run into race conditions with
+      // the order of function calls.
+      if (self._state !== 'loaded') {
+        // Set the sprite value on this sound.
+        sound._sprite = sprite;
+
+        // Mark this sound as not ended in case another sound is played before this one loads.
+        sound._ended = false;
+
+        // Add the sound to the queue to be played on load.
+        var soundId = sound._id;
+        self._queue.push({
+          event: 'play',
+          action: function() {
+            self.play(soundId);
+          }
+        });
+
+        return soundId;
+      }
+
+      // Don't play the sound if an id was passed and it is already playing.
+      if (id && !sound._paused) {
+        // Trigger the play event, in order to keep iterating through queue.
+        if (!internal) {
+          self._loadQueue('play');
+        }
+
+        return sound._id;
+      }
+
+      // Make sure the AudioContext isn't suspended, and resume it if it is.
+      if (self._webAudio) {
+        Howler._autoResume();
+      }
+
+      // Determine how long to play for and where to start playing.
+      var seek = Math.max(0, sound._seek > 0 ? sound._seek : self._sprite[sprite][0] / 1000);
+      var duration = Math.max(0, ((self._sprite[sprite][0] + self._sprite[sprite][1]) / 1000) - seek);
+      var timeout = (duration * 1000) / Math.abs(sound._rate);
+      var start = self._sprite[sprite][0] / 1000;
+      var stop = (self._sprite[sprite][0] + self._sprite[sprite][1]) / 1000;
+      sound._sprite = sprite;
+
+      // Mark the sound as ended instantly so that this async playback
+      // doesn't get grabbed by another call to play while this one waits to start.
+      sound._ended = false;
+
+      // Update the parameters of the sound.
+      var setParams = function() {
+        sound._paused = false;
+        sound._seek = seek;
+        sound._start = start;
+        sound._stop = stop;
+        sound._loop = !!(sound._loop || self._sprite[sprite][2]);
+      };
+
+      // End the sound instantly if seek is at the end.
+      if (seek >= stop) {
+        self._ended(sound);
+        return;
+      }
+
+      // Begin the actual playback.
+      var node = sound._node;
+      if (self._webAudio) {
+        // Fire this when the sound is ready to play to begin Web Audio playback.
+        var playWebAudio = function() {
+          self._playLock = false;
+          setParams();
+          self._refreshBuffer(sound);
+
+          // Setup the playback params.
+          var vol = (sound._muted || self._muted) ? 0 : sound._volume;
+          node.gain.setValueAtTime(vol, Howler.ctx.currentTime);
+          sound._playStart = Howler.ctx.currentTime;
+
+          // Play the sound using the supported method.
+          if (typeof node.bufferSource.start === 'undefined') {
+            sound._loop ? node.bufferSource.noteGrainOn(0, seek, 86400) : node.bufferSource.noteGrainOn(0, seek, duration);
+          } else {
+            sound._loop ? node.bufferSource.start(0, seek, 86400) : node.bufferSource.start(0, seek, duration);
+          }
+
+          // Start a new timer if none is present.
+          if (timeout !== Infinity) {
+            self._endTimers[sound._id] = setTimeout(self._ended.bind(self, sound), timeout);
+          }
+
+          if (!internal) {
+            setTimeout(function() {
+              self._emit('play', sound._id);
+              self._loadQueue();
+            }, 0);
+          }
+        };
+
+        if (Howler.state === 'running') {
+          playWebAudio();
+        } else {
+          self._playLock = true;
+
+          // Wait for the audio context to resume before playing.
+          self.once('resume', playWebAudio);
+
+          // Cancel the end timer.
+          self._clearTimer(sound._id);
+        }
+      } else {
+        // Fire this when the sound is ready to play to begin HTML5 Audio playback.
+        var playHtml5 = function() {
+          node.currentTime = seek;
+          node.muted = sound._muted || self._muted || Howler._muted || node.muted;
+          node.volume = sound._volume * Howler.volume();
+          node.playbackRate = sound._rate;
+
+          // Some browsers will throw an error if this is called without user interaction.
+          try {
+            var play = node.play();
+
+            // Support older browsers that don't support promises, and thus don't have this issue.
+            if (play && typeof Promise !== 'undefined' && (play instanceof Promise || typeof play.then === 'function')) {
+              // Implements a lock to prevent DOMException: The play() request was interrupted by a call to pause().
+              self._playLock = true;
+
+              // Set param values immediately.
+              setParams();
+
+              // Releases the lock and executes queued actions.
+              play
+                .then(function() {
+                  self._playLock = false;
+                  node._unlocked = true;
+                  if (!internal) {
+                    self._emit('play', sound._id);
+                    self._loadQueue();
+                  }
+                })
+                .catch(function() {
+                  self._playLock = false;
+                  self._emit('playerror', sound._id, 'Playback was unable to start. This is most commonly an issue ' +
+                    'on mobile devices and Chrome where playback was not within a user interaction.');
+
+                  // Reset the ended and paused values.
+                  sound._ended = true;
+                  sound._paused = true;
+                });
+            } else if (!internal) {
+              self._playLock = false;
+              setParams();
+              self._emit('play', sound._id);
+              self._loadQueue();
+            }
+
+            // Setting rate before playing won't work in IE, so we set it again here.
+            node.playbackRate = sound._rate;
+
+            // If the node is still paused, then we can assume there was a playback issue.
+            if (node.paused) {
+              self._emit('playerror', sound._id, 'Playback was unable to start. This is most commonly an issue ' +
+                'on mobile devices and Chrome where playback was not within a user interaction.');
+              return;
+            }
+
+            // Setup the end timer on sprites or listen for the ended event.
+            if (sprite !== '__default' || sound._loop) {
+              self._endTimers[sound._id] = setTimeout(self._ended.bind(self, sound), timeout);
+            } else {
+              self._endTimers[sound._id] = function() {
+                // Fire ended on this audio node.
+                self._ended(sound);
+
+                // Clear this listener.
+                node.removeEventListener('ended', self._endTimers[sound._id], false);
+              };
+              node.addEventListener('ended', self._endTimers[sound._id], false);
+            }
+          } catch (err) {
+            self._emit('playerror', sound._id, err);
+          }
+        };
+
+        // If this is streaming audio, make sure the src is set and load again.
+        if (node.src === 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA') {
+          node.src = self._src;
+          node.load();
+        }
+
+        // Play immediately if ready, or wait for the 'canplaythrough'e vent.
+        var loadedNoReadyState = (window && window.ejecta) || (!node.readyState && Howler._navigator.isCocoonJS);
+        if (node.readyState >= 3 || loadedNoReadyState) {
+          playHtml5();
+        } else {
+          self._playLock = true;
+
+          var listener = function() {
+            // Begin playback.
+            playHtml5();
+
+            // Clear this listener.
+            node.removeEventListener(Howler._canPlayEvent, listener, false);
+          };
+          node.addEventListener(Howler._canPlayEvent, listener, false);
+
+          // Cancel the end timer.
+          self._clearTimer(sound._id);
+        }
+      }
+
+      return sound._id;
+    },
+
+    /**
+     * Pause playback and save current position.
+     * @param  {Number} id The sound ID (empty to pause all in group).
+     * @return {Howl}
+     */
+    pause: function(id) {
+      var self = this;
+
+      // If the sound hasn't loaded or a play() promise is pending, add it to the load queue to pause when capable.
+      if (self._state !== 'loaded' || self._playLock) {
+        self._queue.push({
+          event: 'pause',
+          action: function() {
+            self.pause(id);
+          }
+        });
+
+        return self;
+      }
+
+      // If no id is passed, get all ID's to be paused.
+      var ids = self._getSoundIds(id);
+
+      for (var i=0; i<ids.length; i++) {
+        // Clear the end timer.
+        self._clearTimer(ids[i]);
+
+        // Get the sound.
+        var sound = self._soundById(ids[i]);
+
+        if (sound && !sound._paused) {
+          // Reset the seek position.
+          sound._seek = self.seek(ids[i]);
+          sound._rateSeek = 0;
+          sound._paused = true;
+
+          // Stop currently running fades.
+          self._stopFade(ids[i]);
+
+          if (sound._node) {
+            if (self._webAudio) {
+              // Make sure the sound has been created.
+              if (!sound._node.bufferSource) {
+                continue;
+              }
+
+              if (typeof sound._node.bufferSource.stop === 'undefined') {
+                sound._node.bufferSource.noteOff(0);
+              } else {
+                sound._node.bufferSource.stop(0);
+              }
+
+              // Clean up the buffer source.
+              self._cleanBuffer(sound._node);
+            } else if (!isNaN(sound._node.duration) || sound._node.duration === Infinity) {
+              sound._node.pause();
+            }
+          }
+        }
+
+        // Fire the pause event, unless `true` is passed as the 2nd argument.
+        if (!arguments[1]) {
+          self._emit('pause', sound ? sound._id : null);
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Stop playback and reset to start.
+     * @param  {Number} id The sound ID (empty to stop all in group).
+     * @param  {Boolean} internal Internal Use: true prevents event firing.
+     * @return {Howl}
+     */
+    stop: function(id, internal) {
+      var self = this;
+
+      // If the sound hasn't loaded, add it to the load queue to stop when capable.
+      if (self._state !== 'loaded' || self._playLock) {
+        self._queue.push({
+          event: 'stop',
+          action: function() {
+            self.stop(id);
+          }
+        });
+
+        return self;
+      }
+
+      // If no id is passed, get all ID's to be stopped.
+      var ids = self._getSoundIds(id);
+
+      for (var i=0; i<ids.length; i++) {
+        // Clear the end timer.
+        self._clearTimer(ids[i]);
+
+        // Get the sound.
+        var sound = self._soundById(ids[i]);
+
+        if (sound) {
+          // Reset the seek position.
+          sound._seek = sound._start || 0;
+          sound._rateSeek = 0;
+          sound._paused = true;
+          sound._ended = true;
+
+          // Stop currently running fades.
+          self._stopFade(ids[i]);
+
+          if (sound._node) {
+            if (self._webAudio) {
+              // Make sure the sound's AudioBufferSourceNode has been created.
+              if (sound._node.bufferSource) {
+                if (typeof sound._node.bufferSource.stop === 'undefined') {
+                  sound._node.bufferSource.noteOff(0);
+                } else {
+                  sound._node.bufferSource.stop(0);
+                }
+
+                // Clean up the buffer source.
+                self._cleanBuffer(sound._node);
+              }
+            } else if (!isNaN(sound._node.duration) || sound._node.duration === Infinity) {
+              sound._node.currentTime = sound._start || 0;
+              sound._node.pause();
+
+              // If this is a live stream, stop download once the audio is stopped.
+              if (sound._node.duration === Infinity) {
+                self._clearSound(sound._node);
+              }
+            }
+          }
+
+          if (!internal) {
+            self._emit('stop', sound._id);
+          }
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Mute/unmute a single sound or all sounds in this Howl group.
+     * @param  {Boolean} muted Set to true to mute and false to unmute.
+     * @param  {Number} id    The sound ID to update (omit to mute/unmute all).
+     * @return {Howl}
+     */
+    mute: function(muted, id) {
+      var self = this;
+
+      // If the sound hasn't loaded, add it to the load queue to mute when capable.
+      if (self._state !== 'loaded'|| self._playLock) {
+        self._queue.push({
+          event: 'mute',
+          action: function() {
+            self.mute(muted, id);
+          }
+        });
+
+        return self;
+      }
+
+      // If applying mute/unmute to all sounds, update the group's value.
+      if (typeof id === 'undefined') {
+        if (typeof muted === 'boolean') {
+          self._muted = muted;
+        } else {
+          return self._muted;
+        }
+      }
+
+      // If no id is passed, get all ID's to be muted.
+      var ids = self._getSoundIds(id);
+
+      for (var i=0; i<ids.length; i++) {
+        // Get the sound.
+        var sound = self._soundById(ids[i]);
+
+        if (sound) {
+          sound._muted = muted;
+
+          // Cancel active fade and set the volume to the end value.
+          if (sound._interval) {
+            self._stopFade(sound._id);
+          }
+
+          if (self._webAudio && sound._node) {
+            sound._node.gain.setValueAtTime(muted ? 0 : sound._volume, Howler.ctx.currentTime);
+          } else if (sound._node) {
+            sound._node.muted = Howler._muted ? true : muted;
+          }
+
+          self._emit('mute', sound._id);
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Get/set the volume of this sound or of the Howl group. This method can optionally take 0, 1 or 2 arguments.
+     *   volume() -> Returns the group's volume value.
+     *   volume(id) -> Returns the sound id's current volume.
+     *   volume(vol) -> Sets the volume of all sounds in this Howl group.
+     *   volume(vol, id) -> Sets the volume of passed sound id.
+     * @return {Howl/Number} Returns self or current volume.
+     */
+    volume: function() {
+      var self = this;
+      var args = arguments;
+      var vol, id;
+
+      // Determine the values based on arguments.
+      if (args.length === 0) {
+        // Return the value of the groups' volume.
+        return self._volume;
+      } else if (args.length === 1 || args.length === 2 && typeof args[1] === 'undefined') {
+        // First check if this is an ID, and if not, assume it is a new volume.
+        var ids = self._getSoundIds();
+        var index = ids.indexOf(args[0]);
+        if (index >= 0) {
+          id = parseInt(args[0], 10);
+        } else {
+          vol = parseFloat(args[0]);
+        }
+      } else if (args.length >= 2) {
+        vol = parseFloat(args[0]);
+        id = parseInt(args[1], 10);
+      }
+
+      // Update the volume or return the current volume.
+      var sound;
+      if (typeof vol !== 'undefined' && vol >= 0 && vol <= 1) {
+        // If the sound hasn't loaded, add it to the load queue to change volume when capable.
+        if (self._state !== 'loaded'|| self._playLock) {
+          self._queue.push({
+            event: 'volume',
+            action: function() {
+              self.volume.apply(self, args);
+            }
+          });
+
+          return self;
+        }
+
+        // Set the group volume.
+        if (typeof id === 'undefined') {
+          self._volume = vol;
+        }
+
+        // Update one or all volumes.
+        id = self._getSoundIds(id);
+        for (var i=0; i<id.length; i++) {
+          // Get the sound.
+          sound = self._soundById(id[i]);
+
+          if (sound) {
+            sound._volume = vol;
+
+            // Stop currently running fades.
+            if (!args[2]) {
+              self._stopFade(id[i]);
+            }
+
+            if (self._webAudio && sound._node && !sound._muted) {
+              sound._node.gain.setValueAtTime(vol, Howler.ctx.currentTime);
+            } else if (sound._node && !sound._muted) {
+              sound._node.volume = vol * Howler.volume();
+            }
+
+            self._emit('volume', sound._id);
+          }
+        }
+      } else {
+        sound = id ? self._soundById(id) : self._sounds[0];
+        return sound ? sound._volume : 0;
+      }
+
+      return self;
+    },
+
+    /**
+     * Fade a currently playing sound between two volumes (if no id is passed, all sounds will fade).
+     * @param  {Number} from The value to fade from (0.0 to 1.0).
+     * @param  {Number} to   The volume to fade to (0.0 to 1.0).
+     * @param  {Number} len  Time in milliseconds to fade.
+     * @param  {Number} id   The sound id (omit to fade all sounds).
+     * @return {Howl}
+     */
+    fade: function(from, to, len, id) {
+      var self = this;
+
+      // If the sound hasn't loaded, add it to the load queue to fade when capable.
+      if (self._state !== 'loaded' || self._playLock) {
+        self._queue.push({
+          event: 'fade',
+          action: function() {
+            self.fade(from, to, len, id);
+          }
+        });
+
+        return self;
+      }
+
+      // Make sure the to/from/len values are numbers.
+      from = parseFloat(from);
+      to = parseFloat(to);
+      len = parseFloat(len);
+
+      // Set the volume to the start position.
+      self.volume(from, id);
+
+      // Fade the volume of one or all sounds.
+      var ids = self._getSoundIds(id);
+      for (var i=0; i<ids.length; i++) {
+        // Get the sound.
+        var sound = self._soundById(ids[i]);
+
+        // Create a linear fade or fall back to timeouts with HTML5 Audio.
+        if (sound) {
+          // Stop the previous fade if no sprite is being used (otherwise, volume handles this).
+          if (!id) {
+            self._stopFade(ids[i]);
+          }
+
+          // If we are using Web Audio, let the native methods do the actual fade.
+          if (self._webAudio && !sound._muted) {
+            var currentTime = Howler.ctx.currentTime;
+            var end = currentTime + (len / 1000);
+            sound._volume = from;
+            sound._node.gain.setValueAtTime(from, currentTime);
+            sound._node.gain.linearRampToValueAtTime(to, end);
+          }
+
+          self._startFadeInterval(sound, from, to, len, ids[i], typeof id === 'undefined');
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Starts the internal interval to fade a sound.
+     * @param  {Object} sound Reference to sound to fade.
+     * @param  {Number} from The value to fade from (0.0 to 1.0).
+     * @param  {Number} to   The volume to fade to (0.0 to 1.0).
+     * @param  {Number} len  Time in milliseconds to fade.
+     * @param  {Number} id   The sound id to fade.
+     * @param  {Boolean} isGroup   If true, set the volume on the group.
+     */
+    _startFadeInterval: function(sound, from, to, len, id, isGroup) {
+      var self = this;
+      var vol = from;
+      var diff = to - from;
+      var steps = Math.abs(diff / 0.01);
+      var stepLen = Math.max(4, (steps > 0) ? len / steps : len);
+      var lastTick = Date.now();
+
+      // Store the value being faded to.
+      sound._fadeTo = to;
+
+      // Update the volume value on each interval tick.
+      sound._interval = setInterval(function() {
+        // Update the volume based on the time since the last tick.
+        var tick = (Date.now() - lastTick) / len;
+        lastTick = Date.now();
+        vol += diff * tick;
+
+        // Make sure the volume is in the right bounds.
+        vol = Math.max(0, vol);
+        vol = Math.min(1, vol);
+
+        // Round to within 2 decimal points.
+        vol = Math.round(vol * 100) / 100;
+
+        // Change the volume.
+        if (self._webAudio) {
+          sound._volume = vol;
+        } else {
+          self.volume(vol, sound._id, true);
+        }
+
+        // Set the group's volume.
+        if (isGroup) {
+          self._volume = vol;
+        }
+
+        // When the fade is complete, stop it and fire event.
+        if ((to < from && vol <= to) || (to > from && vol >= to)) {
+          clearInterval(sound._interval);
+          sound._interval = null;
+          sound._fadeTo = null;
+          self.volume(to, sound._id);
+          self._emit('fade', sound._id);
+        }
+      }, stepLen);
+    },
+
+    /**
+     * Internal method that stops the currently playing fade when
+     * a new fade starts, volume is changed or the sound is stopped.
+     * @param  {Number} id The sound id.
+     * @return {Howl}
+     */
+    _stopFade: function(id) {
+      var self = this;
+      var sound = self._soundById(id);
+
+      if (sound && sound._interval) {
+        if (self._webAudio) {
+          sound._node.gain.cancelScheduledValues(Howler.ctx.currentTime);
+        }
+
+        clearInterval(sound._interval);
+        sound._interval = null;
+        self.volume(sound._fadeTo, id);
+        sound._fadeTo = null;
+        self._emit('fade', id);
+      }
+
+      return self;
+    },
+
+    /**
+     * Get/set the loop parameter on a sound. This method can optionally take 0, 1 or 2 arguments.
+     *   loop() -> Returns the group's loop value.
+     *   loop(id) -> Returns the sound id's loop value.
+     *   loop(loop) -> Sets the loop value for all sounds in this Howl group.
+     *   loop(loop, id) -> Sets the loop value of passed sound id.
+     * @return {Howl/Boolean} Returns self or current loop value.
+     */
+    loop: function() {
+      var self = this;
+      var args = arguments;
+      var loop, id, sound;
+
+      // Determine the values for loop and id.
+      if (args.length === 0) {
+        // Return the grou's loop value.
+        return self._loop;
+      } else if (args.length === 1) {
+        if (typeof args[0] === 'boolean') {
+          loop = args[0];
+          self._loop = loop;
+        } else {
+          // Return this sound's loop value.
+          sound = self._soundById(parseInt(args[0], 10));
+          return sound ? sound._loop : false;
+        }
+      } else if (args.length === 2) {
+        loop = args[0];
+        id = parseInt(args[1], 10);
+      }
+
+      // If no id is passed, get all ID's to be looped.
+      var ids = self._getSoundIds(id);
+      for (var i=0; i<ids.length; i++) {
+        sound = self._soundById(ids[i]);
+
+        if (sound) {
+          sound._loop = loop;
+          if (self._webAudio && sound._node && sound._node.bufferSource) {
+            sound._node.bufferSource.loop = loop;
+            if (loop) {
+              sound._node.bufferSource.loopStart = sound._start || 0;
+              sound._node.bufferSource.loopEnd = sound._stop;
+            }
+          }
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Get/set the playback rate of a sound. This method can optionally take 0, 1 or 2 arguments.
+     *   rate() -> Returns the first sound node's current playback rate.
+     *   rate(id) -> Returns the sound id's current playback rate.
+     *   rate(rate) -> Sets the playback rate of all sounds in this Howl group.
+     *   rate(rate, id) -> Sets the playback rate of passed sound id.
+     * @return {Howl/Number} Returns self or the current playback rate.
+     */
+    rate: function() {
+      var self = this;
+      var args = arguments;
+      var rate, id;
+
+      // Determine the values based on arguments.
+      if (args.length === 0) {
+        // We will simply return the current rate of the first node.
+        id = self._sounds[0]._id;
+      } else if (args.length === 1) {
+        // First check if this is an ID, and if not, assume it is a new rate value.
+        var ids = self._getSoundIds();
+        var index = ids.indexOf(args[0]);
+        if (index >= 0) {
+          id = parseInt(args[0], 10);
+        } else {
+          rate = parseFloat(args[0]);
+        }
+      } else if (args.length === 2) {
+        rate = parseFloat(args[0]);
+        id = parseInt(args[1], 10);
+      }
+
+      // Update the playback rate or return the current value.
+      var sound;
+      if (typeof rate === 'number') {
+        // If the sound hasn't loaded, add it to the load queue to change playback rate when capable.
+        if (self._state !== 'loaded' || self._playLock) {
+          self._queue.push({
+            event: 'rate',
+            action: function() {
+              self.rate.apply(self, args);
+            }
+          });
+
+          return self;
+        }
+
+        // Set the group rate.
+        if (typeof id === 'undefined') {
+          self._rate = rate;
+        }
+
+        // Update one or all volumes.
+        id = self._getSoundIds(id);
+        for (var i=0; i<id.length; i++) {
+          // Get the sound.
+          sound = self._soundById(id[i]);
+
+          if (sound) {
+            // Keep track of our position when the rate changed and update the playback
+            // start position so we can properly adjust the seek position for time elapsed.
+            if (self.playing(id[i])) {
+              sound._rateSeek = self.seek(id[i]);
+              sound._playStart = self._webAudio ? Howler.ctx.currentTime : sound._playStart;
+            }
+            sound._rate = rate;
+
+            // Change the playback rate.
+            if (self._webAudio && sound._node && sound._node.bufferSource) {
+              sound._node.bufferSource.playbackRate.setValueAtTime(rate, Howler.ctx.currentTime);
+            } else if (sound._node) {
+              sound._node.playbackRate = rate;
+            }
+
+            // Reset the timers.
+            var seek = self.seek(id[i]);
+            var duration = ((self._sprite[sound._sprite][0] + self._sprite[sound._sprite][1]) / 1000) - seek;
+            var timeout = (duration * 1000) / Math.abs(sound._rate);
+
+            // Start a new end timer if sound is already playing.
+            if (self._endTimers[id[i]] || !sound._paused) {
+              self._clearTimer(id[i]);
+              self._endTimers[id[i]] = setTimeout(self._ended.bind(self, sound), timeout);
+            }
+
+            self._emit('rate', sound._id);
+          }
+        }
+      } else {
+        sound = self._soundById(id);
+        return sound ? sound._rate : self._rate;
+      }
+
+      return self;
+    },
+
+    /**
+     * Get/set the seek position of a sound. This method can optionally take 0, 1 or 2 arguments.
+     *   seek() -> Returns the first sound node's current seek position.
+     *   seek(id) -> Returns the sound id's current seek position.
+     *   seek(seek) -> Sets the seek position of the first sound node.
+     *   seek(seek, id) -> Sets the seek position of passed sound id.
+     * @return {Howl/Number} Returns self or the current seek position.
+     */
+    seek: function() {
+      var self = this;
+      var args = arguments;
+      var seek, id;
+
+      // Determine the values based on arguments.
+      if (args.length === 0) {
+        // We will simply return the current position of the first node.
+        id = self._sounds[0]._id;
+      } else if (args.length === 1) {
+        // First check if this is an ID, and if not, assume it is a new seek position.
+        var ids = self._getSoundIds();
+        var index = ids.indexOf(args[0]);
+        if (index >= 0) {
+          id = parseInt(args[0], 10);
+        } else if (self._sounds.length) {
+          id = self._sounds[0]._id;
+          seek = parseFloat(args[0]);
+        }
+      } else if (args.length === 2) {
+        seek = parseFloat(args[0]);
+        id = parseInt(args[1], 10);
+      }
+
+      // If there is no ID, bail out.
+      if (typeof id === 'undefined') {
+        return self;
+      }
+
+      // If the sound hasn't loaded, add it to the load queue to seek when capable.
+      if (self._state !== 'loaded' || self._playLock) {
+        self._queue.push({
+          event: 'seek',
+          action: function() {
+            self.seek.apply(self, args);
+          }
+        });
+
+        return self;
+      }
+
+      // Get the sound.
+      var sound = self._soundById(id);
+
+      if (sound) {
+        if (typeof seek === 'number' && seek >= 0) {
+          // Pause the sound and update position for restarting playback.
+          var playing = self.playing(id);
+          if (playing) {
+            self.pause(id, true);
+          }
+
+          // Move the position of the track and cancel timer.
+          sound._seek = seek;
+          sound._ended = false;
+          self._clearTimer(id);
+
+          // Update the seek position for HTML5 Audio.
+          if (!self._webAudio && sound._node && !isNaN(sound._node.duration)) {
+            sound._node.currentTime = seek;
+          }
+
+          // Seek and emit when ready.
+          var seekAndEmit = function() {
+            self._emit('seek', id);
+
+            // Restart the playback if the sound was playing.
+            if (playing) {
+              self.play(id, true);
+            }
+          };
+
+          // Wait for the play lock to be unset before emitting (HTML5 Audio).
+          if (playing && !self._webAudio) {
+            var emitSeek = function() {
+              if (!self._playLock) {
+                seekAndEmit();
+              } else {
+                setTimeout(emitSeek, 0);
+              }
+            };
+            setTimeout(emitSeek, 0);
+          } else {
+            seekAndEmit();
+          }
+        } else {
+          if (self._webAudio) {
+            var realTime = self.playing(id) ? Howler.ctx.currentTime - sound._playStart : 0;
+            var rateSeek = sound._rateSeek ? sound._rateSeek - sound._seek : 0;
+            return sound._seek + (rateSeek + realTime * Math.abs(sound._rate));
+          } else {
+            return sound._node.currentTime;
+          }
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Check if a specific sound is currently playing or not (if id is provided), or check if at least one of the sounds in the group is playing or not.
+     * @param  {Number}  id The sound id to check. If none is passed, the whole sound group is checked.
+     * @return {Boolean} True if playing and false if not.
+     */
+    playing: function(id) {
+      var self = this;
+
+      // Check the passed sound ID (if any).
+      if (typeof id === 'number') {
+        var sound = self._soundById(id);
+        return sound ? !sound._paused : false;
+      }
+
+      // Otherwise, loop through all sounds and check if any are playing.
+      for (var i=0; i<self._sounds.length; i++) {
+        if (!self._sounds[i]._paused) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+
+    /**
+     * Get the duration of this sound. Passing a sound id will return the sprite duration.
+     * @param  {Number} id The sound id to check. If none is passed, return full source duration.
+     * @return {Number} Audio duration in seconds.
+     */
+    duration: function(id) {
+      var self = this;
+      var duration = self._duration;
+
+      // If we pass an ID, get the sound and return the sprite length.
+      var sound = self._soundById(id);
+      if (sound) {
+        duration = self._sprite[sound._sprite][1] / 1000;
+      }
+
+      return duration;
+    },
+
+    /**
+     * Returns the current loaded state of this Howl.
+     * @return {String} 'unloaded', 'loading', 'loaded'
+     */
+    state: function() {
+      return this._state;
+    },
+
+    /**
+     * Unload and destroy the current Howl object.
+     * This will immediately stop all sound instances attached to this group.
+     */
+    unload: function() {
+      var self = this;
+
+      // Stop playing any active sounds.
+      var sounds = self._sounds;
+      for (var i=0; i<sounds.length; i++) {
+        // Stop the sound if it is currently playing.
+        if (!sounds[i]._paused) {
+          self.stop(sounds[i]._id);
+        }
+
+        // Remove the source or disconnect.
+        if (!self._webAudio) {
+          // Set the source to 0-second silence to stop any downloading (except in IE).
+          self._clearSound(sounds[i]._node);
+
+          // Remove any event listeners.
+          sounds[i]._node.removeEventListener('error', sounds[i]._errorFn, false);
+          sounds[i]._node.removeEventListener(Howler._canPlayEvent, sounds[i]._loadFn, false);
+
+          // Release the Audio object back to the pool.
+          Howler._releaseHtml5Audio(sounds[i]._node);
+        }
+
+        // Empty out all of the nodes.
+        delete sounds[i]._node;
+
+        // Make sure all timers are cleared out.
+        self._clearTimer(sounds[i]._id);
+      }
+
+      // Remove the references in the global Howler object.
+      var index = Howler._howls.indexOf(self);
+      if (index >= 0) {
+        Howler._howls.splice(index, 1);
+      }
+
+      // Delete this sound from the cache (if no other Howl is using it).
+      var remCache = true;
+      for (i=0; i<Howler._howls.length; i++) {
+        if (Howler._howls[i]._src === self._src || self._src.indexOf(Howler._howls[i]._src) >= 0) {
+          remCache = false;
+          break;
+        }
+      }
+
+      if (cache && remCache) {
+        delete cache[self._src];
+      }
+
+      // Clear global errors.
+      Howler.noAudio = false;
+
+      // Clear out `self`.
+      self._state = 'unloaded';
+      self._sounds = [];
+      self = null;
+
+      return null;
+    },
+
+    /**
+     * Listen to a custom event.
+     * @param  {String}   event Event name.
+     * @param  {Function} fn    Listener to call.
+     * @param  {Number}   id    (optional) Only listen to events for this sound.
+     * @param  {Number}   once  (INTERNAL) Marks event to fire only once.
+     * @return {Howl}
+     */
+    on: function(event, fn, id, once) {
+      var self = this;
+      var events = self['_on' + event];
+
+      if (typeof fn === 'function') {
+        events.push(once ? {id: id, fn: fn, once: once} : {id: id, fn: fn});
+      }
+
+      return self;
+    },
+
+    /**
+     * Remove a custom event. Call without parameters to remove all events.
+     * @param  {String}   event Event name.
+     * @param  {Function} fn    Listener to remove. Leave empty to remove all.
+     * @param  {Number}   id    (optional) Only remove events for this sound.
+     * @return {Howl}
+     */
+    off: function(event, fn, id) {
+      var self = this;
+      var events = self['_on' + event];
+      var i = 0;
+
+      // Allow passing just an event and ID.
+      if (typeof fn === 'number') {
+        id = fn;
+        fn = null;
+      }
+
+      if (fn || id) {
+        // Loop through event store and remove the passed function.
+        for (i=0; i<events.length; i++) {
+          var isId = (id === events[i].id);
+          if (fn === events[i].fn && isId || !fn && isId) {
+            events.splice(i, 1);
+            break;
+          }
+        }
+      } else if (event) {
+        // Clear out all events of this type.
+        self['_on' + event] = [];
+      } else {
+        // Clear out all events of every type.
+        var keys = Object.keys(self);
+        for (i=0; i<keys.length; i++) {
+          if ((keys[i].indexOf('_on') === 0) && Array.isArray(self[keys[i]])) {
+            self[keys[i]] = [];
+          }
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Listen to a custom event and remove it once fired.
+     * @param  {String}   event Event name.
+     * @param  {Function} fn    Listener to call.
+     * @param  {Number}   id    (optional) Only listen to events for this sound.
+     * @return {Howl}
+     */
+    once: function(event, fn, id) {
+      var self = this;
+
+      // Setup the event listener.
+      self.on(event, fn, id, 1);
+
+      return self;
+    },
+
+    /**
+     * Emit all events of a specific type and pass the sound id.
+     * @param  {String} event Event name.
+     * @param  {Number} id    Sound ID.
+     * @param  {Number} msg   Message to go with event.
+     * @return {Howl}
+     */
+    _emit: function(event, id, msg) {
+      var self = this;
+      var events = self['_on' + event];
+
+      // Loop through event store and fire all functions.
+      for (var i=events.length-1; i>=0; i--) {
+        // Only fire the listener if the correct ID is used.
+        if (!events[i].id || events[i].id === id || event === 'load') {
+          setTimeout(function(fn) {
+            fn.call(this, id, msg);
+          }.bind(self, events[i].fn), 0);
+
+          // If this event was setup with `once`, remove it.
+          if (events[i].once) {
+            self.off(event, events[i].fn, events[i].id);
+          }
+        }
+      }
+
+      // Pass the event type into load queue so that it can continue stepping.
+      self._loadQueue(event);
+
+      return self;
+    },
+
+    /**
+     * Queue of actions initiated before the sound has loaded.
+     * These will be called in sequence, with the next only firing
+     * after the previous has finished executing (even if async like play).
+     * @return {Howl}
+     */
+    _loadQueue: function(event) {
+      var self = this;
+
+      if (self._queue.length > 0) {
+        var task = self._queue[0];
+
+        // Remove this task if a matching event was passed.
+        if (task.event === event) {
+          self._queue.shift();
+          self._loadQueue();
+        }
+
+        // Run the task if no event type is passed.
+        if (!event) {
+          task.action();
+        }
+      }
+
+      return self;
+    },
+
+    /**
+     * Fired when playback ends at the end of the duration.
+     * @param  {Sound} sound The sound object to work with.
+     * @return {Howl}
+     */
+    _ended: function(sound) {
+      var self = this;
+      var sprite = sound._sprite;
+
+      // If we are using IE and there was network latency we may be clipping
+      // audio before it completes playing. Lets check the node to make sure it
+      // believes it has completed, before ending the playback.
+      if (!self._webAudio && sound._node && !sound._node.paused && !sound._node.ended && sound._node.currentTime < sound._stop) {
+        setTimeout(self._ended.bind(self, sound), 100);
+        return self;
+      }
+
+      // Should this sound loop?
+      var loop = !!(sound._loop || self._sprite[sprite][2]);
+
+      // Fire the ended event.
+      self._emit('end', sound._id);
+
+      // Restart the playback for HTML5 Audio loop.
+      if (!self._webAudio && loop) {
+        self.stop(sound._id, true).play(sound._id);
+      }
+
+      // Restart this timer if on a Web Audio loop.
+      if (self._webAudio && loop) {
+        self._emit('play', sound._id);
+        sound._seek = sound._start || 0;
+        sound._rateSeek = 0;
+        sound._playStart = Howler.ctx.currentTime;
+
+        var timeout = ((sound._stop - sound._start) * 1000) / Math.abs(sound._rate);
+        self._endTimers[sound._id] = setTimeout(self._ended.bind(self, sound), timeout);
+      }
+
+      // Mark the node as paused.
+      if (self._webAudio && !loop) {
+        sound._paused = true;
+        sound._ended = true;
+        sound._seek = sound._start || 0;
+        sound._rateSeek = 0;
+        self._clearTimer(sound._id);
+
+        // Clean up the buffer source.
+        self._cleanBuffer(sound._node);
+
+        // Attempt to auto-suspend AudioContext if no sounds are still playing.
+        Howler._autoSuspend();
+      }
+
+      // When using a sprite, end the track.
+      if (!self._webAudio && !loop) {
+        self.stop(sound._id, true);
+      }
+
+      return self;
+    },
+
+    /**
+     * Clear the end timer for a sound playback.
+     * @param  {Number} id The sound ID.
+     * @return {Howl}
+     */
+    _clearTimer: function(id) {
+      var self = this;
+
+      if (self._endTimers[id]) {
+        // Clear the timeout or remove the ended listener.
+        if (typeof self._endTimers[id] !== 'function') {
+          clearTimeout(self._endTimers[id]);
+        } else {
+          var sound = self._soundById(id);
+          if (sound && sound._node) {
+            sound._node.removeEventListener('ended', self._endTimers[id], false);
+          }
+        }
+
+        delete self._endTimers[id];
+      }
+
+      return self;
+    },
+
+    /**
+     * Return the sound identified by this ID, or return null.
+     * @param  {Number} id Sound ID
+     * @return {Object}    Sound object or null.
+     */
+    _soundById: function(id) {
+      var self = this;
+
+      // Loop through all sounds and find the one with this ID.
+      for (var i=0; i<self._sounds.length; i++) {
+        if (id === self._sounds[i]._id) {
+          return self._sounds[i];
+        }
+      }
+
+      return null;
+    },
+
+    /**
+     * Return an inactive sound from the pool or create a new one.
+     * @return {Sound} Sound playback object.
+     */
+    _inactiveSound: function() {
+      var self = this;
+
+      self._drain();
+
+      // Find the first inactive node to recycle.
+      for (var i=0; i<self._sounds.length; i++) {
+        if (self._sounds[i]._ended) {
+          return self._sounds[i].reset();
+        }
+      }
+
+      // If no inactive node was found, create a new one.
+      return new Sound(self);
+    },
+
+    /**
+     * Drain excess inactive sounds from the pool.
+     */
+    _drain: function() {
+      var self = this;
+      var limit = self._pool;
+      var cnt = 0;
+      var i = 0;
+
+      // If there are less sounds than the max pool size, we are done.
+      if (self._sounds.length < limit) {
+        return;
+      }
+
+      // Count the number of inactive sounds.
+      for (i=0; i<self._sounds.length; i++) {
+        if (self._sounds[i]._ended) {
+          cnt++;
+        }
+      }
+
+      // Remove excess inactive sounds, going in reverse order.
+      for (i=self._sounds.length - 1; i>=0; i--) {
+        if (cnt <= limit) {
+          return;
+        }
+
+        if (self._sounds[i]._ended) {
+          // Disconnect the audio source when using Web Audio.
+          if (self._webAudio && self._sounds[i]._node) {
+            self._sounds[i]._node.disconnect(0);
+          }
+
+          // Remove sounds until we have the pool size.
+          self._sounds.splice(i, 1);
+          cnt--;
+        }
+      }
+    },
+
+    /**
+     * Get all ID's from the sounds pool.
+     * @param  {Number} id Only return one ID if one is passed.
+     * @return {Array}    Array of IDs.
+     */
+    _getSoundIds: function(id) {
+      var self = this;
+
+      if (typeof id === 'undefined') {
+        var ids = [];
+        for (var i=0; i<self._sounds.length; i++) {
+          ids.push(self._sounds[i]._id);
+        }
+
+        return ids;
+      } else {
+        return [id];
+      }
+    },
+
+    /**
+     * Load the sound back into the buffer source.
+     * @param  {Sound} sound The sound object to work with.
+     * @return {Howl}
+     */
+    _refreshBuffer: function(sound) {
+      var self = this;
+
+      // Setup the buffer source for playback.
+      sound._node.bufferSource = Howler.ctx.createBufferSource();
+      sound._node.bufferSource.buffer = cache[self._src];
+
+      // Connect to the correct node.
+      if (sound._panner) {
+        sound._node.bufferSource.connect(sound._panner);
+      } else {
+        sound._node.bufferSource.connect(sound._node);
+      }
+
+      // Setup looping and playback rate.
+      sound._node.bufferSource.loop = sound._loop;
+      if (sound._loop) {
+        sound._node.bufferSource.loopStart = sound._start || 0;
+        sound._node.bufferSource.loopEnd = sound._stop || 0;
+      }
+      sound._node.bufferSource.playbackRate.setValueAtTime(sound._rate, Howler.ctx.currentTime);
+
+      return self;
+    },
+
+    /**
+     * Prevent memory leaks by cleaning up the buffer source after playback.
+     * @param  {Object} node Sound's audio node containing the buffer source.
+     * @return {Howl}
+     */
+    _cleanBuffer: function(node) {
+      var self = this;
+      var isIOS = Howler._navigator && Howler._navigator.vendor.indexOf('Apple') >= 0;
+
+      if (Howler._scratchBuffer && node.bufferSource) {
+        node.bufferSource.onended = null;
+        node.bufferSource.disconnect(0);
+        if (isIOS) {
+          try { node.bufferSource.buffer = Howler._scratchBuffer; } catch(e) {}
+        }
+      }
+      node.bufferSource = null;
+
+      return self;
+    },
+
+    /**
+     * Set the source to a 0-second silence to stop any downloading (except in IE).
+     * @param  {Object} node Audio node to clear.
+     */
+    _clearSound: function(node) {
+      var checkIE = /MSIE |Trident\//.test(Howler._navigator && Howler._navigator.userAgent);
+      if (!checkIE) {
+        node.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
+      }
+    }
+  };
+
+  /** Single Sound Methods **/
+  /***************************************************************************/
+
+  /**
+   * Setup the sound object, which each node attached to a Howl group is contained in.
+   * @param {Object} howl The Howl parent group.
+   */
+  var Sound = function(howl) {
+    this._parent = howl;
+    this.init();
+  };
+  Sound.prototype = {
+    /**
+     * Initialize a new Sound object.
+     * @return {Sound}
+     */
+    init: function() {
+      var self = this;
+      var parent = self._parent;
+
+      // Setup the default parameters.
+      self._muted = parent._muted;
+      self._loop = parent._loop;
+      self._volume = parent._volume;
+      self._rate = parent._rate;
+      self._seek = 0;
+      self._paused = true;
+      self._ended = true;
+      self._sprite = '__default';
+
+      // Generate a unique ID for this sound.
+      self._id = ++Howler._counter;
+
+      // Add itself to the parent's pool.
+      parent._sounds.push(self);
+
+      // Create the new node.
+      self.create();
+
+      return self;
+    },
+
+    /**
+     * Create and setup a new sound object, whether HTML5 Audio or Web Audio.
+     * @return {Sound}
+     */
+    create: function() {
+      var self = this;
+      var parent = self._parent;
+      var volume = (Howler._muted || self._muted || self._parent._muted) ? 0 : self._volume;
+
+      if (parent._webAudio) {
+        // Create the gain node for controlling volume (the source will connect to this).
+        self._node = (typeof Howler.ctx.createGain === 'undefined') ? Howler.ctx.createGainNode() : Howler.ctx.createGain();
+        self._node.gain.setValueAtTime(volume, Howler.ctx.currentTime);
+        self._node.paused = true;
+        self._node.connect(Howler.masterGain);
+      } else if (!Howler.noAudio) {
+        // Get an unlocked Audio object from the pool.
+        self._node = Howler._obtainHtml5Audio();
+
+        // Listen for errors (http://dev.w3.org/html5/spec-author-view/spec.html#mediaerror).
+        self._errorFn = self._errorListener.bind(self);
+        self._node.addEventListener('error', self._errorFn, false);
+
+        // Listen for 'canplaythrough' event to let us know the sound is ready.
+        self._loadFn = self._loadListener.bind(self);
+        self._node.addEventListener(Howler._canPlayEvent, self._loadFn, false);
+
+        // Setup the new audio node.
+        self._node.src = parent._src;
+        self._node.preload = 'auto';
+        self._node.volume = volume * Howler.volume();
+
+        // Begin loading the source.
+        self._node.load();
+      }
+
+      return self;
+    },
+
+    /**
+     * Reset the parameters of this sound to the original state (for recycle).
+     * @return {Sound}
+     */
+    reset: function() {
+      var self = this;
+      var parent = self._parent;
+
+      // Reset all of the parameters of this sound.
+      self._muted = parent._muted;
+      self._loop = parent._loop;
+      self._volume = parent._volume;
+      self._rate = parent._rate;
+      self._seek = 0;
+      self._rateSeek = 0;
+      self._paused = true;
+      self._ended = true;
+      self._sprite = '__default';
+
+      // Generate a new ID so that it isn't confused with the previous sound.
+      self._id = ++Howler._counter;
+
+      return self;
+    },
+
+    /**
+     * HTML5 Audio error listener callback.
+     */
+    _errorListener: function() {
+      var self = this;
+
+      // Fire an error event and pass back the code.
+      self._parent._emit('loaderror', self._id, self._node.error ? self._node.error.code : 0);
+
+      // Clear the event listener.
+      self._node.removeEventListener('error', self._errorFn, false);
+    },
+
+    /**
+     * HTML5 Audio canplaythrough listener callback.
+     */
+    _loadListener: function() {
+      var self = this;
+      var parent = self._parent;
+
+      // Round up the duration to account for the lower precision in HTML5 Audio.
+      parent._duration = Math.ceil(self._node.duration * 10) / 10;
+
+      // Setup a sprite if none is defined.
+      if (Object.keys(parent._sprite).length === 0) {
+        parent._sprite = {__default: [0, parent._duration * 1000]};
+      }
+
+      if (parent._state !== 'loaded') {
+        parent._state = 'loaded';
+        parent._emit('load');
+        parent._loadQueue();
+      }
+
+      // Clear the event listener.
+      self._node.removeEventListener(Howler._canPlayEvent, self._loadFn, false);
+    }
+  };
+
+  /** Helper Methods **/
+  /***************************************************************************/
+
+  var cache = {};
+
+  /**
+   * Buffer a sound from URL, Data URI or cache and decode to audio source (Web Audio API).
+   * @param  {Howl} self
+   */
+  var loadBuffer = function(self) {
+    var url = self._src;
+
+    // Check if the buffer has already been cached and use it instead.
+    if (cache[url]) {
+      // Set the duration from the cache.
+      self._duration = cache[url].duration;
+
+      // Load the sound into this Howl.
+      loadSound(self);
+
+      return;
+    }
+
+    if (/^data:[^;]+;base64,/.test(url)) {
+      // Decode the base64 data URI without XHR, since some browsers don't support it.
+      var data = atob(url.split(',')[1]);
+      var dataView = new Uint8Array(data.length);
+      for (var i=0; i<data.length; ++i) {
+        dataView[i] = data.charCodeAt(i);
+      }
+
+      decodeAudioData(dataView.buffer, self);
+    } else {
+      // Load the buffer from the URL.
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, true);
+      xhr.withCredentials = self._xhrWithCredentials;
+      xhr.responseType = 'arraybuffer';
+      xhr.onload = function() {
+        // Make sure we get a successful response back.
+        var code = (xhr.status + '')[0];
+        if (code !== '0' && code !== '2' && code !== '3') {
+          self._emit('loaderror', null, 'Failed loading audio file with status: ' + xhr.status + '.');
+          return;
+        }
+
+        decodeAudioData(xhr.response, self);
+      };
+      xhr.onerror = function() {
+        // If there is an error, switch to HTML5 Audio.
+        if (self._webAudio) {
+          self._html5 = true;
+          self._webAudio = false;
+          self._sounds = [];
+          delete cache[url];
+          self.load();
+        }
+      };
+      safeXhrSend(xhr);
+    }
+  };
+
+  /**
+   * Send the XHR request wrapped in a try/catch.
+   * @param  {Object} xhr XHR to send.
+   */
+  var safeXhrSend = function(xhr) {
+    try {
+      xhr.send();
+    } catch (e) {
+      xhr.onerror();
+    }
+  };
+
+  /**
+   * Decode audio data from an array buffer.
+   * @param  {ArrayBuffer} arraybuffer The audio data.
+   * @param  {Howl}        self
+   */
+  var decodeAudioData = function(arraybuffer, self) {
+    // Fire a load error if something broke.
+    var error = function() {
+      self._emit('loaderror', null, 'Decoding audio data failed.');
+    };
+
+    // Load the sound on success.
+    var success = function(buffer) {
+      if (buffer && self._sounds.length > 0) {
+        cache[self._src] = buffer;
+        loadSound(self, buffer);
+      } else {
+        error();
+      }
+    };
+
+    // Decode the buffer into an audio source.
+    if (typeof Promise !== 'undefined' && Howler.ctx.decodeAudioData.length === 1) {
+      Howler.ctx.decodeAudioData(arraybuffer).then(success).catch(error);
+    } else {
+      Howler.ctx.decodeAudioData(arraybuffer, success, error);
+    }
+  }
+
+  /**
+   * Sound is now loaded, so finish setting everything up and fire the loaded event.
+   * @param  {Howl} self
+   * @param  {Object} buffer The decoded buffer sound source.
+   */
+  var loadSound = function(self, buffer) {
+    // Set the duration.
+    if (buffer && !self._duration) {
+      self._duration = buffer.duration;
+    }
+
+    // Setup a sprite if none is defined.
+    if (Object.keys(self._sprite).length === 0) {
+      self._sprite = {__default: [0, self._duration * 1000]};
+    }
+
+    // Fire the loaded event.
+    if (self._state !== 'loaded') {
+      self._state = 'loaded';
+      self._emit('load');
+      self._loadQueue();
+    }
+  };
+
+  /**
+   * Setup the audio context when available, or switch to HTML5 Audio mode.
+   */
+  var setupAudioContext = function() {
+    // If we have already detected that Web Audio isn't supported, don't run this step again.
+    if (!Howler.usingWebAudio) {
+      return;
+    }
+
+    // Check if we are using Web Audio and setup the AudioContext if we are.
+    try {
+      if (typeof AudioContext !== 'undefined') {
+        Howler.ctx = new AudioContext();
+      } else if (typeof webkitAudioContext !== 'undefined') {
+        Howler.ctx = new webkitAudioContext();
+      } else {
+        Howler.usingWebAudio = false;
+      }
+    } catch(e) {
+      Howler.usingWebAudio = false;
+    }
+
+    // If the audio context creation still failed, set using web audio to false.
+    if (!Howler.ctx) {
+      Howler.usingWebAudio = false;
+    }
+
+    // Check if a webview is being used on iOS8 or earlier (rather than the browser).
+    // If it is, disable Web Audio as it causes crashing.
+    var iOS = (/iP(hone|od|ad)/.test(Howler._navigator && Howler._navigator.platform));
+    var appVersion = Howler._navigator && Howler._navigator.appVersion.match(/OS (\d+)_(\d+)_?(\d+)?/);
+    var version = appVersion ? parseInt(appVersion[1], 10) : null;
+    if (iOS && version && version < 9) {
+      var safari = /safari/.test(Howler._navigator && Howler._navigator.userAgent.toLowerCase());
+      if (Howler._navigator && Howler._navigator.standalone && !safari || Howler._navigator && !Howler._navigator.standalone && !safari) {
+        Howler.usingWebAudio = false;
+      }
+    }
+
+    // Create and expose the master GainNode when using Web Audio (useful for plugins or advanced usage).
+    if (Howler.usingWebAudio) {
+      Howler.masterGain = (typeof Howler.ctx.createGain === 'undefined') ? Howler.ctx.createGainNode() : Howler.ctx.createGain();
+      Howler.masterGain.gain.setValueAtTime(Howler._muted ? 0 : Howler._volume, Howler.ctx.currentTime);
+      Howler.masterGain.connect(Howler.ctx.destination);
+    }
+
+    // Re-run the setup on Howler.
+    Howler._setup();
+  };
+
+  // Add support for AMD (Asynchronous Module Definition) libraries such as require.js.
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function() {
+      return {
+        Howler: Howler,
+        Howl: Howl
+      };
+    }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  }
+
+  // Add support for CommonJS libraries such as browserify.
+  if (true) {
+    exports.Howler = Howler;
+    exports.Howl = Howl;
+  }
+
+  // Define globally in case AMD is not available or unused.
+  if (typeof window !== 'undefined') {
+    window.HowlerGlobal = HowlerGlobal;
+    window.Howler = Howler;
+    window.Howl = Howl;
+    window.Sound = Sound;
+  } else if (typeof global !== 'undefined') { // Add to global in Node.js (for testing, etc).
+    global.HowlerGlobal = HowlerGlobal;
+    global.Howler = Howler;
+    global.Howl = Howl;
+    global.Sound = Sound;
+  }
+})();
+
+
+/*!
+ *  Spatial Plugin - Adds support for stereo and 3D audio where Web Audio is supported.
+ *  
+ *  howler.js v2.1.3
+ *  howlerjs.com
+ *
+ *  (c) 2013-2019, James Simpson of GoldFire Studios
+ *  goldfirestudios.com
+ *
+ *  MIT License
+ */
+
+(function() {
+
+  'use strict';
+
+  // Setup default properties.
+  HowlerGlobal.prototype._pos = [0, 0, 0];
+  HowlerGlobal.prototype._orientation = [0, 0, -1, 0, 1, 0];
+
+  /** Global Methods **/
+  /***************************************************************************/
+
+  /**
+   * Helper method to update the stereo panning position of all current Howls.
+   * Future Howls will not use this value unless explicitly set.
+   * @param  {Number} pan A value of -1.0 is all the way left and 1.0 is all the way right.
+   * @return {Howler/Number}     Self or current stereo panning value.
+   */
+  HowlerGlobal.prototype.stereo = function(pan) {
+    var self = this;
+
+    // Stop right here if not using Web Audio.
+    if (!self.ctx || !self.ctx.listener) {
+      return self;
+    }
+
+    // Loop through all Howls and update their stereo panning.
+    for (var i=self._howls.length-1; i>=0; i--) {
+      self._howls[i].stereo(pan);
+    }
+
+    return self;
+  };
+
+  /**
+   * Get/set the position of the listener in 3D cartesian space. Sounds using
+   * 3D position will be relative to the listener's position.
+   * @param  {Number} x The x-position of the listener.
+   * @param  {Number} y The y-position of the listener.
+   * @param  {Number} z The z-position of the listener.
+   * @return {Howler/Array}   Self or current listener position.
+   */
+  HowlerGlobal.prototype.pos = function(x, y, z) {
+    var self = this;
+
+    // Stop right here if not using Web Audio.
+    if (!self.ctx || !self.ctx.listener) {
+      return self;
+    }
+
+    // Set the defaults for optional 'y' & 'z'.
+    y = (typeof y !== 'number') ? self._pos[1] : y;
+    z = (typeof z !== 'number') ? self._pos[2] : z;
+
+    if (typeof x === 'number') {
+      self._pos = [x, y, z];
+
+      if (typeof self.ctx.listener.positionX !== 'undefined') {
+        self.ctx.listener.positionX.setTargetAtTime(self._pos[0], Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.positionY.setTargetAtTime(self._pos[1], Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.positionZ.setTargetAtTime(self._pos[2], Howler.ctx.currentTime, 0.1);
+      } else {
+        self.ctx.listener.setPosition(self._pos[0], self._pos[1], self._pos[2]);
+      }
+    } else {
+      return self._pos;
+    }
+
+    return self;
+  };
+
+  /**
+   * Get/set the direction the listener is pointing in the 3D cartesian space.
+   * A front and up vector must be provided. The front is the direction the
+   * face of the listener is pointing, and up is the direction the top of the
+   * listener is pointing. Thus, these values are expected to be at right angles
+   * from each other.
+   * @param  {Number} x   The x-orientation of the listener.
+   * @param  {Number} y   The y-orientation of the listener.
+   * @param  {Number} z   The z-orientation of the listener.
+   * @param  {Number} xUp The x-orientation of the top of the listener.
+   * @param  {Number} yUp The y-orientation of the top of the listener.
+   * @param  {Number} zUp The z-orientation of the top of the listener.
+   * @return {Howler/Array}     Returns self or the current orientation vectors.
+   */
+  HowlerGlobal.prototype.orientation = function(x, y, z, xUp, yUp, zUp) {
+    var self = this;
+
+    // Stop right here if not using Web Audio.
+    if (!self.ctx || !self.ctx.listener) {
+      return self;
+    }
+
+    // Set the defaults for optional 'y' & 'z'.
+    var or = self._orientation;
+    y = (typeof y !== 'number') ? or[1] : y;
+    z = (typeof z !== 'number') ? or[2] : z;
+    xUp = (typeof xUp !== 'number') ? or[3] : xUp;
+    yUp = (typeof yUp !== 'number') ? or[4] : yUp;
+    zUp = (typeof zUp !== 'number') ? or[5] : zUp;
+
+    if (typeof x === 'number') {
+      self._orientation = [x, y, z, xUp, yUp, zUp];
+
+      if (typeof self.ctx.listener.forwardX !== 'undefined') {
+        self.ctx.listener.forwardX.setTargetAtTime(x, Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.forwardY.setTargetAtTime(y, Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.forwardZ.setTargetAtTime(z, Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.upX.setTargetAtTime(xUp, Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.upY.setTargetAtTime(yUp, Howler.ctx.currentTime, 0.1);
+        self.ctx.listener.upZ.setTargetAtTime(zUp, Howler.ctx.currentTime, 0.1);
+      } else {
+        self.ctx.listener.setOrientation(x, y, z, xUp, yUp, zUp);
+      }
+    } else {
+      return or;
+    }
+
+    return self;
+  };
+
+  /** Group Methods **/
+  /***************************************************************************/
+
+  /**
+   * Add new properties to the core init.
+   * @param  {Function} _super Core init method.
+   * @return {Howl}
+   */
+  Howl.prototype.init = (function(_super) {
+    return function(o) {
+      var self = this;
+
+      // Setup user-defined default properties.
+      self._orientation = o.orientation || [1, 0, 0];
+      self._stereo = o.stereo || null;
+      self._pos = o.pos || null;
+      self._pannerAttr = {
+        coneInnerAngle: typeof o.coneInnerAngle !== 'undefined' ? o.coneInnerAngle : 360,
+        coneOuterAngle: typeof o.coneOuterAngle !== 'undefined' ? o.coneOuterAngle : 360,
+        coneOuterGain: typeof o.coneOuterGain !== 'undefined' ? o.coneOuterGain : 0,
+        distanceModel: typeof o.distanceModel !== 'undefined' ? o.distanceModel : 'inverse',
+        maxDistance: typeof o.maxDistance !== 'undefined' ? o.maxDistance : 10000,
+        panningModel: typeof o.panningModel !== 'undefined' ? o.panningModel : 'HRTF',
+        refDistance: typeof o.refDistance !== 'undefined' ? o.refDistance : 1,
+        rolloffFactor: typeof o.rolloffFactor !== 'undefined' ? o.rolloffFactor : 1
+      };
+
+      // Setup event listeners.
+      self._onstereo = o.onstereo ? [{fn: o.onstereo}] : [];
+      self._onpos = o.onpos ? [{fn: o.onpos}] : [];
+      self._onorientation = o.onorientation ? [{fn: o.onorientation}] : [];
+
+      // Complete initilization with howler.js core's init function.
+      return _super.call(this, o);
+    };
+  })(Howl.prototype.init);
+
+  /**
+   * Get/set the stereo panning of the audio source for this sound or all in the group.
+   * @param  {Number} pan  A value of -1.0 is all the way left and 1.0 is all the way right.
+   * @param  {Number} id (optional) The sound ID. If none is passed, all in group will be updated.
+   * @return {Howl/Number}    Returns self or the current stereo panning value.
+   */
+  Howl.prototype.stereo = function(pan, id) {
+    var self = this;
+
+    // Stop right here if not using Web Audio.
+    if (!self._webAudio) {
+      return self;
+    }
+
+    // If the sound hasn't loaded, add it to the load queue to change stereo pan when capable.
+    if (self._state !== 'loaded') {
+      self._queue.push({
+        event: 'stereo',
+        action: function() {
+          self.stereo(pan, id);
+        }
+      });
+
+      return self;
+    }
+
+    // Check for PannerStereoNode support and fallback to PannerNode if it doesn't exist.
+    var pannerType = (typeof Howler.ctx.createStereoPanner === 'undefined') ? 'spatial' : 'stereo';
+
+    // Setup the group's stereo panning if no ID is passed.
+    if (typeof id === 'undefined') {
+      // Return the group's stereo panning if no parameters are passed.
+      if (typeof pan === 'number') {
+        self._stereo = pan;
+        self._pos = [pan, 0, 0];
+      } else {
+        return self._stereo;
+      }
+    }
+
+    // Change the streo panning of one or all sounds in group.
+    var ids = self._getSoundIds(id);
+    for (var i=0; i<ids.length; i++) {
+      // Get the sound.
+      var sound = self._soundById(ids[i]);
+
+      if (sound) {
+        if (typeof pan === 'number') {
+          sound._stereo = pan;
+          sound._pos = [pan, 0, 0];
+
+          if (sound._node) {
+            // If we are falling back, make sure the panningModel is equalpower.
+            sound._pannerAttr.panningModel = 'equalpower';
+
+            // Check if there is a panner setup and create a new one if not.
+            if (!sound._panner || !sound._panner.pan) {
+              setupPanner(sound, pannerType);
+            }
+
+            if (pannerType === 'spatial') {
+              if (typeof sound._panner.positionX !== 'undefined') {
+                sound._panner.positionX.setValueAtTime(pan, Howler.ctx.currentTime);
+                sound._panner.positionY.setValueAtTime(0, Howler.ctx.currentTime);
+                sound._panner.positionZ.setValueAtTime(0, Howler.ctx.currentTime);
+              } else {
+                sound._panner.setPosition(pan, 0, 0);
+              }
+            } else {
+              sound._panner.pan.setValueAtTime(pan, Howler.ctx.currentTime);
+            }
+          }
+
+          self._emit('stereo', sound._id);
+        } else {
+          return sound._stereo;
+        }
+      }
+    }
+
+    return self;
+  };
+
+  /**
+   * Get/set the 3D spatial position of the audio source for this sound or group relative to the global listener.
+   * @param  {Number} x  The x-position of the audio source.
+   * @param  {Number} y  The y-position of the audio source.
+   * @param  {Number} z  The z-position of the audio source.
+   * @param  {Number} id (optional) The sound ID. If none is passed, all in group will be updated.
+   * @return {Howl/Array}    Returns self or the current 3D spatial position: [x, y, z].
+   */
+  Howl.prototype.pos = function(x, y, z, id) {
+    var self = this;
+
+    // Stop right here if not using Web Audio.
+    if (!self._webAudio) {
+      return self;
+    }
+
+    // If the sound hasn't loaded, add it to the load queue to change position when capable.
+    if (self._state !== 'loaded') {
+      self._queue.push({
+        event: 'pos',
+        action: function() {
+          self.pos(x, y, z, id);
+        }
+      });
+
+      return self;
+    }
+
+    // Set the defaults for optional 'y' & 'z'.
+    y = (typeof y !== 'number') ? 0 : y;
+    z = (typeof z !== 'number') ? -0.5 : z;
+
+    // Setup the group's spatial position if no ID is passed.
+    if (typeof id === 'undefined') {
+      // Return the group's spatial position if no parameters are passed.
+      if (typeof x === 'number') {
+        self._pos = [x, y, z];
+      } else {
+        return self._pos;
+      }
+    }
+
+    // Change the spatial position of one or all sounds in group.
+    var ids = self._getSoundIds(id);
+    for (var i=0; i<ids.length; i++) {
+      // Get the sound.
+      var sound = self._soundById(ids[i]);
+
+      if (sound) {
+        if (typeof x === 'number') {
+          sound._pos = [x, y, z];
+
+          if (sound._node) {
+            // Check if there is a panner setup and create a new one if not.
+            if (!sound._panner || sound._panner.pan) {
+              setupPanner(sound, 'spatial');
+            }
+
+            if (typeof sound._panner.positionX !== 'undefined') {
+              sound._panner.positionX.setValueAtTime(x, Howler.ctx.currentTime);
+              sound._panner.positionY.setValueAtTime(y, Howler.ctx.currentTime);
+              sound._panner.positionZ.setValueAtTime(z, Howler.ctx.currentTime);
+            } else {
+              sound._panner.setPosition(x, y, z);
+            }
+          }
+
+          self._emit('pos', sound._id);
+        } else {
+          return sound._pos;
+        }
+      }
+    }
+
+    return self;
+  };
+
+  /**
+   * Get/set the direction the audio source is pointing in the 3D cartesian coordinate
+   * space. Depending on how direction the sound is, based on the `cone` attributes,
+   * a sound pointing away from the listener can be quiet or silent.
+   * @param  {Number} x  The x-orientation of the source.
+   * @param  {Number} y  The y-orientation of the source.
+   * @param  {Number} z  The z-orientation of the source.
+   * @param  {Number} id (optional) The sound ID. If none is passed, all in group will be updated.
+   * @return {Howl/Array}    Returns self or the current 3D spatial orientation: [x, y, z].
+   */
+  Howl.prototype.orientation = function(x, y, z, id) {
+    var self = this;
+
+    // Stop right here if not using Web Audio.
+    if (!self._webAudio) {
+      return self;
+    }
+
+    // If the sound hasn't loaded, add it to the load queue to change orientation when capable.
+    if (self._state !== 'loaded') {
+      self._queue.push({
+        event: 'orientation',
+        action: function() {
+          self.orientation(x, y, z, id);
+        }
+      });
+
+      return self;
+    }
+
+    // Set the defaults for optional 'y' & 'z'.
+    y = (typeof y !== 'number') ? self._orientation[1] : y;
+    z = (typeof z !== 'number') ? self._orientation[2] : z;
+
+    // Setup the group's spatial orientation if no ID is passed.
+    if (typeof id === 'undefined') {
+      // Return the group's spatial orientation if no parameters are passed.
+      if (typeof x === 'number') {
+        self._orientation = [x, y, z];
+      } else {
+        return self._orientation;
+      }
+    }
+
+    // Change the spatial orientation of one or all sounds in group.
+    var ids = self._getSoundIds(id);
+    for (var i=0; i<ids.length; i++) {
+      // Get the sound.
+      var sound = self._soundById(ids[i]);
+
+      if (sound) {
+        if (typeof x === 'number') {
+          sound._orientation = [x, y, z];
+
+          if (sound._node) {
+            // Check if there is a panner setup and create a new one if not.
+            if (!sound._panner) {
+              // Make sure we have a position to setup the node with.
+              if (!sound._pos) {
+                sound._pos = self._pos || [0, 0, -0.5];
+              }
+
+              setupPanner(sound, 'spatial');
+            }
+
+            if (typeof sound._panner.orientationX !== 'undefined') {
+              sound._panner.orientationX.setValueAtTime(x, Howler.ctx.currentTime);
+              sound._panner.orientationY.setValueAtTime(y, Howler.ctx.currentTime);
+              sound._panner.orientationZ.setValueAtTime(z, Howler.ctx.currentTime);
+            } else {
+              sound._panner.setOrientation(x, y, z);
+            }
+          }
+
+          self._emit('orientation', sound._id);
+        } else {
+          return sound._orientation;
+        }
+      }
+    }
+
+    return self;
+  };
+
+  /**
+   * Get/set the panner node's attributes for a sound or group of sounds.
+   * This method can optionall take 0, 1 or 2 arguments.
+   *   pannerAttr() -> Returns the group's values.
+   *   pannerAttr(id) -> Returns the sound id's values.
+   *   pannerAttr(o) -> Set's the values of all sounds in this Howl group.
+   *   pannerAttr(o, id) -> Set's the values of passed sound id.
+   *
+   *   Attributes:
+   *     coneInnerAngle - (360 by default) A parameter for directional audio sources, this is an angle, in degrees,
+   *                      inside of which there will be no volume reduction.
+   *     coneOuterAngle - (360 by default) A parameter for directional audio sources, this is an angle, in degrees,
+   *                      outside of which the volume will be reduced to a constant value of `coneOuterGain`.
+   *     coneOuterGain - (0 by default) A parameter for directional audio sources, this is the gain outside of the
+   *                     `coneOuterAngle`. It is a linear value in the range `[0, 1]`.
+   *     distanceModel - ('inverse' by default) Determines algorithm used to reduce volume as audio moves away from
+   *                     listener. Can be `linear`, `inverse` or `exponential.
+   *     maxDistance - (10000 by default) The maximum distance between source and listener, after which the volume
+   *                   will not be reduced any further.
+   *     refDistance - (1 by default) A reference distance for reducing volume as source moves further from the listener.
+   *                   This is simply a variable of the distance model and has a different effect depending on which model
+   *                   is used and the scale of your coordinates. Generally, volume will be equal to 1 at this distance.
+   *     rolloffFactor - (1 by default) How quickly the volume reduces as source moves from listener. This is simply a
+   *                     variable of the distance model and can be in the range of `[0, 1]` with `linear` and `[0, ∞]`
+   *                     with `inverse` and `exponential`.
+   *     panningModel - ('HRTF' by default) Determines which spatialization algorithm is used to position audio.
+   *                     Can be `HRTF` or `equalpower`.
+   *
+   * @return {Howl/Object} Returns self or current panner attributes.
+   */
+  Howl.prototype.pannerAttr = function() {
+    var self = this;
+    var args = arguments;
+    var o, id, sound;
+
+    // Stop right here if not using Web Audio.
+    if (!self._webAudio) {
+      return self;
+    }
+
+    // Determine the values based on arguments.
+    if (args.length === 0) {
+      // Return the group's panner attribute values.
+      return self._pannerAttr;
+    } else if (args.length === 1) {
+      if (typeof args[0] === 'object') {
+        o = args[0];
+
+        // Set the grou's panner attribute values.
+        if (typeof id === 'undefined') {
+          if (!o.pannerAttr) {
+            o.pannerAttr = {
+              coneInnerAngle: o.coneInnerAngle,
+              coneOuterAngle: o.coneOuterAngle,
+              coneOuterGain: o.coneOuterGain,
+              distanceModel: o.distanceModel,
+              maxDistance: o.maxDistance,
+              refDistance: o.refDistance,
+              rolloffFactor: o.rolloffFactor,
+              panningModel: o.panningModel
+            };
+          }
+
+          self._pannerAttr = {
+            coneInnerAngle: typeof o.pannerAttr.coneInnerAngle !== 'undefined' ? o.pannerAttr.coneInnerAngle : self._coneInnerAngle,
+            coneOuterAngle: typeof o.pannerAttr.coneOuterAngle !== 'undefined' ? o.pannerAttr.coneOuterAngle : self._coneOuterAngle,
+            coneOuterGain: typeof o.pannerAttr.coneOuterGain !== 'undefined' ? o.pannerAttr.coneOuterGain : self._coneOuterGain,
+            distanceModel: typeof o.pannerAttr.distanceModel !== 'undefined' ? o.pannerAttr.distanceModel : self._distanceModel,
+            maxDistance: typeof o.pannerAttr.maxDistance !== 'undefined' ? o.pannerAttr.maxDistance : self._maxDistance,
+            refDistance: typeof o.pannerAttr.refDistance !== 'undefined' ? o.pannerAttr.refDistance : self._refDistance,
+            rolloffFactor: typeof o.pannerAttr.rolloffFactor !== 'undefined' ? o.pannerAttr.rolloffFactor : self._rolloffFactor,
+            panningModel: typeof o.pannerAttr.panningModel !== 'undefined' ? o.pannerAttr.panningModel : self._panningModel
+          };
+        }
+      } else {
+        // Return this sound's panner attribute values.
+        sound = self._soundById(parseInt(args[0], 10));
+        return sound ? sound._pannerAttr : self._pannerAttr;
+      }
+    } else if (args.length === 2) {
+      o = args[0];
+      id = parseInt(args[1], 10);
+    }
+
+    // Update the values of the specified sounds.
+    var ids = self._getSoundIds(id);
+    for (var i=0; i<ids.length; i++) {
+      sound = self._soundById(ids[i]);
+
+      if (sound) {
+        // Merge the new values into the sound.
+        var pa = sound._pannerAttr;
+        pa = {
+          coneInnerAngle: typeof o.coneInnerAngle !== 'undefined' ? o.coneInnerAngle : pa.coneInnerAngle,
+          coneOuterAngle: typeof o.coneOuterAngle !== 'undefined' ? o.coneOuterAngle : pa.coneOuterAngle,
+          coneOuterGain: typeof o.coneOuterGain !== 'undefined' ? o.coneOuterGain : pa.coneOuterGain,
+          distanceModel: typeof o.distanceModel !== 'undefined' ? o.distanceModel : pa.distanceModel,
+          maxDistance: typeof o.maxDistance !== 'undefined' ? o.maxDistance : pa.maxDistance,
+          refDistance: typeof o.refDistance !== 'undefined' ? o.refDistance : pa.refDistance,
+          rolloffFactor: typeof o.rolloffFactor !== 'undefined' ? o.rolloffFactor : pa.rolloffFactor,
+          panningModel: typeof o.panningModel !== 'undefined' ? o.panningModel : pa.panningModel
+        };
+
+        // Update the panner values or create a new panner if none exists.
+        var panner = sound._panner;
+        if (panner) {
+          panner.coneInnerAngle = pa.coneInnerAngle;
+          panner.coneOuterAngle = pa.coneOuterAngle;
+          panner.coneOuterGain = pa.coneOuterGain;
+          panner.distanceModel = pa.distanceModel;
+          panner.maxDistance = pa.maxDistance;
+          panner.refDistance = pa.refDistance;
+          panner.rolloffFactor = pa.rolloffFactor;
+          panner.panningModel = pa.panningModel;
+        } else {
+          // Make sure we have a position to setup the node with.
+          if (!sound._pos) {
+            sound._pos = self._pos || [0, 0, -0.5];
+          }
+
+          // Create a new panner node.
+          setupPanner(sound, 'spatial');
+        }
+      }
+    }
+
+    return self;
+  };
+
+  /** Single Sound Methods **/
+  /***************************************************************************/
+
+  /**
+   * Add new properties to the core Sound init.
+   * @param  {Function} _super Core Sound init method.
+   * @return {Sound}
+   */
+  Sound.prototype.init = (function(_super) {
+    return function() {
+      var self = this;
+      var parent = self._parent;
+
+      // Setup user-defined default properties.
+      self._orientation = parent._orientation;
+      self._stereo = parent._stereo;
+      self._pos = parent._pos;
+      self._pannerAttr = parent._pannerAttr;
+
+      // Complete initilization with howler.js core Sound's init function.
+      _super.call(this);
+
+      // If a stereo or position was specified, set it up.
+      if (self._stereo) {
+        parent.stereo(self._stereo);
+      } else if (self._pos) {
+        parent.pos(self._pos[0], self._pos[1], self._pos[2], self._id);
+      }
+    };
+  })(Sound.prototype.init);
+
+  /**
+   * Override the Sound.reset method to clean up properties from the spatial plugin.
+   * @param  {Function} _super Sound reset method.
+   * @return {Sound}
+   */
+  Sound.prototype.reset = (function(_super) {
+    return function() {
+      var self = this;
+      var parent = self._parent;
+
+      // Reset all spatial plugin properties on this sound.
+      self._orientation = parent._orientation;
+      self._stereo = parent._stereo;
+      self._pos = parent._pos;
+      self._pannerAttr = parent._pannerAttr;
+
+      // If a stereo or position was specified, set it up.
+      if (self._stereo) {
+        parent.stereo(self._stereo);
+      } else if (self._pos) {
+        parent.pos(self._pos[0], self._pos[1], self._pos[2], self._id);
+      } else if (self._panner) {
+        // Disconnect the panner.
+        self._panner.disconnect(0);
+        self._panner = undefined;
+        parent._refreshBuffer(self);
+      }
+
+      // Complete resetting of the sound.
+      return _super.call(this);
+    };
+  })(Sound.prototype.reset);
+
+  /** Helper Methods **/
+  /***************************************************************************/
+
+  /**
+   * Create a new panner node and save it on the sound.
+   * @param  {Sound} sound Specific sound to setup panning on.
+   * @param {String} type Type of panner to create: 'stereo' or 'spatial'.
+   */
+  var setupPanner = function(sound, type) {
+    type = type || 'spatial';
+
+    // Create the new panner node.
+    if (type === 'spatial') {
+      sound._panner = Howler.ctx.createPanner();
+      sound._panner.coneInnerAngle = sound._pannerAttr.coneInnerAngle;
+      sound._panner.coneOuterAngle = sound._pannerAttr.coneOuterAngle;
+      sound._panner.coneOuterGain = sound._pannerAttr.coneOuterGain;
+      sound._panner.distanceModel = sound._pannerAttr.distanceModel;
+      sound._panner.maxDistance = sound._pannerAttr.maxDistance;
+      sound._panner.refDistance = sound._pannerAttr.refDistance;
+      sound._panner.rolloffFactor = sound._pannerAttr.rolloffFactor;
+      sound._panner.panningModel = sound._pannerAttr.panningModel;
+
+      if (typeof sound._panner.positionX !== 'undefined') {
+        sound._panner.positionX.setValueAtTime(sound._pos[0], Howler.ctx.currentTime);
+        sound._panner.positionY.setValueAtTime(sound._pos[1], Howler.ctx.currentTime);
+        sound._panner.positionZ.setValueAtTime(sound._pos[2], Howler.ctx.currentTime);
+      } else {
+        sound._panner.setPosition(sound._pos[0], sound._pos[1], sound._pos[2]);
+      }
+
+      if (typeof sound._panner.orientationX !== 'undefined') {
+        sound._panner.orientationX.setValueAtTime(sound._orientation[0], Howler.ctx.currentTime);
+        sound._panner.orientationY.setValueAtTime(sound._orientation[1], Howler.ctx.currentTime);
+        sound._panner.orientationZ.setValueAtTime(sound._orientation[2], Howler.ctx.currentTime);
+      } else {
+        sound._panner.setOrientation(sound._orientation[0], sound._orientation[1], sound._orientation[2]);
+      }
+    } else {
+      sound._panner = Howler.ctx.createStereoPanner();
+      sound._panner.pan.setValueAtTime(sound._stereo, Howler.ctx.currentTime);
+    }
+
+    sound._panner.connect(sound._node);
+
+    // Update the connections.
+    if (!sound._paused) {
+      sound._parent.pause(sound._id, true).play(sound._id, true);
+    }
+  };
+})();
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 

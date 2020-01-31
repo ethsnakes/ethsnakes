@@ -4,6 +4,7 @@ import { BoardScene } from "./scenes/board-scene/BoardScene";
 import { BoardManager } from "./scenes/board-scene/BoardManager";
 import { SelectBetLayer } from "./scenes/board-scene/layers/SelectBetLayer";
 import { Dapp } from "./Dapp";
+import { AudioManager } from "./AudioManager";
 
 export class GameManager {
 
@@ -46,6 +47,16 @@ export class GameManager {
         );
     }
 
+    public static onGameAssetsLoaded(): void {
+
+        AudioManager.init();
+
+        GameVars.dapp = new Dapp();
+        GameVars.dapp.unlock();
+
+        GameManager.enterBoardScene();
+    }
+
     public static onBalanceAvailable(balance: string): void {
 
         GameVars.balance = Number(balance);
@@ -61,14 +72,6 @@ export class GameManager {
     public static onAccountLoaded(): void {
 
        Dapp.currentInstance.getBalance();
-    }
-
-    public static onGameAssetsLoaded(): void {
-
-        GameVars.dapp = new Dapp();
-        GameVars.dapp.unlock();
-
-        GameManager.enterBoardScene();
     }
 
     public static enterBoardScene(): void {
