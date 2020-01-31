@@ -10,24 +10,24 @@
 			"scale": 1,
 			"frames": [
 				{
-					"filename": "background",
+					"filename": "top_bar",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
 						"w": 1024,
-						"h": 1024
+						"h": 88
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
 						"w": 1024,
-						"h": 1024
+						"h": 88
 					},
 					"frame": {
 						"x": 1,
 						"y": 1,
 						"w": 1024,
-						"h": 1024
+						"h": 88
 					}
 				},
 				{
@@ -276,178 +276,10 @@
 						"h": 195
 					},
 					"frame": {
-						"x": 1027,
-						"y": 701,
+						"x": 1,
+						"y": 91,
 						"w": 528,
 						"h": 195
-					}
-				},
-				{
-					"filename": "balance",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 373,
-						"h": 69
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 373,
-						"h": 69
-					},
-					"frame": {
-						"x": 1557,
-						"y": 791,
-						"w": 373,
-						"h": 69
-					}
-				},
-				{
-					"filename": "chip_bot",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 39,
-						"h": 67
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 39,
-						"h": 67
-					},
-					"frame": {
-						"x": 1557,
-						"y": 701,
-						"w": 39,
-						"h": 67
-					}
-				},
-				{
-					"filename": "chip_player",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 39,
-						"h": 67
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 39,
-						"h": 67
-					},
-					"frame": {
-						"x": 1598,
-						"y": 701,
-						"w": 39,
-						"h": 67
-					}
-				},
-				{
-					"filename": "defeat_result_01",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 469,
-						"h": 476
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 469,
-						"h": 476
-					},
-					"frame": {
-						"x": 1557,
-						"y": 862,
-						"w": 469,
-						"h": 476
-					}
-				},
-				{
-					"filename": "arrow",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 40,
-						"h": 30
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 40,
-						"h": 30
-					},
-					"frame": {
-						"x": 1932,
-						"y": 830,
-						"w": 40,
-						"h": 30
-					}
-				},
-				{
-					"filename": "player_shadow",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 43,
-						"h": 21
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 43,
-						"h": 21
-					},
-					"frame": {
-						"x": 1974,
-						"y": 830,
-						"w": 43,
-						"h": 21
-					}
-				},
-				{
-					"filename": "ladders_back",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 749,
-						"h": 698
-					},
-					"spriteSourceSize": {
-						"x": 101,
-						"y": 79,
-						"w": 507,
-						"h": 557
-					},
-					"frame": {
-						"x": 1027,
-						"y": 898,
-						"w": 507,
-						"h": 557
-					}
-				},
-				{
-					"filename": "top_bar",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 1024,
-						"h": 88
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 1024,
-						"h": 88
-					},
-					"frame": {
-						"x": 1,
-						"y": 1027,
-						"w": 1024,
-						"h": 88
 					}
 				},
 				{
@@ -465,52 +297,52 @@
 						"h": 99
 					},
 					"frame": {
-						"x": 1536,
-						"y": 1340,
+						"x": 531,
+						"y": 91,
 						"w": 492,
 						"h": 99
 					}
 				},
 				{
-					"filename": "btn_settings_off",
+					"filename": "defeat_result_01",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 63,
-						"h": 64
+						"w": 469,
+						"h": 476
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 63,
-						"h": 64
+						"w": 469,
+						"h": 476
 					},
 					"frame": {
-						"x": 1639,
-						"y": 701,
-						"w": 63,
-						"h": 64
+						"x": 531,
+						"y": 192,
+						"w": 469,
+						"h": 476
 					}
 				},
 				{
-					"filename": "btn_settings_on",
+					"filename": "ladders_back",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
-						"w": 63,
-						"h": 64
+						"w": 749,
+						"h": 698
 					},
 					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 63,
-						"h": 64
+						"x": 101,
+						"y": 79,
+						"w": 507,
+						"h": 557
 					},
 					"frame": {
-						"x": 1704,
-						"y": 701,
-						"w": 63,
-						"h": 64
+						"x": 1,
+						"y": 288,
+						"w": 507,
+						"h": 557
 					}
 				},
 				{
@@ -528,8 +360,8 @@
 						"h": 451
 					},
 					"frame": {
-						"x": 1536,
-						"y": 1441,
+						"x": 510,
+						"y": 670,
 						"w": 452,
 						"h": 451
 					}
@@ -549,10 +381,73 @@
 						"h": 45
 					},
 					"frame": {
-						"x": 1990,
-						"y": 1441,
+						"x": 964,
+						"y": 670,
 						"w": 51,
 						"h": 45
+					}
+				},
+				{
+					"filename": "ladders_front",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 749,
+						"h": 698
+					},
+					"spriteSourceSize": {
+						"x": 103,
+						"y": 191,
+						"w": 438,
+						"h": 386
+					},
+					"frame": {
+						"x": 1,
+						"y": 847,
+						"w": 438,
+						"h": 386
+					}
+				},
+				{
+					"filename": "btn_settings_off",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 63,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 63,
+						"h": 64
+					},
+					"frame": {
+						"x": 441,
+						"y": 847,
+						"w": 63,
+						"h": 64
+					}
+				},
+				{
+					"filename": "btn_settings_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 63,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 63,
+						"h": 64
+					},
+					"frame": {
+						"x": 441,
+						"y": 913,
+						"w": 63,
+						"h": 64
 					}
 				},
 				{
@@ -570,8 +465,8 @@
 						"h": 45
 					},
 					"frame": {
-						"x": 1990,
-						"y": 1488,
+						"x": 441,
+						"y": 979,
 						"w": 51,
 						"h": 45
 					}
@@ -591,8 +486,8 @@
 						"h": 45
 					},
 					"frame": {
-						"x": 1990,
-						"y": 1535,
+						"x": 441,
+						"y": 1026,
 						"w": 51,
 						"h": 45
 					}
@@ -612,10 +507,199 @@
 						"h": 45
 					},
 					"frame": {
-						"x": 1990,
-						"y": 1582,
+						"x": 441,
+						"y": 1073,
 						"w": 51,
 						"h": 45
+					}
+				},
+				{
+					"filename": "player_shadow",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 43,
+						"h": 21
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 43,
+						"h": 21
+					},
+					"frame": {
+						"x": 441,
+						"y": 1120,
+						"w": 43,
+						"h": 21
+					}
+				},
+				{
+					"filename": "balance",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 373,
+						"h": 69
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 373,
+						"h": 69
+					},
+					"frame": {
+						"x": 1017,
+						"y": 701,
+						"w": 373,
+						"h": 69
+					}
+				},
+				{
+					"filename": "arrow",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 40,
+						"h": 30
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 40,
+						"h": 30
+					},
+					"frame": {
+						"x": 964,
+						"y": 717,
+						"w": 40,
+						"h": 30
+					}
+				},
+				{
+					"filename": "chip_bot",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 39,
+						"h": 67
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 39,
+						"h": 67
+					},
+					"frame": {
+						"x": 964,
+						"y": 749,
+						"w": 39,
+						"h": 67
+					}
+				},
+				{
+					"filename": "super_txt",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 371,
+						"h": 99
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 371,
+						"h": 99
+					},
+					"frame": {
+						"x": 1392,
+						"y": 701,
+						"w": 371,
+						"h": 99
+					}
+				},
+				{
+					"filename": "btn_play_off",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 156,
+						"h": 118
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 156,
+						"h": 118
+					},
+					"frame": {
+						"x": 1765,
+						"y": 791,
+						"w": 156,
+						"h": 118
+					}
+				},
+				{
+					"filename": "victory_result_txt_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 368,
+						"h": 127
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 7,
+						"w": 368,
+						"h": 120
+					},
+					"frame": {
+						"x": 1005,
+						"y": 772,
+						"w": 368,
+						"h": 120
+					}
+				},
+				{
+					"filename": "chip_player",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 39,
+						"h": 67
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 39,
+						"h": 67
+					},
+					"frame": {
+						"x": 964,
+						"y": 818,
+						"w": 39,
+						"h": 67
+					}
+				},
+				{
+					"filename": "stairs_fx_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 140
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 33,
+						"h": 131
+					},
+					"frame": {
+						"x": 964,
+						"y": 887,
+						"w": 33,
+						"h": 131
 					}
 				},
 				{
@@ -633,8 +717,8 @@
 						"h": 123
 					},
 					"frame": {
-						"x": 1,
-						"y": 1894,
+						"x": 1375,
+						"y": 802,
 						"w": 367,
 						"h": 123
 					}
@@ -654,8 +738,8 @@
 						"h": 123
 					},
 					"frame": {
-						"x": 370,
-						"y": 1894,
+						"x": 999,
+						"y": 894,
 						"w": 364,
 						"h": 123
 					}
@@ -675,8 +759,8 @@
 						"h": 271
 					},
 					"frame": {
-						"x": 736,
-						"y": 1117,
+						"x": 1744,
+						"y": 911,
 						"w": 271,
 						"h": 271
 					}
@@ -696,8 +780,8 @@
 						"h": 122
 					},
 					"frame": {
-						"x": 736,
-						"y": 1894,
+						"x": 1365,
+						"y": 927,
 						"w": 360,
 						"h": 122
 					}
@@ -717,136 +801,31 @@
 						"h": 122
 					},
 					"frame": {
-						"x": 1098,
-						"y": 1894,
+						"x": 999,
+						"y": 1019,
 						"w": 344,
 						"h": 122
 					}
 				},
 				{
-					"filename": "victory_result_txt_09",
+					"filename": "stairs_fx_02",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 368,
-						"h": 127
+						"w": 38,
+						"h": 140
 					},
 					"spriteSourceSize": {
-						"x": 0,
-						"y": 7,
-						"w": 368,
-						"h": 120
+						"x": 3,
+						"y": 4,
+						"w": 33,
+						"h": 131
 					},
 					"frame": {
-						"x": 1444,
-						"y": 1894,
-						"w": 368,
-						"h": 120
-					}
-				},
-				{
-					"filename": "btn_play_off",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 156,
-						"h": 118
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 156,
-						"h": 118
-					},
-					"frame": {
-						"x": 1814,
-						"y": 1894,
-						"w": 156,
-						"h": 118
-					}
-				},
-				{
-					"filename": "ladders_front",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 749,
-						"h": 698
-					},
-					"spriteSourceSize": {
-						"x": 103,
-						"y": 191,
-						"w": 438,
-						"h": 386
-					},
-					"frame": {
-						"x": 1,
-						"y": 1457,
-						"w": 438,
-						"h": 386
-					}
-				},
-				{
-					"filename": "btn_play_on",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 156,
-						"h": 118
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 156,
-						"h": 118
-					},
-					"frame": {
-						"x": 441,
-						"y": 1117,
-						"w": 156,
-						"h": 118
-					}
-				},
-				{
-					"filename": "tick_mark_1_on",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 91,
-						"h": 91
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 91,
-						"h": 91
-					},
-					"frame": {
-						"x": 599,
-						"y": 1117,
-						"w": 91,
-						"h": 91
-					}
-				},
-				{
-					"filename": "super_txt",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 371,
-						"h": 99
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 371,
-						"h": 99
-					},
-					"frame": {
-						"x": 1,
-						"y": 1117,
-						"w": 371,
-						"h": 99
+						"x": 964,
+						"y": 1020,
+						"w": 33,
+						"h": 131
 					}
 				},
 				{
@@ -864,8 +843,8 @@
 						"h": 118
 					},
 					"frame": {
-						"x": 1,
-						"y": 1218,
+						"x": 1345,
+						"y": 1051,
 						"w": 342,
 						"h": 118
 					}
@@ -885,10 +864,31 @@
 						"h": 116
 					},
 					"frame": {
-						"x": 1,
-						"y": 1338,
+						"x": 999,
+						"y": 1143,
 						"w": 342,
 						"h": 116
+					}
+				},
+				{
+					"filename": "stairs_fx_03",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 140
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 33,
+						"h": 131
+					},
+					"frame": {
+						"x": 1689,
+						"y": 1051,
+						"w": 33,
+						"h": 131
 					}
 				},
 				{
@@ -906,31 +906,10 @@
 						"h": 116
 					},
 					"frame": {
-						"x": 345,
-						"y": 1237,
+						"x": 1343,
+						"y": 1171,
 						"w": 342,
 						"h": 116
-					}
-				},
-				{
-					"filename": "wood_support",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 139,
-						"h": 99
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 139,
-						"h": 99
-					},
-					"frame": {
-						"x": 345,
-						"y": 1355,
-						"w": 139,
-						"h": 99
 					}
 				},
 				{
@@ -948,8 +927,8 @@
 						"h": 116
 					},
 					"frame": {
-						"x": 486,
-						"y": 1390,
+						"x": 1687,
+						"y": 1184,
 						"w": 342,
 						"h": 116
 					}
@@ -969,10 +948,52 @@
 						"h": 116
 					},
 					"frame": {
-						"x": 441,
-						"y": 1508,
+						"x": 486,
+						"y": 1123,
 						"w": 342,
 						"h": 116
+					}
+				},
+				{
+					"filename": "stairs_fx_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 140
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 33,
+						"h": 131
+					},
+					"frame": {
+						"x": 441,
+						"y": 1143,
+						"w": 33,
+						"h": 131
+					}
+				},
+				{
+					"filename": "btn_play_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 156,
+						"h": 118
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 156,
+						"h": 118
+					},
+					"frame": {
+						"x": 830,
+						"y": 1153,
+						"w": 156,
+						"h": 118
 					}
 				},
 				{
@@ -990,10 +1011,136 @@
 						"h": 115
 					},
 					"frame": {
-						"x": 441,
-						"y": 1626,
+						"x": 476,
+						"y": 1241,
 						"w": 340,
 						"h": 115
+					}
+				},
+				{
+					"filename": "wood_support",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 139,
+						"h": 99
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 139,
+						"h": 99
+					},
+					"frame": {
+						"x": 988,
+						"y": 1261,
+						"w": 139,
+						"h": 99
+					}
+				},
+				{
+					"filename": "tick_mark_1_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 91,
+						"h": 91
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 91,
+						"h": 91
+					},
+					"frame": {
+						"x": 818,
+						"y": 1273,
+						"w": 91,
+						"h": 91
+					}
+				},
+				{
+					"filename": "stairs_fx_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 140
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 33,
+						"h": 131
+					},
+					"frame": {
+						"x": 911,
+						"y": 1273,
+						"w": 33,
+						"h": 131
+					}
+				},
+				{
+					"filename": "stairs_fx_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 140
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 33,
+						"h": 131
+					},
+					"frame": {
+						"x": 946,
+						"y": 1273,
+						"w": 33,
+						"h": 131
+					}
+				},
+				{
+					"filename": "stairs_fx_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 140
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 33,
+						"h": 131
+					},
+					"frame": {
+						"x": 1129,
+						"y": 1261,
+						"w": 33,
+						"h": 131
+					}
+				},
+				{
+					"filename": "stairs_fx_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 140
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 33,
+						"h": 131
+					},
+					"frame": {
+						"x": 981,
+						"y": 1362,
+						"w": 33,
+						"h": 131
 					}
 				}
 			]
@@ -1002,6 +1149,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:e5c6f5f586e2274c957139177a44b1ec:1de959669d3ebed25c2ecc84b2dec307:1bd3fbbbdaf54e41cf80e3e904578de4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:94e9d7217a9536c769d85c041e654b03:11d82213d181c6017a105cff79705bc7:1bd3fbbbdaf54e41cf80e3e904578de4$"
 	}
 }

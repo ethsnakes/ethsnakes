@@ -32,17 +32,15 @@ export class BoardScene extends Phaser.Scene {
 
     public create(): void {
 
-        this.add.text(-100, -100, "abcdefg", { fontFamily: "RussoOne", fontSize: 28, color: "#A6F834" });
-
         BoardScene.currentInstance = this;
 
         GameManager.setCurrentScene(this);
 
         BoardManager.init();
 
-        this.addAnimations();
+        this.add.image(GameConstants.GAME_WIDTH / 2, GameConstants.GAME_HEIGHT / 2, "background");
 
-        this.add.image(GameConstants.GAME_WIDTH / 2, GameConstants.GAME_HEIGHT / 2, "texture_atlas_1", "background");
+        this.addAnimations();
 
         this.dice = new DiceContainer(this);
         this.add.existing(this.dice);
@@ -190,6 +188,12 @@ export class BoardScene extends Phaser.Scene {
         this.anims.create({ 
             key: "ribbon", 
             frames: this.anims.generateFrameNames("texture_atlas_1", { prefix: "victory_result_txt_", start: 1, end: 10, zeroPad: 2}), 
+            frameRate: 12
+        });
+
+        this.anims.create({ 
+            key: "stairs_fx", 
+            frames: this.anims.generateFrameNames("texture_atlas_1", { prefix: "stairs_fx_", start: 1, end: 8, zeroPad: 2}), 
             frameRate: 12
         });
     }

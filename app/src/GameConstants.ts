@@ -16,16 +16,16 @@ export class GameConstants {
     public static readonly BOT = "bot";
     public static readonly PLAYER = "player";
 
-    public static readonly BOARD_ELEMENTS: {in: number, out: number, id: number} [] = [
+    public static readonly BOARD_ELEMENTS: {in: number, out: number, id: number, anims?: number[]} [] = [
 
         // ESCALERAS
-        {in: 4, out: 14, id: 1},
-        {in: 8, out: 32, id: 2},
-        {in: 20, out: 38, id: 3},
-        {in: 28, out: 84, id: 4},
-        {in: 40, out: 59, id: 5},
-        {in: 58, out: 83, id: 6},
-        {in: 72, out: 93, id: 7},
+        {in: 4, out: 14, id: 1, anims: [0]},
+        {in: 8, out: 32, id: 2, anims: [1]},
+        {in: 20, out: 38, id: 3, anims: [2]},
+        {in: 28, out: 84, id: 4, anims: [3, 4, 5]},
+        {in: 40, out: 59, id: 5, anims: [6]},
+        {in: 58, out: 83, id: 6, anims: [7]},
+        {in: 72, out: 93, id: 7, anims: [8]},
         
         // serpientes
         {in: 15, out: 3, id: 5},

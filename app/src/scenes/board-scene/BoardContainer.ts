@@ -2,6 +2,7 @@ import { GameConstants } from "../../GameConstants";
 import { GameVars } from "../../GameVars";
 import { Chip } from "./Chip";
 import { Snake } from "./Snake";
+import { BoardScene } from "./BoardScene";
 
 export class BoardContainer extends Phaser.GameObjects.Container {
 
@@ -14,6 +15,7 @@ export class BoardContainer extends Phaser.GameObjects.Container {
     private woodSupport: Phaser.GameObjects.Image;
     private moves: number;
     private snakes: Snake[];
+    private laddersFx: Phaser.GameObjects.Sprite[];
 
     constructor(scene: Phaser.Scene) {
 
@@ -26,6 +28,7 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         this.scaleX = GameVars.scaleX;
         this.moves = 0;
         this.snakes = [];
+        this.laddersFx = [];
 
         this.woodSupport = new Phaser.GameObjects.Image(this.scene, -380, 250, "texture_atlas_1", "wood_support");
         this.add(this.woodSupport);
@@ -123,6 +126,18 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         snake.swallow();
     }
 
+    public playLadderFx(anims: number[]): void {
+
+        for (let i = 0; i < this.laddersFx.length; i++) {
+            for (let j = 0; j < anims.length; j++) {
+                if (anims[j] === i) {
+                    this.laddersFx[i].visible = true;
+                    this.laddersFx[i].anims.play("stairs_fx");
+                }
+            }
+        }
+    }
+
     private addSnakes(): void {
         
         for (let i = 1; i <= 8; i ++) {
@@ -130,6 +145,78 @@ export class BoardContainer extends Phaser.GameObjects.Container {
             this.add(snake);
 
             this.snakes.push(snake);
+        }
+    }
+
+    private addLaddersFx(): void {
+
+        let fx = new Phaser.GameObjects.Sprite(this.scene, 0, 237, "texture_atlas_1", "stairs_fx_01");
+        fx.angle = 70;
+        fx.visible = false;
+        BoardScene.currentInstance.add.existing(fx);
+        this.add(fx);
+        this.laddersFx.push(fx);
+
+        fx = new Phaser.GameObjects.Sprite(this.scene, 177, 168, "texture_atlas_1", "stairs_fx_01");
+        fx.angle = 18;
+        fx.visible = false;
+        BoardScene.currentInstance.add.existing(fx);
+        this.add(fx);
+        this.laddersFx.push(fx);
+
+        fx = new Phaser.GameObjects.Sprite(this.scene, -207, 150, "texture_atlas_1", "stairs_fx_01");
+        fx.angle = 42;
+        fx.visible = false;
+        BoardScene.currentInstance.add.existing(fx);
+        this.add(fx);
+        this.laddersFx.push(fx);
+
+        fx = new Phaser.GameObjects.Sprite(this.scene, 102, 70, "texture_atlas_1", "stairs_fx_01");
+        fx.angle = -34;
+        fx.visible = false;
+        BoardScene.currentInstance.add.existing(fx);
+        this.add(fx);
+        this.laddersFx.push(fx);
+
+        fx = new Phaser.GameObjects.Sprite(this.scene, 28, -40, "texture_atlas_1", "stairs_fx_01");
+        fx.angle = -34;
+        fx.visible = false;
+        BoardScene.currentInstance.add.existing(fx);
+        this.add(fx);
+        this.laddersFx.push(fx);
+
+        fx = new Phaser.GameObjects.Sprite(this.scene, -45, -150, "texture_atlas_1", "stairs_fx_01");
+        fx.angle = -34;
+        fx.visible = false;
+        BoardScene.currentInstance.add.existing(fx);
+        this.add(fx);
+        this.laddersFx.push(fx);
+
+        fx = new Phaser.GameObjects.Sprite(this.scene, -235, 30, "texture_atlas_1", "stairs_fx_01");
+        fx.angle = 25;
+        fx.visible = false;
+        BoardScene.currentInstance.add.existing(fx);
+        this.add(fx);
+        this.laddersFx.push(fx);
+
+        fx = new Phaser.GameObjects.Sprite(this.scene, -146, -120, "texture_atlas_1", "stairs_fx_01");
+        fx.angle = 0;
+        fx.visible = false;
+        BoardScene.currentInstance.add.existing(fx);
+        this.add(fx);
+        this.laddersFx.push(fx);
+
+        fx = new Phaser.GameObjects.Sprite(this.scene, 175, -210, "texture_atlas_1", "stairs_fx_01");
+        fx.angle = -24;
+        fx.visible = false;
+        BoardScene.currentInstance.add.existing(fx);
+        this.add(fx);
+        this.laddersFx.push(fx);
+
+        for (let i = 0; i < this.laddersFx.length; i ++) {
+            this.laddersFx[i].on("animationcomplete", () => {
+                this.laddersFx[i].visible = false;
+            }, this);
         }
     }
 

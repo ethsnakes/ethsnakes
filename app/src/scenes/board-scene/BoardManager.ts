@@ -73,7 +73,7 @@ export class BoardManager {
             BoardManager.matchOver(GameVars.currentTurn);
         } else {
 
-            let boardElement: {in: number, out: number, id: number} = null;
+            let boardElement: {in: number, out: number, id: number, anims?: number[]} = null;
 
             for (let i = 0; i < GameConstants.BOARD_ELEMENTS.length; i ++) {
                 if (GameConstants.BOARD_ELEMENTS[i].in === chip.cellIndex) {
@@ -87,8 +87,11 @@ export class BoardManager {
                 BoardManager.changeTurn();
 
             } else {
+
                 if (boardElement.out > chip.cellIndex) {
                     chip.moveInLadder(boardElement.out);
+
+                    BoardContainer.currentInstance.playLadderFx(boardElement.anims);
 
                     if (chip.isPlayer) {
                         BoardScene.currentInstance.hud.playerClimbsLadder();

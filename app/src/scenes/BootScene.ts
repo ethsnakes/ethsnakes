@@ -9,6 +9,11 @@ export class BootScene extends Phaser.Scene {
         super("BootScene");
     }
 
+    public preload(): void {
+
+        this.load.image("background", "assets/background.jpg");
+    }
+
     public create(): void {
 
         BootScene.currentInstance = this;

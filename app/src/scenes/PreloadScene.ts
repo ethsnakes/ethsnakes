@@ -1,8 +1,12 @@
 import { GameManager } from "../GameManager";
+import { GameConstants } from "../GameConstants";
+import { GameVars } from "../GameVars";
 
 export class PreloadScene extends Phaser.Scene {
 
     public static currentInstance: PreloadScene;
+
+    private progressBar: Phaser.GameObjects.Graphics;
 
     constructor() {
 
@@ -24,11 +28,25 @@ export class PreloadScene extends Phaser.Scene {
 
         GameManager.onGameAssetsLoaded();
     }
+
+    private updateLoadedPercentage(percentageLoaded: number): void {
+
+        this.progressBar.clear();
+        this.progressBar.fillStyle(0xFFFFFF);
+        this.progressBar.fillRect(0, GameConstants.GAME_HEIGHT - 12, percentageLoaded * GameConstants.GAME_WIDTH, 12);
+    }
+
     private composeScene(): void {
 
         this.add.text(-100, -100, "abcdefg", { fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: 28, color: "#A6F834" });
         this.add.text(-100, -50, "abcdefg", { fontFamily: "BladiTwo4F", fontSize: 28, color: "#A6F834" });
-        
+
+        this.add.image(GameConstants.GAME_WIDTH / 2, GameConstants.GAME_HEIGHT / 2, "background");
+       
+        const loadingText = this.add.text(10, GameConstants.GAME_HEIGHT - 55, "LOADING", {fontFamily: "BladiTwo4F", fontSize: "36px", color: "#FFFFFF", align: "center"});
+        loadingText.scaleX = GameVars.scaleX;
+       
+        this.progressBar = this.add.graphics();
     }
 
     private loadAssets(): void {
@@ -37,5 +55,7 @@ export class PreloadScene extends Phaser.Scene {
         this.load.atlas("texture_atlas_2", "assets/texture_atlas_2.png", "assets/texture_atlas_2.json");
         this.load.atlas("texture_atlas_3", "assets/texture_atlas_3.png", "assets/texture_atlas_3.json");
         this.load.atlas("texture_atlas_4", "assets/texture_atlas_4.png", "assets/texture_atlas_4.json");
+
+        this.load.on("progress", this.updateLoadedPercentage, this);
     }
 }

@@ -403,6 +403,26 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">texture_atlas_1/stairs_fx_01.png</key>
+            <key type="filename">texture_atlas_1/stairs_fx_02.png</key>
+            <key type="filename">texture_atlas_1/stairs_fx_03.png</key>
+            <key type="filename">texture_atlas_1/stairs_fx_04.png</key>
+            <key type="filename">texture_atlas_1/stairs_fx_05.png</key>
+            <key type="filename">texture_atlas_1/stairs_fx_06.png</key>
+            <key type="filename">texture_atlas_1/stairs_fx_07.png</key>
+            <key type="filename">texture_atlas_1/stairs_fx_08.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>10,35,19,70</rect>
+                <key>scale9Paddings</key>
+                <rect>10,35,19,70</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">texture_atlas_1/start_txt_01.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
