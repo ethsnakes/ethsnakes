@@ -4,10 +4,12 @@ import { GameVars } from "../../../GameVars";
 import { BoardManager } from "../BoardManager";
 import { GameManager } from "../../../GameManager";
 import { DevelopmentMenu } from "./DevelopmentMenu";
+import { AudioButton } from "./AudioButton";
 
 export class GUI extends Phaser.GameObjects.Container {
 
-    private settingsButton: Button;
+    private infoButton: Button;
+    private audioButton: AudioButton;
     private diceButton: Button;
     private addFundsButton: Button;
     private retrieveFundsButton: Button;
@@ -27,20 +29,25 @@ export class GUI extends Phaser.GameObjects.Container {
         this.playButton.onDown(this.onClickPlay, this);
         this.add(this.playButton);
 
-        this.addFundsButton = new Button(this.scene, 530, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
+        this.addFundsButton = new Button(this.scene, 510, 40, "texture_atlas_1", "btn_add_funds_off", "btn_add_funds_on");
         this.addFundsButton.scaleX = GameVars.scaleX;
         this.addFundsButton.onUp(this.onClickAddFunds, this);
         this.add(this.addFundsButton);
 
-        this.retrieveFundsButton = new Button(this.scene, 800, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
+        this.retrieveFundsButton = new Button(this.scene, 740, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
         this.retrieveFundsButton.scaleX = GameVars.scaleX;
         this.retrieveFundsButton.onUp(this.onClickRetrieveFunds, this);
         this.add(this.retrieveFundsButton);
 
-        this.settingsButton = new Button(this.scene, GameConstants.GAME_WIDTH - 40 * GameVars.scaleX, 40, "texture_atlas_1", "btn_settings_off", "btn_settings_on");
-        this.settingsButton.scaleX = GameVars.scaleX;
-        this.settingsButton.onUp(this.onClickSettings, this);
-        this.add(this.settingsButton);
+        this.infoButton = new Button(this.scene, GameConstants.GAME_WIDTH - 110 * GameVars.scaleX, 40, "texture_atlas_1", "btn_settings_off", "btn_settings_on");
+        this.infoButton.scaleX = GameVars.scaleX;
+        this.infoButton.onUp(this.onClickInfo, this);
+        this.add(this.infoButton);
+
+        this.audioButton = new AudioButton(this.scene);
+        this.audioButton.scaleX = GameVars.scaleX;
+        this.audioButton.setPosition(GameConstants.GAME_WIDTH - 40, 40);
+        this.add(this.audioButton);
 
         this.diceButton = new Button(this.scene, playButtonPosition.x, playButtonPosition.y, "texture_atlas_1", "btn_dice_off", "btn_dice_on");
         this.diceButton.scaleX = GameVars.scaleX;
@@ -141,7 +148,7 @@ export class GUI extends Phaser.GameObjects.Container {
         this.playButton.disableInteractive();
         this.addFundsButton.disableInteractive();
         this.retrieveFundsButton.disableInteractive();
-        this.settingsButton.disableInteractive();
+        this.infoButton.disableInteractive();
         this.diceButton.disableInteractive();
     }
 
@@ -150,7 +157,7 @@ export class GUI extends Phaser.GameObjects.Container {
         this.playButton.setInteractive();
         this.addFundsButton.setInteractive();
         this.retrieveFundsButton.disableInteractive();
-        this.settingsButton.setInteractive();
+        this.infoButton.setInteractive();
         this.diceButton.setInteractive();
     }
 
@@ -193,9 +200,9 @@ export class GUI extends Phaser.GameObjects.Container {
         GameManager.retrieveFunds();
     }
 
-    private onClickSettings(): void {
+    private onClickInfo(): void {
        
-        BoardManager.onClickSettings();
+        BoardManager.showInfoLayer();
     }
 
     private onClickDiceButton(): void {

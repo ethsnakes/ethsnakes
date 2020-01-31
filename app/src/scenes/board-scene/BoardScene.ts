@@ -4,12 +4,12 @@ import { HUD } from "./HUD";
 import { GameConstants } from "../../GameConstants";
 import { BoardContainer } from "./BoardContainer";
 import { BoardManager } from "./BoardManager";
-import { SettingsLayer } from "./layers/SettingsLayer";
 import { DiceContainer } from "./gui/DiceContainer";
 import { GameVars } from "../../GameVars";
 import { SelectBetLayer } from "./layers/SelectBetLayer";
 import { WaitingLayer } from "./layers/WaitingLayer";
 import { OutcomeLayer } from "./layers/OutcomeLayer";
+import { InfoLayer } from "./layers/InfoLayer";
 
 export class BoardScene extends Phaser.Scene {
 
@@ -19,7 +19,7 @@ export class BoardScene extends Phaser.Scene {
     public boardContainer: BoardContainer;
     public gui: GUI;
     
-    private settingsLayer: SettingsLayer;
+    private infoLayer: InfoLayer;
     private dice: DiceContainer;
     private selectBetLayer: SelectBetLayer;
     private waitingLayer: WaitingLayer;
@@ -122,15 +122,15 @@ export class BoardScene extends Phaser.Scene {
         this.boardContainer.moveChip();
     }
 
-    public showSettingsLayer(): void {
+    public showInfoLayer(): void {
 
-        this.settingsLayer = new SettingsLayer(this);
-        this.add.existing(this.settingsLayer);
+        this.infoLayer = new InfoLayer(this);
+        this.add.existing(this.infoLayer);
     }
 
-    public hideSettingsLayer(): void {
+    public hideInfoLayer(): void {
 
-        this.settingsLayer.destroy();
+        this.infoLayer.destroy();
     }
 
     public matchOver(): void {

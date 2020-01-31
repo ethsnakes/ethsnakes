@@ -39,18 +39,9 @@ export class Chip extends Phaser.GameObjects.Container {
 
         this.chip = new Phaser.GameObjects.Image(this.scene, 0, 0,  "texture_atlas_1", this.isPlayer ? "chip_player" : "chip_bot");
         this.add(this.chip);
-    }
-
-    public update(): void {
-
-        this.chip.setOrigin(.5, this.origY);
-    }
-
-    public mark(): void {
-
-        this.marked = true;
 
         this.marker = new Phaser.GameObjects.Image(this.scene, 0, -68, "texture_atlas_1", "arrow");
+        this.marker.visible = false;
         this.add(this.marker);
 
         this.scene.tweens.add({
@@ -63,11 +54,25 @@ export class Chip extends Phaser.GameObjects.Container {
         });
     }
 
+    public update(): void {
+
+        this.chip.setOrigin(.5, this.origY);
+    }
+
+    public mark(): void {
+
+        if (this.marked) {
+            return;
+        }
+
+        this.marked = true;
+        this.marker.visible = true;
+    }
+
     public unMark(): void {
 
         this.marked = false;
-
-        this.marker.destroy();
+        this.marker.visible = false;
     }
 
     public moveInLadder(goalCellIndex: number): void {

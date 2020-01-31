@@ -63,8 +63,18 @@ export class BoardManager {
         //
     }
 
-    public static onClickSettings(): void {
-        //
+    public static showInfoLayer(): void {
+
+        GameVars.paused = true;
+        
+        BoardScene.currentInstance.showInfoLayer();
+    }
+
+    public static hideInfoLayer(): void {
+
+        GameVars.paused = false;
+        
+        BoardScene.currentInstance.hideInfoLayer();
     }
 
     public static chipArrivedToItsPosition(chip: Chip): void {
@@ -113,20 +123,6 @@ export class BoardManager {
         BoardScene.currentInstance.moveChip();
     }
     
-    public static showSettingsLayer(): void {
-        
-        GameVars.paused = true;
-
-        BoardScene.currentInstance.showSettingsLayer();
-    }
-
-    public static hideSettingsLayer(): void {
-       
-        GameVars.paused = false;
-
-        BoardScene.currentInstance.showSettingsLayer();
-    }
-
     public static matchOver(winner: string): void {
 
         GameVars.matchOver = true;

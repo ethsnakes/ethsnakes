@@ -48,6 +48,8 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         const laddersFront = new Phaser.GameObjects.Image(this.scene, -4, -2, "texture_atlas_1", "ladders_front");
         this.add(laddersFront);
 
+        this.addLaddersFx();
+
         this.botChip = new Chip(this.scene, false);
         this.add(this.botChip);
 
