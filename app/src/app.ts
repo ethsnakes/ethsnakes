@@ -1,4 +1,5 @@
 import "phaser";
+import "howler";
 
 import { Game } from "./Game";
 import { GameConstants } from "./GameConstants";

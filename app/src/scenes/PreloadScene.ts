@@ -1,6 +1,7 @@
 import { GameManager } from "../GameManager";
 import { GameConstants } from "../GameConstants";
 import { GameVars } from "../GameVars";
+import { AudioManager } from "../AudioManager";
 
 export class PreloadScene extends Phaser.Scene {
 
@@ -26,7 +27,7 @@ export class PreloadScene extends Phaser.Scene {
 
         GameManager.setCurrentScene(this);
 
-        GameManager.onGameAssetsLoaded();
+        this.loadHowl();
     }
 
     private updateLoadedPercentage(percentageLoaded: number): void {
@@ -56,6 +57,22 @@ export class PreloadScene extends Phaser.Scene {
         this.load.atlas("texture_atlas_3", "assets/texture_atlas_3.png", "assets/texture_atlas_3.json");
         this.load.atlas("texture_atlas_4", "assets/texture_atlas_4.png", "assets/texture_atlas_4.json");
 
+        this.load.json("audiosprite", "assets/audio/audiosprite.json");
+        
         this.load.on("progress", this.updateLoadedPercentage, this);
+    }
+
+    private loadHowl(): void {
+
+        let json = this.cache.json.get("audiosprite");
+        json = JSON.parse(JSON.stringify(json).replace("urls", "src"));
+        json = JSON.parse(JSON.stringify(json).replace("../", ""));
+        json = JSON.parse(JSON.stringify(json).replace("../", ""));
+
+        AudioManager.howl = new Howl(json);
+
+        AudioManager.howl.on("load", function(): void {
+            GameManager.onGameAssetsLoaded();
+        });
     }
 }
