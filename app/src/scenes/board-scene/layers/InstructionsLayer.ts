@@ -1,10 +1,9 @@
-import { BoardScene } from "./../BoardScene";
 import { GameConstants } from "../../../GameConstants";
 import { GameVars } from "../../../GameVars";
 import { Button } from "../../../utils/Utils";
 import { BoardManager } from "../BoardManager";
 
-export class InfoLayer extends Phaser.GameObjects.Container {
+export class InstructionsLayer extends Phaser.GameObjects.Container {
 
     private scaledItemsContainer: Phaser.GameObjects.Container;
 
@@ -33,8 +32,8 @@ export class InfoLayer extends Phaser.GameObjects.Container {
         const base = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "layout_base");
         this.scaledItemsContainer.add(base);
 
-        const text = new Phaser.GameObjects.Text(this.scene, 0, -60, "The first player that reaches the end of the board wins.\n\nLaunch the dice to move your piece, if you get a 6 you'll get an extra turn.\n\nLadders will help you reach the top, but snakes will make you go down.", {fontFamily: "BladiTwo4F", fontSize: "22px", color: "#3f680c", align: "center"});
-        text.setOrigin(.5);
+        const text = new Phaser.GameObjects.Text(this.scene, 0, -60, "Roll your dice to move your piece. If you get a six you will earn an extra turn.\n\nLadders will help you reach the top, but watch out for the snakes!\n\nThe first player to reach the very last square on the board wins.", {fontFamily: "BladiTwo4F", fontSize: "22px", color: "#3f680c", align: "center"});
+       text.setOrigin(.5);
         text.setWordWrapWidth(500);
         this.scaledItemsContainer.add(text);
 

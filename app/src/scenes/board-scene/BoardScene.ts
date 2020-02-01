@@ -9,7 +9,7 @@ import { GameVars } from "../../GameVars";
 import { SelectBetLayer } from "./layers/SelectBetLayer";
 import { WaitingLayer } from "./layers/WaitingLayer";
 import { OutcomeLayer } from "./layers/OutcomeLayer";
-import { InfoLayer } from "./layers/InfoLayer";
+import { InstructionsLayer } from "./layers/InstructionsLayer";
 
 export class BoardScene extends Phaser.Scene {
 
@@ -19,7 +19,7 @@ export class BoardScene extends Phaser.Scene {
     public boardContainer: BoardContainer;
     public gui: GUI;
     
-    private infoLayer: InfoLayer;
+    private infoLayer: InstructionsLayer;
     private dice: DiceContainer;
     private selectBetLayer: SelectBetLayer;
     private waitingLayer: WaitingLayer;
@@ -124,7 +124,7 @@ export class BoardScene extends Phaser.Scene {
 
     public showInfoLayer(): void {
 
-        this.infoLayer = new InfoLayer(this);
+        this.infoLayer = new InstructionsLayer(this);
         this.add.existing(this.infoLayer);
     }
 
