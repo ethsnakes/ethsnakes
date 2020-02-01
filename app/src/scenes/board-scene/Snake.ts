@@ -63,7 +63,8 @@ export class Snake extends Phaser.GameObjects.Container {
     public swallow(): void {
 
         this.blinking = false;
-        this.tBlink = Date.now(); // para que no parpadee a media animacion
+        this.head.visible = false;
+        this.tBlink = Date.now() + 6e3; // para que no parpadee a media animacion
 
         this.snakeSprite.play("snake_swallow_" +  this.id);
     }
