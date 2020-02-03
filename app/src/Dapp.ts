@@ -3,8 +3,8 @@ import { BoardManager } from "./scenes/board-scene/BoardManager";
 
 const Web3 = require("web3");
 const Blockies = require("ethereum-blockies");
-const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLaddersMock.json");
-//const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLadders.json"); TODO CHANGE FOR THE MOCK
+//const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLaddersMock.json");
+const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLadders.json"); // TODO CHANGE FOR THE MOCK
 
 export class Dapp {
 
