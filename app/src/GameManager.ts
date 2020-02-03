@@ -11,7 +11,7 @@ export class GameManager {
     public static init(): void {  
 
         // para tener un valor cualquiera mientras desarrollamos
-        GameVars.bet = 0.2;
+        GameVars.bet = 0;
 
         if (GameVars.currentScene.sys.game.device.os.desktop) {
 
@@ -80,11 +80,6 @@ export class GameManager {
         GameVars.currentScene.scene.start("BoardScene");
     }
 
-    public static reset(): void {
-
-        GameVars.currentScene.scene.start("BoardScene");
-    }
-
     public static play(): void {
 
         BoardManager.resetBoard();
@@ -94,12 +89,14 @@ export class GameManager {
 
     public static replay(): void {
 
+        Dapp.currentInstance.getBalance();
+
         GameManager.enterBoardScene();
     }
 
     public static onPlayerSelectedBet(value: number): void {
 
-        BoardScene.currentInstance.showWaitingLayer();
+        BoardScene.currentInstance.onPlayerSelectedBet();
 
         GameVars.dapp.play(value);
     }

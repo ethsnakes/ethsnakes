@@ -55,6 +55,8 @@ export class BoardScene extends Phaser.Scene {
         this.gui = new GUI(this);
         this.add.existing(this.gui);
 
+        this.cameras.main.fadeIn(300, 40, 49, 78);
+
         // TODO: BORRAR ESTO
         // this.removeWaitingLayer();
         AudioManager.playSound("music", true, .5);
@@ -83,7 +85,7 @@ export class BoardScene extends Phaser.Scene {
         this.add.existing(this.selectBetLayer);
     }
 
-    public showWaitingLayer(): void {
+    public onPlayerSelectedBet(): void {
 
         this.selectBetLayer.destroy();
 
@@ -96,6 +98,8 @@ export class BoardScene extends Phaser.Scene {
         if (this.waitingLayer) {
             this.waitingLayer.destroy();
             this.waitingLayer = null;
+
+            this.hud.onTransactionExecuted();
         }
     }
 

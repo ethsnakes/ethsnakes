@@ -30,6 +30,11 @@ export class HUD extends Phaser.GameObjects.Container {
         this.balanceContainer.onBalanceAvailable();
     }
 
+    public onTransactionExecuted(): void {
+
+        this.balanceContainer.onTransactionExecuted();
+    }
+
     public playerClimbsLadder(): void {
 
         const superImage = new Phaser.GameObjects.Image(this.scene, GameConstants.GAME_WIDTH * 3 / 2, GameConstants.GAME_HEIGHT / 2, "texture_atlas_1", "super_txt");
