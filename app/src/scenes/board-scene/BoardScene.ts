@@ -93,7 +93,7 @@ export class BoardScene extends Phaser.Scene {
         this.add.existing(this.waitingLayer);
     }
 
-    public removeWaitingLayer(): void {
+    public onTransactionExecuted(): void {
 
         if (this.waitingLayer) {
             this.waitingLayer.destroy();

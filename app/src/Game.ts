@@ -1,4 +1,5 @@
 import { AudioManager } from "./AudioManager";
+import { GameVars } from "./GameVars";
 
 export class Game extends Phaser.Game {
 
@@ -15,7 +16,9 @@ export class Game extends Phaser.Game {
 
         super.onBlur();
 
-        AudioManager.onBlur();
+        if (!GameVars.transactionOnCourse) {
+            AudioManager.onBlur();
+        } 
     }
 
     public onFocus(): void {

@@ -12,6 +12,7 @@ export class GameManager {
 
         // para tener un valor cualquiera mientras desarrollamos
         GameVars.bet = 0;
+        GameVars.transactionOnCourse = false;
 
         if (GameVars.currentScene.sys.game.device.os.desktop) {
 
@@ -62,6 +63,8 @@ export class GameManager {
 
         GameVars.balance = Number(balance);
 
+        GameVars.transactionOnCourse = false;
+
         BoardScene.currentInstance.onBalanceAvailable();
     }
 
@@ -96,6 +99,8 @@ export class GameManager {
 
     public static onPlayerSelectedBet(value: number): void {
 
+        GameVars.transactionOnCourse = true;
+
         BoardScene.currentInstance.onPlayerSelectedBet();
 
         GameVars.dapp.play(value);
@@ -103,7 +108,9 @@ export class GameManager {
 
     public static onTransactionConfirmed(): void {
 
-        BoardScene.currentInstance.removeWaitingLayer();
+        GameVars.transactionOnCourse = false;
+
+        BoardScene.currentInstance.onTransactionExecuted();
     }
 
     public static onSeedAvailable(seed: string): void {
@@ -120,6 +127,8 @@ export class GameManager {
     }
 
     public static addFunds(): void {
+
+        GameVars.transactionOnCourse = true;
         
         GameVars.dapp.addPlayerFunds();
     }

@@ -41,7 +41,7 @@ export class BalanceContainer extends Phaser.GameObjects.Container {
 
         this.balanceLabel.text = GameVars.balance.toString() + " ETH";
 
-        this.scene.time.delayedCall(2000, function(): void {
+        this.scene.time.delayedCall(3000, function(): void {
 
             const newBalance = Math.floor((GameVars.balance + 2 * GameVars.bet) * 100) / 100;
 
