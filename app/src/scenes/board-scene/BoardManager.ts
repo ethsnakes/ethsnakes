@@ -92,6 +92,12 @@ export class BoardManager {
                 }
             }
 
+            if (GameVars.diceResult === 6) {
+                if (chip.isPlayer) {
+                    BoardScene.currentInstance.hud.extraDice();
+                }
+            }
+
             if (boardElement === null) {
 
                 BoardManager.changeTurn();
@@ -134,7 +140,9 @@ export class BoardManager {
 
     private static changeTurn(): void {
 
-        GameVars.currentTurn = GameVars.currentTurn === GameConstants.PLAYER ? GameConstants.BOT : GameConstants.PLAYER;
+        if (GameVars.diceResult !== 6) {
+            GameVars.currentTurn = GameVars.currentTurn === GameConstants.PLAYER ? GameConstants.BOT : GameConstants.PLAYER;
+        }
 
         if (GameVars.currentTurn === GameConstants.BOT) {
             BoardManager.rollDice();

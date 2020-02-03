@@ -125,7 +125,7 @@ export class Dapp {
         let self = this;
         self.contract.methods.randomDice(seed, turn).call()
             .then(function(result) {
-                console.log("DICE RESULT: " + result);
+                // console.log("DICE RESULT: " + result);
                 BoardManager.onDiceResultFetched(parseInt(result));
             });
     } 
