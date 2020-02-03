@@ -2,6 +2,7 @@ import { GameConstants } from "../../../GameConstants";
 import { GameVars } from "../../../GameVars";
 import { BoardScene } from "../BoardScene";
 import { BoardManager } from "../BoardManager";
+import { AudioManager } from "../../../AudioManager";
 
 export class DiceContainer extends Phaser.GameObjects.Container {
 
@@ -83,6 +84,8 @@ export class DiceContainer extends Phaser.GameObjects.Container {
 
             }, [], this);
         }
+
+        AudioManager.playSound("dice_" + Math.ceil(Math.random() * 3));
     }
 
     public matchOver(): void {

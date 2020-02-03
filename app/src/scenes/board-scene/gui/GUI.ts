@@ -5,6 +5,7 @@ import { BoardManager } from "../BoardManager";
 import { GameManager } from "../../../GameManager";
 import { DevelopmentMenu } from "./DevelopmentMenu";
 import { AudioButton } from "./AudioButton";
+import { AudioManager } from "../../../AudioManager";
 
 export class GUI extends Phaser.GameObjects.Container {
 
@@ -15,12 +16,14 @@ export class GUI extends Phaser.GameObjects.Container {
     private retrieveFundsButton: Button;
     private playButton: Button;
     private diceButtonTween: Phaser.Tweens.Tween;
+    private addFundsTween: Phaser.Tweens.Tween;
   
     constructor(scene: Phaser.Scene) {
 
         super(scene);
 
         this.visible = false;
+        this.addFundsTween = null;
 
         const playButtonPosition = {x: GameConstants.GAME_WIDTH - 90 * GameVars.scaleX, y:  GameConstants.GAME_HEIGHT - 110};
 
@@ -67,9 +70,9 @@ export class GUI extends Phaser.GameObjects.Container {
 
         if (GameVars.balance === 0) {
 
-            this.scene.tweens.add({
+            this.addFundsTween = this.scene.tweens.add({
                 targets: this.addFundsButton,
-                scaleX: 1.05,
+                scaleX: 1.05 * GameVars.scaleX,
                 scaleY: 1.05,
                 ease: Phaser.Math.Easing.Cubic.Out,
                 duration: 350,
@@ -84,6 +87,22 @@ export class GUI extends Phaser.GameObjects.Container {
             this.playButton.alpha = .35;
 
         } else {
+
+            if (this.addFundsTween) {
+                this.addFundsTween.stop();
+                this.addFundsTween = null;
+                this.addFundsButton.setScale(GameVars.scaleX, 1);
+            }
+
+            if (this.retrieveFundsButton.alpha === .35) {
+                this.retrieveFundsButton.setInteractive();
+                this.retrieveFundsButton.alpha = 1;
+            }
+
+            if (this.playButton.alpha === .35) {
+                this.playButton.setInteractive();
+                this.playButton.alpha = 1;
+            }
 
             this.scene.tweens.add({
                         targets: this.playButton,
@@ -188,21 +207,29 @@ export class GUI extends Phaser.GameObjects.Container {
         this.playButton.visible = false;
         
         GameManager.play();
+
+        AudioManager.playSound("click");
     }
 
     private onClickAddFunds(): void {
 
         GameManager.addFunds();
+
+        AudioManager.playSound("click");
     }
 
     private onClickRetrieveFunds(): void {
 
         GameManager.retrieveFunds();
+
+        AudioManager.playSound("click");
     }
 
     private onClickInfo(): void {
        
         BoardManager.showInfoLayer();
+
+        AudioManager.playSound("click");
     }
 
     private onClickDiceButton(): void {
@@ -231,5 +258,7 @@ export class GUI extends Phaser.GameObjects.Container {
         });
        
         BoardManager.rollDice();
+
+        AudioManager.playSound("click");
     }
 }

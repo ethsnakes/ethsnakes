@@ -41,5 +41,7 @@ export class AudioButton extends Phaser.GameObjects.Container {
             this.audioOnButton.visible = true;
             this.audioOffButton.visible = false;
         }
+
+        AudioManager.playSound("click");
     }
 }

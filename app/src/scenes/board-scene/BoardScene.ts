@@ -10,6 +10,7 @@ import { SelectBetLayer } from "./layers/SelectBetLayer";
 import { WaitingLayer } from "./layers/WaitingLayer";
 import { OutcomeLayer } from "./layers/OutcomeLayer";
 import { InstructionsLayer } from "./layers/InstructionsLayer";
+import { AudioManager } from "../../AudioManager";
 
 export class BoardScene extends Phaser.Scene {
 
@@ -56,6 +57,7 @@ export class BoardScene extends Phaser.Scene {
 
         // TODO: BORRAR ESTO
         // this.removeWaitingLayer();
+        AudioManager.playSound("music", true, .5);
     }
 
     public update(): void {

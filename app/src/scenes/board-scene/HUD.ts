@@ -3,6 +3,7 @@ import { GameConstants } from "../../GameConstants";
 import { BoardScene } from "./BoardScene";
 import { BoardManager } from "./BoardManager";
 import { GameManager } from "../../GameManager";
+import { AudioManager } from "../../AudioManager";
 
 export class HUD extends Phaser.GameObjects.Container {
 
@@ -62,11 +63,52 @@ export class HUD extends Phaser.GameObjects.Container {
                     onComplete: function(): void {
                         superImage.destroy();
                     },
-                    onCompleteScope: this
+                    onCompleteScope: this,
+                    onStart: function (): void {
+                        AudioManager.playSound("text_out");
+                    },
+                    onStartScope: this
                 });
             },
             onCompleteScope: this
         });
+
+        AudioManager.playSound("text_in");
+    }
+
+    public extraDice(): void {
+
+        const extraDiceImage = new Phaser.GameObjects.Image(this.scene, GameConstants.GAME_WIDTH / 2, GameConstants.GAME_HEIGHT / 2, "texture_atlas_1", "extra_dice_txt");
+        extraDiceImage.scaleX = GameVars.scaleX;
+        BoardScene.currentInstance.add.existing(extraDiceImage);
+
+        this.scene.tweens.add({
+            targets: extraDiceImage,
+            x: GameConstants.GAME_WIDTH / 2,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            duration: 500,
+            onComplete: function(): void {
+                this.scene.tweens.add({
+                    targets: extraDiceImage,
+                    x: -GameConstants.GAME_WIDTH / 2,
+                    ease: Phaser.Math.Easing.Cubic.Out,
+                    delay: 750,
+                    duration: 500,
+                    onComplete: function(): void {
+                        extraDiceImage.destroy();
+                    },
+                    onCompleteScope: this,
+                    onStart: function (): void {
+                        AudioManager.playSound("text_out");
+                    },
+                    onStartScope: this
+                });
+            },
+            onCompleteScope: this
+        });
+
+        AudioManager.playSound("six");
+        AudioManager.playSound("text_in");
     }
 
     public startMatch(): void {
@@ -94,10 +136,16 @@ export class HUD extends Phaser.GameObjects.Container {
                         turnImg.destroy();
                         BoardManager.onTurnMessageRemoved();
                     },
-                    onCompleteScope: this
+                    onCompleteScope: this,
+                    onStart: function (): void {
+                        AudioManager.playSound("text_out");
+                    },
+                    onStartScope: this
                 });
             },
             onCompleteScope: this
         });
+
+        AudioManager.playSound("text_in");
     }
 }

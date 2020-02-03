@@ -3,6 +3,7 @@ import { GameVars } from "../../../GameVars";
 import { Button } from "../../../utils/Utils";
 import { GameManager } from "../../../GameManager";
 import { BetSelectionButtonsContainer } from "./BetSelectionButtonsContainer";
+import { AudioManager } from "../../../AudioManager";
 
 export class SelectBetLayer extends Phaser.GameObjects.Container {
 
@@ -58,10 +59,14 @@ export class SelectBetLayer extends Phaser.GameObjects.Container {
         }
 
         this.betSelectionButtonsContainer.betSelected(value);
+
+        AudioManager.playSound("click");
     }
 
     private onClickPlay(): void {
 
         GameManager.onPlayerSelectedBet(this.selectedBetValue);
+
+        AudioManager.playSound("click");
     }
 }

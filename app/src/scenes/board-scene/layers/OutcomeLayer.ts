@@ -3,6 +3,7 @@ import { GameConstants } from "../../../GameConstants";
 import { BoardScene } from "../BoardScene";
 import { Button } from "../../../utils/Utils";
 import { GameManager } from "../../../GameManager";
+import { AudioManager } from "../../../AudioManager";
 
 export class OutcomeLayer extends Phaser.GameObjects.Container {
 
@@ -47,6 +48,8 @@ export class OutcomeLayer extends Phaser.GameObjects.Container {
 
             ribbon.play("ribbon");
 
+            AudioManager.playSound("victory");
+
         } else {
 
             const shadow = new Phaser.GameObjects.Image(this.scene, 0, 0, "texture_atlas_1", "defeat_result_01");
@@ -67,6 +70,8 @@ export class OutcomeLayer extends Phaser.GameObjects.Container {
                 yoyo: true,
                 repeat: -1
             });
+
+            AudioManager.playSound("defeat");
         }
 
         this.alpha = 0;
@@ -105,5 +110,7 @@ export class OutcomeLayer extends Phaser.GameObjects.Container {
     private onClickReplay(): void {
         
         GameManager.replay();
+
+        AudioManager.playSound("click");
     }
 }

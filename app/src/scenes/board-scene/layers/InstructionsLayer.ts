@@ -2,6 +2,7 @@ import { GameConstants } from "../../../GameConstants";
 import { GameVars } from "../../../GameVars";
 import { Button } from "../../../utils/Utils";
 import { BoardManager } from "../BoardManager";
+import { AudioManager } from "../../../AudioManager";
 
 export class InstructionsLayer extends Phaser.GameObjects.Container {
 
@@ -33,7 +34,7 @@ export class InstructionsLayer extends Phaser.GameObjects.Container {
         this.scaledItemsContainer.add(base);
 
         const text = new Phaser.GameObjects.Text(this.scene, 0, -60, "Roll your dice to move your piece. If you get a six you will earn an extra turn.\n\nLadders will help you reach the top, but watch out for the snakes!\n\nThe first player to reach the very last square on the board wins.", {fontFamily: "BladiTwo4F", fontSize: "22px", color: "#3f680c", align: "center"});
-       text.setOrigin(.5);
+        text.setOrigin(.5);
         text.setWordWrapWidth(500);
         this.scaledItemsContainer.add(text);
 
@@ -57,5 +58,7 @@ export class InstructionsLayer extends Phaser.GameObjects.Container {
     private onOkDown(): void {
 
         BoardManager.hideInfoLayer();
+
+        AudioManager.playSound("click");
     }
 }

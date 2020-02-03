@@ -1,5 +1,6 @@
 import { BoardContainer } from "./BoardContainer";
 import { BoardManager } from "./BoardManager";
+import { AudioManager } from "../../AudioManager";
 
 export class Chip extends Phaser.GameObjects.Container {
 
@@ -96,6 +97,8 @@ export class Chip extends Phaser.GameObjects.Container {
             onComplete: BoardManager.chipArrivedToItsFinalPosition,
             onCompleteScope: BoardManager
         });
+
+        AudioManager.playSound("ladder_up");
     }
 
     public moveInSnake(goalCellIndex: number): void {
@@ -120,11 +123,17 @@ export class Chip extends Phaser.GameObjects.Container {
                     duration: 900,
                     delay: 600,
                     onComplete: BoardManager.chipArrivedToItsFinalPosition,
-                    onCompleteScope: BoardManager
+                    onCompleteScope: BoardManager,
+                    onStart: () => {
+                        AudioManager.playSound("token_reappears_snakes_ass");
+                    },
+                    onStartScope: this
                 });
             },
             onCompleteScope: this
         });
+
+        AudioManager.playSound("snake_down");
     }
 
     public forcePosition(goalCellIndex: number): void {
@@ -178,6 +187,8 @@ export class Chip extends Phaser.GameObjects.Container {
             duration: 125, 
             yoyo: true
         });
+
+        AudioManager.playSound("token_jumps");
     }
 
     private onTweeenComplete(): void {
@@ -189,6 +200,8 @@ export class Chip extends Phaser.GameObjects.Container {
         } else {
             BoardManager.chipArrivedToItsPosition(this);
         }
+
+        AudioManager.playSound("token_lands");
     }
 
     private getCellPosition(i: number): {x: number, y: number} {
