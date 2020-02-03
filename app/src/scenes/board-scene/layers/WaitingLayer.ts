@@ -1,6 +1,5 @@
 import { GameConstants } from "../../../GameConstants";
 import { GameVars } from "../../../GameVars";
-import { GameManager } from "../../../GameManager";
 
 export class WaitingLayer extends Phaser.GameObjects.Container {
 

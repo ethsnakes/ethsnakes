@@ -82,6 +82,13 @@ export class BoardContainer extends Phaser.GameObjects.Container {
         }
     }
 
+    public onTurnChanged(): void {
+
+        if (GameVars.currentTurn === GameConstants.PLAYER) {
+            this.playerChip.mark();
+        } 
+    }
+
     public moveChip(): void {
 
         let i: number;

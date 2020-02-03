@@ -1,6 +1,6 @@
 import { GameManager } from "../../GameManager";
 import { GUI } from "./gui/GUI";
-import { HUD } from "./HUD";
+import { HUD } from "./hud/HUD";
 import { GameConstants } from "../../GameConstants";
 import { BoardContainer } from "./BoardContainer";
 import { BoardManager } from "./BoardManager";
@@ -112,6 +112,8 @@ export class BoardScene extends Phaser.Scene {
     public onTurnChanged(): void {
 
         this.gui.onTurnChanged();
+
+        this.boardContainer.onTurnChanged();
     }
 
     public rollDice(): void {
@@ -139,7 +141,7 @@ export class BoardScene extends Phaser.Scene {
         
         this.dice.matchOver();
         this.gui.matchOver();
-
+    
         this.outcomeLayer = new OutcomeLayer(this);
         this.add.existing(this.outcomeLayer);
     }

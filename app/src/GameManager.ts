@@ -10,7 +10,8 @@ export class GameManager {
 
     public static init(): void {  
 
-        GameVars.bet = 0;
+        // para tener un valor cualquiera mientras desarrollamos
+        GameVars.bet = 0.2;
 
         if (GameVars.currentScene.sys.game.device.os.desktop) {
 
