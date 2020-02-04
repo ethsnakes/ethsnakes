@@ -2,7 +2,7 @@ import { Button } from "../../../utils/Utils";
 import { GameManager } from "../../../GameManager";
 import { GameVars } from "../../../GameVars";
 
-export class BetSelectionButton extends Phaser.GameObjects.Container {
+export class AmountSelectionButton extends Phaser.GameObjects.Container {
 
     public value: number;
     
@@ -24,9 +24,9 @@ export class BetSelectionButton extends Phaser.GameObjects.Container {
         this.onButton.onUp(this.onClickButton, this);
         this.add(this.onButton);
 
-        const infoLabelBet = new Phaser.GameObjects.Text(this.scene, 0, 80, GameVars.formatNumber(value) + " ETH", {fontFamily: "BladiTwo4F", fontSize: "27px", color: "#19D3C5"});
-        infoLabelBet.setOrigin(.5);
-        this.add(infoLabelBet);
+        const amountLabel = new Phaser.GameObjects.Text(this.scene, 0, 80, GameVars.formatNumber(value) + " ETH", {fontFamily: "BladiTwo4F", fontSize: "27px", color: "#19D3C5"});
+        amountLabel.setOrigin(.5);
+        this.add(amountLabel);
     }
 
     public disableButton(): void {

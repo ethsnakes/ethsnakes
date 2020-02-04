@@ -213,7 +213,7 @@ export class GUI extends Phaser.GameObjects.Container {
 
     private onClickAddFunds(): void {
 
-        GameManager.addFunds();
+        GameManager.onClickAddFunds();
 
         AudioManager.playSound("click");
     }

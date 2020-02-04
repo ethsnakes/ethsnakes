@@ -6,7 +6,7 @@ import { BoardContainer } from "./BoardContainer";
 import { BoardManager } from "./BoardManager";
 import { DiceContainer } from "./gui/DiceContainer";
 import { GameVars } from "../../GameVars";
-import { SelectBetLayer } from "./layers/SelectBetLayer";
+import { AmountSelectionLayer } from "./layers/AmountSelectionLayer";
 import { WaitingLayer } from "./layers/WaitingLayer";
 import { OutcomeLayer } from "./layers/OutcomeLayer";
 import { InstructionsLayer } from "./layers/InstructionsLayer";
@@ -22,7 +22,7 @@ export class BoardScene extends Phaser.Scene {
     
     private infoLayer: InstructionsLayer;
     private dice: DiceContainer;
-    private selectBetLayer: SelectBetLayer;
+    private amountSelectionLayer: AmountSelectionLayer;
     private waitingLayer: WaitingLayer;
     private outcomeLayer: OutcomeLayer;
     
@@ -73,21 +73,35 @@ export class BoardScene extends Phaser.Scene {
 
     public onBalanceAvailable(): void {
 
+        if (this.amountSelectionLayer) {
+            this.amountSelectionLayer.destroy();
+            this.amountSelectionLayer = null;
+            this.gui.enableButtons();
+        }
+
         this.hud.onBalanceAvailable();
         this.gui.onBalanceAvailable();
+    }
+
+    public showFundsAmountToAddLayer(): void {
+
+        this.gui.disableButtons();
+
+        this.amountSelectionLayer = new AmountSelectionLayer(this);
+        this.add.existing(this.amountSelectionLayer);
     }
 
     public showSelectBetLayer(): void {
 
         this.gui.disableButtons();
 
-        this.selectBetLayer = new SelectBetLayer(this);
-        this.add.existing(this.selectBetLayer);
+        this.amountSelectionLayer = new AmountSelectionLayer(this);
+        this.add.existing(this.amountSelectionLayer);
     }
 
     public onPlayerSelectedBet(): void {
 
-        this.selectBetLayer.destroy();
+        this.amountSelectionLayer.destroy();
 
         this.waitingLayer = new WaitingLayer(this);
         this.add.existing(this.waitingLayer);

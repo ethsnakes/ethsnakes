@@ -4,7 +4,7 @@
 export class GameConstants {
 
     public static readonly VERSION = "0.0";
-    public static readonly DEVELOPMENT = true;
+    public static readonly DEVELOPMENT = false;
     public static readonly DEBUG_MODE = false;
     public static readonly VERBOSE = false;
 

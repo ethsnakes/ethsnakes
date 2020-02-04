@@ -2,7 +2,7 @@ import { GameConstants } from "./GameConstants";
 import { GameVars } from "./GameVars";
 import { BoardScene } from "./scenes/board-scene/BoardScene";
 import { BoardManager } from "./scenes/board-scene/BoardManager";
-import { SelectBetLayer } from "./scenes/board-scene/layers/SelectBetLayer";
+import { AmountSelectionLayer } from "./scenes/board-scene/layers/AmountSelectionLayer";
 import { Dapp } from "./Dapp";
 import { AudioManager } from "./AudioManager";
 
@@ -13,6 +13,7 @@ export class GameManager {
         // para tener un valor cualquiera mientras desarrollamos
         GameVars.bet = 0;
         GameVars.transactionOnCourse = false;
+        GameVars.addingFunds = false;
 
         if (GameVars.currentScene.sys.game.device.os.desktop) {
 
@@ -97,13 +98,20 @@ export class GameManager {
         GameManager.enterBoardScene();
     }
 
-    public static onPlayerSelectedBet(value: number): void {
+    public static onPlayerSelectedAmount(value: number): void {
 
         GameVars.transactionOnCourse = true;
 
-        BoardScene.currentInstance.onPlayerSelectedBet();
+        if (GameVars.addingFunds) {
 
-        GameVars.dapp.play(value);
+            GameVars.addingFunds = false;
+            GameVars.dapp.addPlayerFunds(value.toString());
+
+        } else {
+
+            BoardScene.currentInstance.onPlayerSelectedBet();
+            GameVars.dapp.play(value);
+        }
     }
 
     public static onTransactionConfirmed(): void {
@@ -126,18 +134,18 @@ export class GameManager {
         //
     }
 
-    public static addFunds(): void {
+    public static onClickAddFunds(): void {
 
-        GameVars.transactionOnCourse = true;
-        
-        GameVars.dapp.addPlayerFunds();
+        GameVars.addingFunds = true;
+
+        BoardScene.currentInstance.showFundsAmountToAddLayer();
     }
 
     public static onBetSelected(value: number): void {
 
         GameVars.bet = value;
 
-        SelectBetLayer.currentInstance.betSelected(value);
+        AmountSelectionLayer.currentInstance.betSelected(value);
     }
 
     public static withdrawFunds(): void {

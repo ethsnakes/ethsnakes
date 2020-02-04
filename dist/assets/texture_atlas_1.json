@@ -724,6 +724,27 @@
 					}
 				},
 				{
+					"filename": "start_txt_01",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 535,
+						"h": 98
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 535,
+						"h": 98
+					},
+					"frame": {
+						"x": 1,
+						"y": 653,
+						"w": 535,
+						"h": 98
+					}
+				},
+				{
 					"filename": "wood_support",
 					"rotated": false,
 					"trimmed": false,
@@ -766,108 +787,24 @@
 					}
 				},
 				{
-					"filename": "start_txt_01",
+					"filename": "tutorial_img",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 528,
-						"h": 195
+						"w": 120,
+						"h": 122
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 528,
-						"h": 195
+						"w": 120,
+						"h": 122
 					},
 					"frame": {
-						"x": 1,
-						"y": 653,
-						"w": 528,
-						"h": 195
-					}
-				},
-				{
-					"filename": "stairs_fx_03",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 38,
-						"h": 140
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 4,
-						"w": 33,
-						"h": 131
-					},
-					"frame": {
-						"x": 531,
-						"y": 653,
-						"w": 33,
-						"h": 131
-					}
-				},
-				{
-					"filename": "btn_sound_off_on",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 63,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 63,
-						"h": 64
-					},
-					"frame": {
-						"x": 566,
+						"x": 538,
 						"y": 733,
-						"w": 63,
-						"h": 64
-					}
-				},
-				{
-					"filename": "stairs_fx_04",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 38,
-						"h": 140
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 4,
-						"w": 33,
-						"h": 131
-					},
-					"frame": {
-						"x": 531,
-						"y": 786,
-						"w": 33,
-						"h": 131
-					}
-				},
-				{
-					"filename": "ladders_back",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 749,
-						"h": 698
-					},
-					"spriteSourceSize": {
-						"x": 101,
-						"y": 79,
-						"w": 507,
-						"h": 557
-					},
-					"frame": {
-						"x": 1,
-						"y": 850,
-						"w": 507,
-						"h": 557
+						"w": 120,
+						"h": 122
 					}
 				},
 				{
@@ -885,115 +822,31 @@
 						"h": 68
 					},
 					"frame": {
-						"x": 631,
+						"x": 660,
 						"y": 750,
 						"w": 136,
 						"h": 68
 					}
 				},
 				{
-					"filename": "btn_sound_on",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 63,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 63,
-						"h": 64
-					},
-					"frame": {
-						"x": 566,
-						"y": 799,
-						"w": 63,
-						"h": 64
-					}
-				},
-				{
-					"filename": "stairs_fx_05",
+					"filename": "ladders_back",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 38,
-						"h": 140
+						"w": 749,
+						"h": 698
 					},
 					"spriteSourceSize": {
-						"x": 3,
-						"y": 4,
-						"w": 33,
-						"h": 131
+						"x": 90,
+						"y": 79,
+						"w": 518,
+						"h": 557
 					},
 					"frame": {
-						"x": 769,
-						"y": 750,
-						"w": 33,
-						"h": 131
-					}
-				},
-				{
-					"filename": "btn_ok_on",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 136,
-						"h": 68
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 136,
-						"h": 68
-					},
-					"frame": {
-						"x": 631,
-						"y": 820,
-						"w": 136,
-						"h": 68
-					}
-				},
-				{
-					"filename": "btn_sound_on_on",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 63,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 63,
-						"h": 64
-					},
-					"frame": {
-						"x": 566,
-						"y": 865,
-						"w": 63,
-						"h": 64
-					}
-				},
-				{
-					"filename": "stairs_fx_06",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 38,
-						"h": 140
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 4,
-						"w": 33,
-						"h": 131
-					},
-					"frame": {
-						"x": 510,
-						"y": 919,
-						"w": 33,
-						"h": 131
+						"x": 1,
+						"y": 753,
+						"w": 518,
+						"h": 557
 					}
 				},
 				{
@@ -1012,13 +865,13 @@
 					},
 					"frame": {
 						"x": 1,
-						"y": 1409,
+						"y": 1312,
 						"w": 469,
 						"h": 476
 					}
 				},
 				{
-					"filename": "stairs_fx_07",
+					"filename": "stairs_fx_03",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -1033,28 +886,7 @@
 					},
 					"frame": {
 						"x": 1,
-						"y": 1887,
-						"w": 33,
-						"h": 131
-					}
-				},
-				{
-					"filename": "stairs_fx_08",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 38,
-						"h": 140
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 4,
-						"w": 33,
-						"h": 131
-					},
-					"frame": {
-						"x": 36,
-						"y": 1887,
+						"y": 1790,
 						"w": 33,
 						"h": 131
 					}
@@ -1074,10 +906,115 @@
 						"h": 123
 					},
 					"frame": {
-						"x": 71,
-						"y": 1887,
+						"x": 1,
+						"y": 1923,
 						"w": 367,
 						"h": 123
+					}
+				},
+				{
+					"filename": "stairs_fx_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 140
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 33,
+						"h": 131
+					},
+					"frame": {
+						"x": 36,
+						"y": 1790,
+						"w": 33,
+						"h": 131
+					}
+				},
+				{
+					"filename": "stairs_fx_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 140
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 33,
+						"h": 131
+					},
+					"frame": {
+						"x": 71,
+						"y": 1790,
+						"w": 33,
+						"h": 131
+					}
+				},
+				{
+					"filename": "stairs_fx_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 140
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 33,
+						"h": 131
+					},
+					"frame": {
+						"x": 106,
+						"y": 1790,
+						"w": 33,
+						"h": 131
+					}
+				},
+				{
+					"filename": "stairs_fx_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 140
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 33,
+						"h": 131
+					},
+					"frame": {
+						"x": 141,
+						"y": 1790,
+						"w": 33,
+						"h": 131
+					}
+				},
+				{
+					"filename": "stairs_fx_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 38,
+						"h": 140
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 33,
+						"h": 131
+					},
+					"frame": {
+						"x": 176,
+						"y": 1790,
+						"w": 33,
+						"h": 131
 					}
 				},
 				{
@@ -1095,10 +1032,31 @@
 						"h": 123
 					},
 					"frame": {
-						"x": 440,
-						"y": 1887,
+						"x": 211,
+						"y": 1790,
 						"w": 364,
 						"h": 123
+					}
+				},
+				{
+					"filename": "victory_result_txt_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 368,
+						"h": 127
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 1,
+						"w": 360,
+						"h": 122
+					},
+					"frame": {
+						"x": 370,
+						"y": 1915,
+						"w": 360,
+						"h": 122
 					}
 				},
 				{
@@ -1117,72 +1075,9 @@
 					},
 					"frame": {
 						"x": 472,
-						"y": 1409,
+						"y": 1312,
 						"w": 452,
 						"h": 451
-					}
-				},
-				{
-					"filename": "victory_result_txt_06",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 368,
-						"h": 127
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 1,
-						"w": 360,
-						"h": 122
-					},
-					"frame": {
-						"x": 806,
-						"y": 1862,
-						"w": 360,
-						"h": 122
-					}
-				},
-				{
-					"filename": "ladders_front",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 749,
-						"h": 698
-					},
-					"spriteSourceSize": {
-						"x": 103,
-						"y": 191,
-						"w": 438,
-						"h": 386
-					},
-					"frame": {
-						"x": 545,
-						"y": 931,
-						"w": 438,
-						"h": 386
-					}
-				},
-				{
-					"filename": "balance",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 373,
-						"h": 69
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 373,
-						"h": 69
-					},
-					"frame": {
-						"x": 510,
-						"y": 1319,
-						"w": 373,
-						"h": 69
 					}
 				},
 				{
@@ -1200,52 +1095,10 @@
 						"h": 122
 					},
 					"frame": {
-						"x": 804,
-						"y": 783,
+						"x": 577,
+						"y": 1765,
 						"w": 344,
 						"h": 122
-					}
-				},
-				{
-					"filename": "start_txt_02",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 492,
-						"h": 99
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 492,
-						"h": 99
-					},
-					"frame": {
-						"x": 1168,
-						"y": 701,
-						"w": 492,
-						"h": 99
-					}
-				},
-				{
-					"filename": "super_txt",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 371,
-						"h": 99
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 371,
-						"h": 99
-					},
-					"frame": {
-						"x": 1662,
-						"y": 783,
-						"w": 371,
-						"h": 99
 					}
 				},
 				{
@@ -1263,31 +1116,10 @@
 						"h": 120
 					},
 					"frame": {
-						"x": 1168,
-						"y": 802,
+						"x": 732,
+						"y": 1889,
 						"w": 368,
 						"h": 120
-					}
-				},
-				{
-					"filename": "tutorial_img",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 120,
-						"h": 122
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 120,
-						"h": 122
-					},
-					"frame": {
-						"x": 1538,
-						"y": 802,
-						"w": 120,
-						"h": 122
 					}
 				},
 				{
@@ -1305,10 +1137,136 @@
 						"h": 118
 					},
 					"frame": {
-						"x": 1168,
-						"y": 924,
+						"x": 923,
+						"y": 1765,
 						"w": 342,
 						"h": 118
+					}
+				},
+				{
+					"filename": "start_txt_02",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 492,
+						"h": 99
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 492,
+						"h": 99
+					},
+					"frame": {
+						"x": 1267,
+						"y": 701,
+						"w": 492,
+						"h": 99
+					}
+				},
+				{
+					"filename": "ladders_front",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 749,
+						"h": 698
+					},
+					"spriteSourceSize": {
+						"x": 92,
+						"y": 191,
+						"w": 449,
+						"h": 386
+					},
+					"frame": {
+						"x": 798,
+						"y": 782,
+						"w": 449,
+						"h": 386
+					}
+				},
+				{
+					"filename": "btn_ok_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 136,
+						"h": 68
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 136,
+						"h": 68
+					},
+					"frame": {
+						"x": 660,
+						"y": 820,
+						"w": 136,
+						"h": 68
+					}
+				},
+				{
+					"filename": "btn_sound_off_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 63,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 63,
+						"h": 64
+					},
+					"frame": {
+						"x": 1000,
+						"y": 701,
+						"w": 63,
+						"h": 64
+					}
+				},
+				{
+					"filename": "btn_sound_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 63,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 63,
+						"h": 64
+					},
+					"frame": {
+						"x": 1065,
+						"y": 701,
+						"w": 63,
+						"h": 64
+					}
+				},
+				{
+					"filename": "btn_sound_on_on",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 63,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 63,
+						"h": 64
+					},
+					"frame": {
+						"x": 1130,
+						"y": 701,
+						"w": 63,
+						"h": 64
 					}
 				},
 				{
@@ -1326,8 +1284,8 @@
 						"h": 116
 					},
 					"frame": {
-						"x": 1660,
-						"y": 884,
+						"x": 521,
+						"y": 1170,
 						"w": 342,
 						"h": 116
 					}
@@ -1347,8 +1305,8 @@
 						"h": 116
 					},
 					"frame": {
-						"x": 1512,
-						"y": 1002,
+						"x": 865,
+						"y": 1170,
 						"w": 342,
 						"h": 116
 					}
@@ -1368,10 +1326,52 @@
 						"h": 116
 					},
 					"frame": {
-						"x": 1168,
-						"y": 1044,
+						"x": 1102,
+						"y": 1885,
 						"w": 342,
 						"h": 116
+					}
+				},
+				{
+					"filename": "balance",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 373,
+						"h": 69
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 373,
+						"h": 69
+					},
+					"frame": {
+						"x": 1446,
+						"y": 802,
+						"w": 373,
+						"h": 69
+					}
+				},
+				{
+					"filename": "super_txt",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 371,
+						"h": 99
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 371,
+						"h": 99
+					},
+					"frame": {
+						"x": 1446,
+						"y": 873,
+						"w": 371,
+						"h": 99
 					}
 				},
 				{
@@ -1389,8 +1389,8 @@
 						"h": 116
 					},
 					"frame": {
-						"x": 1512,
-						"y": 1120,
+						"x": 1446,
+						"y": 974,
 						"w": 342,
 						"h": 116
 					}
@@ -1401,6 +1401,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:7e61b59b59b5cdf5effc98266a805867:9f93760a2aec3f1066d5872b22c3a92e:1bd3fbbbdaf54e41cf80e3e904578de4$"
+		"smartupdate": "$TexturePacker:SmartUpdate:66d2329a5036ef747a80433261a0b6b7:69b3c5077af5c06ad650e6b938763e4e:1bd3fbbbdaf54e41cf80e3e904578de4$"
 	}
 }
