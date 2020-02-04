@@ -1,0 +1,4304 @@
+{
+	"textures": [
+		{
+			"image": "texture_atlas_4.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 2048,
+				"h": 2048
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "dice_blue_1_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 71,
+						"y": 1,
+						"w": 243,
+						"h": 153
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 243,
+						"h": 153
+					}
+				},
+				{
+					"filename": "dice_blue_2_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 66,
+						"y": 70,
+						"w": 230,
+						"h": 133
+					},
+					"frame": {
+						"x": 246,
+						"y": 1,
+						"w": 230,
+						"h": 133
+					}
+				},
+				{
+					"filename": "dice_pink_6_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 36,
+						"y": 369,
+						"w": 227,
+						"h": 85
+					},
+					"frame": {
+						"x": 478,
+						"y": 1,
+						"w": 227,
+						"h": 85
+					}
+				},
+				{
+					"filename": "dice_blue_4_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 52,
+						"y": 95,
+						"w": 223,
+						"h": 103
+					},
+					"frame": {
+						"x": 707,
+						"y": 1,
+						"w": 223,
+						"h": 103
+					}
+				},
+				{
+					"filename": "dice_blue_6_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 42,
+						"y": 86,
+						"w": 223,
+						"h": 94
+					},
+					"frame": {
+						"x": 478,
+						"y": 88,
+						"w": 223,
+						"h": 94
+					}
+				},
+				{
+					"filename": "dice_pink_4_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 64,
+						"y": 352,
+						"w": 220,
+						"h": 121
+					},
+					"frame": {
+						"x": 246,
+						"y": 136,
+						"w": 220,
+						"h": 121
+					}
+				},
+				{
+					"filename": "dice_pink_2_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 72,
+						"y": 384,
+						"w": 220,
+						"h": 118
+					},
+					"frame": {
+						"x": 1,
+						"y": 156,
+						"w": 220,
+						"h": 118
+					}
+				},
+				{
+					"filename": "dice_blue_5_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 51,
+						"y": 25,
+						"w": 218,
+						"h": 121
+					},
+					"frame": {
+						"x": 932,
+						"y": 1,
+						"w": 218,
+						"h": 121
+					}
+				},
+				{
+					"filename": "dice_pink_5_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 46,
+						"y": 461,
+						"w": 218,
+						"h": 121
+					},
+					"frame": {
+						"x": 703,
+						"y": 106,
+						"w": 218,
+						"h": 121
+					}
+				},
+				{
+					"filename": "dice_pink_3_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 40,
+						"y": 368,
+						"w": 217,
+						"h": 124
+					},
+					"frame": {
+						"x": 468,
+						"y": 184,
+						"w": 217,
+						"h": 124
+					}
+				},
+				{
+					"filename": "dice_pink_1_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 58,
+						"y": 417,
+						"w": 216,
+						"h": 128
+					},
+					"frame": {
+						"x": 223,
+						"y": 259,
+						"w": 216,
+						"h": 128
+					}
+				},
+				{
+					"filename": "dice_blue_3_01",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 45,
+						"y": 39,
+						"w": 212,
+						"h": 145
+					},
+					"frame": {
+						"x": 1,
+						"y": 276,
+						"w": 212,
+						"h": 145
+					}
+				},
+				{
+					"filename": "dice_blue_1_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 147,
+						"y": 241,
+						"w": 185,
+						"h": 145
+					},
+					"frame": {
+						"x": 1152,
+						"y": 1,
+						"w": 185,
+						"h": 145
+					}
+				},
+				{
+					"filename": "dice_blue_1_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 135,
+						"y": 161,
+						"w": 176,
+						"h": 142
+					},
+					"frame": {
+						"x": 923,
+						"y": 124,
+						"w": 176,
+						"h": 142
+					}
+				},
+				{
+					"filename": "dice_blue_1_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 155,
+						"y": 271,
+						"w": 175,
+						"h": 154
+					},
+					"frame": {
+						"x": 687,
+						"y": 229,
+						"w": 175,
+						"h": 154
+					}
+				},
+				{
+					"filename": "dice_blue_1_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 132,
+						"y": 203,
+						"w": 173,
+						"h": 133
+					},
+					"frame": {
+						"x": 441,
+						"y": 310,
+						"w": 173,
+						"h": 133
+					}
+				},
+				{
+					"filename": "dice_blue_1_17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 189,
+						"y": 379,
+						"w": 171,
+						"h": 175
+					},
+					"frame": {
+						"x": 215,
+						"y": 389,
+						"w": 171,
+						"h": 175
+					}
+				},
+				{
+					"filename": "dice_blue_1_10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 169,
+						"y": 289,
+						"w": 169,
+						"h": 162
+					},
+					"frame": {
+						"x": 1,
+						"y": 423,
+						"w": 169,
+						"h": 162
+					}
+				},
+				{
+					"filename": "dice_blue_1_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 145,
+						"y": 137,
+						"w": 165,
+						"h": 135
+					},
+					"frame": {
+						"x": 1339,
+						"y": 1,
+						"w": 165,
+						"h": 135
+					}
+				},
+				{
+					"filename": "dice_blue_2_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 129,
+						"y": 237,
+						"w": 164,
+						"h": 136
+					},
+					"frame": {
+						"x": 1506,
+						"y": 1,
+						"w": 164,
+						"h": 136
+					}
+				},
+				{
+					"filename": "dice_blue_2_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 138,
+						"y": 159,
+						"w": 164,
+						"h": 118
+					},
+					"frame": {
+						"x": 1339,
+						"y": 138,
+						"w": 164,
+						"h": 118
+					}
+				},
+				{
+					"filename": "dice_pink_6_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 101,
+						"y": 253,
+						"w": 159,
+						"h": 99
+					},
+					"frame": {
+						"x": 1101,
+						"y": 148,
+						"w": 159,
+						"h": 99
+					}
+				},
+				{
+					"filename": "dice_blue_6_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 101,
+						"y": 192,
+						"w": 158,
+						"h": 104
+					},
+					"frame": {
+						"x": 1101,
+						"y": 249,
+						"w": 158,
+						"h": 104
+					}
+				},
+				{
+					"filename": "dice_blue_4_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 141,
+						"y": 229,
+						"w": 158,
+						"h": 101
+					},
+					"frame": {
+						"x": 864,
+						"y": 268,
+						"w": 158,
+						"h": 101
+					}
+				},
+				{
+					"filename": "dice_blue_2_02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 139,
+						"y": 97,
+						"w": 157,
+						"h": 115
+					},
+					"frame": {
+						"x": 1672,
+						"y": 1,
+						"w": 157,
+						"h": 115
+					}
+				},
+				{
+					"filename": "dice_blue_1_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 163,
+						"y": 109,
+						"w": 156,
+						"h": 128
+					},
+					"frame": {
+						"x": 1831,
+						"y": 1,
+						"w": 156,
+						"h": 128
+					}
+				},
+				{
+					"filename": "dice_blue_4_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 140,
+						"y": 198,
+						"w": 156,
+						"h": 107
+					},
+					"frame": {
+						"x": 1672,
+						"y": 118,
+						"w": 156,
+						"h": 107
+					}
+				},
+				{
+					"filename": "dice_pink_6_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 106,
+						"y": 195,
+						"w": 156,
+						"h": 102
+					},
+					"frame": {
+						"x": 1505,
+						"y": 139,
+						"w": 156,
+						"h": 102
+					}
+				},
+				{
+					"filename": "dice_blue_5_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 120,
+						"y": 150,
+						"w": 155,
+						"h": 112
+					},
+					"frame": {
+						"x": 1830,
+						"y": 131,
+						"w": 155,
+						"h": 112
+					}
+				},
+				{
+					"filename": "dice_blue_6_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 105,
+						"y": 248,
+						"w": 154,
+						"h": 106
+					},
+					"frame": {
+						"x": 1663,
+						"y": 227,
+						"w": 154,
+						"h": 106
+					}
+				},
+				{
+					"filename": "dice_pink_6_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 104,
+						"y": 229,
+						"w": 154,
+						"h": 89
+					},
+					"frame": {
+						"x": 1505,
+						"y": 243,
+						"w": 154,
+						"h": 89
+					}
+				},
+				{
+					"filename": "dice_pink_1_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 122,
+						"y": 267,
+						"w": 153,
+						"h": 121
+					},
+					"frame": {
+						"x": 1819,
+						"y": 245,
+						"w": 153,
+						"h": 121
+					}
+				},
+				{
+					"filename": "dice_pink_4_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 140,
+						"y": 222,
+						"w": 153,
+						"h": 109
+					},
+					"frame": {
+						"x": 1261,
+						"y": 258,
+						"w": 153,
+						"h": 109
+					}
+				},
+				{
+					"filename": "dice_blue_6_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 103,
+						"y": 224,
+						"w": 153,
+						"h": 97
+					},
+					"frame": {
+						"x": 1024,
+						"y": 355,
+						"w": 153,
+						"h": 97
+					}
+				},
+				{
+					"filename": "dice_pink_3_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 112,
+						"y": 251,
+						"w": 152,
+						"h": 117
+					},
+					"frame": {
+						"x": 864,
+						"y": 371,
+						"w": 152,
+						"h": 117
+					}
+				},
+				{
+					"filename": "dice_pink_4_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 141,
+						"y": 248,
+						"w": 152,
+						"h": 115
+					},
+					"frame": {
+						"x": 1416,
+						"y": 334,
+						"w": 152,
+						"h": 115
+					}
+				},
+				{
+					"filename": "dice_blue_2_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 140,
+						"y": 191,
+						"w": 152,
+						"h": 110
+					},
+					"frame": {
+						"x": 1179,
+						"y": 369,
+						"w": 152,
+						"h": 110
+					}
+				},
+				{
+					"filename": "dice_pink_2_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 142,
+						"y": 264,
+						"w": 152,
+						"h": 110
+					},
+					"frame": {
+						"x": 1018,
+						"y": 454,
+						"w": 152,
+						"h": 110
+					}
+				},
+				{
+					"filename": "dice_pink_4_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 146,
+						"y": 191,
+						"w": 151,
+						"h": 120
+					},
+					"frame": {
+						"x": 616,
+						"y": 385,
+						"w": 151,
+						"h": 120
+					}
+				},
+				{
+					"filename": "dice_blue_2_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 136,
+						"y": 210,
+						"w": 151,
+						"h": 116
+					},
+					"frame": {
+						"x": 388,
+						"y": 445,
+						"w": 151,
+						"h": 116
+					}
+				},
+				{
+					"filename": "dice_pink_1_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 117,
+						"y": 232,
+						"w": 151,
+						"h": 114
+					},
+					"frame": {
+						"x": 769,
+						"y": 490,
+						"w": 151,
+						"h": 114
+					}
+				},
+				{
+					"filename": "dice_blue_3_13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 149,
+						"y": 356,
+						"w": 94,
+						"h": 92
+					},
+					"frame": {
+						"x": 922,
+						"y": 490,
+						"w": 94,
+						"h": 92
+					}
+				},
+				{
+					"filename": "dice_pink_5_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 110,
+						"y": 277,
+						"w": 150,
+						"h": 118
+					},
+					"frame": {
+						"x": 541,
+						"y": 507,
+						"w": 150,
+						"h": 118
+					}
+				},
+				{
+					"filename": "dice_pink_2_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 138,
+						"y": 236,
+						"w": 150,
+						"h": 117
+					},
+					"frame": {
+						"x": 388,
+						"y": 563,
+						"w": 150,
+						"h": 117
+					}
+				},
+				{
+					"filename": "dice_pink_2_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 140,
+						"y": 211,
+						"w": 150,
+						"h": 112
+					},
+					"frame": {
+						"x": 172,
+						"y": 566,
+						"w": 150,
+						"h": 112
+					}
+				},
+				{
+					"filename": "dice_blue_2_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 139,
+						"y": 234,
+						"w": 150,
+						"h": 111
+					},
+					"frame": {
+						"x": 1,
+						"y": 587,
+						"w": 150,
+						"h": 111
+					}
+				},
+				{
+					"filename": "dice_pink_5_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 116,
+						"y": 314,
+						"w": 150,
+						"h": 111
+					},
+					"frame": {
+						"x": 153,
+						"y": 680,
+						"w": 150,
+						"h": 111
+					}
+				},
+				{
+					"filename": "dice_pink_3_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 110,
+						"y": 225,
+						"w": 150,
+						"h": 110
+					},
+					"frame": {
+						"x": 1,
+						"y": 700,
+						"w": 150,
+						"h": 110
+					}
+				},
+				{
+					"filename": "dice_blue_5_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 114,
+						"y": 201,
+						"w": 149,
+						"h": 116
+					},
+					"frame": {
+						"x": 1570,
+						"y": 335,
+						"w": 149,
+						"h": 116
+					}
+				},
+				{
+					"filename": "dice_blue_2_16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 214,
+						"y": 445,
+						"w": 96,
+						"h": 87
+					},
+					"frame": {
+						"x": 1721,
+						"y": 335,
+						"w": 96,
+						"h": 87
+					}
+				},
+				{
+					"filename": "dice_pink_5_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 111,
+						"y": 242,
+						"w": 149,
+						"h": 114
+					},
+					"frame": {
+						"x": 1819,
+						"y": 368,
+						"w": 149,
+						"h": 114
+					}
+				},
+				{
+					"filename": "dice_pink_3_15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 190,
+						"y": 88,
+						"w": 96,
+						"h": 87
+					},
+					"frame": {
+						"x": 1721,
+						"y": 424,
+						"w": 96,
+						"h": 87
+					}
+				},
+				{
+					"filename": "dice_pink_3_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 116,
+						"y": 196,
+						"w": 148,
+						"h": 121
+					},
+					"frame": {
+						"x": 1819,
+						"y": 484,
+						"w": 148,
+						"h": 121
+					}
+				},
+				{
+					"filename": "dice_blue_5_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 114,
+						"y": 171,
+						"w": 148,
+						"h": 118
+					},
+					"frame": {
+						"x": 1333,
+						"y": 451,
+						"w": 148,
+						"h": 118
+					}
+				},
+				{
+					"filename": "dice_pink_1_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 122,
+						"y": 197,
+						"w": 147,
+						"h": 123
+					},
+					"frame": {
+						"x": 1172,
+						"y": 481,
+						"w": 147,
+						"h": 123
+					}
+				},
+				{
+					"filename": "dice_blue_2_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 153,
+						"y": 143,
+						"w": 147,
+						"h": 115
+					},
+					"frame": {
+						"x": 1018,
+						"y": 566,
+						"w": 147,
+						"h": 115
+					}
+				},
+				{
+					"filename": "dice_blue_3_14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 154,
+						"y": 362,
+						"w": 94,
+						"h": 90
+					},
+					"frame": {
+						"x": 922,
+						"y": 584,
+						"w": 94,
+						"h": 90
+					}
+				},
+				{
+					"filename": "dice_blue_3_06",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 105,
+						"y": 165,
+						"w": 145,
+						"h": 125
+					},
+					"frame": {
+						"x": 693,
+						"y": 606,
+						"w": 145,
+						"h": 125
+					}
+				},
+				{
+					"filename": "dice_pink_6_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 113,
+						"y": 178,
+						"w": 145,
+						"h": 95
+					},
+					"frame": {
+						"x": 540,
+						"y": 627,
+						"w": 145,
+						"h": 95
+					}
+				},
+				{
+					"filename": "dice_blue_2_10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 146,
+						"y": 272,
+						"w": 144,
+						"h": 114
+					},
+					"frame": {
+						"x": 840,
+						"y": 676,
+						"w": 144,
+						"h": 114
+					}
+				},
+				{
+					"filename": "dice_pink_1_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 132,
+						"y": 303,
+						"w": 144,
+						"h": 108
+					},
+					"frame": {
+						"x": 305,
+						"y": 682,
+						"w": 144,
+						"h": 108
+					}
+				},
+				{
+					"filename": "dice_blue_6_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 110,
+						"y": 271,
+						"w": 144,
+						"h": 101
+					},
+					"frame": {
+						"x": 1483,
+						"y": 453,
+						"w": 144,
+						"h": 101
+					}
+				},
+				{
+					"filename": "dice_blue_3_07",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 100,
+						"y": 197,
+						"w": 143,
+						"h": 120
+					},
+					"frame": {
+						"x": 1629,
+						"y": 513,
+						"w": 143,
+						"h": 120
+					}
+				},
+				{
+					"filename": "dice_blue_4_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 160,
+						"y": 277,
+						"w": 143,
+						"h": 104
+					},
+					"frame": {
+						"x": 1483,
+						"y": 556,
+						"w": 143,
+						"h": 104
+					}
+				},
+				{
+					"filename": "dice_blue_4_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 145,
+						"y": 186,
+						"w": 143,
+						"h": 96
+					},
+					"frame": {
+						"x": 1321,
+						"y": 571,
+						"w": 143,
+						"h": 96
+					}
+				},
+				{
+					"filename": "dice_pink_2_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 149,
+						"y": 298,
+						"w": 142,
+						"h": 98
+					},
+					"frame": {
+						"x": 1167,
+						"y": 606,
+						"w": 142,
+						"h": 98
+					}
+				},
+				{
+					"filename": "dice_pink_6_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 115,
+						"y": 283,
+						"w": 142,
+						"h": 86
+					},
+					"frame": {
+						"x": 986,
+						"y": 683,
+						"w": 142,
+						"h": 86
+					}
+				},
+				{
+					"filename": "dice_pink_1_02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 145,
+						"y": 372,
+						"w": 141,
+						"h": 123
+					},
+					"frame": {
+						"x": 451,
+						"y": 724,
+						"w": 141,
+						"h": 123
+					}
+				},
+				{
+					"filename": "dice_blue_1_12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 196,
+						"y": 377,
+						"w": 97,
+						"h": 88
+					},
+					"frame": {
+						"x": 594,
+						"y": 724,
+						"w": 97,
+						"h": 88
+					}
+				},
+				{
+					"filename": "dice_pink_5_02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 133,
+						"y": 415,
+						"w": 141,
+						"h": 120
+					},
+					"frame": {
+						"x": 305,
+						"y": 792,
+						"w": 141,
+						"h": 120
+					}
+				},
+				{
+					"filename": "dice_pink_5_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 121,
+						"y": 204,
+						"w": 141,
+						"h": 117
+					},
+					"frame": {
+						"x": 693,
+						"y": 733,
+						"w": 141,
+						"h": 117
+					}
+				},
+				{
+					"filename": "dice_pink_3_13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 180,
+						"y": 102,
+						"w": 97,
+						"h": 88
+					},
+					"frame": {
+						"x": 594,
+						"y": 814,
+						"w": 97,
+						"h": 88
+					}
+				},
+				{
+					"filename": "dice_blue_1_02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 155,
+						"y": 55,
+						"w": 141,
+						"h": 115
+					},
+					"frame": {
+						"x": 448,
+						"y": 849,
+						"w": 141,
+						"h": 115
+					}
+				},
+				{
+					"filename": "dice_pink_2_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 152,
+						"y": 182,
+						"w": 141,
+						"h": 115
+					},
+					"frame": {
+						"x": 153,
+						"y": 793,
+						"w": 141,
+						"h": 115
+					}
+				},
+				{
+					"filename": "dice_pink_5_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 138,
+						"y": 368,
+						"w": 141,
+						"h": 115
+					},
+					"frame": {
+						"x": 1,
+						"y": 812,
+						"w": 141,
+						"h": 115
+					}
+				},
+				{
+					"filename": "dice_pink_3_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 120,
+						"y": 278,
+						"w": 141,
+						"h": 104
+					},
+					"frame": {
+						"x": 144,
+						"y": 910,
+						"w": 141,
+						"h": 104
+					}
+				},
+				{
+					"filename": "dice_blue_6_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 117,
+						"y": 175,
+						"w": 141,
+						"h": 90
+					},
+					"frame": {
+						"x": 1,
+						"y": 929,
+						"w": 141,
+						"h": 90
+					}
+				},
+				{
+					"filename": "dice_blue_3_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 104,
+						"y": 217,
+						"w": 140,
+						"h": 128
+					},
+					"frame": {
+						"x": 287,
+						"y": 914,
+						"w": 140,
+						"h": 128
+					}
+				},
+				{
+					"filename": "dice_blue_5_02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 138,
+						"y": 71,
+						"w": 140,
+						"h": 123
+					},
+					"frame": {
+						"x": 144,
+						"y": 1016,
+						"w": 140,
+						"h": 123
+					}
+				},
+				{
+					"filename": "dice_blue_5_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 124,
+						"y": 229,
+						"w": 140,
+						"h": 118
+					},
+					"frame": {
+						"x": 1,
+						"y": 1021,
+						"w": 140,
+						"h": 118
+					}
+				},
+				{
+					"filename": "dice_blue_5_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 143,
+						"y": 107,
+						"w": 140,
+						"h": 116
+					},
+					"frame": {
+						"x": 1774,
+						"y": 607,
+						"w": 140,
+						"h": 116
+					}
+				},
+				{
+					"filename": "dice_blue_2_03",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 169,
+						"y": 132,
+						"w": 131,
+						"h": 106
+					},
+					"frame": {
+						"x": 1916,
+						"y": 607,
+						"w": 131,
+						"h": 106
+					}
+				},
+				{
+					"filename": "dice_blue_6_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 132,
+						"y": 151,
+						"w": 131,
+						"h": 87
+					},
+					"frame": {
+						"x": 1916,
+						"y": 715,
+						"w": 131,
+						"h": 87
+					}
+				},
+				{
+					"filename": "dice_blue_5_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 128,
+						"y": 128,
+						"w": 140,
+						"h": 115
+					},
+					"frame": {
+						"x": 1628,
+						"y": 635,
+						"w": 140,
+						"h": 115
+					}
+				},
+				{
+					"filename": "dice_pink_4_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 148,
+						"y": 273,
+						"w": 140,
+						"h": 102
+					},
+					"frame": {
+						"x": 1770,
+						"y": 725,
+						"w": 140,
+						"h": 102
+					}
+				},
+				{
+					"filename": "dice_pink_1_10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 143,
+						"y": 129,
+						"w": 134,
+						"h": 119
+					},
+					"frame": {
+						"x": 1912,
+						"y": 804,
+						"w": 134,
+						"h": 119
+					}
+				},
+				{
+					"filename": "dice_pink_5_10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 133,
+						"y": 165,
+						"w": 139,
+						"h": 117
+					},
+					"frame": {
+						"x": 1466,
+						"y": 662,
+						"w": 139,
+						"h": 117
+					}
+				},
+				{
+					"filename": "dice_pink_5_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 124,
+						"y": 340,
+						"w": 139,
+						"h": 114
+					},
+					"frame": {
+						"x": 1311,
+						"y": 669,
+						"w": 139,
+						"h": 114
+					}
+				},
+				{
+					"filename": "dice_pink_1_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 150,
+						"y": 317,
+						"w": 138,
+						"h": 125
+					},
+					"frame": {
+						"x": 1607,
+						"y": 752,
+						"w": 138,
+						"h": 125
+					}
+				},
+				{
+					"filename": "dice_blue_5_10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 135,
+						"y": 260,
+						"w": 138,
+						"h": 119
+					},
+					"frame": {
+						"x": 1452,
+						"y": 781,
+						"w": 138,
+						"h": 119
+					}
+				},
+				{
+					"filename": "dice_pink_4_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 154,
+						"y": 173,
+						"w": 138,
+						"h": 109
+					},
+					"frame": {
+						"x": 1747,
+						"y": 829,
+						"w": 138,
+						"h": 109
+					}
+				},
+				{
+					"filename": "dice_blue_3_05",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 115,
+						"y": 153,
+						"w": 137,
+						"h": 112
+					},
+					"frame": {
+						"x": 1592,
+						"y": 879,
+						"w": 137,
+						"h": 112
+					}
+				},
+				{
+					"filename": "dice_pink_3_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 125,
+						"y": 181,
+						"w": 133,
+						"h": 109
+					},
+					"frame": {
+						"x": 1887,
+						"y": 925,
+						"w": 133,
+						"h": 109
+					}
+				},
+				{
+					"filename": "dice_blue_4_10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 177,
+						"y": 309,
+						"w": 133,
+						"h": 101
+					},
+					"frame": {
+						"x": 1731,
+						"y": 940,
+						"w": 133,
+						"h": 101
+					}
+				},
+				{
+					"filename": "dice_blue_1_03",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 185,
+						"y": 91,
+						"w": 132,
+						"h": 121
+					},
+					"frame": {
+						"x": 1130,
+						"y": 706,
+						"w": 132,
+						"h": 121
+					}
+				},
+				{
+					"filename": "dice_pink_1_11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 162,
+						"y": 89,
+						"w": 132,
+						"h": 119
+					},
+					"frame": {
+						"x": 986,
+						"y": 771,
+						"w": 132,
+						"h": 119
+					}
+				},
+				{
+					"filename": "dice_pink_1_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 130,
+						"y": 176,
+						"w": 132,
+						"h": 110
+					},
+					"frame": {
+						"x": 836,
+						"y": 792,
+						"w": 132,
+						"h": 110
+					}
+				},
+				{
+					"filename": "dice_pink_6_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 130,
+						"y": 312,
+						"w": 131,
+						"h": 82
+					},
+					"frame": {
+						"x": 693,
+						"y": 852,
+						"w": 131,
+						"h": 82
+					}
+				},
+				{
+					"filename": "dice_pink_2_15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 206,
+						"y": 66,
+						"w": 100,
+						"h": 89
+					},
+					"frame": {
+						"x": 591,
+						"y": 904,
+						"w": 100,
+						"h": 89
+					}
+				},
+				{
+					"filename": "dice_blue_4_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 156,
+						"y": 166,
+						"w": 130,
+						"h": 89
+					},
+					"frame": {
+						"x": 429,
+						"y": 966,
+						"w": 130,
+						"h": 89
+					}
+				},
+				{
+					"filename": "dice_pink_5_11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 150,
+						"y": 119,
+						"w": 129,
+						"h": 121
+					},
+					"frame": {
+						"x": 286,
+						"y": 1044,
+						"w": 129,
+						"h": 121
+					}
+				},
+				{
+					"filename": "dice_pink_4_10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 168,
+						"y": 134,
+						"w": 129,
+						"h": 108
+					},
+					"frame": {
+						"x": 1866,
+						"y": 1036,
+						"w": 129,
+						"h": 108
+					}
+				},
+				{
+					"filename": "dice_pink_2_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 164,
+						"y": 319,
+						"w": 129,
+						"h": 100
+					},
+					"frame": {
+						"x": 1264,
+						"y": 785,
+						"w": 129,
+						"h": 100
+					}
+				},
+				{
+					"filename": "dice_pink_6_02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 133,
+						"y": 355,
+						"w": 129,
+						"h": 72
+					},
+					"frame": {
+						"x": 1120,
+						"y": 829,
+						"w": 129,
+						"h": 72
+					}
+				},
+				{
+					"filename": "dice_pink_3_10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 139,
+						"y": 150,
+						"w": 128,
+						"h": 108
+					},
+					"frame": {
+						"x": 970,
+						"y": 892,
+						"w": 128,
+						"h": 108
+					}
+				},
+				{
+					"filename": "dice_pink_6_10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 127,
+						"y": 152,
+						"w": 128,
+						"h": 88
+					},
+					"frame": {
+						"x": 826,
+						"y": 904,
+						"w": 128,
+						"h": 88
+					}
+				},
+				{
+					"filename": "dice_blue_5_11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 152,
+						"y": 295,
+						"w": 127,
+						"h": 121
+					},
+					"frame": {
+						"x": 693,
+						"y": 936,
+						"w": 127,
+						"h": 121
+					}
+				},
+				{
+					"filename": "dice_blue_5_03",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 163,
+						"y": 92,
+						"w": 127,
+						"h": 119
+					},
+					"frame": {
+						"x": 561,
+						"y": 995,
+						"w": 127,
+						"h": 119
+					}
+				},
+				{
+					"filename": "dice_pink_3_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 135,
+						"y": 309,
+						"w": 127,
+						"h": 95
+					},
+					"frame": {
+						"x": 417,
+						"y": 1057,
+						"w": 127,
+						"h": 95
+					}
+				},
+				{
+					"filename": "dice_blue_4_02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 145,
+						"y": 130,
+						"w": 127,
+						"h": 79
+					},
+					"frame": {
+						"x": 822,
+						"y": 994,
+						"w": 127,
+						"h": 79
+					}
+				},
+				{
+					"filename": "dice_pink_1_03",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 171,
+						"y": 345,
+						"w": 126,
+						"h": 119
+					},
+					"frame": {
+						"x": 690,
+						"y": 1059,
+						"w": 126,
+						"h": 119
+					}
+				},
+				{
+					"filename": "dice_pink_5_03",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 159,
+						"y": 389,
+						"w": 126,
+						"h": 117
+					},
+					"frame": {
+						"x": 546,
+						"y": 1116,
+						"w": 126,
+						"h": 117
+					}
+				},
+				{
+					"filename": "dice_pink_4_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 162,
+						"y": 301,
+						"w": 126,
+						"h": 94
+					},
+					"frame": {
+						"x": 417,
+						"y": 1154,
+						"w": 126,
+						"h": 94
+					}
+				},
+				{
+					"filename": "dice_blue_4_08",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 423,
+						"h": 483
+					},
+					"spriteSourceSize": {
+						"x": 118,
+						"y": 199,
+						"w": 126,
+						"h": 90
+					},
+					"frame": {
+						"x": 1251,
+						"y": 887,
+						"w": 126,
+						"h": 90
+					}
+				},
+				{
+					"filename": "dice_pink_4_02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 154,
+						"y": 346,
+						"w": 126,
+						"h": 88
+					},
+					"frame": {
+						"x": 1100,
+						"y": 903,
+						"w": 126,
+						"h": 88
+					}
+				},
+				{
+					"filename": "dice_pink_2_02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 161,
+						"y": 370,
+						"w": 126,
+						"h": 87
+					},
+					"frame": {
+						"x": 1379,
+						"y": 902,
+						"w": 126,
+						"h": 87
+					}
+				},
+				{
+					"filename": "dice_blue_6_02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 137,
+						"y": 117,
+						"w": 126,
+						"h": 75
+					},
+					"frame": {
+						"x": 1228,
+						"y": 979,
+						"w": 126,
+						"h": 75
+					}
+				},
+				{
+					"filename": "dice_blue_3_09",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 109,
+						"y": 244,
+						"w": 125,
+						"h": 117
+					},
+					"frame": {
+						"x": 1100,
+						"y": 993,
+						"w": 125,
+						"h": 117
+					}
+				},
+				{
+					"filename": "dice_pink_2_10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 165,
+						"y": 164,
+						"w": 125,
+						"h": 104
+					},
+					"frame": {
+						"x": 951,
+						"y": 1002,
+						"w": 125,
+						"h": 104
+					}
+				},
+				{
+					"filename": "dice_blue_6_10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 124,
+						"y": 306,
+						"w": 125,
+						"h": 90
+					},
+					"frame": {
+						"x": 818,
+						"y": 1075,
+						"w": 125,
+						"h": 90
+					}
+				},
+				{
+					"filename": "dice_pink_3_02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 128,
+						"y": 355,
+						"w": 124,
+						"h": 88
+					},
+					"frame": {
+						"x": 945,
+						"y": 1108,
+						"w": 124,
+						"h": 88
+					}
+				},
+				{
+					"filename": "dice_pink_1_16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 185,
+						"y": 22,
+						"w": 123,
+						"h": 117
+					},
+					"frame": {
+						"x": 818,
+						"y": 1167,
+						"w": 123,
+						"h": 117
+					}
+				},
+				{
+					"filename": "dice_blue_3_02",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 128,
+						"y": 92,
+						"w": 123,
+						"h": 98
+					},
+					"frame": {
+						"x": 674,
+						"y": 1180,
+						"w": 123,
+						"h": 98
+					}
+				},
+				{
+					"filename": "dice_blue_3_10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 120,
+						"y": 277,
+						"w": 122,
+						"h": 115
+					},
+					"frame": {
+						"x": 545,
+						"y": 1235,
+						"w": 122,
+						"h": 115
+					}
+				},
+				{
+					"filename": "dice_pink_5_12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 158,
+						"y": 100,
+						"w": 121,
+						"h": 111
+					},
+					"frame": {
+						"x": 669,
+						"y": 1280,
+						"w": 121,
+						"h": 111
+					}
+				},
+				{
+					"filename": "dice_blue_3_04",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 132,
+						"y": 132,
+						"w": 121,
+						"h": 100
+					},
+					"frame": {
+						"x": 1356,
+						"y": 991,
+						"w": 121,
+						"h": 100
+					}
+				},
+				{
+					"filename": "dice_pink_5_16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 178,
+						"y": 33,
+						"w": 111,
+						"h": 109
+					},
+					"frame": {
+						"x": 1479,
+						"y": 991,
+						"w": 111,
+						"h": 109
+					}
+				},
+				{
+					"filename": "dice_blue_5_12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 161,
+						"y": 313,
+						"w": 120,
+						"h": 114
+					},
+					"frame": {
+						"x": 1227,
+						"y": 1056,
+						"w": 120,
+						"h": 114
+					}
+				},
+				{
+					"filename": "dice_blue_5_13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 166,
+						"y": 325,
+						"w": 120,
+						"h": 114
+					},
+					"frame": {
+						"x": 1349,
+						"y": 1093,
+						"w": 120,
+						"h": 114
+					}
+				},
+				{
+					"filename": "dice_blue_2_11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 168,
+						"y": 309,
+						"w": 120,
+						"h": 108
+					},
+					"frame": {
+						"x": 1592,
+						"y": 993,
+						"w": 120,
+						"h": 108
+					}
+				},
+				{
+					"filename": "dice_pink_1_12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 175,
+						"y": 59,
+						"w": 119,
+						"h": 125
+					},
+					"frame": {
+						"x": 1471,
+						"y": 1102,
+						"w": 119,
+						"h": 125
+					}
+				},
+				{
+					"filename": "dice_pink_1_17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 189,
+						"y": 15,
+						"w": 119,
+						"h": 121
+					},
+					"frame": {
+						"x": 1714,
+						"y": 1043,
+						"w": 119,
+						"h": 121
+					}
+				},
+				{
+					"filename": "dice_pink_1_14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 186,
+						"y": 39,
+						"w": 119,
+						"h": 113
+					},
+					"frame": {
+						"x": 1592,
+						"y": 1103,
+						"w": 119,
+						"h": 113
+					}
+				},
+				{
+					"filename": "dice_pink_5_13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 164,
+						"y": 81,
+						"w": 119,
+						"h": 113
+					},
+					"frame": {
+						"x": 1071,
+						"y": 1112,
+						"w": 119,
+						"h": 113
+					}
+				},
+				{
+					"filename": "dice_pink_1_15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 188,
+						"y": 29,
+						"w": 117,
+						"h": 118
+					},
+					"frame": {
+						"x": 943,
+						"y": 1198,
+						"w": 117,
+						"h": 118
+					}
+				},
+				{
+					"filename": "dice_blue_5_14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 171,
+						"y": 338,
+						"w": 117,
+						"h": 115
+					},
+					"frame": {
+						"x": 792,
+						"y": 1286,
+						"w": 117,
+						"h": 115
+					}
+				},
+				{
+					"filename": "dice_blue_1_13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 198,
+						"y": 385,
+						"w": 117,
+						"h": 104
+					},
+					"frame": {
+						"x": 1192,
+						"y": 1172,
+						"w": 117,
+						"h": 104
+					}
+				},
+				{
+					"filename": "dice_blue_2_12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 180,
+						"y": 347,
+						"w": 117,
+						"h": 102
+					},
+					"frame": {
+						"x": 1062,
+						"y": 1227,
+						"w": 117,
+						"h": 102
+					}
+				},
+				{
+					"filename": "dice_blue_2_13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 179,
+						"y": 371,
+						"w": 116,
+						"h": 114
+					},
+					"frame": {
+						"x": 911,
+						"y": 1318,
+						"w": 116,
+						"h": 114
+					}
+				},
+				{
+					"filename": "dice_pink_1_13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 434,
+						"h": 615
+					},
+					"spriteSourceSize": {
+						"x": 182,
+						"y": 47,
+						"w": 115,
+						"h": 116
+					},
+					"frame": {
+						"x": 1311,
+						"y": 1209,
+						"w": 115,
+						"h": 116
+					}
+				},
+				{
+					"filename": "dice_blue_5_15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 174,
+						"y": 351,
+						"w": 114,
+						"h": 115
+					},
+					"frame": {
+						"x": 1181,
+						"y": 1278,
+						"w": 114,
+						"h": 115
+					}
+				},
+				{
+					"filename": "dice_pink_5_17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 180,
+						"y": 24,
+						"w": 114,
+						"h": 111
+					},
+					"frame": {
+						"x": 1029,
+						"y": 1331,
+						"w": 114,
+						"h": 111
+					}
+				},
+				{
+					"filename": "dice_blue_1_14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 201,
+						"y": 391,
+						"w": 114,
+						"h": 106
+					},
+					"frame": {
+						"x": 1835,
+						"y": 1146,
+						"w": 114,
+						"h": 106
+					}
+				},
+				{
+					"filename": "dice_pink_2_16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 212,
+						"y": 50,
+						"w": 96,
+						"h": 86
+					},
+					"frame": {
+						"x": 1951,
+						"y": 1146,
+						"w": 96,
+						"h": 86
+					}
+				},
+				{
+					"filename": "dice_pink_3_16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 194,
+						"y": 84,
+						"w": 96,
+						"h": 85
+					},
+					"frame": {
+						"x": 1951,
+						"y": 1234,
+						"w": 96,
+						"h": 85
+					}
+				},
+				{
+					"filename": "dice_pink_5_14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 172,
+						"y": 57,
+						"w": 113,
+						"h": 116
+					},
+					"frame": {
+						"x": 1713,
+						"y": 1166,
+						"w": 113,
+						"h": 116
+					}
+				},
+				{
+					"filename": "dice_blue_5_16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 179,
+						"y": 361,
+						"w": 113,
+						"h": 112
+					},
+					"frame": {
+						"x": 1592,
+						"y": 1218,
+						"w": 113,
+						"h": 112
+					}
+				},
+				{
+					"filename": "dice_blue_1_15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 205,
+						"y": 400,
+						"w": 113,
+						"h": 105
+					},
+					"frame": {
+						"x": 1828,
+						"y": 1254,
+						"w": 113,
+						"h": 105
+					}
+				},
+				{
+					"filename": "dice_blue_2_14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 200,
+						"y": 402,
+						"w": 103,
+						"h": 91
+					},
+					"frame": {
+						"x": 1943,
+						"y": 1321,
+						"w": 103,
+						"h": 91
+					}
+				},
+				{
+					"filename": "dice_blue_4_11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 202,
+						"y": 339,
+						"w": 113,
+						"h": 93
+					},
+					"frame": {
+						"x": 1707,
+						"y": 1284,
+						"w": 113,
+						"h": 93
+					}
+				},
+				{
+					"filename": "dice_pink_5_15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 428,
+						"h": 626
+					},
+					"spriteSourceSize": {
+						"x": 176,
+						"y": 44,
+						"w": 112,
+						"h": 111
+					},
+					"frame": {
+						"x": 1822,
+						"y": 1361,
+						"w": 112,
+						"h": 111
+					}
+				},
+				{
+					"filename": "dice_blue_6_11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 139,
+						"y": 329,
+						"w": 111,
+						"h": 93
+					},
+					"frame": {
+						"x": 1936,
+						"y": 1414,
+						"w": 111,
+						"h": 93
+					}
+				},
+				{
+					"filename": "dice_blue_5_17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 453,
+						"h": 484
+					},
+					"spriteSourceSize": {
+						"x": 181,
+						"y": 369,
+						"w": 112,
+						"h": 108
+					},
+					"frame": {
+						"x": 1428,
+						"y": 1229,
+						"w": 112,
+						"h": 108
+					}
+				},
+				{
+					"filename": "dice_pink_6_11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 144,
+						"y": 126,
+						"w": 112,
+						"h": 91
+					},
+					"frame": {
+						"x": 1297,
+						"y": 1327,
+						"w": 112,
+						"h": 91
+					}
+				},
+				{
+					"filename": "dice_blue_4_03",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 173,
+						"y": 154,
+						"w": 111,
+						"h": 90
+					},
+					"frame": {
+						"x": 1145,
+						"y": 1395,
+						"w": 111,
+						"h": 90
+					}
+				},
+				{
+					"filename": "dice_blue_1_11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 189,
+						"y": 346,
+						"w": 110,
+						"h": 99
+					},
+					"frame": {
+						"x": 1542,
+						"y": 1332,
+						"w": 110,
+						"h": 99
+					}
+				},
+				{
+					"filename": "dice_pink_6_03",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 159,
+						"y": 323,
+						"w": 110,
+						"h": 86
+					},
+					"frame": {
+						"x": 1411,
+						"y": 1339,
+						"w": 110,
+						"h": 86
+					}
+				},
+				{
+					"filename": "dice_pink_4_11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 190,
+						"y": 121,
+						"w": 109,
+						"h": 96
+					},
+					"frame": {
+						"x": 1258,
+						"y": 1420,
+						"w": 109,
+						"h": 96
+					}
+				},
+				{
+					"filename": "dice_pink_4_03",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 180,
+						"y": 312,
+						"w": 109,
+						"h": 93
+					},
+					"frame": {
+						"x": 1654,
+						"y": 1379,
+						"w": 109,
+						"h": 93
+					}
+				},
+				{
+					"filename": "dice_blue_6_03",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 162,
+						"y": 139,
+						"w": 109,
+						"h": 87
+					},
+					"frame": {
+						"x": 1369,
+						"y": 1427,
+						"w": 109,
+						"h": 87
+					}
+				},
+				{
+					"filename": "dice_pink_3_11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 160,
+						"y": 128,
+						"w": 108,
+						"h": 97
+					},
+					"frame": {
+						"x": 1480,
+						"y": 1433,
+						"w": 108,
+						"h": 97
+					}
+				},
+				{
+					"filename": "dice_pink_2_03",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 185,
+						"y": 336,
+						"w": 108,
+						"h": 91
+					},
+					"frame": {
+						"x": 1369,
+						"y": 1516,
+						"w": 108,
+						"h": 91
+					}
+				},
+				{
+					"filename": "dice_pink_2_11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 183,
+						"y": 135,
+						"w": 108,
+						"h": 89
+					},
+					"frame": {
+						"x": 1,
+						"y": 1141,
+						"w": 108,
+						"h": 89
+					}
+				},
+				{
+					"filename": "dice_blue_1_16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 503,
+						"h": 585
+					},
+					"spriteSourceSize": {
+						"x": 209,
+						"y": 413,
+						"w": 107,
+						"h": 98
+					},
+					"frame": {
+						"x": 111,
+						"y": 1141,
+						"w": 107,
+						"h": 98
+					}
+				},
+				{
+					"filename": "dice_pink_3_03",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 155,
+						"y": 321,
+						"w": 107,
+						"h": 93
+					},
+					"frame": {
+						"x": 1,
+						"y": 1232,
+						"w": 107,
+						"h": 93
+					}
+				},
+				{
+					"filename": "dice_blue_3_11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 137,
+						"y": 313,
+						"w": 102,
+						"h": 100
+					},
+					"frame": {
+						"x": 220,
+						"y": 1167,
+						"w": 102,
+						"h": 100
+					}
+				},
+				{
+					"filename": "dice_blue_3_03",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 153,
+						"y": 125,
+						"w": 102,
+						"h": 96
+					},
+					"frame": {
+						"x": 110,
+						"y": 1241,
+						"w": 102,
+						"h": 96
+					}
+				},
+				{
+					"filename": "dice_pink_2_13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 198,
+						"y": 94,
+						"w": 102,
+						"h": 92
+					},
+					"frame": {
+						"x": 1,
+						"y": 1327,
+						"w": 102,
+						"h": 92
+					}
+				},
+				{
+					"filename": "dice_pink_2_14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 199,
+						"y": 78,
+						"w": 102,
+						"h": 92
+					},
+					"frame": {
+						"x": 324,
+						"y": 1250,
+						"w": 102,
+						"h": 92
+					}
+				},
+				{
+					"filename": "dice_pink_2_12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 196,
+						"y": 111,
+						"w": 101,
+						"h": 89
+					},
+					"frame": {
+						"x": 214,
+						"y": 1269,
+						"w": 101,
+						"h": 89
+					}
+				},
+				{
+					"filename": "dice_blue_2_15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 207,
+						"y": 426,
+						"w": 101,
+						"h": 88
+					},
+					"frame": {
+						"x": 105,
+						"y": 1339,
+						"w": 101,
+						"h": 88
+					}
+				},
+				{
+					"filename": "dice_blue_4_12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 222,
+						"y": 374,
+						"w": 101,
+						"h": 82
+					},
+					"frame": {
+						"x": 1,
+						"y": 1421,
+						"w": 101,
+						"h": 82
+					}
+				},
+				{
+					"filename": "dice_blue_4_13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 228,
+						"y": 381,
+						"w": 100,
+						"h": 83
+					},
+					"frame": {
+						"x": 428,
+						"y": 1250,
+						"w": 100,
+						"h": 83
+					}
+				},
+				{
+					"filename": "dice_blue_6_14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 164,
+						"y": 389,
+						"w": 100,
+						"h": 81
+					},
+					"frame": {
+						"x": 428,
+						"y": 1335,
+						"w": 100,
+						"h": 81
+					}
+				},
+				{
+					"filename": "dice_pink_6_12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 159,
+						"y": 109,
+						"w": 100,
+						"h": 80
+					},
+					"frame": {
+						"x": 317,
+						"y": 1344,
+						"w": 100,
+						"h": 80
+					}
+				},
+				{
+					"filename": "dice_blue_4_15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 240,
+						"y": 399,
+						"w": 99,
+						"h": 83
+					},
+					"frame": {
+						"x": 208,
+						"y": 1360,
+						"w": 99,
+						"h": 83
+					}
+				},
+				{
+					"filename": "dice_blue_6_12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 153,
+						"y": 357,
+						"w": 99,
+						"h": 83
+					},
+					"frame": {
+						"x": 104,
+						"y": 1429,
+						"w": 99,
+						"h": 83
+					}
+				},
+				{
+					"filename": "dice_pink_6_14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 171,
+						"y": 80,
+						"w": 99,
+						"h": 80
+					},
+					"frame": {
+						"x": 1,
+						"y": 1505,
+						"w": 99,
+						"h": 80
+					}
+				},
+				{
+					"filename": "dice_pink_6_17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 180,
+						"y": 57,
+						"w": 99,
+						"h": 80
+					},
+					"frame": {
+						"x": 530,
+						"y": 1352,
+						"w": 99,
+						"h": 80
+					}
+				},
+				{
+					"filename": "dice_pink_4_13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 211,
+						"y": 89,
+						"w": 98,
+						"h": 86
+					},
+					"frame": {
+						"x": 419,
+						"y": 1418,
+						"w": 98,
+						"h": 86
+					}
+				},
+				{
+					"filename": "dice_pink_4_12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 208,
+						"y": 99,
+						"w": 98,
+						"h": 84
+					},
+					"frame": {
+						"x": 309,
+						"y": 1426,
+						"w": 98,
+						"h": 84
+					}
+				},
+				{
+					"filename": "dice_blue_6_17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 173,
+						"y": 427,
+						"w": 98,
+						"h": 82
+					},
+					"frame": {
+						"x": 205,
+						"y": 1445,
+						"w": 98,
+						"h": 82
+					}
+				},
+				{
+					"filename": "dice_pink_6_13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 167,
+						"y": 90,
+						"w": 98,
+						"h": 82
+					},
+					"frame": {
+						"x": 102,
+						"y": 1514,
+						"w": 98,
+						"h": 82
+					}
+				},
+				{
+					"filename": "dice_blue_4_16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 245,
+						"y": 406,
+						"w": 98,
+						"h": 81
+					},
+					"frame": {
+						"x": 1,
+						"y": 1587,
+						"w": 98,
+						"h": 81
+					}
+				},
+				{
+					"filename": "dice_pink_6_16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 177,
+						"y": 64,
+						"w": 98,
+						"h": 81
+					},
+					"frame": {
+						"x": 631,
+						"y": 1393,
+						"w": 98,
+						"h": 81
+					}
+				},
+				{
+					"filename": "dice_pink_6_15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 460,
+						"h": 523
+					},
+					"spriteSourceSize": {
+						"x": 174,
+						"y": 73,
+						"w": 98,
+						"h": 80
+					},
+					"frame": {
+						"x": 519,
+						"y": 1434,
+						"w": 98,
+						"h": 80
+					}
+				},
+				{
+					"filename": "dice_pink_3_12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 177,
+						"y": 106,
+						"w": 97,
+						"h": 86
+					},
+					"frame": {
+						"x": 409,
+						"y": 1506,
+						"w": 97,
+						"h": 86
+					}
+				},
+				{
+					"filename": "dice_blue_2_17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 506,
+						"h": 577
+					},
+					"spriteSourceSize": {
+						"x": 217,
+						"y": 458,
+						"w": 97,
+						"h": 84
+					},
+					"frame": {
+						"x": 305,
+						"y": 1512,
+						"w": 97,
+						"h": 84
+					}
+				},
+				{
+					"filename": "dice_pink_2_17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 509,
+						"h": 583
+					},
+					"spriteSourceSize": {
+						"x": 215,
+						"y": 36,
+						"w": 97,
+						"h": 84
+					},
+					"frame": {
+						"x": 202,
+						"y": 1529,
+						"w": 97,
+						"h": 84
+					}
+				},
+				{
+					"filename": "dice_pink_4_15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 223,
+						"y": 73,
+						"w": 97,
+						"h": 84
+					},
+					"frame": {
+						"x": 101,
+						"y": 1598,
+						"w": 97,
+						"h": 84
+					}
+				},
+				{
+					"filename": "dice_blue_6_13",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 161,
+						"y": 372,
+						"w": 97,
+						"h": 83
+					},
+					"frame": {
+						"x": 1,
+						"y": 1670,
+						"w": 97,
+						"h": 83
+					}
+				},
+				{
+					"filename": "dice_blue_6_15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 168,
+						"y": 401,
+						"w": 97,
+						"h": 83
+					},
+					"frame": {
+						"x": 731,
+						"y": 1403,
+						"w": 97,
+						"h": 83
+					}
+				},
+				{
+					"filename": "dice_blue_6_16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 482,
+						"h": 571
+					},
+					"spriteSourceSize": {
+						"x": 170,
+						"y": 415,
+						"w": 97,
+						"h": 83
+					},
+					"frame": {
+						"x": 619,
+						"y": 1476,
+						"w": 97,
+						"h": 83
+					}
+				},
+				{
+					"filename": "dice_blue_4_14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 234,
+						"y": 391,
+						"w": 97,
+						"h": 82
+					},
+					"frame": {
+						"x": 508,
+						"y": 1516,
+						"w": 97,
+						"h": 82
+					}
+				},
+				{
+					"filename": "dice_blue_4_17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 529,
+						"h": 604
+					},
+					"spriteSourceSize": {
+						"x": 249,
+						"y": 411,
+						"w": 97,
+						"h": 82
+					},
+					"frame": {
+						"x": 404,
+						"y": 1594,
+						"w": 97,
+						"h": 82
+					}
+				},
+				{
+					"filename": "dice_pink_4_14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 217,
+						"y": 81,
+						"w": 96,
+						"h": 85
+					},
+					"frame": {
+						"x": 301,
+						"y": 1598,
+						"w": 96,
+						"h": 85
+					}
+				},
+				{
+					"filename": "dice_blue_3_12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 148,
+						"y": 354,
+						"w": 95,
+						"h": 90
+					},
+					"frame": {
+						"x": 200,
+						"y": 1615,
+						"w": 95,
+						"h": 90
+					}
+				},
+				{
+					"filename": "dice_blue_3_16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 162,
+						"y": 373,
+						"w": 95,
+						"h": 89
+					},
+					"frame": {
+						"x": 100,
+						"y": 1684,
+						"w": 95,
+						"h": 89
+					}
+				},
+				{
+					"filename": "dice_pink_3_14",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 185,
+						"y": 96,
+						"w": 95,
+						"h": 86
+					},
+					"frame": {
+						"x": 1,
+						"y": 1755,
+						"w": 95,
+						"h": 86
+					}
+				},
+				{
+					"filename": "dice_pink_3_17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 479,
+						"h": 532
+					},
+					"spriteSourceSize": {
+						"x": 197,
+						"y": 79,
+						"w": 95,
+						"h": 85
+					},
+					"frame": {
+						"x": 830,
+						"y": 1434,
+						"w": 95,
+						"h": 85
+					}
+				},
+				{
+					"filename": "dice_pink_4_16",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 228,
+						"y": 64,
+						"w": 95,
+						"h": 85
+					},
+					"frame": {
+						"x": 927,
+						"y": 1434,
+						"w": 95,
+						"h": 85
+					}
+				},
+				{
+					"filename": "dice_blue_3_15",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 160,
+						"y": 367,
+						"w": 94,
+						"h": 89
+					},
+					"frame": {
+						"x": 718,
+						"y": 1488,
+						"w": 94,
+						"h": 89
+					}
+				},
+				{
+					"filename": "dice_blue_3_17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 411,
+						"h": 550
+					},
+					"spriteSourceSize": {
+						"x": 164,
+						"y": 379,
+						"w": 94,
+						"h": 88
+					},
+					"frame": {
+						"x": 607,
+						"y": 1561,
+						"w": 94,
+						"h": 88
+					}
+				},
+				{
+					"filename": "dice_pink_4_17",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 518,
+						"h": 562
+					},
+					"spriteSourceSize": {
+						"x": 231,
+						"y": 61,
+						"w": 94,
+						"h": 84
+					},
+					"frame": {
+						"x": 503,
+						"y": 1600,
+						"w": 94,
+						"h": 84
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:e682e36c2a44d3436674ee72420b5259:f3fb66c1ed80428cd0780b0cb2760f7b:da96745a4979f34ffd84fb8b5d66e27c$"
+	}
+}
