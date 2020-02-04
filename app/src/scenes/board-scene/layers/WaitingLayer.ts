@@ -31,14 +31,29 @@ export class WaitingLayer extends Phaser.GameObjects.Container {
         this.connectingLabel.setOrigin(.5);
         scaledItemsContainer.add(this.connectingLabel);
 
-        const infoLabelSmartContract = new Phaser.GameObjects.Text(this.scene, 0, 520, "Smart contract address", {fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF"});
+        const infoLabelSmartContract = new Phaser.GameObjects.Text(this.scene, 0, 520, "Transaction hash", {fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF"});
         infoLabelSmartContract.setOrigin(.5);
         infoLabelSmartContract.scaleX = GameVars.scaleX;
         scaledItemsContainer.add(infoLabelSmartContract);
 
-        const smartContractLabel = new Phaser.GameObjects.Text(this.scene, 0, 560, GameConstants.CONTRACT_ADDRESS, {fontFamily: "RussoOne", fontSize: "35px", color: "#FFFFFF"});
+        const style = {fontFamily: "RussoOne", fontSize: "22px", color: "#00FFFF"};
+        const styleOver = { fill: "#FF00FF"};
+
+        const smartContractLabel = new Phaser.GameObjects.Text(this.scene, 0, 560, GameVars.transactionHash, {fontFamily: "RussoOne", fontSize: "22px", color: "#00FFFF"});
         smartContractLabel.setOrigin(.5);
         smartContractLabel.scaleX = GameVars.scaleX;
+        smartContractLabel.setInteractive();
+
+        smartContractLabel.on("pointerover", function (): void {
+            smartContractLabel.setStyle(styleOver);
+          });
+        smartContractLabel.on("pointerout", function (): void {
+            smartContractLabel.setStyle(style);
+          });
+        smartContractLabel.on("pointerdown", function (): void {
+            window.open(" https://etherscan.io/tx/" + GameVars.transactionHash);
+          }, this);
+
         scaledItemsContainer.add(smartContractLabel);
 
         const infoLabelTime = new Phaser.GameObjects.Text(this.scene, 0, 650, "This operation takes in average 15 seconds, please be patient.", {fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF"});

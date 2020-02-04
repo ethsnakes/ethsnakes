@@ -14,6 +14,7 @@ export class GameManager {
         GameVars.bet = 0;
         GameVars.transactionOnCourse = false;
         GameVars.addingFunds = false;
+        GameVars.transactionHash = "";
 
         if (GameVars.currentScene.sys.game.device.os.desktop) {
 
@@ -112,6 +113,13 @@ export class GameManager {
             BoardScene.currentInstance.onPlayerSelectedBet();
             GameVars.dapp.play(value);
         }
+    }
+
+    public static onTransactionHashObtained(transactionHash: string): void {
+
+        GameVars.transactionHash = transactionHash;
+
+        BoardScene.currentInstance.showWaitingLayer();
     }
 
     public static onTransactionConfirmed(): void {

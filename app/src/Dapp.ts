@@ -115,6 +115,7 @@ export class Dapp {
                 // 0xe68fd25cf4e1b3052b054b31a07d4700788b24bd71e6f535874af5ab29841b7a
                 // https://etherscan.io/tx/0xe68fd25cf4e1b3052b054b31a07d4700788b24bd71e6f535874af5ab29841b7a
                 console.log("Transaction " + transactionHash);
+                GameManager.onTransactionHashObtained(transactionHash);
             })
             .on("receipt", function(receipt) {
                

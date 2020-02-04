@@ -102,6 +102,9 @@ export class BoardScene extends Phaser.Scene {
     public onPlayerSelectedBet(): void {
 
         this.amountSelectionLayer.destroy();
+    }
+
+    public showWaitingLayer(): void {
 
         this.waitingLayer = new WaitingLayer(this);
         this.add.existing(this.waitingLayer);
@@ -110,6 +113,7 @@ export class BoardScene extends Phaser.Scene {
     public onTransactionExecuted(): void {
 
         if (this.waitingLayer) {
+
             this.waitingLayer.destroy();
             this.waitingLayer = null;
 
