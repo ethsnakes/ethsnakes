@@ -92,6 +92,17 @@ export class Dapp {
             .on("error", error => console.error(error));
     }
 
+    public withdrawPlayerFunds(): void {
+
+        let self = this;
+        self.contract.methods.withdrawPlayerFunds().send({ from: self.account })
+            .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
+            .on("receipt", function(receipt) {
+                self.getBalance();
+            })
+            .on("error", error => console.error(error));
+    }
+
     public play(amount: number): void {
 
         amount = Web3.utils.toWei(amount.toString(), "ether");
@@ -99,7 +110,14 @@ export class Dapp {
         let self = this;
         let gasPrice = Web3.utils.toWei("10", "gwei");
         self.contract.methods.play(amount).send({ from: self.account, gas: 500000, gasPrice: gasPrice })
-            .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
+            .on("transactionHash", function(transactionHash) {
+                // TODO posar el transaction hash al frontend
+                // exemple:
+                // 0xe68fd25cf4e1b3052b054b31a07d4700788b24bd71e6f535874af5ab29841b7a
+                // https://etherscan.io/tx/0xe68fd25cf4e1b3052b054b31a07d4700788b24bd71e6f535874af5ab29841b7a
+                console.log("Transaction " + transactionHash);
+                GameManager.onTransactionHashObtained(transactionHash);
+            })
             .on("receipt", function(receipt) {
 
                 GameManager.onTransactionConfirmed();
