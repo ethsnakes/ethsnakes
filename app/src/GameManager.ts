@@ -2,7 +2,7 @@ import { GameConstants } from "./GameConstants";
 import { GameVars } from "./GameVars";
 import { BoardScene } from "./scenes/board-scene/BoardScene";
 import { BoardManager } from "./scenes/board-scene/BoardManager";
-import { SelectBetLayer } from "./scenes/board-scene/layers/SelectBetLayer";
+import { AmountSelectionLayer } from "./scenes/board-scene/layers/AmountSelectionLayer";
 import { Dapp } from "./Dapp";
 import { AudioManager } from "./AudioManager";
 
@@ -11,7 +11,10 @@ export class GameManager {
     public static init(): void {  
 
         // para tener un valor cualquiera mientras desarrollamos
-        GameVars.bet = 0.2;
+        GameVars.bet = 0;
+        GameVars.transactionOnCourse = false;
+        GameVars.addingFunds = false;
+        GameVars.transactionHash = "";
 
         if (GameVars.currentScene.sys.game.device.os.desktop) {
 
@@ -62,6 +65,8 @@ export class GameManager {
 
         GameVars.balance = Number(balance);
 
+        GameVars.transactionOnCourse = false;
+
         BoardScene.currentInstance.onBalanceAvailable();
     }
 
@@ -80,11 +85,6 @@ export class GameManager {
         GameVars.currentScene.scene.start("BoardScene");
     }
 
-    public static reset(): void {
-
-        GameVars.currentScene.scene.start("BoardScene");
-    }
-
     public static play(): void {
 
         BoardManager.resetBoard();
@@ -94,19 +94,39 @@ export class GameManager {
 
     public static replay(): void {
 
+        Dapp.currentInstance.getBalance();
+
         GameManager.enterBoardScene();
     }
 
-    public static onPlayerSelectedBet(value: number): void {
+    public static onPlayerSelectedAmount(value: number): void {
+
+        GameVars.transactionOnCourse = true;
+
+        if (GameVars.addingFunds) {
+
+            GameVars.addingFunds = false;
+            GameVars.dapp.addPlayerFunds(value.toString());
+
+        } else {
+
+            BoardScene.currentInstance.onPlayerSelectedBet();
+            GameVars.dapp.play(value);
+        }
+    }
+
+    public static onTransactionHashObtained(transactionHash: string): void {
+
+        GameVars.transactionHash = transactionHash;
 
         BoardScene.currentInstance.showWaitingLayer();
-
-        GameVars.dapp.play(value);
     }
 
     public static onTransactionConfirmed(): void {
 
-        BoardScene.currentInstance.removeWaitingLayer();
+        GameVars.transactionOnCourse = false;
+
+        BoardScene.currentInstance.onTransactionExecuted();
     }
 
     public static onSeedAvailable(seed: string): void {
@@ -122,21 +142,23 @@ export class GameManager {
         //
     }
 
-    public static addFunds(): void {
-        
-        GameVars.dapp.addPlayerFunds();
+    public static onClickAddFunds(): void {
+
+        GameVars.addingFunds = true;
+
+        BoardScene.currentInstance.showFundsAmountToAddLayer();
     }
 
     public static onBetSelected(value: number): void {
 
         GameVars.bet = value;
 
-        SelectBetLayer.currentInstance.betSelected(value);
+        AmountSelectionLayer.currentInstance.betSelected(value);
     }
 
-    public static retrieveFunds(): void {
+    public static withdrawFunds(): void {
 
-        console.log("retrieve funds");
+        GameVars.dapp.withdrawPlayerFunds();
     }
 
     public static writeGameData(): void {

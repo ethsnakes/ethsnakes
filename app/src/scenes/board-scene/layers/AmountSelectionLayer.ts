@@ -2,24 +2,24 @@ import { GameConstants } from "../../../GameConstants";
 import { GameVars } from "../../../GameVars";
 import { Button } from "../../../utils/Utils";
 import { GameManager } from "../../../GameManager";
-import { BetSelectionButtonsContainer } from "./BetSelectionButtonsContainer";
+import { AmountSelectionButtonsContainer } from "./AmountSelectionButtonsContainer";
 import { AudioManager } from "../../../AudioManager";
 
-export class SelectBetLayer extends Phaser.GameObjects.Container {
+export class AmountSelectionLayer extends Phaser.GameObjects.Container {
 
-    public static currentInstance: SelectBetLayer;
+    public static currentInstance: AmountSelectionLayer;
 
-    private selectedBetValue: number;
-    private betSelectionButtonsContainer: BetSelectionButtonsContainer;
+    private selectedAmountValue: number;
+    private betSelectionButtonsContainer: AmountSelectionButtonsContainer;
     private playButton: Button;
 
     constructor(scene: Phaser.Scene) {
 
         super(scene);
 
-        SelectBetLayer.currentInstance = this;
+        AmountSelectionLayer.currentInstance = this;
 
-        this.selectedBetValue = 0;
+        this.selectedAmountValue = 0;
 
         const transparentBackground = new Phaser.GameObjects.Graphics(this.scene);
         transparentBackground.fillStyle(0x000000, .8);
@@ -31,7 +31,7 @@ export class SelectBetLayer extends Phaser.GameObjects.Container {
         scaledItemsContainer.scaleX = GameVars.scaleX;
         this.add(scaledItemsContainer);
 
-        this.betSelectionButtonsContainer = new BetSelectionButtonsContainer(this.scene);
+        this.betSelectionButtonsContainer = new AmountSelectionButtonsContainer(this.scene);
         scaledItemsContainer.add(this.betSelectionButtonsContainer);
 
         this.playButton = new Button(this.scene, 0, 585, "texture_atlas_1", "btn_play_off", "btn_play_on");
@@ -43,7 +43,7 @@ export class SelectBetLayer extends Phaser.GameObjects.Container {
 
     public betSelected(value: number): void {
 
-        this.selectedBetValue = value;
+        this.selectedAmountValue = value;
 
         if (!this.playButton.visible) {
 
@@ -65,7 +65,7 @@ export class SelectBetLayer extends Phaser.GameObjects.Container {
 
     private onClickPlay(): void {
 
-        GameManager.onPlayerSelectedBet(this.selectedBetValue);
+        GameManager.onPlayerSelectedAmount(this.selectedAmountValue);
 
         AudioManager.playSound("click");
     }

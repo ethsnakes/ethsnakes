@@ -19,6 +19,9 @@ export class GameVars {
     public static diceBlocked: boolean;
     public static bet: number;
     public static winner: string;
+    public static transactionOnCourse: boolean;
+    public static addingFunds: boolean;
+    public static transactionHash: string;
 
     public static padNumberToString(numberAsString: string): string {
 
