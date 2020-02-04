@@ -89,7 +89,11 @@ export class Dapp {
             .on("receipt", function(receipt) {
                 self.getBalance();
             })
-            .on("error", error => console.error(error));
+            .on("error", function(error) {
+
+                // TODO aqui es el callback de quan cancela el metamask al afegir pasta
+                console.error(error);
+            });
     }
 
     public withdrawPlayerFunds(): void {
@@ -100,7 +104,11 @@ export class Dapp {
             .on("receipt", function(receipt) {
                 self.getBalance();
             })
-            .on("error", error => console.error(error));
+            .on("error", function(error) {
+
+                // TODO aqui es el callback de quan cancela el metamask al fer withdraw
+                console.error(error);
+            });
     }
 
     public play(amount: number): void {
@@ -111,10 +119,7 @@ export class Dapp {
         let gasPrice = Web3.utils.toWei("10", "gwei");
         self.contract.methods.play(amount).send({ from: self.account, gas: 500000, gasPrice: gasPrice })
             .on("transactionHash", function(transactionHash) {
-                // TODO posar el transaction hash al frontend
-                // exemple:
-                // 0xe68fd25cf4e1b3052b054b31a07d4700788b24bd71e6f535874af5ab29841b7a
-                // https://etherscan.io/tx/0xe68fd25cf4e1b3052b054b31a07d4700788b24bd71e6f535874af5ab29841b7a
+
                 console.log("Transaction " + transactionHash);
                 GameManager.onTransactionHashObtained(transactionHash);
             })
@@ -122,7 +127,11 @@ export class Dapp {
 
                 GameManager.onTransactionConfirmed();
             })
-            .on("error", error => console.error(error));
+            .on("error", function(error) {
+
+                // TODO aqui es el callback de quan cancela el metamask al jugar
+                console.error(error);
+            });
     }
 
     public startWatcher(fromBlock): void {
