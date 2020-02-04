@@ -3,6 +3,7 @@ import { GameConstants } from "../../GameConstants";
 import { BoardScene } from "./BoardScene";
 import { Chip } from "./Chip";
 import { BoardContainer } from "./BoardContainer";
+import { GameManager } from "../../GameManager";
 
 export class BoardManager {
  
@@ -52,15 +53,10 @@ export class BoardManager {
 
     public static onTurnMessageRemoved(): void {
 
-        // TODO: aqui tira el bot automaticamente o se le muestra el boton del dado al jugador
         if (GameVars.currentTurn === GameConstants.BOT) {
             
             GameVars.dapp.rollDice(GameVars.seed, GameVars.turns);
         } 
-    }
-
-    public static resetBoard(): void {
-        //
     }
 
     public static showInfoLayer(): void {
@@ -117,6 +113,8 @@ export class BoardManager {
                 }
             }
         }
+
+        console.log("balance:", GameVars.balance);
     }
 
     public static chipArrivedToItsFinalPosition(): void {
@@ -134,6 +132,8 @@ export class BoardManager {
         GameVars.matchOver = true;
 
         GameVars.winner = winner;
+
+        GameManager.matchOver();
 
         BoardScene.currentInstance.matchOver();
     }

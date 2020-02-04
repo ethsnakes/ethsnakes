@@ -87,8 +87,6 @@ export class GameManager {
 
     public static play(): void {
 
-        BoardManager.resetBoard();
-    
         BoardScene.currentInstance.showSelectBetLayer();
     }
 
@@ -126,6 +124,10 @@ export class GameManager {
 
         GameVars.transactionOnCourse = false;
 
+        // le restamos la apuesta al balance
+        GameVars.balance -= GameVars.bet;
+        GameVars.balance = Math.floor(GameVars.balance * 100) / 100;
+
         BoardScene.currentInstance.onTransactionExecuted();
     }
 
@@ -139,7 +141,11 @@ export class GameManager {
     }
 
     public static matchOver(): void {
-        //
+        
+        if (GameVars.winner === GameConstants.PLAYER) {
+            GameVars.balance += 2 * GameVars.bet;
+            GameVars.balance = Math.floor(GameVars.balance * 100) / 100;
+        }
     }
 
     public static onClickAddFunds(): void {
