@@ -140,9 +140,9 @@ export class GameManager {
         SelectBetLayer.currentInstance.betSelected(value);
     }
 
-    public static retrieveFunds(): void {
+    public static withdrawFunds(): void {
 
-        console.log("retrieve funds");
+        GameVars.dapp.withdrawPlayerFunds();
     }
 
     public static writeGameData(): void {

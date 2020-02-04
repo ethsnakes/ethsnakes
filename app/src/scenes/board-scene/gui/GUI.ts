@@ -39,7 +39,7 @@ export class GUI extends Phaser.GameObjects.Container {
 
         this.retrieveFundsButton = new Button(this.scene, 740, 40, "texture_atlas_1", "btn_retrieve_funds_off", "btn_retrieve_funds_on");
         this.retrieveFundsButton.scaleX = GameVars.scaleX;
-        this.retrieveFundsButton.onUp(this.onClickRetrieveFunds, this);
+        this.retrieveFundsButton.onUp(this.onClickWithdrawFunds, this);
         this.add(this.retrieveFundsButton);
 
         this.infoButton = new Button(this.scene, GameConstants.GAME_WIDTH - 110 * GameVars.scaleX, 40, "texture_atlas_1", "btn_info_off", "btn_info_on");
@@ -218,9 +218,9 @@ export class GUI extends Phaser.GameObjects.Container {
         AudioManager.playSound("click");
     }
 
-    private onClickRetrieveFunds(): void {
+    private onClickWithdrawFunds(): void {
 
-        GameManager.retrieveFunds();
+        GameManager.withdrawFunds();
 
         AudioManager.playSound("click");
     }
