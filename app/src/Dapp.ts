@@ -91,8 +91,8 @@ export class Dapp {
             })
             .on("error", function(error) {
 
-                // TODO aqui es el callback de quan cancela el metamask al afegir pasta
-                console.error(error);
+                console.warn(error);
+                GameManager.playerCancelledMetamaskAction();
             });
     }
 
@@ -129,8 +129,8 @@ export class Dapp {
             })
             .on("error", function(error) {
 
-                // TODO aqui es el callback de quan cancela el metamask al jugar
-                console.error(error);
+                console.warn(error);
+                GameManager.playerCancelledMetamaskAction();
             });
     }
 

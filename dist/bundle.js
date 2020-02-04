@@ -322,7 +322,11 @@ var Dapp = /** @class */ (function () {
             .on("receipt", function (receipt) {
             self.getBalance();
         })
-            .on("error", function (error) { return console.error(error); });
+            .on("error", function (error) {
+            // TODO aqui es el callback de quan cancela el metamask al afegir pasta
+            console.error(error);
+            console.log("el jugador ha cancelado la accion");
+        });
     };
     Dapp.prototype.withdrawPlayerFunds = function () {
         var self = this;
@@ -331,7 +335,10 @@ var Dapp = /** @class */ (function () {
             .on("receipt", function (receipt) {
             self.getBalance();
         })
-            .on("error", function (error) { return console.error(error); });
+            .on("error", function (error) {
+            // TODO aqui es el callback de quan cancela el metamask al fer withdraw
+            console.error(error);
+        });
     };
     Dapp.prototype.play = function (amount) {
         amount = Web3.utils.toWei(amount.toString(), "ether");
@@ -339,17 +346,16 @@ var Dapp = /** @class */ (function () {
         var gasPrice = Web3.utils.toWei("10", "gwei");
         self.contract.methods.play(amount).send({ from: self.account, gas: 500000, gasPrice: gasPrice })
             .on("transactionHash", function (transactionHash) {
-            // TODO posar el transaction hash al frontend
-            // exemple:
-            // 0xe68fd25cf4e1b3052b054b31a07d4700788b24bd71e6f535874af5ab29841b7a
-            // https://etherscan.io/tx/0xe68fd25cf4e1b3052b054b31a07d4700788b24bd71e6f535874af5ab29841b7a
             console.log("Transaction " + transactionHash);
             GameManager_1.GameManager.onTransactionHashObtained(transactionHash);
         })
             .on("receipt", function (receipt) {
             GameManager_1.GameManager.onTransactionConfirmed();
         })
-            .on("error", function (error) { return console.error(error); });
+            .on("error", function (error) {
+            // TODO aqui es el callback de quan cancela el metamask al jugar
+            console.error(error);
+        });
     };
     Dapp.prototype.startWatcher = function (fromBlock) {
         var _this = this;
@@ -577,7 +583,6 @@ var GameManager = /** @class */ (function () {
         GameVars_1.GameVars.currentScene.scene.start("BoardScene");
     };
     GameManager.play = function () {
-        BoardManager_1.BoardManager.resetBoard();
         BoardScene_1.BoardScene.currentInstance.showSelectBetLayer();
     };
     GameManager.replay = function () {
@@ -601,6 +606,9 @@ var GameManager = /** @class */ (function () {
     };
     GameManager.onTransactionConfirmed = function () {
         GameVars_1.GameVars.transactionOnCourse = false;
+        // le restamos la apuesta al balance
+        GameVars_1.GameVars.balance -= GameVars_1.GameVars.bet;
+        GameVars_1.GameVars.balance = Math.floor(GameVars_1.GameVars.balance * 100) / 100;
         BoardScene_1.BoardScene.currentInstance.onTransactionExecuted();
     };
     GameManager.onSeedAvailable = function (seed) {
@@ -609,11 +617,18 @@ var GameManager = /** @class */ (function () {
         BoardManager_1.BoardManager.startGame();
     };
     GameManager.matchOver = function () {
-        //
+        if (GameVars_1.GameVars.winner === GameConstants_1.GameConstants.PLAYER) {
+            GameVars_1.GameVars.balance += 2 * GameVars_1.GameVars.bet;
+            GameVars_1.GameVars.balance = Math.floor(GameVars_1.GameVars.balance * 100) / 100;
+        }
     };
     GameManager.onClickAddFunds = function () {
         GameVars_1.GameVars.addingFunds = true;
         BoardScene_1.BoardScene.currentInstance.showFundsAmountToAddLayer();
+    };
+    GameManager.hideAddFundsLayer = function () {
+        GameVars_1.GameVars.addingFunds = false;
+        BoardScene_1.BoardScene.currentInstance.hideFundsAmountToAddLayer();
     };
     GameManager.onBetSelected = function (value) {
         GameVars_1.GameVars.bet = value;
@@ -1147,6 +1162,7 @@ var GameVars_1 = __webpack_require__(/*! ../../GameVars */ "./app/src/GameVars.t
 var GameConstants_1 = __webpack_require__(/*! ../../GameConstants */ "./app/src/GameConstants.ts");
 var BoardScene_1 = __webpack_require__(/*! ./BoardScene */ "./app/src/scenes/board-scene/BoardScene.ts");
 var BoardContainer_1 = __webpack_require__(/*! ./BoardContainer */ "./app/src/scenes/board-scene/BoardContainer.ts");
+var GameManager_1 = __webpack_require__(/*! ../../GameManager */ "./app/src/GameManager.ts");
 var BoardManager = /** @class */ (function () {
     function BoardManager() {
     }
@@ -1182,13 +1198,9 @@ var BoardManager = /** @class */ (function () {
         GameVars_1.GameVars.turns++;
     };
     BoardManager.onTurnMessageRemoved = function () {
-        // TODO: aqui tira el bot automaticamente o se le muestra el boton del dado al jugador
         if (GameVars_1.GameVars.currentTurn === GameConstants_1.GameConstants.BOT) {
             GameVars_1.GameVars.dapp.rollDice(GameVars_1.GameVars.seed, GameVars_1.GameVars.turns);
         }
-    };
-    BoardManager.resetBoard = function () {
-        //
     };
     BoardManager.showInfoLayer = function () {
         GameVars_1.GameVars.paused = true;
@@ -1241,6 +1253,7 @@ var BoardManager = /** @class */ (function () {
     BoardManager.matchOver = function (winner) {
         GameVars_1.GameVars.matchOver = true;
         GameVars_1.GameVars.winner = winner;
+        GameManager_1.GameManager.matchOver();
         BoardScene_1.BoardScene.currentInstance.matchOver();
     };
     BoardManager.changeTurn = function () {
@@ -1341,6 +1354,11 @@ var BoardScene = /** @class */ (function (_super) {
         this.gui.disableButtons();
         this.amountSelectionLayer = new AmountSelectionLayer_1.AmountSelectionLayer(this);
         this.add.existing(this.amountSelectionLayer);
+    };
+    BoardScene.prototype.hideFundsAmountToAddLayer = function () {
+        this.gui.enableButtons();
+        this.amountSelectionLayer.destroy();
+        this.amountSelectionLayer = null;
     };
     BoardScene.prototype.showSelectBetLayer = function () {
         this.gui.disableButtons();
@@ -2228,14 +2246,14 @@ var BalanceContainer = /** @class */ (function (_super) {
         this.balanceLabel.text = GameVars_1.GameVars.balance.toString() + " ETH";
     };
     BalanceContainer.prototype.onTransactionExecuted = function () {
-        var newBalance = Math.floor((GameVars_1.GameVars.balance - GameVars_1.GameVars.bet) * 100) / 100;
-        this.balanceLabel.text = newBalance.toString() + " ETH";
+        this.balanceLabel.text = GameVars_1.GameVars.balance.toString() + " ETH";
     };
     BalanceContainer.prototype.onPlayerVictory = function () {
-        this.balanceLabel.text = GameVars_1.GameVars.balance.toString() + " ETH";
+        var balanceBeforeWinning = GameVars_1.GameVars.balance - 2 * GameVars_1.GameVars.bet;
+        balanceBeforeWinning = Math.floor(balanceBeforeWinning * 100) / 100;
+        this.balanceLabel.text = balanceBeforeWinning.toString() + " ETH";
         this.scene.time.delayedCall(3000, function () {
-            var newBalance = Math.floor((GameVars_1.GameVars.balance + 2 * GameVars_1.GameVars.bet) * 100) / 100;
-            var newBalanceLabel = new Phaser.GameObjects.Text(this.scene, 42 * GameVars_1.GameVars.scaleX, -15 + 30, newBalance.toString() + " ETH", { fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "28px", color: "#7A431C" });
+            var newBalanceLabel = new Phaser.GameObjects.Text(this.scene, 42 * GameVars_1.GameVars.scaleX, -15 + 30, GameVars_1.GameVars.balance.toString() + " ETH", { fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "28px", color: "#7A431C" });
             newBalanceLabel.scaleX = GameVars_1.GameVars.scaleX;
             newBalanceLabel.alpha = 0;
             this.add(newBalanceLabel);
@@ -2597,6 +2615,10 @@ var AmountSelectionLayer = /** @class */ (function (_super) {
         _this.playButton.onUp(_this.onClickPlay, _this);
         _this.playButton.visible = false;
         scaledItemsContainer.add(_this.playButton);
+        _this.backButton = new Utils_1.Button(_this.scene, 40 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_back_off", "btn_back_on");
+        _this.backButton.scaleX = GameVars_1.GameVars.scaleX;
+        _this.backButton.onDown(_this.onBack, _this);
+        _this.add(_this.backButton);
         return _this;
     }
     AmountSelectionLayer.prototype.betSelected = function (value) {
@@ -2615,7 +2637,12 @@ var AmountSelectionLayer = /** @class */ (function (_super) {
         AudioManager_1.AudioManager.playSound("click");
     };
     AmountSelectionLayer.prototype.onClickPlay = function () {
+        this.playButton.visible = false;
+        this.backButton.visible = false;
         GameManager_1.GameManager.onPlayerSelectedAmount(this.selectedAmountValue);
+        AudioManager_1.AudioManager.playSound("click");
+    };
+    AmountSelectionLayer.prototype.onBack = function () {
         AudioManager_1.AudioManager.playSound("click");
     };
     return AmountSelectionLayer;

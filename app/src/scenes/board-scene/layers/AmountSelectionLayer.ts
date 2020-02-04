@@ -11,7 +11,8 @@ export class AmountSelectionLayer extends Phaser.GameObjects.Container {
 
     private selectedAmountValue: number;
     private betSelectionButtonsContainer: AmountSelectionButtonsContainer;
-    private playButton: Button;
+    private confirmButton: Button;
+    private backButton: Button;
 
     constructor(scene: Phaser.Scene) {
 
@@ -34,23 +35,28 @@ export class AmountSelectionLayer extends Phaser.GameObjects.Container {
         this.betSelectionButtonsContainer = new AmountSelectionButtonsContainer(this.scene);
         scaledItemsContainer.add(this.betSelectionButtonsContainer);
 
-        this.playButton = new Button(this.scene, 0, 585, "texture_atlas_1", "btn_play_off", "btn_play_on");
-        this.playButton.setScale(0);
-        this.playButton.onUp(this.onClickPlay, this);
-        this.playButton.visible = false;
-        scaledItemsContainer.add(this.playButton);
+        this.confirmButton = new Button(this.scene, 0, 585, "texture_atlas_1", "btn_play_off", "btn_play_on");
+        this.confirmButton.setScale(0);
+        this.confirmButton.onUp(this.onClickConfirm, this);
+        this.confirmButton.visible = false;
+        scaledItemsContainer.add(this.confirmButton);
+
+        this.backButton = new Button(this.scene, 40 * GameVars.scaleX, 40, "texture_atlas_1", "btn_back_off", "btn_back_on");
+        this.backButton.scaleX = GameVars.scaleX;
+        this.backButton.onDown(this.onBack, this);
+        this.add(this.backButton);
     }
 
     public betSelected(value: number): void {
 
         this.selectedAmountValue = value;
 
-        if (!this.playButton.visible) {
+        if (!this.confirmButton.visible) {
 
-            this.playButton.visible = true;
+            this.confirmButton.visible = true;
 
             this.scene.tweens.add({
-                targets: this.playButton,
+                targets: this.confirmButton,
                 scaleX: 1,
                 scaleY: 1,
                 ease: Phaser.Math.Easing.Cubic.Out,
@@ -63,9 +69,19 @@ export class AmountSelectionLayer extends Phaser.GameObjects.Container {
         AudioManager.playSound("click");
     }
 
-    private onClickPlay(): void {
+    private onClickConfirm(): void {
 
-        GameManager.onPlayerSelectedAmount(this.selectedAmountValue);
+        this.confirmButton.visible = false;
+        this.backButton.visible = false;
+
+        GameManager.onPlayerConfirmedAmount(this.selectedAmountValue);
+
+        AudioManager.playSound("click");
+    }
+
+    private onBack(): void {
+
+        GameManager.hideAmountSelectionLayer();
 
         AudioManager.playSound("click");
     }

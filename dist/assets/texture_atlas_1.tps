@@ -236,6 +236,32 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">texture_atlas_1/btn_back_off.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>17,17,33,35</rect>
+                <key>scale9Paddings</key>
+                <rect>17,17,33,35</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">texture_atlas_1/btn_back_on.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>23,23,45,47</rect>
+                <key>scale9Paddings</key>
+                <rect>23,23,45,47</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">texture_atlas_1/btn_dice_off.png</key>
             <key type="filename">texture_atlas_1/btn_dice_on.png</key>
             <struct type="IndividualSpriteSettings">

@@ -21,6 +21,7 @@ export class GameVars {
     public static winner: string;
     public static transactionOnCourse: boolean;
     public static addingFunds: boolean;
+    public static selectingBet: boolean;
     public static transactionHash: string;
 
     public static padNumberToString(numberAsString: string): string {

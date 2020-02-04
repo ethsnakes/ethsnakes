@@ -85,23 +85,29 @@ export class BoardScene extends Phaser.Scene {
 
     public showFundsAmountToAddLayer(): void {
 
+        this.gui.hidePlayButton();
         this.gui.disableButtons();
 
         this.amountSelectionLayer = new AmountSelectionLayer(this);
         this.add.existing(this.amountSelectionLayer);
     }
 
-    public showSelectBetLayer(): void {
+    public showBetSelectionLayer(): void {
 
+        this.gui.hidePlayButton();
         this.gui.disableButtons();
 
         this.amountSelectionLayer = new AmountSelectionLayer(this);
         this.add.existing(this.amountSelectionLayer);
     }
 
-    public onPlayerSelectedBet(): void {
+    public hideAmountSelectionLayer(): void {
+
+        this.gui.showPlayButton();
+        this.gui.enableButtons();
 
         this.amountSelectionLayer.destroy();
+        this.amountSelectionLayer = null;
     }
 
     public showWaitingLayer(): void {

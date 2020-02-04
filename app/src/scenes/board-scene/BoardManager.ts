@@ -113,8 +113,6 @@ export class BoardManager {
                 }
             }
         }
-
-        console.log("balance:", GameVars.balance);
     }
 
     public static chipArrivedToItsFinalPosition(): void {

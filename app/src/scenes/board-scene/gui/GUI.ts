@@ -202,10 +202,18 @@ export class GUI extends Phaser.GameObjects.Container {
         });
     }
 
-    private onClickPlay(): void {
+    public showPlayButton(): void {
+
+        this.playButton.visible = true;
+    }
+
+    public hidePlayButton(): void {
 
         this.playButton.visible = false;
-        
+    }
+
+    private onClickPlay(): void {
+
         GameManager.play();
 
         AudioManager.playSound("click");

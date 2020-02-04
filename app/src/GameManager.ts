@@ -14,6 +14,7 @@ export class GameManager {
         GameVars.bet = 0;
         GameVars.transactionOnCourse = false;
         GameVars.addingFunds = false;
+        GameVars.selectingBet = false;
         GameVars.transactionHash = "";
 
         if (GameVars.currentScene.sys.game.device.os.desktop) {
@@ -66,6 +67,8 @@ export class GameManager {
         GameVars.balance = Number(balance);
 
         GameVars.transactionOnCourse = false;
+        GameVars.addingFunds = false;
+        GameVars.selectingBet = false;
 
         BoardScene.currentInstance.onBalanceAvailable();
     }
@@ -87,7 +90,9 @@ export class GameManager {
 
     public static play(): void {
 
-        BoardScene.currentInstance.showSelectBetLayer();
+        GameVars.selectingBet = true;
+
+        BoardScene.currentInstance.showBetSelectionLayer();
     }
 
     public static replay(): void {
@@ -97,18 +102,16 @@ export class GameManager {
         GameManager.enterBoardScene();
     }
 
-    public static onPlayerSelectedAmount(value: number): void {
+    public static onPlayerConfirmedAmount(value: number): void {
 
         GameVars.transactionOnCourse = true;
 
         if (GameVars.addingFunds) {
 
-            GameVars.addingFunds = false;
             GameVars.dapp.addPlayerFunds(value.toString());
 
         } else {
 
-            BoardScene.currentInstance.onPlayerSelectedBet();
             GameVars.dapp.play(value);
         }
     }
@@ -155,6 +158,14 @@ export class GameManager {
         BoardScene.currentInstance.showFundsAmountToAddLayer();
     }
 
+    public static hideAmountSelectionLayer(): void {
+
+        GameVars.addingFunds = false;
+        GameVars.selectingBet = false;
+
+        BoardScene.currentInstance.hideAmountSelectionLayer();
+    }
+
     public static onBetSelected(value: number): void {
 
         GameVars.bet = value;
@@ -165,6 +176,13 @@ export class GameManager {
     public static withdrawFunds(): void {
 
         GameVars.dapp.withdrawPlayerFunds();
+    }
+
+    public static playerCancelledMetamaskAction(): void {
+
+        if (GameVars.addingFunds || GameVars.selectingBet) {
+            GameManager.hideAmountSelectionLayer();
+        } 
     }
 
     public static writeGameData(): void {
