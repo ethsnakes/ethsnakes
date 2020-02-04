@@ -395,6 +395,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">texture_atlas_1/extra_dice_txt.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>142,26,284,52</rect>
+                <key>scale9Paddings</key>
+                <rect>142,26,284,52</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">texture_atlas_1/header_tutorial.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
