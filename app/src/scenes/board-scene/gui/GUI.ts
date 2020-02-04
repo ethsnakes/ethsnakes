@@ -175,7 +175,7 @@ export class GUI extends Phaser.GameObjects.Container {
 
         this.playButton.setInteractive();
         this.addFundsButton.setInteractive();
-        this.retrieveFundsButton.disableInteractive();
+        this.retrieveFundsButton.setInteractive();
         this.infoButton.setInteractive();
         this.diceButton.setInteractive();
     }
