@@ -1,5 +1,7 @@
 const Migrations = artifacts.require("Migrations");
 
 module.exports = function(deployer) {
-  deployer.deploy(Migrations);
+    if (deployer.network === "test" || deployer.network === "dev") {
+        deployer.deploy(Migrations);
+    }
 };

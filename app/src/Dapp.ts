@@ -4,7 +4,8 @@ import { BoardManager } from "./scenes/board-scene/BoardManager";
 const Web3 = require("web3");
 const Blockies = require("ethereum-blockies");
 //const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLaddersMock.json");
-const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLadders.json"); // TODO CHANGE FOR THE MOCK
+const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLadders.json");
+const ContractAddress = "0x97bd1590602Fd5dc1beD30755c9c4D6Eb92F55A4";
 
 export class Dapp {
 
@@ -44,7 +45,7 @@ export class Dapp {
         this.loadAccount();
 
         const networkId = await this.web3.eth.net.getId();
-        this.contract = new this.web3.eth.Contract(SnakesAndLaddersArtifact.abi, SnakesAndLaddersArtifact.networks[networkId].address);
+        this.contract = new this.web3.eth.Contract(SnakesAndLaddersArtifact.abi, ContractAddress);
 
         const latest = await web3.eth.getBlockNumber();
         this.startWatcher(latest);
@@ -91,17 +92,6 @@ export class Dapp {
             .on("error", error => console.error(error));
     }
 
-    public withdrawPlayerFunds(): void {
-
-        let self = this;
-        self.contract.methods.withdrawPlayerFunds().send({ from: self.account })
-            .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
-            .on("receipt", function(receipt) {
-                self.getBalance();
-            })
-            .on("error", error => console.error(error));
-    }
-
     public play(amount: number): void {
 
         amount = Web3.utils.toWei(amount.toString(), "ether");
@@ -109,16 +99,9 @@ export class Dapp {
         let self = this;
         let gasPrice = Web3.utils.toWei("10", "gwei");
         self.contract.methods.play(amount).send({ from: self.account, gas: 500000, gasPrice: gasPrice })
-            .on("transactionHash", function(transactionHash) {
-                // TODO posar el transaction hash al frontend
-                // exemple:
-                // 0xe68fd25cf4e1b3052b054b31a07d4700788b24bd71e6f535874af5ab29841b7a
-                // https://etherscan.io/tx/0xe68fd25cf4e1b3052b054b31a07d4700788b24bd71e6f535874af5ab29841b7a
-                console.log("Transaction " + transactionHash);
-                GameManager.onTransactionHashObtained(transactionHash);
-            })
+            .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
             .on("receipt", function(receipt) {
-               
+
                 GameManager.onTransactionConfirmed();
             })
             .on("error", error => console.error(error));
@@ -129,10 +112,10 @@ export class Dapp {
         let self = this;
         self.contract.events.LogGame({ fromBlock: fromBlock })
             .on("data", e => {
-                
+
                 self.addNewGameResult(e.returnValues["sender"], e.returnValues["result"], e.returnValues["balancediff"]);
 
-                if (e.returnValues["sender"] === this.account) {
+                if (e.returnValues["sender"] == this.account) {
                     GameManager.onSeedAvailable(e.returnValues["seed"]);
                 }
             });
@@ -146,14 +129,13 @@ export class Dapp {
                 // console.log("DICE RESULT: " + result);
                 BoardManager.onDiceResultFetched(parseInt(result));
             });
-    } 
+    }
 
     public addNewGameResult(sender, result, balancediff): void {
 
-        // TODO descomentar al final
-        // if (sender === this.account) {
-        //     return;
-        // }
+        if (sender == this.account) {
+             return;
+        }
         let stream_msg = document.createElement("div");
         let eth_blockie = document.createElement("span");
         let eth_address = document.createElement("span");

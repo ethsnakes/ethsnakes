@@ -1,3 +1,9 @@
+// put  your mnemonic here
+const mnemonic = "MNEMONIC_HERE";
+const infura =  "INFURA_PROJECT_HERE";
+
+let HDWalletProvider = require("truffle-hdwallet-provider");
+
 module.exports = {
     networks: {
         test: {
@@ -11,9 +17,11 @@ module.exports = {
             network_id: "*"
         },
         ropsten: {
-            host: "127.0.0.1",
-            port: 8545,
-            network_id: 3
+            provider: function() {
+                return new HDWalletProvider(mnemonic, "https://ropsten.infura.io/v3/" + infura)
+            },
+            network_id: 3,
+            gas: 4000000
         }
     },
     compilers: {
