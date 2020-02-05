@@ -45,24 +45,55 @@ input {
     border: 0;
     padding: 50px 0 25px;
     color: #cce2e0; }
-  #game-wrapper #game #content {
-    text-align: center; }
-    #game-wrapper #game #content canvas {
-      width: 100% !important;
-      margin-left: 0 !important;
-      margin-top: 0 !important; }
+  #game-wrapper #game #content canvas {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-top: 0 !important; }
+  #game-wrapper #social {
+    background: #7fa1a3;
+    padding: 20px;
+    text-align: center;
+    border-radius: 0 0 4px 0; }
+    #game-wrapper #social .fa-caring {
+      font-size: 20px;
+      font-weight: bold;
+      margin-right: 20px;
+      height: 40px;
+      line-height: 40px; }
+    #game-wrapper #social .fa {
+      text-align: center;
+      padding-top: 10px;
+      height: 40px;
+      width: 40px;
+      font-size: 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-right: 10px;
+      color: white; }
+      #game-wrapper #social .fa:hover {
+        opacity: 0.7; }
+      #game-wrapper #social .fa.fa-facebook {
+        background: #3B5998; }
+      #game-wrapper #social .fa.fa-twitter {
+        background: #55ACEE; }
+      #game-wrapper #social .fa.fa-linkedin {
+        background: #007bb5; }
+      #game-wrapper #social .fa.fa-instagram {
+        background: #df6245; }
+      #game-wrapper #social .fa.fa-reddit {
+        background: #c1251b; }
   #game-wrapper #links {
     width: 100%;
     padding: 30px 15px;
     color: #222;
     text-align: left;
-    font-size: 13px; }
+    font-size: 14px; }
     #game-wrapper #links a {
       color: #222;
       text-decoration: underline; }
   #game-wrapper #ethereum-images {
     text-align: center;
-    border-top: 1px solid #718f91;
+    border-top: 1px solid #7fa1a3;
     padding: 30px 0; }
     #game-wrapper #ethereum-images .logo {
       margin: 0 15px;

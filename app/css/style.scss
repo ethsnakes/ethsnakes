@@ -14,7 +14,8 @@ $color-orange: #F08005;
 $color-yellow: #FADF03;
 
 $color-background: #95bdbf;
-$color-border: #718f91;
+$color-bar: #7fa1a3;
+$color-border: #7fa1a3;
 
 *, *:before, *:after {
   box-sizing: border-box;
@@ -72,11 +73,52 @@ input {
   }
   #game {
     #content {
-      text-align: center;
       canvas {
         width: 100% !important;
         margin-left: 0 !important;
         margin-top: 0 !important;
+      }
+    }
+  }
+  #social {
+    background: $color-bar;
+    padding: 20px;
+    text-align: center;
+    border-radius: 0 0 4px 0;
+    .fa-caring {
+      font-size: 20px;
+      font-weight: bold;
+      margin-right: 20px;
+      height: 40px;
+      line-height: 40px;
+    }
+    .fa {
+      text-align: center;
+      padding-top: 10px;
+      height: 40px;
+      width: 40px;
+      font-size: 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-right: 10px;
+      color: white;
+      &:hover {
+        opacity: 0.7;
+      }
+      &.fa-facebook {
+        background: #3B5998;
+      }
+      &.fa-twitter {
+        background: #55ACEE;
+      }
+      &.fa-linkedin {
+        background: #007bb5;
+      }
+      &.fa-instagram {
+        background: #df6245;
+      }
+      &.fa-reddit {
+        background: #c1251b;
       }
     }
   }
@@ -85,7 +127,7 @@ input {
     padding: 30px 15px;
     color: #222;
     text-align: left;
-    font-size: 13px;
+    font-size: 14px;
     a {
       color: #222;
       text-decoration: underline;

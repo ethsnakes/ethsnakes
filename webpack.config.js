@@ -22,10 +22,6 @@ module.exports = {
                 to: "assets"
             },
             {
-                from: "./app/textures",
-                to: "assets"
-            },
-            {
                 from: "./app/css",
                 to: "css"
             }

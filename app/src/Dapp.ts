@@ -215,12 +215,13 @@ export class Dapp {
         let eth_address = document.createElement("span");
         let eth_msg = document.createElement("span");
         let eth_balancediff = document.createElement("span");
+        let last6 = sender.toLowerCase().substr(sender.length - 6);
         let blockie = Blockies.create({ seed: sender, scale: 3 });
         stream_msg.className = "stream-msg result-" + result;
         eth_blockie.className = "eth-blockie";
         eth_blockie.style.backgroundImage = "url(" + blockie.toDataURL() + ")";
         eth_address.className = "eth-address";
-        eth_address.innerHTML = sender.toLowerCase().substr(sender.length - 6);
+        eth_address.innerHTML = last6;
         eth_msg.className = "eth-msg";
         eth_msg.innerHTML = result ? "Winner!" : "Loser";
         eth_balancediff.className = "eth-balancediff";
