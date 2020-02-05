@@ -15,7 +15,7 @@ html {
 
 body {
   height: 100%;
-  font-family: 'Roboto Mono', monospace; }
+  font-family: 'PT Sans', sans-serif; }
 
 h1 {
   padding: 20px 0;
@@ -31,64 +31,45 @@ input {
  * General design
  */
 #wrapper {
-  display: table;
-  table-layout: fixed;
   min-height: 100%;
-  background-color: #48566f; }
+  background-color: #95bdbf; }
   @media (max-width: 1250px) {
     #wrapper {
       display: block;
       table-layout: initial; } }
 
 #game-wrapper {
-  position: relative;
-  display: table-cell;
-  width: 100%;
-  height: 100%;
-  min-height: 1000px; }
-  @media (max-width: 1250px) {
-    #game-wrapper {
-      display: block;
-      position: absolute; } }
+  margin-right: 400px; }
   #game-wrapper h1 {
     text-align: center;
     border: 0;
     padding: 50px 0 25px;
     color: #cce2e0; }
-  #game-wrapper #game {
-    height: 100%; }
-    #game-wrapper #game #content {
-      max-height: 650px;
-      height: 650px;
-      text-align: center; }
-      #game-wrapper #game #content canvas {
-        box-shadow: 0 0 10px 2px #303030;
-        border-radius: 3px;
-        margin-left: 0 !important;
-        margin-top: 0 !important; }
+  #game-wrapper #game #content {
+    text-align: center; }
+    #game-wrapper #game #content canvas {
+      width: 100% !important;
+      margin-left: 0 !important;
+      margin-top: 0 !important; }
   #game-wrapper #links {
-    position: absolute;
-    bottom: 0;
     width: 100%;
-    padding: 15px 0;
+    padding: 10px 15px;
     color: #000000;
-    text-align: center;
-    font-size: 13px; }
+    text-align: left;
+    font-size: 12px;
+    background-color: #48566f; }
     #game-wrapper #links a {
       color: #000000;
       text-decoration: underline; }
 
 #stream {
-  display: table-cell;
+  position: fixed;
   top: 0;
   right: 0;
   width: 400px;
   min-width: 400px;
   height: 100%;
-  background: #94d6af; }
-  @media (max-width: 1250px) {
-    #stream {
-      display: none; } }
+  background: #95bdbf; }
   #stream #stream-title {
     margin: 0 5px;
     padding: 10px 10px 6px;
@@ -117,6 +98,7 @@ input {
       display: inline-block;
       height: 24px;
       width: 24px;
+      border-radius: 12px;
       margin-right: 10px; }
     #stream #stream-content .stream-msg .eth-address {
       display: inline-block;
@@ -126,6 +108,7 @@ input {
       width: 100px; }
     #stream #stream-content .stream-msg .eth-balancediff {
       display: inline-block;
-      text-align: right; }
+      text-align: right;
+      font-weight: bold; }
 
 /*# sourceMappingURL=style.css.map */

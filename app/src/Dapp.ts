@@ -3,7 +3,6 @@ import { BoardManager } from "./scenes/board-scene/BoardManager";
 
 const Web3 = require("web3");
 const Blockies = require("ethereum-blockies");
-//const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLaddersMock.json");
 const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLadders.json");
 const ContractAddress = "0x97bd1590602Fd5dc1beD30755c9c4D6Eb92F55A4";
 
@@ -15,15 +14,25 @@ export class Dapp {
     public account: any;
     public contract: any;
 
+    /**
+     * Constructor will help the Dapp class to communicate with the game engine
+     */
     constructor() {
         
         Dapp.currentInstance = this;
     }
 
+    /**
+     * Unlocks the wallet, gets past events of the watcher to fill the right column of the page and
+     * finally start the watcher and updates the balance.
+     *
+     * @returns {Promise<void>}
+     */
     public async unlock() {
 
-        // load web3 from metamask or new browser
+        // load web3 from metamask
         if (window.ethereum) {
+            // from a new generation ethereum browser
             this.web3 = new Web3(window.ethereum);
             try {
                 await ethereum.enable();
@@ -31,57 +40,52 @@ export class Dapp {
             } catch (error) {
                 console.log("User denied account access... allow and refresh");
             }
-        // load web3 from old dapp browser
         } else if (window.web3) {
+            // load web3 from old dapp browser
             this.web3 = new Web3(window.web3.currentProvider);
             console.log("Legacy dapp browser detected..");
-        // load web3 from localhost
         } else {
+            // load web3 from localhost
             this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
             console.log("Non-Ethereum browser detected.");
         }
-        console.log("Web3 v" + this.web3.version);
 
-        this.loadAccount();
-
-        const networkId = await this.web3.eth.net.getId();
-        this.contract = new this.web3.eth.Contract(SnakesAndLaddersArtifact.abi, ContractAddress);
-
-        const latest = await web3.eth.getBlockNumber();
-        this.startWatcher(latest);
-
-        // for testing
-        // const value = Web3.utils.toWei("0.1", "ether");
-        // const amount = Web3.utils.toWei("0.001", "ether");
-        this.getBalance();
-    }
-
-    public async loadAccount() {
-
+        // load the account
         const accounts = await this.web3.eth.getAccounts();
         this.account = accounts[0];
 
-        console.log("account:", this.account);
+        // save the current contract object
+        const networkId = await this.web3.eth.net.getId();
+        this.contract = new this.web3.eth.Contract(SnakesAndLaddersArtifact.abi, ContractAddress);
+
+        // start watcher
+        const latest = await web3.eth.getBlockNumber();
+        const sometimeAgo = latest - 6000*30
+        //this.logPastGames(sometimeAgo);
+        this.startWatcher(latest);
     }
 
+    /**
+     * Gets the current balance and updates the balance in the UI.
+     */
     public getBalance(): void {
 
         this.contract.methods.balances(this.account).call({ from: this.account }, (e, r) => {
-
             if (e) {
-                console.error("Could not retrieve your balance");
-                console.log(e);
+                console.error("Could not retrieve your balance: " + e);
             } else {
-
                 r = r || "0";
                 GameManager.onBalanceAvailable(Web3.utils.fromWei(r));
             }
         });
     }
 
+    /**
+     * Adds players funds.
+     *
+     * @param {string} value
+     */
     public addPlayerFunds(value?: string): void {
-
-        value = value || "0.2";
 
         let self = this;
         self.contract.methods.addPlayerFunds().send({ from: self.account, value: Web3.utils.toWei(value, "ether")})
@@ -90,12 +94,14 @@ export class Dapp {
                 self.getBalance();
             })
             .on("error", function(error) {
-
                 console.warn(error);
                 GameManager.playerCancelledMetamaskAction();
             });
     }
 
+    /**
+     * Withdraw player funds when pressing the button, it will withdraw all the funds that he has.
+     */
     public withdrawPlayerFunds(): void {
 
         let self = this;
@@ -111,10 +117,14 @@ export class Dapp {
             });
     }
 
+    /**
+     * Execute a game.
+     *
+     * @param {number} amount
+     */
     public play(amount: number): void {
 
         amount = Web3.utils.toWei(amount.toString(), "ether");
-
         let self = this;
         let gasPrice = Web3.utils.toWei("10", "gwei");
         self.contract.methods.play(amount).send({ from: self.account, gas: 500000, gasPrice: gasPrice })
@@ -134,20 +144,12 @@ export class Dapp {
             });
     }
 
-    public startWatcher(fromBlock): void {
-
-        let self = this;
-        self.contract.events.LogGame({ fromBlock: fromBlock })
-            .on("data", e => {
-
-                self.addNewGameResult(e.returnValues["sender"], e.returnValues["result"], e.returnValues["balancediff"]);
-
-                if (e.returnValues["sender"] == this.account) {
-                    GameManager.onSeedAvailable(e.returnValues["seed"]);
-                }
-            });
-    }
-
+    /**
+     * Calls rollDice with a seed and turn to know what was the dice result.
+     *
+     * @param {string} seed
+     * @param {number} turn
+     */
     public rollDice(seed: string, turn: number): void {
 
         let self = this;
@@ -158,11 +160,54 @@ export class Dapp {
             });
     }
 
+    /**
+     * This will fill the right part of the game with logs of old games.
+     *
+     * @param fromBlock
+     */
+    public logPastGames(fromBlock): void {
+
+        let self = this;
+        self.contract.getPastEvents('LogGame', {
+            fromBlock: fromBlock,
+            toBlock: 'latest'
+        }, function (error, e) {
+            console.log(e);
+        }).then(function (e) {
+            self.addNewGameResult(e.returnValues["sender"], e.returnValues["result"], e.returnValues["balancediff"]);
+        });
+    }
+
+    /**
+     * Starts the watcher to check the results of ethereum transactions.
+     *
+     * @param fromBlock
+     */
+    public startWatcher(fromBlock): void {
+
+        let self = this;
+        self.contract.events.LogGame({ fromBlock: fromBlock })
+            .on("data", e => {
+                // adds new game to the log if it is not the current player game
+                if (e.returnValues["sender"] != this.account) {
+                    self.addNewGameResult(e.returnValues["sender"], e.returnValues["result"], e.returnValues["balancediff"]);
+                }
+                // if the game is from the current user then it will play the game
+                if (e.returnValues["sender"] == this.account) {
+                    GameManager.onSeedAvailable(e.returnValues["seed"]);
+                }
+            });
+    }
+
+    /**
+     * This will add a new result of a player and add it to the right panel.
+     *
+     * @param sender
+     * @param result
+     * @param balancediff
+     */
     public addNewGameResult(sender, result, balancediff): void {
 
-        if (sender == this.account) {
-             return;
-        }
         let stream_msg = document.createElement("div");
         let eth_blockie = document.createElement("span");
         let eth_address = document.createElement("span");
