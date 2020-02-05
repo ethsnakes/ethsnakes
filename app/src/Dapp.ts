@@ -119,8 +119,6 @@ export class Dapp {
                 self.getBalance();
             })
             .on("error", function(error) {
-
-                // TODO aqui es el callback de quan cancela el metamask al fer withdraw
                 console.error(error);
             });
     }
