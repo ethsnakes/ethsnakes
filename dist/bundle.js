@@ -323,9 +323,8 @@ var Dapp = /** @class */ (function () {
             self.getBalance();
         })
             .on("error", function (error) {
-            // TODO aqui es el callback de quan cancela el metamask al afegir pasta
-            console.error(error);
-            console.log("el jugador ha cancelado la accion");
+            console.warn(error);
+            GameManager_1.GameManager.playerCancelledMetamaskAction();
         });
     };
     Dapp.prototype.withdrawPlayerFunds = function () {
@@ -353,8 +352,8 @@ var Dapp = /** @class */ (function () {
             GameManager_1.GameManager.onTransactionConfirmed();
         })
             .on("error", function (error) {
-            // TODO aqui es el callback de quan cancela el metamask al jugar
-            console.error(error);
+            console.warn(error);
+            GameManager_1.GameManager.playerCancelledMetamaskAction();
         });
     };
     Dapp.prototype.startWatcher = function (fromBlock) {
@@ -537,6 +536,7 @@ var GameManager = /** @class */ (function () {
         GameVars_1.GameVars.bet = 0;
         GameVars_1.GameVars.transactionOnCourse = false;
         GameVars_1.GameVars.addingFunds = false;
+        GameVars_1.GameVars.selectingBet = false;
         GameVars_1.GameVars.transactionHash = "";
         if (GameVars_1.GameVars.currentScene.sys.game.device.os.desktop) {
             GameVars_1.GameVars.scaleX = 1;
@@ -571,6 +571,8 @@ var GameManager = /** @class */ (function () {
     GameManager.onBalanceAvailable = function (balance) {
         GameVars_1.GameVars.balance = Number(balance);
         GameVars_1.GameVars.transactionOnCourse = false;
+        GameVars_1.GameVars.addingFunds = false;
+        GameVars_1.GameVars.selectingBet = false;
         BoardScene_1.BoardScene.currentInstance.onBalanceAvailable();
     };
     GameManager.setCurrentScene = function (scene) {
@@ -583,20 +585,19 @@ var GameManager = /** @class */ (function () {
         GameVars_1.GameVars.currentScene.scene.start("BoardScene");
     };
     GameManager.play = function () {
-        BoardScene_1.BoardScene.currentInstance.showSelectBetLayer();
+        GameVars_1.GameVars.selectingBet = true;
+        BoardScene_1.BoardScene.currentInstance.showBetSelectionLayer();
     };
     GameManager.replay = function () {
         Dapp_1.Dapp.currentInstance.getBalance();
         GameManager.enterBoardScene();
     };
-    GameManager.onPlayerSelectedAmount = function (value) {
+    GameManager.onPlayerConfirmedAmount = function (value) {
         GameVars_1.GameVars.transactionOnCourse = true;
         if (GameVars_1.GameVars.addingFunds) {
-            GameVars_1.GameVars.addingFunds = false;
             GameVars_1.GameVars.dapp.addPlayerFunds(value.toString());
         }
         else {
-            BoardScene_1.BoardScene.currentInstance.onPlayerSelectedBet();
             GameVars_1.GameVars.dapp.play(value);
         }
     };
@@ -626,9 +627,10 @@ var GameManager = /** @class */ (function () {
         GameVars_1.GameVars.addingFunds = true;
         BoardScene_1.BoardScene.currentInstance.showFundsAmountToAddLayer();
     };
-    GameManager.hideAddFundsLayer = function () {
+    GameManager.hideAmountSelectionLayer = function () {
         GameVars_1.GameVars.addingFunds = false;
-        BoardScene_1.BoardScene.currentInstance.hideFundsAmountToAddLayer();
+        GameVars_1.GameVars.selectingBet = false;
+        BoardScene_1.BoardScene.currentInstance.hideAmountSelectionLayer();
     };
     GameManager.onBetSelected = function (value) {
         GameVars_1.GameVars.bet = value;
@@ -636,6 +638,11 @@ var GameManager = /** @class */ (function () {
     };
     GameManager.withdrawFunds = function () {
         GameVars_1.GameVars.dapp.withdrawPlayerFunds();
+    };
+    GameManager.playerCancelledMetamaskAction = function () {
+        if (GameVars_1.GameVars.addingFunds || GameVars_1.GameVars.selectingBet) {
+            GameManager.hideAmountSelectionLayer();
+        }
     };
     GameManager.writeGameData = function () {
         GameManager.setGameStorageData(GameConstants_1.GameConstants.SAVED_GAME_DATA_KEY, GameVars_1.GameVars.gameData, function () {
@@ -1351,22 +1358,22 @@ var BoardScene = /** @class */ (function (_super) {
         this.gui.onBalanceAvailable();
     };
     BoardScene.prototype.showFundsAmountToAddLayer = function () {
+        this.gui.hidePlayButton();
         this.gui.disableButtons();
         this.amountSelectionLayer = new AmountSelectionLayer_1.AmountSelectionLayer(this);
         this.add.existing(this.amountSelectionLayer);
     };
-    BoardScene.prototype.hideFundsAmountToAddLayer = function () {
+    BoardScene.prototype.showBetSelectionLayer = function () {
+        this.gui.hidePlayButton();
+        this.gui.disableButtons();
+        this.amountSelectionLayer = new AmountSelectionLayer_1.AmountSelectionLayer(this);
+        this.add.existing(this.amountSelectionLayer);
+    };
+    BoardScene.prototype.hideAmountSelectionLayer = function () {
+        this.gui.showPlayButton();
         this.gui.enableButtons();
         this.amountSelectionLayer.destroy();
         this.amountSelectionLayer = null;
-    };
-    BoardScene.prototype.showSelectBetLayer = function () {
-        this.gui.disableButtons();
-        this.amountSelectionLayer = new AmountSelectionLayer_1.AmountSelectionLayer(this);
-        this.add.existing(this.amountSelectionLayer);
-    };
-    BoardScene.prototype.onPlayerSelectedBet = function () {
-        this.amountSelectionLayer.destroy();
     };
     BoardScene.prototype.showWaitingLayer = function () {
         this.waitingLayer = new WaitingLayer_1.WaitingLayer(this);
@@ -2134,7 +2141,7 @@ var GUI = /** @class */ (function (_super) {
     GUI.prototype.enableButtons = function () {
         this.playButton.setInteractive();
         this.addFundsButton.setInteractive();
-        this.retrieveFundsButton.disableInteractive();
+        this.retrieveFundsButton.setInteractive();
         this.infoButton.setInteractive();
         this.diceButton.setInteractive();
     };
@@ -2155,8 +2162,13 @@ var GUI = /** @class */ (function (_super) {
             onCompleteScope: this
         });
     };
-    GUI.prototype.onClickPlay = function () {
+    GUI.prototype.showPlayButton = function () {
+        this.playButton.visible = true;
+    };
+    GUI.prototype.hidePlayButton = function () {
         this.playButton.visible = false;
+    };
+    GUI.prototype.onClickPlay = function () {
         GameManager_1.GameManager.play();
         AudioManager_1.AudioManager.playSound("click");
     };
@@ -2610,11 +2622,11 @@ var AmountSelectionLayer = /** @class */ (function (_super) {
         _this.add(scaledItemsContainer);
         _this.betSelectionButtonsContainer = new AmountSelectionButtonsContainer_1.AmountSelectionButtonsContainer(_this.scene);
         scaledItemsContainer.add(_this.betSelectionButtonsContainer);
-        _this.playButton = new Utils_1.Button(_this.scene, 0, 585, "texture_atlas_1", "btn_play_off", "btn_play_on");
-        _this.playButton.setScale(0);
-        _this.playButton.onUp(_this.onClickPlay, _this);
-        _this.playButton.visible = false;
-        scaledItemsContainer.add(_this.playButton);
+        _this.confirmButton = new Utils_1.Button(_this.scene, 0, 585, "texture_atlas_1", "btn_play_off", "btn_play_on");
+        _this.confirmButton.setScale(0);
+        _this.confirmButton.onUp(_this.onClickConfirm, _this);
+        _this.confirmButton.visible = false;
+        scaledItemsContainer.add(_this.confirmButton);
         _this.backButton = new Utils_1.Button(_this.scene, 40 * GameVars_1.GameVars.scaleX, 40, "texture_atlas_1", "btn_back_off", "btn_back_on");
         _this.backButton.scaleX = GameVars_1.GameVars.scaleX;
         _this.backButton.onDown(_this.onBack, _this);
@@ -2623,10 +2635,10 @@ var AmountSelectionLayer = /** @class */ (function (_super) {
     }
     AmountSelectionLayer.prototype.betSelected = function (value) {
         this.selectedAmountValue = value;
-        if (!this.playButton.visible) {
-            this.playButton.visible = true;
+        if (!this.confirmButton.visible) {
+            this.confirmButton.visible = true;
             this.scene.tweens.add({
-                targets: this.playButton,
+                targets: this.confirmButton,
                 scaleX: 1,
                 scaleY: 1,
                 ease: Phaser.Math.Easing.Cubic.Out,
@@ -2636,13 +2648,14 @@ var AmountSelectionLayer = /** @class */ (function (_super) {
         this.betSelectionButtonsContainer.betSelected(value);
         AudioManager_1.AudioManager.playSound("click");
     };
-    AmountSelectionLayer.prototype.onClickPlay = function () {
-        this.playButton.visible = false;
+    AmountSelectionLayer.prototype.onClickConfirm = function () {
+        this.confirmButton.visible = false;
         this.backButton.visible = false;
-        GameManager_1.GameManager.onPlayerSelectedAmount(this.selectedAmountValue);
+        GameManager_1.GameManager.onPlayerConfirmedAmount(this.selectedAmountValue);
         AudioManager_1.AudioManager.playSound("click");
     };
     AmountSelectionLayer.prototype.onBack = function () {
+        GameManager_1.GameManager.hideAmountSelectionLayer();
         AudioManager_1.AudioManager.playSound("click");
     };
     return AmountSelectionLayer;

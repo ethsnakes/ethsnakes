@@ -132,8 +132,6 @@ export class BoardManager {
         GameVars.winner = winner;
 
         GameManager.matchOver();
-
-        BoardScene.currentInstance.matchOver();
     }
 
     private static changeTurn(): void {
