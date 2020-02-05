@@ -59,10 +59,15 @@ export class Dapp {
         this.contract = new this.web3.eth.Contract(SnakesAndLaddersArtifact.abi, ContractAddress);
 
         // start watcher
-        const latest = await web3.eth.getBlockNumber();
-        const sometimeAgo = latest - 6000*30
-        //this.logPastGames(sometimeAgo);
-        this.startWatcher(latest);
+        let self = this;
+        this.web3.eth.getBlockNumber()
+            .then(function(latest) {
+                self.logPastGames(latest - 6000 * 30);  // last 30 days
+                self.startWatcher(latest);
+            });
+
+        // this somehow starts the game
+        this.getBalance();
     }
 
     /**
@@ -168,13 +173,10 @@ export class Dapp {
     public logPastGames(fromBlock): void {
 
         let self = this;
-        self.contract.getPastEvents('LogGame', {
-            fromBlock: fromBlock,
-            toBlock: 'latest'
-        }, function (error, e) {
-            console.log(e);
-        }).then(function (e) {
-            self.addNewGameResult(e.returnValues["sender"], e.returnValues["result"], e.returnValues["balancediff"]);
+        self.contract.getPastEvents('LogGame', { fromBlock: fromBlock, toBlock: 'latest' }, function (error, events) {
+            for (let i = 0; i < events.length; i++) {
+                self.addNewGameResult(events[i].returnValues["sender"], events[i].returnValues["result"], events[i].returnValues["balancediff"]);
+            }
         });
     }
 
@@ -213,7 +215,7 @@ export class Dapp {
         let eth_address = document.createElement("span");
         let eth_msg = document.createElement("span");
         let eth_balancediff = document.createElement("span");
-        let blockie = Blockies.create({ seed: this.account, color: "#019DB0", bgcolor: "#CBE942", scale: 3 });
+        let blockie = Blockies.create({ seed: sender, scale: 3 });
         stream_msg.className = "stream-msg result-" + result;
         eth_blockie.className = "eth-blockie";
         eth_blockie.style.backgroundImage = "url(" + blockie.toDataURL() + ")";
