@@ -35,6 +35,7 @@ html {
 body {
   height: 100%;
   font-family: 'PT Sans', sans-serif;
+  background-color: $color-background;
 }
 
 h1 {
@@ -55,12 +56,8 @@ input {
  */
 
 #wrapper {
-  min-height: 100%;
-  background-color: $color-background;
-  @media(max-width: 1250px) {
-    display: block;
-    table-layout: initial;
-  }
+  max-width: 1500px;
+  margin: 0 auto;
 }
 
 #game-wrapper {
@@ -84,7 +81,6 @@ input {
     background: $color-bar;
     padding: 20px;
     text-align: center;
-    border-radius: 0 0 4px 0;
     .fa-caring {
       font-size: 20px;
       font-weight: bold;
