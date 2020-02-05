@@ -112,6 +112,11 @@ export class BoardScene extends Phaser.Scene {
 
     public showWaitingLayer(): void {
 
+        if (this.amountSelectionLayer) {
+            this.amountSelectionLayer.destroy();
+            this.amountSelectionLayer = null;
+        }
+
         this.waitingLayer = new WaitingLayer(this);
         this.add.existing(this.waitingLayer);
     }

@@ -149,6 +149,8 @@ export class GameManager {
             GameVars.balance += 2 * GameVars.bet;
             GameVars.balance = Math.floor(GameVars.balance * 100) / 100;
         }
+
+        BoardScene.currentInstance.matchOver();
     }
 
     public static onClickAddFunds(): void {
