@@ -79,7 +79,6 @@ export class AmountSelectionButtonsContainer extends Phaser.GameObjects.Containe
             minValue = GameVars.metamaskBalance;
         }
 
-        console.log("balance metamask:", GameVars.metamaskBalance);
         for (let i = 0; i < this.buttons.length; i ++) {
 
             const button = this.buttons[i];
