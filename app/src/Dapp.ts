@@ -99,6 +99,17 @@ export class Dapp {
     }
 
     /**
+     * Gets the balance of the player in metamask
+     */
+    public getMetamaskBalance(): void {
+        this.web3.eth.getBalance(this.account)
+            .then(function(balance) {
+                console.log("Metamask balance: " + Web3.utils.fromWei(balance, "ether"));
+                // TODO POSAR AQUI RETORN DE METAMASK BALANCE
+            });
+    }
+
+    /**
      * Adds players funds.
      *
      * @param {string} value
