@@ -74,10 +74,20 @@ export class BoardScene extends Phaser.Scene {
     public onBalanceAvailable(): void {
 
         if (this.amountSelectionLayer) {
+            
             this.amountSelectionLayer.destroy();
             this.amountSelectionLayer = null;
-            this.gui.enableButtons();
         }
+
+        if (this.waitingLayer) {
+
+            this.waitingLayer.destroy();
+            this.waitingLayer = null;
+
+            this.gui.showPlayButton();
+        }
+
+        this.gui.enableButtons();
 
         this.hud.onBalanceAvailable();
         this.gui.onBalanceAvailable();
