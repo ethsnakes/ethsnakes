@@ -138,7 +138,10 @@ export class Dapp {
 
         let self = this;
         self.contract.methods.withdrawPlayerFunds().send({ from: self.account })
-            .on("transactionHash", (transactionHash) => console.log("Transaction " + transactionHash))
+            .on("transactionHash", function(transactionHash): void {
+                console.log("Transaction " + transactionHash);
+                GameManager.onTransactionHashObtained(transactionHash);
+            })
             .on("receipt", function(receipt) {
                 self.getBalance();
             })

@@ -132,6 +132,8 @@ export class BoardScene extends Phaser.Scene {
             this.amountSelectionLayer = null;
         }
 
+        this.gui.disableButtons();
+
         this.waitingLayer = new WaitingLayer(this);
         this.add.existing(this.waitingLayer);
     }
@@ -142,6 +144,8 @@ export class BoardScene extends Phaser.Scene {
 
             this.waitingLayer.destroy();
             this.waitingLayer = null;
+
+            this.gui.enableButtons();
 
             this.hud.onTransactionExecuted();
         }

@@ -200,6 +200,8 @@ export class GameManager {
 
     public static withdrawFunds(): void {
 
+        GameVars.transactionOnCourse = true;
+
         GameVars.dapp.withdrawPlayerFunds();
     }
 
