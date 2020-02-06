@@ -35,15 +35,16 @@ export class AmountSelectionButtonsContainer extends Phaser.GameObjects.Containe
         if (GameVars.addingFunds) {
 
             this.outcomeLabel = null;
+
         } else if (GameVars.selectingBet) {
 
             this.outcomeLabel = new Phaser.GameObjects.Text(this.scene, 0, 155, "", {fontFamily: "BladiTwo4F", fontSize: "32px", color: "#FFFFFF"});
             this.outcomeLabel.visible = false;
             this.outcomeLabel.setOrigin(.5);
             this.add(this.outcomeLabel);
-
-            this.deactivateButtons();
         }
+
+        this.deactivateButtons();
     }
 
     public betSelected(value: number): void {
@@ -70,10 +71,17 @@ export class AmountSelectionButtonsContainer extends Phaser.GameObjects.Containe
 
     public activateButtons(): void {
 
-        const minValue = Math.min(GameVars.balance, GameVars.contractBalance / 5);
+        let minValue = 0;
 
+        if (GameVars.selectingBet) {
+            minValue = Math.min(GameVars.balance, GameVars.contractBalance / 5);
+        } else if (GameVars.addingFunds) {
+            minValue = GameVars.metamaskBalance;
+        }
+
+        console.log("balance metamask:", GameVars.metamaskBalance);
         for (let i = 0; i < this.buttons.length; i ++) {
-            
+
             const button = this.buttons[i];
             
             if (button.value <= minValue) {

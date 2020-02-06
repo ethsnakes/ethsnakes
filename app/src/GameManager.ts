@@ -63,6 +63,15 @@ export class GameManager {
         GameManager.enterBoardScene();
     }
 
+    public static onMetamaskBalanceAvailable(metamaskBalance: string): void {
+
+        GameVars.metamaskBalance = Number(metamaskBalance);
+
+        if (GameVars.addingFunds) {
+            BoardScene.currentInstance.activateBetButtons();
+        }
+    }
+
     public static onContractBalanceAvailable(contractBalance: string): void {
 
         GameVars.contractBalance = Number(contractBalance);
@@ -168,6 +177,8 @@ export class GameManager {
     public static onClickAddFunds(): void {
 
         GameVars.addingFunds = true;
+
+        GameVars.dapp.getMetamaskBalance();
 
         BoardScene.currentInstance.showFundsAmountToAddLayer();
     }

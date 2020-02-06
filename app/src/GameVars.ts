@@ -6,13 +6,15 @@ export class GameVars {
     
     public static dapp: Dapp;
     public static gameData: GameData;
+    public static contractBalance: number;
+    public static balance: number;
+    public static metamaskBalance: number;
     public static seed: string;
     public static currentScene: Phaser.Scene;
     public static time: number;
     public static matchOver: boolean;
     public static board: any;
     public static paused: boolean;
-    public static balance: number;
     public static currentTurn: string;
     public static turns: number;
     public static diceResult: number;
@@ -23,8 +25,7 @@ export class GameVars {
     public static addingFunds: boolean;
     public static selectingBet: boolean;
     public static transactionHash: string;
-    public static contractBalance: number;
-
+   
     public static padNumberToString(numberAsString: string): string {
 
         let answer = numberAsString;
