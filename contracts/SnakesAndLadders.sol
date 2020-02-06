@@ -8,7 +8,7 @@ contract SnakesAndLadders {
 
     // All balances
     mapping(address => uint) public balances;
-    uint private totalBalance;
+    uint public totalBalance;
 
     // Payout addresses
     address private payout1;
@@ -63,7 +63,7 @@ contract SnakesAndLadders {
     function play(uint amount) public {
         require(amount > 0, "You must send something to bet");
         require(amount <= balances[msg.sender], "You don't have enough balance to play");
-        require(amount*10 < address(this).balance, "You cannot bet more than 1/10 of this contract total balance");
+        require(amount*5 < address(this).balance - totalBalance, "You cannot bet more than 1/5 of this contract free balance");
         require(amount <= 1 ether, "Maximum bet amount is 1 ether");
         uint seed = random();
         uint turn = 0;
@@ -145,7 +145,7 @@ contract SnakesAndLadders {
     function withdrawPlayerFunds() public {
         uint toWithdraw = balances[msg.sender];
         require(toWithdraw > 0, "There is no balance to withdraw");
-        require(toWithdraw <= address(this).balance, "There are not enough funds in the contract to withdraw");
+        require(toWithdraw <= totalBalance, "There are not enough funds in the contract to withdraw");
         emit LogWithdrawPlayerFunds(msg.sender, toWithdraw);
         balances[msg.sender] = 0;
         totalBalance -= toWithdraw;

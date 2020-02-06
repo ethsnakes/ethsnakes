@@ -75,7 +75,7 @@ export class Dapp {
      */
     public getBalance(): void {
 
-        this.contract.methods.balances(this.account).call({ from: this.account }, (e, r) => {
+        this.contract.methods.balances(this.account).call((e, r) => {
             if (e) {
                 console.error("Could not retrieve your balance: " + e);
             } else {
@@ -90,21 +90,28 @@ export class Dapp {
      */
     public getContractBalance(): void {
 
-        this.web3.eth.getBalance(ContractAddress)
-            .then(function(balance) {
-                // console.log("Contract balance: " + Web3.utils.fromWei(balance, "ether"));
-                GameManager.onContractBalanceAvailable(Web3.utils.fromWei(balance, "ether"));
+        let self = this;
+        this.web3.eth.getBalance(ContractAddress).then(function(balance) {
+            self.contract.methods.totalBalance().call((e, r) => {
+                if (e) {
+                    console.error("Could not retrieve contract balance: " + e);
+                } else {
+                    let realBalance = balance - r
+                    //console.log("Contract balance: " + Web3.utils.fromWei(realBalance.toString(), "ether"));
+                    GameManager.onContractBalanceAvailable(Web3.utils.fromWei(realBalance.toString(), "ether"));
+                }
             });
+        });
     }
 
     /**
      * Gets the balance of the player in metamask
      */
     public getMetamaskBalance(): void {
+
         this.web3.eth.getBalance(this.account)
             .then(function(balance) {
                 // console.log("Metamask balance: " + Web3.utils.fromWei(balance, "ether"));
-                // TODO POSAR AQUI RETORN DE METAMASK BALANCE
                 GameManager.onMetamaskBalanceAvailable(Web3.utils.fromWei(balance, "ether"));
             });
     }

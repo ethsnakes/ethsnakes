@@ -6,6 +6,7 @@ const { toWei, toBN } = web3.utils;
 contract('SnakesAndLadders', (accounts) => {
     const [ carol, p1, p2, alice, bob ] = accounts;
     let instance;
+    const qty0 = toWei('0.1', 'ether');
     const qty1 = toWei('0.01', 'ether');
     const qtyhalf = toWei('0.005', 'ether');
     const qty2 = toWei('0.02', 'ether');
@@ -88,6 +89,7 @@ contract('SnakesAndLadders', (accounts) => {
     describe("play the game", function() {
 
         beforeEach("add some funds to alice", async function() {
+            await instance.addFunds({from: p1, value: qty0});
             await instance.addPlayerFunds({from: alice, value: qty1});
         });
 
@@ -176,15 +178,15 @@ contract('SnakesAndLadders', (accounts) => {
             });
         });
 
-        it("cannot bet with equal or more than 1/10 of the contract balance", async function () {
+        it("cannot bet with equal or more than 1/5 of the contract balance", async function () {
             return await expectedExceptionPromise(function () {
-                return instance.play(qty1/10, {from: alice});
+                return instance.play(qty2, {from: alice});
             });
         });
 
-        it("can play if bets less than 1/10 of the contract balance", async function () {
+        it("can play if bets less than 1/5 of the contract balance", async function () {
             await instance.setNonce(3, {from: carol});
-            let betAmount = parseInt(qty1)/10 - 1;
+            let betAmount = parseInt(qty1)/5 - 1;
             let txObj = await instance.play(betAmount, {from: alice});
             // check events
             assert.strictEqual(txObj.logs.length, 1, "Only one event expected");

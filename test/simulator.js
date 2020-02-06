@@ -30,6 +30,7 @@ contract('SnakesAndLadders Simulation', (accounts) => {
     describe("simulate", function() {
 
         beforeEach("add some funds", async function() {
+            await instance.addFunds({from: p1, value: qty*10});
             await instance.addPlayerFunds({from: alice, value: qty});
         });
 
