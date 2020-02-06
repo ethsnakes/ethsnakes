@@ -45,8 +45,8 @@ export class Dapp {
             this.web3 = new Web3(window.web3.currentProvider);
             console.log("Legacy dapp browser detected..");
         } else {
-            // load web3 from localhost
             this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+            document.getElementById("metamask").style.display = "block";
             console.log("Non-Ethereum browser detected.");
         }
 

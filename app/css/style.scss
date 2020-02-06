@@ -68,6 +68,22 @@ input {
     padding: 50px 0 25px;
     color: #cce2e0;
   }
+  #metamask {
+    text-align: center;
+    padding: 40px 20px;
+    background: #ffc740;
+    display: none;
+    .text {
+      font-size: 20px;
+      font-weight: bold;
+      margin-right: 20px;
+      height: 40px;
+      line-height: 40px;
+    }
+    .download {
+      width: 200px;
+    }
+  }
   #game {
     #content {
       canvas {
