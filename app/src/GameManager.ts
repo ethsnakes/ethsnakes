@@ -18,18 +18,7 @@ export class GameManager {
         GameVars.transactionHash = "";
         GameVars.contractBalance = 0;
 
-        if (GameVars.currentScene.sys.game.device.os.desktop) {
-
-            GameVars.scaleX = 1;
-
-        } else {
-
-            GameVars.currentScene.game.scale.displaySize = GameVars.currentScene.game.scale.parentSize;
-            GameVars.currentScene.game.scale.refresh();  
-
-            const aspectRatio = window.innerWidth / window.innerHeight;
-            GameVars.scaleX = (GameConstants.GAME_WIDTH / GameConstants.GAME_HEIGHT) / aspectRatio;
-        }
+        GameVars.scaleX = 1;
 
         GameManager.readGameData();
     }
