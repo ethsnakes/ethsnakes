@@ -16,6 +16,7 @@ export class GameManager {
         GameVars.addingFunds = false;
         GameVars.selectingBet = false;
         GameVars.transactionHash = "";
+        GameVars.contractBalance = 0;
 
         if (GameVars.currentScene.sys.game.device.os.desktop) {
 
@@ -62,6 +63,15 @@ export class GameManager {
         GameManager.enterBoardScene();
     }
 
+    public static onContractBalanceAvailable(contractBalance: string): void {
+
+        GameVars.contractBalance = Number(contractBalance);
+
+        if (GameVars.selectingBet) {
+            BoardScene.currentInstance.activateBetButtons();
+        }
+    }
+
     public static onBalanceAvailable(balance: string): void {
 
         GameVars.balance = Number(balance);
@@ -91,6 +101,8 @@ export class GameManager {
     public static play(): void {
 
         GameVars.selectingBet = true;
+
+        GameVars.dapp.getContractBalance();
 
         BoardScene.currentInstance.showBetSelectionLayer();
     }

@@ -68,8 +68,6 @@ export class Dapp {
 
         // this somehow starts the game
         this.getBalance();
-
-        this.getContractBalance();
     }
 
     /**
@@ -94,7 +92,8 @@ export class Dapp {
 
         this.web3.eth.getBalance(ContractAddress)
             .then(function(balance) {
-                console.log("Contract balance: " + Web3.utils.fromWei(balance, "ether"));
+                // console.log("Contract balance: " + Web3.utils.fromWei(balance, "ether"));
+                GameManager.onContractBalanceAvailable(Web3.utils.fromWei(balance, "ether"));
             });
     }
 

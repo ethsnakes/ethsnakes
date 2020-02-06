@@ -8,6 +8,7 @@ export class AmountSelectionButton extends Phaser.GameObjects.Container {
     
     private offButton: Button;
     private onButton: Button;
+    private amountLabel: Phaser.GameObjects.Text;
     
     constructor(scene: Phaser.Scene, value: number) {
 
@@ -24,9 +25,23 @@ export class AmountSelectionButton extends Phaser.GameObjects.Container {
         this.onButton.onUp(this.onClickButton, this);
         this.add(this.onButton);
 
-        const amountLabel = new Phaser.GameObjects.Text(this.scene, 0, 80, GameVars.formatNumber(value) + " ETH", {fontFamily: "BladiTwo4F", fontSize: "27px", color: "#19D3C5"});
-        amountLabel.setOrigin(.5);
-        this.add(amountLabel);
+        this.amountLabel = new Phaser.GameObjects.Text(this.scene, 0, 80, GameVars.formatNumber(value) + " ETH", {fontFamily: "BladiTwo4F", fontSize: "27px", color: "#19D3C5"});
+        this.amountLabel.setOrigin(.5);
+        this.add(this.amountLabel);
+    }
+
+    public activate(): void {
+
+        this.offButton.setInteractive();
+        this.offButton.alpha = 1;
+        this.amountLabel.alpha = 1;
+    }
+
+    public deactivate(): void {
+
+        this.offButton.disableInteractive();
+        this.offButton.alpha = .35;
+        this.amountLabel.alpha = .35;
     }
 
     public disableButton(): void {

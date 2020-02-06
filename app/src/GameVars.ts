@@ -23,6 +23,7 @@ export class GameVars {
     public static addingFunds: boolean;
     public static selectingBet: boolean;
     public static transactionHash: string;
+    public static contractBalance: number;
 
     public static padNumberToString(numberAsString: string): string {
 

@@ -33,12 +33,16 @@ export class AmountSelectionButtonsContainer extends Phaser.GameObjects.Containe
         }
 
         if (GameVars.addingFunds) {
+
             this.outcomeLabel = null;
-        } else {
+        } else if (GameVars.selectingBet) {
+
             this.outcomeLabel = new Phaser.GameObjects.Text(this.scene, 0, 155, "", {fontFamily: "BladiTwo4F", fontSize: "32px", color: "#FFFFFF"});
             this.outcomeLabel.visible = false;
             this.outcomeLabel.setOrigin(.5);
             this.add(this.outcomeLabel);
+
+            this.deactivateButtons();
         }
     }
 
@@ -53,6 +57,28 @@ export class AmountSelectionButtonsContainer extends Phaser.GameObjects.Containe
             if (this.buttons[i].value !== value) {
                 this.buttons[i].disableButton();
             } 
+        }
+    }
+
+    public deactivateButtons(): void {
+
+        for (let i = 0; i < this.buttons.length; i ++) {
+            const button = this.buttons[i];
+            button.deactivate();
+        }
+    }
+
+    public activateButtons(): void {
+
+        const minValue = Math.min(GameVars.balance, GameVars.contractBalance / 5);
+
+        for (let i = 0; i < this.buttons.length; i ++) {
+            
+            const button = this.buttons[i];
+            
+            if (button.value <= minValue) {
+                button.activate();
+            }
         }
     }
 }
