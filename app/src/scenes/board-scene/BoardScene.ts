@@ -92,6 +92,11 @@ export class BoardScene extends Phaser.Scene {
         this.add.existing(this.amountSelectionLayer);
     }
 
+    public activateBetButtons(): void {
+
+        this.amountSelectionLayer.amountSelectionButtonsContainer.activateButtons();
+    }
+
     public showBetSelectionLayer(): void {
 
         this.gui.hidePlayButton();
