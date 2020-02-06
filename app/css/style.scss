@@ -227,3 +227,19 @@ input {
     display: none;
   }
 }
+
+@media(max-width: 580px) {
+  #social {
+    padding: 10px 20px 20px !important;
+    .fa-caring {
+      display: block;
+    }
+  }
+  #ethereum-images {
+    padding: 15px 0 !important;
+    img {
+      display: block;
+      margin: 15px auto !important;
+    }
+  }
+}

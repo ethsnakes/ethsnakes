@@ -162,5 +162,16 @@ input {
 
   #stream {
     display: none; } }
+@media (max-width: 580px) {
+  #social {
+    padding: 10px 20px 20px !important; }
+    #social .fa-caring {
+      display: block; }
+
+  #ethereum-images {
+    padding: 15px 0 !important; }
+    #ethereum-images img {
+      display: block;
+      margin: 15px auto !important; } }
 
 /*# sourceMappingURL=style.css.map */
