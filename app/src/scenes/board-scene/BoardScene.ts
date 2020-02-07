@@ -11,10 +11,12 @@ import { WaitingLayer } from "./layers/WaitingLayer";
 import { OutcomeLayer } from "./layers/OutcomeLayer";
 import { InstructionsLayer } from "./layers/InstructionsLayer";
 import { AudioManager } from "../../AudioManager";
+import { SplashLayer } from "./SplashLayer";
 
 export class BoardScene extends Phaser.Scene {
 
     public static currentInstance: BoardScene;
+    public static firstInstantiation = true;
     
     public hud: HUD;
     public boardContainer: BoardContainer;
@@ -25,6 +27,8 @@ export class BoardScene extends Phaser.Scene {
     private amountSelectionLayer: AmountSelectionLayer;
     private waitingLayer: WaitingLayer;
     private outcomeLayer: OutcomeLayer;
+    private f: number;
+    private splashLayer: SplashLayer;
     
     constructor() {
 
@@ -32,6 +36,8 @@ export class BoardScene extends Phaser.Scene {
     }
 
     public create(): void {
+
+        this.f = 0;
 
         BoardScene.currentInstance = this;
 
@@ -55,7 +61,13 @@ export class BoardScene extends Phaser.Scene {
         this.gui = new GUI(this);
         this.add.existing(this.gui);
 
-        this.cameras.main.fadeIn(300, 40, 49, 78);
+        if (BoardScene.firstInstantiation)  {
+            this.splashLayer = new SplashLayer(this);
+            this.add.existing(this.splashLayer);
+        } else  {
+            this.splashLayer  = null;
+            this.cameras.main.fadeIn(300, 40, 49, 78);
+        }   
 
         // TODO: BORRAR ESTO
         // this.removeWaitingLayer();
@@ -63,6 +75,16 @@ export class BoardScene extends Phaser.Scene {
     }
 
     public update(): void {
+
+        if (this.splashLayer) {
+
+            this.f ++;
+
+            if (this.f === 60) {
+                this.splashLayer.disappear();
+                this.splashLayer = null;
+            }
+        }
 
         if (this.waitingLayer) {
             this.waitingLayer.update();

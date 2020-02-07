@@ -43,6 +43,7 @@ export class PreloadScene extends Phaser.Scene {
         this.add.text(-100, -50, "abcdefg", { fontFamily: "BladiTwo4F", fontSize: 28, color: "#A6F834" });
 
         this.add.image(GameConstants.GAME_WIDTH / 2, GameConstants.GAME_HEIGHT / 2, "background");
+        this.add.image(GameConstants.GAME_WIDTH / 2, 325, "game-logo");
        
         const loadingText = this.add.text(10, GameConstants.GAME_HEIGHT - 55, "LOADING", {fontFamily: "BladiTwo4F", fontSize: "36px", color: "#FFFFFF", align: "center"});
         loadingText.scaleX = GameVars.scaleX;

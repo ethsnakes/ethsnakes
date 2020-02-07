@@ -12,6 +12,7 @@ export class BootScene extends Phaser.Scene {
     public preload(): void {
 
         this.load.image("background", "assets/background.jpg");
+        this.load.image("game-logo", "assets/game_logo.png");
     }
 
     public create(): void {
