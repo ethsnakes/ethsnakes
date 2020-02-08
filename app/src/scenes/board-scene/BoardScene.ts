@@ -64,6 +64,7 @@ export class BoardScene extends Phaser.Scene {
         if (BoardScene.firstInstantiation)  {
             this.splashLayer = new SplashLayer(this);
             this.add.existing(this.splashLayer);
+            BoardScene.firstInstantiation =  false;
         } else  {
             this.splashLayer  = null;
             this.cameras.main.fadeIn(300, 40, 49, 78);
