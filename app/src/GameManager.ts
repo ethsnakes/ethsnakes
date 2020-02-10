@@ -115,6 +115,7 @@ export class GameManager {
     public static onPlayerConfirmedAmount(value: number): void {
 
         GameVars.transactionOnCourse = true;
+        GameVars.bet = value;
 
         if (GameVars.addingFunds) {
 
