@@ -9,7 +9,5 @@ module.exports = function(deployer, networks, accounts) {
         deployer.deploy(SnakesAndLaddersMock, accounts[1], accounts[2]);
     } else if (deployer.network === "ropsten") {
         deployer.deploy(SnakesAndLadders, payout1, payout2);
-    } else {
-        deployer.deploy(SnakesAndLadders, payout1, payout2);
     }
 };
