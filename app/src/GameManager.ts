@@ -20,6 +20,12 @@ export class GameManager {
 
         GameVars.scaleX = 1;
 
+        const gameAnalytics = require("gameanalytics");
+        const gameKey = "6873037a08d50694883ab94fd875263b";
+        const secretKey = "7669f7d83362402e790bf9cb7e3878b715499625";
+
+        gameAnalytics.GameAnalytics.initialize(gameKey, secretKey);
+
         GameManager.readGameData();
     }
 
