@@ -80,6 +80,10 @@ export class GameManager {
 
         GameVars.balance = Number(balance);
 
+        if (GameVars.balance < 0.01) {
+            GameVars.balance = 0;
+        }
+
         GameVars.transactionOnCourse = false;
         GameVars.addingFunds = false;
         GameVars.selectingBet = false;
