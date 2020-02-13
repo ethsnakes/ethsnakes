@@ -65,6 +65,7 @@ contract SnakesAndLadders {
         require(amount <= balances[msg.sender], "You don't have enough balance to play");
         require(amount*5 < address(this).balance - totalBalance, "You cannot bet more than 1/5 of this contract free balance");
         require(amount <= 1 ether, "Maximum bet amount is 1 ether");
+        require(tx.origin == msg.sender, "Contracts cannot play the game");
         uint seed = random();
         uint turn = 0;
         // let's decide who starts
@@ -146,6 +147,7 @@ contract SnakesAndLadders {
         uint toWithdraw = balances[msg.sender];
         require(toWithdraw > 0, "There is no balance to withdraw");
         require(toWithdraw <= totalBalance, "There are not enough funds in the contract to withdraw");
+        require(tx.origin == msg.sender, "Contracts cannot withdraw funds");
         emit LogWithdrawPlayerFunds(msg.sender, toWithdraw);
         balances[msg.sender] = 0;
         totalBalance -= toWithdraw;
