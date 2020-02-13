@@ -4,7 +4,7 @@ import { GameVars } from "../../../GameVars";
 export class WaitingLayer extends Phaser.GameObjects.Container {
 
     private f: number;
-    private connectingLabel: Phaser.GameObjects.Text;
+    private miningLabel: Phaser.GameObjects.Text;
 
     constructor(scene: Phaser.Scene) {
 
@@ -27,9 +27,9 @@ export class WaitingLayer extends Phaser.GameObjects.Container {
         waitingAnimation.play("waiting");
         scaledItemsContainer.add(waitingAnimation);
 
-        this.connectingLabel = new Phaser.GameObjects.Text(this.scene, 0, 450, "MINING TRANSACTION", {fontFamily: "RussoOne", fontSize: "40px", color: "#FFFFFF"});
-        this.connectingLabel.setOrigin(.5);
-        scaledItemsContainer.add(this.connectingLabel);
+        this.miningLabel = new Phaser.GameObjects.Text(this.scene, 0, 450, "MINING TRANSACTION", {fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "40px", color: "#FFFFFF"});
+        this.miningLabel.setOrigin(.5);
+        scaledItemsContainer.add(this.miningLabel);
 
         const infoLabelSmartContract = new Phaser.GameObjects.Text(this.scene, 0, 520, "Transaction hash", {fontFamily: "Arial", fontSize: "30px", color: "#FFFFFF"});
         infoLabelSmartContract.setOrigin(.5);
@@ -39,7 +39,9 @@ export class WaitingLayer extends Phaser.GameObjects.Container {
         const style = {fontFamily: "RussoOne", fontSize: "22px", color: "#00FFFF"};
         const styleOver = { fill: "#FF00FF"};
 
-        const smartContractLabel = new Phaser.GameObjects.Text(this.scene, 0, 560, GameVars.transactionHash, {fontFamily: "RussoOne", fontSize: "22px", color: "#00FFFF"});
+        const transactionHashShortened = GameVars.transactionHash.slice(0, 6) + "..." + GameVars.transactionHash.slice(GameVars.transactionHash.length - 5, GameVars.transactionHash.length);
+
+        const smartContractLabel = new Phaser.GameObjects.Text(this.scene, 0, 560, transactionHashShortened, {fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "32px", color: "#00FFFF"});
         smartContractLabel.setOrigin(.5);
         smartContractLabel.scaleX = GameVars.scaleX;
         smartContractLabel.setInteractive();
@@ -67,7 +69,7 @@ export class WaitingLayer extends Phaser.GameObjects.Container {
         this.f ++;
 
         if (this.f % 25 === 0) {
-            this.connectingLabel.alpha = this.connectingLabel.alpha === 1 ? .5 : 1;
+            this.miningLabel.alpha = this.miningLabel.alpha === 1 ? .5 : 1;
         }
     }
 }

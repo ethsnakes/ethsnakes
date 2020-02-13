@@ -96,7 +96,7 @@ export class Dapp {
                 if (e) {
                     console.error("Could not retrieve contract balance: " + e);
                 } else {
-                    let realBalance = balance - r
+                    let realBalance = balance - r;
                     //console.log("Contract balance: " + Web3.utils.fromWei(realBalance.toString(), "ether"));
                     GameManager.onContractBalanceAvailable(Web3.utils.fromWei(realBalance.toString(), "ether"));
                 }
