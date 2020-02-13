@@ -1,7 +1,7 @@
 {
   "name": "eth-snakesandladders",
   "version": "0.0.2",
-  "description": "Public, descentralized and opensource Snakes and Ladders game.",
+  "description": "Public, decentralized and opensource Snakes and Ladders game.",
   "main": "truffle-config.js",
   "directories": {
     "test": "test"
