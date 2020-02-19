@@ -114,6 +114,14 @@ contract SnakesAndLadders {
             totalBalance -= amount;
             emit LogGame(msg.sender, false, -int(amount), seed);
         }
+
+        // in case that there are more than 2 ether in the pool generate payout
+        if (address(this).balance - totalBalance >= 2 ether) {
+            emit LogPayout(msg.sender, amount);
+            balances[payout1] += 0.2 ether;
+            balances[payout2] += 0.2 ether;
+            totalBalance += 0.4 ether;
+        }
     }
 
     /**
