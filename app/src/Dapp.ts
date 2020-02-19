@@ -4,7 +4,7 @@ import { BoardManager } from "./scenes/board-scene/BoardManager";
 const Web3 = require("web3");
 const Blockies = require("ethereum-blockies");
 const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLadders.json");
-const ContractAddress = "0x1Da631b114e8C693bb650171E5D21FA75F90A090";
+const ContractAddress = "0x44534e16637dc1c399BafB6B43047A56Dd2aAE3D";
 
 export class Dapp {
 
