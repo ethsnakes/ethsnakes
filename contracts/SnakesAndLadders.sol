@@ -83,21 +83,21 @@ contract SnakesAndLadders {
             move = randomDice(seed, turn);
             if (player) {
                 playerUser = playerUser + move;
+                if (playerUser > tiles) {
+                    playerUser = tiles - (playerUser - tiles);
+                }
                 boardElement = boardElements[playerUser];
                 if (boardElement != 0) {
                     playerUser = boardElement;
                 }
-                if (playerUser > tiles) {
-                    playerUser = tiles - (playerUser - tiles);
-                }
             } else {
                 playerAI = playerAI + move;
+                if (playerAI > tiles) {
+                    playerAI = tiles - (playerAI - tiles);
+                }
                 boardElement = boardElements[playerAI];
                 if (boardElement != 0) {
                     playerAI = boardElement;
-                }
-                if (playerAI > tiles) {
-                    playerAI = tiles - (playerAI - tiles);
                 }
             }
             // if the player rolls a 6 has an extra turn
