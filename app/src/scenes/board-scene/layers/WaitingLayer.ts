@@ -36,7 +36,7 @@ export class WaitingLayer extends Phaser.GameObjects.Container {
         infoLabelSmartContract.scaleX = GameVars.scaleX;
         scaledItemsContainer.add(infoLabelSmartContract);
 
-        const style = {fontFamily: "RussoOne", fontSize: "22px", color: "#00FFFF"};
+        const style = {fontFamily: "RussoOne", fontSize: "32px", color: "#00FFFF"};
         const styleOver = { fill: "#FF00FF"};
 
         const transactionHashShortened = GameVars.transactionHash.slice(0, 6) + "..." + GameVars.transactionHash.slice(GameVars.transactionHash.length - 5, GameVars.transactionHash.length);
