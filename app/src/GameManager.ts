@@ -166,11 +166,6 @@ export class GameManager {
 
     public static matchOver(): void {
         
-        if (GameVars.winner === GameConstants.PLAYER) {
-            GameVars.balance += 2 * GameVars.bet;
-            GameVars.balance = Math.floor(GameVars.balance * 100) / 100;
-        }
-
         BoardScene.currentInstance.matchOver();
     }
 
