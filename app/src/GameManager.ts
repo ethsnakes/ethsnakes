@@ -152,16 +152,16 @@ export class GameManager {
         GameVars.balance -= GameVars.bet;
         GameVars.balance = Math.floor(GameVars.balance * 100) / 100;
 
-        BoardScene.currentInstance.onTransactionExecuted();
+        BoardScene.currentInstance.onTransactionConfirmed();
     }
 
     public static onSeedAvailable(seed: string): void {
 
         GameVars.seed = seed;
 
-        console.log("seed es:", GameVars.seed);
+        // console.log("seed es:", GameVars.seed);
 
-        BoardManager.startGame();
+        BoardManager.onSeedAvailable();
     }
 
     public static matchOver(): void {

@@ -161,7 +161,7 @@ export class BoardScene extends Phaser.Scene {
         this.add.existing(this.waitingLayer);
     }
 
-    public onTransactionExecuted(): void {
+    public onTransactionConfirmed(): void {
 
         if (this.waitingLayer) {
 
@@ -170,7 +170,7 @@ export class BoardScene extends Phaser.Scene {
 
             this.gui.enableButtons();
 
-            this.hud.onTransactionExecuted();
+            this.hud.onTransactionConfirmed();
         }
     }
 

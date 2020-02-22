@@ -24,7 +24,7 @@
     "truffle": "5.0.8",
     "truffle-contract": "^1.1.11",
     "ts-loader": "6.1.2",
-    "typescript": "3.7.2",
+    "typescript": "3.8.2",
     "web3": "^1.0.0-beta.55",
     "webpack": "4.40.2",
     "webpack-cli": "3.3.9",

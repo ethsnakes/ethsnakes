@@ -35,9 +35,9 @@ export class HUD extends Phaser.GameObjects.Container {
         this.balanceContainer.onBalanceAvailable();
     }
 
-    public onTransactionExecuted(): void {
+    public onTransactionConfirmed(): void {
 
-        this.balanceContainer.onTransactionExecuted();
+        this.balanceContainer.onTransactionConfirmed();
     }
 
     public playerClimbsLadder(): void {

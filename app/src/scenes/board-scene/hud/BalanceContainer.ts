@@ -30,7 +30,7 @@ export class BalanceContainer extends Phaser.GameObjects.Container {
         this.balanceLabel.text = GameVars.balance.toString() + " ETH";
     }
 
-    public onTransactionExecuted(): void {
+    public onTransactionConfirmed(): void {
 
         this.balanceLabel.text = GameVars.balance.toString() + " ETH";
     }
@@ -41,7 +41,7 @@ export class BalanceContainer extends Phaser.GameObjects.Container {
 
         this.scene.time.delayedCall(3000, function(): void {
 
-            let newBalance =  GameVars.balance + 2 * GameVars.bet;
+            let newBalance = GameVars.balance + 2 * GameVars.bet;
             newBalance = Math.floor(newBalance * 100) / 100;
 
             const newBalanceLabel = new Phaser.GameObjects.Text(this.scene, 42 * GameVars.scaleX, -15 + 30, newBalance.toString() + " ETH", {fontFamily: "BladiTwoCondensedComic4F-Bold", fontSize: "28px", color: "#7A431C"});

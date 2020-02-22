@@ -14,9 +14,12 @@ export class BoardManager {
         GameVars.turns = 0;
         GameVars.matchOver = false;
         GameVars.paused = false;
+        GameVars.hasGameStarted = false;
     }
 
-    public static startGame(): void {
+    public static onSeedAvailable(): void {
+
+        GameVars.hasGameStarted = true;
 
         // se lanza un dado para saber quien sale
         GameVars.dapp.rollDice(GameVars.seed, GameVars.turns);
@@ -28,6 +31,10 @@ export class BoardManager {
     }
 
     public static onDiceResultFetched(value: number): void {
+
+        if (!GameVars.hasGameStarted) {
+            return;
+        }
 
         if (GameVars.turns === 0) {
 
