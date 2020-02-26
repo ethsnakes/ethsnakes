@@ -260,7 +260,7 @@ export class Dapp {
         eth_msg.className = "eth-msg";
         eth_msg.innerHTML = result ? "Winner!" : "Loser";
         eth_balancediff.className = "eth-balancediff";
-        eth_balancediff.innerHTML = Web3.utils.fromWei(balancediff, "ether") + " ETH";
+        eth_balancediff.innerHTML = Math.round(Web3.utils.fromWei(balancediff, "ether")*10000)/10000 + " ETH";
         stream_msg.appendChild(eth_blockie);
         stream_msg.appendChild(eth_address);
         stream_msg.appendChild(eth_msg);
