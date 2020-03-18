@@ -4,7 +4,7 @@ import { BoardManager } from "./scenes/board-scene/BoardManager";
 const Web3 = require("web3");
 const Blockies = require("ethereum-blockies");
 const SnakesAndLaddersArtifact = require("../../build/contracts/SnakesAndLadders.json");
-const ContractAddress = "0x016474f84d04649a57d4ed6212418a19194f9c26";
+const ContractAddress = "0xe567ffa8C83c588b378a14f5E4Ef955285888Ee4";
 
 export class Dapp {
 
@@ -167,7 +167,7 @@ export class Dapp {
         amount = Web3.utils.toWei(amount.toString(), "ether");
         let self = this;
         let gasPrice = Web3.utils.toWei("10", "gwei");
-        self.contract.methods.play(amount).send({ from: self.account, gas: 500000, gasPrice: gasPrice })
+        self.contract.methods.play(amount).send({ from: self.account, gas: 600000, gasPrice: gasPrice })
             .on("transactionHash", function(transactionHash) {
 
                 console.log("Transaction " + transactionHash);
@@ -175,7 +175,7 @@ export class Dapp {
             })
             .on("receipt", function(receipt) {
 
-                GameManager.onTransactionConfirmed();
+                // wait until the response of oracle
             })
             .on("error", function(error) {
 
@@ -231,6 +231,7 @@ export class Dapp {
                 }
                 // if the game is from the current user then it will play the game
                 if (e.returnValues["sender"] == this.account) {
+                    GameManager.onTransactionConfirmed();
                     GameManager.onSeedAvailable(e.returnValues["seed"]);
                 }
             });
