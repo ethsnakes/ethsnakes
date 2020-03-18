@@ -1,9 +1,9 @@
-pragma solidity ^0.5.0;
+pragma solidity >= 0.4.22 < 0.5;
 
 import "./SafeMath.sol";
-import "github.com/provable-things/ethereum-api/provableAPI_0.4.25.sol";
+import "./provableAPI_0.4.25.sol";
 
-contract SnakesAndLadders {
+contract SnakesAndLadders is usingProvable {
     using SafeMath for uint;  // uint256
     using SafeMath for uint8;  // 0-255
 
@@ -79,15 +79,15 @@ contract SnakesAndLadders {
     /**
      * Comeback from the oracle.
      */
-    function __callback(bytes32 id, string result) {
-        if (!idPlayer[id]) revert();
+    function __callback(bytes32 id, string result) public {
+        if (idPlayer[id] == address(0)) revert();
         if (msg.sender != provable_cbAddress()) revert();
         address playerAddress = idPlayer[id];
         uint amount = idAmount[id];
         uint seed = uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, result)));
         delete idPlayer[id];
         delete idAmount[id];
-        playGame(player, amount, seed);
+        playGame(playerAddress, amount, seed);
     }
 
     /**
