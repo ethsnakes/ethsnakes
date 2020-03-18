@@ -71,7 +71,7 @@ contract SnakesAndLadders is usingProvable {
         require(amount*5 < address(this).balance - totalBalance, "You cannot bet more than 1/5 of this contract free balance");
         require(amount <= 1 ether, "Maximum bet amount is 1 ether");
 
-        bytes32 queryId = provable_query("WolframAlpha", "random number between 0 and 1000");
+        bytes32 queryId = provable_query("WolframAlpha", "random number between 0 and 1000", 500000);
         idPlayer[queryId] = msg.sender;
         idAmount[queryId] = amount;
     }
@@ -80,8 +80,8 @@ contract SnakesAndLadders is usingProvable {
      * Comeback from the oracle.
      */
     function __callback(bytes32 id, string result) public {
-        if (idPlayer[id] == address(0)) revert();
-        if (msg.sender != provable_cbAddress()) revert();
+        require(idPlayer[id] != address(0), "Non-expected callback");
+        require(msg.sender == provable_cbAddress(), "Callback must be called from provable address");
         address playerAddress = idPlayer[id];
         uint amount = idAmount[id];
         uint seed = uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, result)));
@@ -103,7 +103,7 @@ contract SnakesAndLadders is usingProvable {
         // let's decide who starts
         bool player = false;  // true if next move is for player, false if for computer
         uint8 move = randomDice(seed, turn);  // move 0 decides who starts
-        if (move == 1 || move == 2) {
+        if (move == 1) {
             player = true;
         }
         // make all the moves and emit the results
