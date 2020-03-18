@@ -1,6 +1,7 @@
 pragma solidity ^0.5.0;
 
 import "./SafeMath.sol";
+import "github.com/provable-things/ethereum-api/provableAPI_0.4.25.sol";
 
 contract SnakesAndLadders {
     using SafeMath for uint;  // uint256
@@ -9,6 +10,10 @@ contract SnakesAndLadders {
     // All balances
     mapping(address => uint) public balances;
     uint public totalBalance;
+
+    // Oracle
+    mapping(bytes32 => address) idPlayer;
+    mapping(bytes32 => uint) idAmount;
 
     // Payout addresses
     address private payout1;
@@ -58,15 +63,42 @@ contract SnakesAndLadders {
     }
 
     /**
-     * Plays the game
+     * Calls the game
      */
     function play(uint amount) public {
         require(amount > 0, "You must send something to bet");
         require(amount <= balances[msg.sender], "You don't have enough balance to play");
         require(amount*5 < address(this).balance - totalBalance, "You cannot bet more than 1/5 of this contract free balance");
         require(amount <= 1 ether, "Maximum bet amount is 1 ether");
-        require(tx.origin == msg.sender, "Contracts cannot play the game");
-        uint seed = random();
+
+        bytes32 queryId = provable_query("WolframAlpha", "random number between 0 and 1000");
+        idPlayer[queryId] = msg.sender;
+        idAmount[queryId] = amount;
+    }
+
+    /**
+     * Comeback from the oracle.
+     */
+    function __callback(bytes32 id, string result) {
+        if (!idPlayer[id]) revert();
+        if (msg.sender != provable_cbAddress()) revert();
+        address playerAddress = idPlayer[id];
+        uint amount = idAmount[id];
+        uint seed = uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, result)));
+        delete idPlayer[id];
+        delete idAmount[id];
+        playGame(player, amount, seed);
+    }
+
+    /**
+     * Plays the game
+     */
+    function playGame(address playerAddress, uint amount, uint seed) private {
+        require(amount > 0, "You must send something to bet");
+        require(amount <= balances[playerAddress], "You don't have enough balance to play");
+        require(amount*5 < address(this).balance - totalBalance, "You cannot bet more than 1/5 of this contract free balance");
+        require(amount <= 1 ether, "Maximum bet amount is 1 ether");
+
         uint turn = 0;
         // let's decide who starts
         bool player = false;  // true if next move is for player, false if for computer
@@ -106,35 +138,22 @@ contract SnakesAndLadders {
             }
         }
         if (playerUser == tiles) {
-            balances[msg.sender] += amount;
+            balances[playerAddress] += amount;
             totalBalance += amount;
-            emit LogGame(msg.sender, true, int(amount), seed);
+            emit LogGame(playerAddress, true, int(amount), seed);
         } else {
-            balances[msg.sender] -= amount;
+            balances[playerAddress] -= amount;
             totalBalance -= amount;
-            emit LogGame(msg.sender, false, -int(amount), seed);
+            emit LogGame(playerAddress, false, -int(amount), seed);
         }
 
         // in case that there are more than 2 ether in the pool generate payout
         if (address(this).balance - totalBalance >= 2 ether) {
-            emit LogPayout(msg.sender, 0.4 ether);
+            emit LogPayout(playerAddress, 0.4 ether);
             balances[payout1] += 0.2 ether;
             balances[payout2] += 0.2 ether;
             totalBalance += 0.4 ether;
         }
-    }
-
-    /**
-     * Returns a non-miner-secure random uint.
-     */
-    function random() public view returns(uint) {
-        return uint(keccak256(abi.encodePacked(
-            block.timestamp + block.difficulty +
-            ((uint256(keccak256(abi.encodePacked(block.coinbase)))) / (now)) +
-            block.gaslimit +
-            ((uint256(keccak256(abi.encodePacked(msg.sender)))) / (now)) +
-            block.number
-        )));
     }
 
     /**
@@ -161,7 +180,6 @@ contract SnakesAndLadders {
         uint toWithdraw = balances[msg.sender];
         require(toWithdraw > 0, "There is no balance to withdraw");
         require(toWithdraw <= totalBalance, "There are not enough funds in the contract to withdraw");
-        require(tx.origin == msg.sender, "Contracts cannot withdraw funds");
         emit LogWithdrawPlayerFunds(msg.sender, toWithdraw);
         balances[msg.sender] = 0;
         totalBalance -= toWithdraw;
