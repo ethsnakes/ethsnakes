@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 import "./SafeMath.sol";
 
 contract SnakesAndLadders {
-    using SafeMath for uint;
+    using SafeMath for uint;  // uint256
     using SafeMath for uint8;  // 0-255
 
     // All balances
@@ -128,7 +128,13 @@ contract SnakesAndLadders {
      * Returns a non-miner-secure random uint.
      */
     function random() public view returns(uint) {
-        return uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, msg.sender)));
+        return uint(keccak256(abi.encodePacked(
+            block.timestamp + block.difficulty +
+            ((uint256(keccak256(abi.encodePacked(block.coinbase)))) / (now)) +
+            block.gaslimit +
+            ((uint256(keccak256(abi.encodePacked(msg.sender)))) / (now)) +
+            block.number
+        )));
     }
 
     /**
